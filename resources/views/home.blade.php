@@ -1,3 +1,7 @@
+@php
+    use App\Enums\RolesEnum;
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -15,6 +19,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    @role(RolesEnum::SUPERADMIN->value)
+                    <div>Super Admin</div>
+                    @endrole()
                 </div>
             </div>
         </div>
