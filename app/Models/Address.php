@@ -4,26 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
     use HasFactory;
 
     protected $table = 'address';
+    public $timestamps = false;
+
     protected $fillable = [
-        'city_id',
-        'complement',
+        'location_id',
+        'street_type_id',
+        'street_name',
         'street_number',
         'zip_code',
-        'bloq',
-        'escal',
-        'piso',
-        'puert',
-        'another',
+        'block',
+        'block_staircase',
+        'floor',
+        'door',
     ];
 
-    public function city()
+
+    public function location(): BelongsTo
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(Location::class);
+    }
+
+    public function streetType(): BelongsTo
+    {
+        return $this->belongsTo(StreetType::class);
     }
 }

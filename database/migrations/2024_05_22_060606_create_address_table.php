@@ -12,15 +12,15 @@ return new class extends Migration {
     {
         Schema::create('address', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('city_id')->constrained('city');
-            $table->string('complement');
+            $table->foreignId('location_id')->constrained('location');
+            $table->foreignId('street_type_id')->constrained('street_type');
+            $table->string('street_name');
             $table->string('street_number');
             $table->string('zip_code');
-            $table->string('bloq');
-            $table->string('escal');
-            $table->string('piso');
-            $table->string('puert');
-            $table->string('another');
+            $table->string('block')->nullable();
+            $table->string('block_staircase')->nullable();
+            $table->string('floor')->nullable();
+            $table->string('door')->nullable();
         });
     }
 
