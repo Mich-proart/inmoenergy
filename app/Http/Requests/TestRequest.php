@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Dto\Address\CreateAddressDto;
-use App\Dto\User\CreateUserDto;
-use App\Enums\ClientTypeEnum;
+use App\Domain\Dto\Address\CreateAddressDto;
+use App\Domain\Dto\User\CreateUserDto;
+use App\Domain\Enums\ClientTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
