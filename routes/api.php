@@ -4,7 +4,6 @@ use App\Http\Controllers\Address\AddressController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Role\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +18,6 @@ use App\Http\Controllers\Role\RoleController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-
-
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get("/role", [RoleController::class, 'index']);
 });
 
 

@@ -334,6 +334,17 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
+            'text' => 'configuracion',
+            'icon' => 'fas fa-fw fa-cog',
+            'submenu' => [
+                [
+                    'text' => 'Gestion de roles',
+                    'route' => 'admin.roles.index',
+                    'icon' => 'fas fa-fw fa-users-cog',
+                ]
+            ]
+        ],
+        [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [
