@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\StreetTypeEnum;
+use App\Domain\Enums\StreetTypeEnum;
 use App\Models\StreetType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

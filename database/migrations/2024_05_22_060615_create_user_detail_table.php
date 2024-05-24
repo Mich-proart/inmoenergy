@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\ClientTypeEnum;
-use App\Enums\DocumentTypeEnum;
-use App\Enums\HousingTypeEnum;
-use App\Enums\UserTitleEnum;
+use App\Domain\Enums\ClientTypeEnum;
+use App\Domain\Enums\DocumentTypeEnum;
+use App\Domain\Enums\HousingTypeEnum;
+use App\Domain\Enums\UserTitleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -28,6 +28,7 @@ return new class extends Migration {
             $table->foreignId('responsible_id')->nullable()->constrained('users');
             $table->enum('user_title', [UserTitleEnum::Sr->value, UserTitleEnum::Sra->value])->nullable();
             $table->enum('housing_type', [HousingTypeEnum::local->value, HousingTypeEnum::living_place->value])->nullable();
+            $table->string('IBAN')->nullable();
         });
     }
 

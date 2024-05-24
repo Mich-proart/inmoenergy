@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('province', function (Blueprint $table) {
             $table->id();
             $table->foreignId('region_id')->constrained('region');
-            $table->string('name');
+            $table->text('name');
         });
     }
 

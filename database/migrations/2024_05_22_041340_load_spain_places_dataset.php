@@ -13,7 +13,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $places = Storage::json('public/spain_places_dataset.json');
+        $places = File::json(base_path('spain_places_dataset.json'));
 
         foreach ($places as $place) {
             $region = $this->createRegion($place['label']);

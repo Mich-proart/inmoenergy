@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Address\AddressController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Role\RoleController;
@@ -23,3 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("/role", [RoleController::class, 'index']);
 });
+
+
+// TODO: Move this to a the bellow router group
+Route::get("/address", [AddressController::class, 'getProvinces']);
+Route::get("/address/street", [AddressController::class, 'getStreetTypes']);
+Route::get("/address/{provinceId}", [AddressController::class, 'getLocations']);
+
+Route::post("/test", [TestController::class, 'index']);

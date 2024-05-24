@@ -1,5 +1,5 @@
 <?php
-namespace App\Enums;
+namespace App\Domain\Enums;
 
 enum UserTitleEnum: string
 {
