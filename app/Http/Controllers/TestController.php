@@ -15,23 +15,9 @@ class TestController extends Controller
     {
     }
 
-    public function index(TestRequest $request)
+    public function index()
     {
-        DB::beginTransaction();
 
-        try {
-            $address = $this->addressService->createAddress($request->CreateAddressDto());
-
-            $user = $this->userService->create($request->createUserDto());
-
-            $user->details()->create(['user_id' => $user->id, 'address_id' => $address->id]);
-            DB::commit();
-
-        } catch (\Throwable $th) {
-
-            DB::rollBack();
-            throw CustomException::badRequestException($th->getMessage());
-        }
-
+        return $this->addressService->getLocations(2);
     }
 }

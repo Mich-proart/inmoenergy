@@ -26,4 +26,4 @@ Route::get("/address", [AddressController::class, 'getProvinces']);
 Route::get("/address/street", [AddressController::class, 'getStreetTypes']);
 Route::get("/address/{provinceId}", [AddressController::class, 'getLocations']);
 
-Route::post("/test", [TestController::class, 'index']);
+Route::get("/test", [TestController::class, 'index']);

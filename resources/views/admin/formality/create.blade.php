@@ -7,7 +7,12 @@
 @stop
 
 @section('content')
-<p>Welcome to this beautiful admin panel.</p>
+<p>create formality</p>
+<div>
+    {{html()->form('POST', route('admin.formality.store'))->class('form-horizontal')->open()}}
+    {{ html()->email('email')->placeholder('Your e-mail address') }}
+    {{html()->form()->close()}}
+</div>
 @stop
 
 @section('css')
