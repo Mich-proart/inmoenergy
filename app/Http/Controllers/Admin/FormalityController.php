@@ -2,17 +2,35 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domain\Enums\ClientTypeEnum;
+use App\Domain\Enums\DocumentTypeEnum;
+use App\Domain\Enums\HousingTypeEnum;
+use App\Domain\Enums\UserTitleEnum;
+use App\Domain\Services\Address\AddressService;
+use App\Domain\Services\User\UserService;
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Formality\CreateFormality;
+use App\Models\ClientType;
+use App\Models\DocumentType;
+use App\Models\FormalityType;
+use App\Models\HousingType;
+use App\Models\Service;
+use App\Models\UserTitle;
+use DB;
 use Illuminate\Http\Request;
 
 class FormalityController extends Controller
 {
+    public function __construct(private UserService $userService, private AddressService $addressService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('admin.formality.index');
     }
 
     /**
@@ -20,15 +38,41 @@ class FormalityController extends Controller
      */
     public function create()
     {
-        return view('admin.formality.create');
+        $documentTypes = DocumentType::all();
+        $clientTypes = ClientType::all();
+        $userTitles = UserTitle::all();
+        $housingTypes = HousingType::all();
+        $formalitytypes = FormalityType::all();
+        $services = Service::all();
+        return view('admin.formality.create', compact(['formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles', 'housingTypes']));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateFormality $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            $user = $this->userService->create($request->getCreateUserDto());
+
+            $address = $this->addressService->createAddress($request->getCreateAddressDto());
+
+
+            $userdetails = $request->getCreatUserDetailDto();
+            $userdetails->setUserId($user->id);
+            $userdetails->setAddressId($address->id);
+            $this->userService->setUserDetails($userdetails);
+
+            DB::commit();
+            return redirect()->route('admin.formality.index');
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
     }
 
     /**

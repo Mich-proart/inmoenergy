@@ -1,0 +1,10 @@
+@props(['name'])
+
+<select class="form-control" name="{{ $name }}">
+    <option value="">-- selecione --</option>
+    @if (isset($options))
+        @foreach ($options as $option)
+            <option value="{{ $option->id }}">{{ $option->name }}</option>
+        @endforeach
+    @endif
+</select>

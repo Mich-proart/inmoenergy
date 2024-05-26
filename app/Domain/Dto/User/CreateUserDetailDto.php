@@ -4,19 +4,32 @@ namespace App\Domain\Dto\User;
 
 class CreateUserDetailDto
 {
+
+    public int $userId;
+    public int $addressId;
+
     public function __construct(
-        public int $userId,
         public string $firstLastName,
-        public ?string $secondLastName,
-        public string $documentType,
+        public string $secondLastName,
+        public int $documentTypeId,
         public string $documentNumber,
         public string $phone,
-        public string $clientType,
-        public string $addressId,
-        public string $userTitle,
-        public string $housingType,
-        public ?string $responsibleId,
-        public ?string $adviserAssignedId,
+        public int $clientTypeId,
+        public int $userTitleId,
+        public int $housingTypeId,
+        public string $IBAN,
+        public ?int $responsibleId,
+        public ?int $adviserAssignedId,
     ) {
+    }
+
+    public function setUserId(int $userId)
+    {
+        $this->userId = $userId;
+    }
+
+    public function setAddressId(int $addressId)
+    {
+        $this->addressId = $addressId;
     }
 }

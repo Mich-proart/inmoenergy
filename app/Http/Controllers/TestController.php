@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CustomException;
+use App\Http\Requests\Formality\CreateFormality;
 use App\Http\Requests\TestRequest;
 use App\Domain\Services\Address\AddressService;
 use App\Domain\Services\User\UserService;
@@ -15,9 +16,8 @@ class TestController extends Controller
     {
     }
 
-    public function index()
+    public function index(CreateFormality $request)
     {
-
-        return $this->addressService->getLocations(2);
+        return response($request->getCreatUserDetailDto()->clientTypeId, 200);
     }
 }
