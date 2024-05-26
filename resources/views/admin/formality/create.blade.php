@@ -11,7 +11,7 @@
 
     <div class="card">
         <div class="card-body">
-            {{html()->form('POST', route('admin.formality.store'))->class('form-horizontal')->open()}}
+            {{html()->form('POST', route('admin.formality.store'))->class('form-horizontal needs-validation')->open()}}
             @csrf
             <div class="form-group">
                 <div class="row">
@@ -53,42 +53,93 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row" style="margin-top: 50px;">
-                <h4>Datos del Cliente</h4>
+            <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+
+                <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                    Datos del Cliente
+                </span>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="inputState">Tipo Cliente: </label>
-                    <x-dropdowm-form :options="$clientTypes" name="clientTypeId" />
+                    <select class="form-control @error('clientTypeId') is-invalid @enderror" name="clientTypeId"
+                        required>
+                        <option value="">-- selecione --</option>
+                        @if (isset($clientTypes))
+                            @foreach ($clientTypes as $clientType)
+                                <option value="{{ $clientType->id }}">{{ $clientType->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    @error('clientTypeId')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputState">Titulo: </label>
-                    <x-dropdowm-form :options="$userTitles" name="userTitleId" />
+                    <select class="form-control @error('userTitleId') is-invalid @enderror" name="userTitleId" required>
+                        <option value="">-- selecione --</option>
+                        @if (isset($userTitles))
+                            @foreach ($userTitles as $userTitle)
+                                <option value="{{ $userTitle->id }}">{{ $userTitle->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    @error('userTitleId')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="inputCity">Nombre</label>
-                    <input type="text" class="form-control" id="inputCity" name="name">
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputCity"
+                        name="name" required>
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputState">Apellido 1: </label>
-                    <input type="text" class="form-control" id="inputCity" name="firstLastName">
+                    <input type="text" class="form-control @error('firstLastName') is-invalid @enderror" id="inputCity"
+                        name="firstLastName" required>
+                    @error('firstLastName')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputZip">Apellido 2: </label>
                     <input type="text" class="form-control" id="inputZip" name="secondLastName">
+                    @error('firstLastName')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputZip">Email: </label>
-                    <input type="text" class="form-control" id="inputZip" name="email">
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="inputZip"
+                        name="email" required>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="inputState">Tipo Document: </label>
-                    <!-- <x-dropdowm-form :options="$documentTypes" name="documentTypeId" /> -->
-                    <select class="form-control" name="documentTypeId">
+                    <select class="form-control @error('documentTypeId') is-invalid @enderror" name="documentTypeId"
+                        required>
                         <option value="">-- selecione --</option>
                         @if (isset($documentTypes))
                             @foreach ($documentTypes as $option)
@@ -96,10 +147,15 @@
                             @endforeach
                         @endif
                     </select>
+                    @error('documentTypeId')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputState">Numero Documento: </label>
-                    <input type="text" class="form-control" id="inputZip" name="documentNumber">
+                    <input type="text" class="form-control" id="inputZip" name="documentNumber" required>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputAddress">telf: </label>
@@ -107,104 +163,43 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputAddress">Tipo de vivienda: </label>
-                    <x-dropdowm-form :options="$housingTypes" name="housingTypeId" />
+                    <select class="form-control @error('housingTypeId') is-invalid @enderror" name="housingTypeId"
+                        required>
+                        <option value="">-- selecione --</option>
+                        @if (isset($housingTypes))
+                            @foreach ($housingTypes as $housingType)
+                                <option value="{{ $housingType->id }}">{{ $housingType->name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                    @error('housingTypeId')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
                 </div>
             </div>
-            <div class="form-group">
+            <div class=" form-group">
                 <label for="inputAddress2">Cuenta Bancaria: </label>
                 <input type="text" class="form-control" id="inputAddress2" placeholder="" name="IBAN">
             </div>
-            <div class="form-row" style="margin-top: 50px;">
-                <h4>Dirección de suministro</h4>
+            <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+
+                <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                    Dirección de suministro
+                </span>
             </div>
             <div class="form-group">
                 <livewire:address-elements />
             </div>
 
             <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                        Check me out
-                    </label>
-                </div>
+                <label for="exampleFormControlTextarea1">Observaciones</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"></textarea>
             </div>
 
-            @error('formalityTypeId')
-                <div class="alert alert-danger">{{ $message }}</div>
-
-            @enderror
-            @error('issuierId')
-                <div class="alert alert-danger">{{ $message }}</div>
-
-            @enderror
-            @error('observation')
-                <div class="alert alert-danger">{{ $message }}</div>
-
-            @enderror
-
-
-            @error('name')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('email')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('documentNumber')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('phone')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('IBAN')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('clientTypeId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('userTitleId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('documentTypeId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('serviceIds')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            @error('locationId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            @error('streetTypeId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            @error('streetName')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            @error('streetNumber')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            @error('zipCode')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            @error('housingTypeId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            @error('clientTypeId')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-
-
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit" class="btn btn-primary">Tramitar</button>
             {{html()->form()->close()}}
 
 

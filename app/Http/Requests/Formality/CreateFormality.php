@@ -39,7 +39,12 @@ class CreateFormality extends FormRequest
     public function getCreateUserDto(): CreateUserDto
     {
         $pass = substr(md5(uniqid(mt_rand(), true)), 0, 8);
-        return new CreateUserDto($this->name, $this->email, Hash::make($pass), false);
+        return new CreateUserDto(
+            $this->name,
+            $this->email,
+            Hash::make($pass),
+            false
+        );
     }
 
     public function getCreatUserDetailDto(): CreateUserDetailDto
@@ -61,6 +66,16 @@ class CreateFormality extends FormRequest
 
     public function getCreateAddressDto(): CreateAddressDto
     {
-        return new CreateAddressDto($this->locationId, $this->streetTypeId, $this->streetName, $this->streetNumber, $this->zipCode, $this->block, $this->blockstaircase, $this->floor, $this->door);
+        return new CreateAddressDto(
+            $this->locationId,
+            $this->streetTypeId,
+            $this->streetName,
+            $this->streetNumber,
+            $this->zipCode,
+            $this->block,
+            $this->blockstaircase,
+            $this->floor,
+            $this->door
+        );
     }
 }

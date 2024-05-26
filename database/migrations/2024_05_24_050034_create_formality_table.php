@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_client_id')->constrained('users');
             $table->foreignId('user_issuer_id')->constrained('users');
-            $table->foreignId('user_Assigned_id')->constrained('users');
+            $table->foreignId('user_Assigned_id')->nullable()->constrained('users');
             $table->text('observation')->nullable();
             $table->boolean('canIssuerEdit')->default(false);
             $table->boolean('isCritical')->default(false);
@@ -24,14 +24,14 @@ return new class extends Migration {
             $table->timestamp('renewal_date')->nullable();
             $table->timestamp('activation_date')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->string('CUPS');
+            $table->string('CUPS')->nullable();
             $table->text('internal_observation')->nullable();
             $table->integer('annual_consupmption')->nullable();
             $table->boolean('isClientAddress')->default(false);
-            $table->foreignId('address_id')->constrained('address');
+            $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('formality_type_id')->constrained('formality_type');
             $table->foreignId('formality_status_id')->constrained('formality_status');
-            $table->foreignId('access_rate_id')->constrained('access_rate');
+            $table->foreignId('access_rate_id')->nullable()->constrained('access_rate');
             $table->foreignId('service_id')->constrained('service');
             $table->timestamps();
         });

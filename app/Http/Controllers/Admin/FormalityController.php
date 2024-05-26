@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Domain\Enums\ClientTypeEnum;
-use App\Domain\Enums\DocumentTypeEnum;
-use App\Domain\Enums\HousingTypeEnum;
-use App\Domain\Enums\UserTitleEnum;
 use App\Domain\Services\Address\AddressService;
+use App\Domain\Services\Formality\CreateFormalityService;
 use App\Domain\Services\User\UserService;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
@@ -19,11 +16,15 @@ use App\Models\Service;
 use App\Models\UserTitle;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FormalityController extends Controller
 {
-    public function __construct(private UserService $userService, private AddressService $addressService)
-    {
+    public function __construct(
+        private UserService $userService,
+        private AddressService $addressService,
+        private CreateFormalityService $createFormalityService
+    ) {
     }
     /**
      * Display a listing of the resource.
@@ -65,6 +66,13 @@ class FormalityController extends Controller
             $userdetails->setUserId($user->id);
             $userdetails->setAddressId($address->id);
             $this->userService->setUserDetails($userdetails);
+
+            $this->createFormalityService->setClientId($user->id);
+            $this->createFormalityService->setUserIssuerId(Auth::user()->id);
+
+            foreach ($request->serviceIds as $serviceId) {
+                $this->createFormalityService->execute($serviceId, $request->formalityTypeId, $request->observation);
+            }
 
             DB::commit();
             return redirect()->route('admin.formality.index');
