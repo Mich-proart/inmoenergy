@@ -3,8 +3,8 @@ namespace App\Domain\Enums;
 
 enum ClientTypeEnum: string
 {
-    case PERSON = 'Persona física';
-    case BUSINESS = 'Persona Jurídica';
+    case PERSON = 'persona física';
+    case BUSINESS = 'persona jurídica';
 
     public static function values(): array
     {

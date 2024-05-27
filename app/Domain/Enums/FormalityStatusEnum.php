@@ -4,13 +4,13 @@ namespace App\Domain\Enums;
 
 enum formalityStatusEnum: string
 {
-    case PENDIENTE = 'Pendiente';
-    case ASIGNADO = 'Asignado';
-    case REVISANDO_DOCUMENTACIÓN = 'Revisando Documentación';
-    case EN_CURSO = 'En curso';
+    case PENDIENTE = 'pendiente tramitar';
+    case ASIGNADO = 'asignado';
+    case REVISANDO_DOCUMENTACIÓN = 'revisando documentación';
+    case EN_CURSO = 'en curso';
 
-    case TRAMITADO = 'Tramitado';
-    case EN_VIGOR = 'En Vigor';
+    case TRAMITADO = 'tramitado';
+    case EN_VIGOR = 'en vigor';
     case KO = 'KO';
-    case INCIDENCIA = 'Incidencia';
+    case INCIDENCIA = 'incidencia';
 }

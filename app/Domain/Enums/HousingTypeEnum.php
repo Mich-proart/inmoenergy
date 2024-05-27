@@ -4,7 +4,7 @@ namespace App\Domain\Enums;
 
 enum HousingTypeEnum: string
 {
-    case living_place = 'Vivienda';
+    case living_place = 'vivienda';
     case local = 'local';
 
     public static function values(): array
