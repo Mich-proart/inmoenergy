@@ -20,9 +20,9 @@ class AddressService
     public function getProvinces(int $regionId = null)
     {
         if (!isset($regionId))
-            return Province::with('region')->get()->select(['id', 'name', 'region']);
+            return Province::with('region')->get();
 
-        return Province::where('region_id', $regionId)->with('region')->get()->select(['id', 'name', 'region']);
+        return Province::where('region_id', $regionId)->with('region')->get();
     }
 
     public function getLocations(int $provinceId)
@@ -30,7 +30,7 @@ class AddressService
         if (!isset($provinceId))
             throw CustomException::badRequestException('province id ' . $provinceId . ' required');
 
-        return Province::where('id', $provinceId)->with('locations')->get()->select(['id', 'name', 'locations']);
+        return Location::where('province_id', $provinceId)->get();
     }
 
     public function getStreetTypes()

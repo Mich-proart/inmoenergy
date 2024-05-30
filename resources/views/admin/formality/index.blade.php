@@ -7,7 +7,9 @@
 @stop
 
 @section('content')
-<p>Welcome to this beautiful admin panel.</p>
+@if (isset($id))
+    {{ $id }}
+@endif
 @stop
 
 @section('css')

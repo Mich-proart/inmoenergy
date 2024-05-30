@@ -21,9 +21,9 @@ class CreateAddressDto
         $this->streetName = strtolower($streetName);
         $this->streetNumber = $streetNumber;
         $this->zipCode = $zipCode;
-        $this->block = strtolower($block);
-        $this->blockStaircase = strtolower($blockStaircase);
-        $this->floor = strtolower($floor);
-        $this->door = strtolower($door);
+        $this->block = $block;
+        $this->blockStaircase = $blockStaircase;
+        $this->floor = $floor;
+        $this->door = $door;
     }
 }

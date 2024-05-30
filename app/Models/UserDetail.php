@@ -19,14 +19,15 @@ class UserDetail extends Model
         'first_last_name',
         'second_last_name',
         'document_number',
-        'document_type',
+        'document_type_id',
         'phone',
-        'client_type',
+        'client_type_id',
         'address_id',
         'adviser_assigned_id',
         'responsible_id',
-        'user_title',
-        'housing_type',
+        'user_title_id',
+        'housing_type_id',
+        'IBAN'
     ];
 
 
@@ -35,10 +36,45 @@ class UserDetail extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected $casts = [
-        'document_type' => DocumentTypeEnum::class,
-        'client_type' => ClientTypeEnum::class,
-        'user_title' => UserTitleEnum::class,
-        'housing_type' => HousingTypeEnum::class,
-    ];
+
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+
+    public function adviserAssigned(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'adviser_assigned_id');
+    }
+
+
+    public function responsible(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsible_id');
+    }
+
+
+    public function clientType(): BelongsTo
+    {
+        return $this->belongsTo(ClientType::class, 'client_type');
+    }
+
+
+    public function housingType(): BelongsTo
+    {
+        return $this->belongsTo(HousingType::class, 'housing_type');
+    }
+
+
+    public function documentType(): BelongsTo
+    {
+        return $this->belongsTo(DocumentType::class, 'document_type');
+    }
+
+    public function title(): BelongsTo
+    {
+        return $this->belongsTo(UserTitle::class, 'user_title');
+    }
+
 }

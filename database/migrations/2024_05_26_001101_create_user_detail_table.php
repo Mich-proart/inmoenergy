@@ -1,9 +1,5 @@
 <?php
 
-use App\Domain\Enums\ClientTypeEnum;
-use App\Domain\Enums\DocumentTypeEnum;
-use App\Domain\Enums\HousingTypeEnum;
-use App\Domain\Enums\UserTitleEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,14 +16,14 @@ return new class extends Migration {
             $table->string('first_last_name')->nullable();
             $table->string('second_last_name')->nullable();
             $table->string('document_number')->nullable();
-            $table->enum('document_type', [DocumentTypeEnum::DNI->value, DocumentTypeEnum::PASSPORT->value])->nullable();
+            $table->foreignId('document_type_id')->nullable()->constrained('document_type');
             $table->string('phone')->nullable();
-            $table->enum('client_type', [ClientTypeEnum::PERSON->value, ClientTypeEnum::BUSINESS->value])->nullable();
+            $table->foreignId('client_type_id')->nullable()->constrained('client_type');
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('adviser_assigned_id')->nullable()->constrained('users');
             $table->foreignId('responsible_id')->nullable()->constrained('users');
-            $table->enum('user_title', [UserTitleEnum::Sr->value, UserTitleEnum::Sra->value])->nullable();
-            $table->enum('housing_type', [HousingTypeEnum::local->value, HousingTypeEnum::living_place->value])->nullable();
+            $table->foreignId('user_title_id')->nullable()->constrained('user_title');
+            $table->foreignId('housing_type_id')->nullable()->constrained('housing_type');
             $table->string('IBAN')->nullable();
         });
     }

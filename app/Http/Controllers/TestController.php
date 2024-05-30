@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CustomException;
+use App\Http\Requests\Formality\CreateFormality;
 use App\Http\Requests\TestRequest;
 use App\Domain\Services\Address\AddressService;
 use App\Domain\Services\User\UserService;
@@ -15,23 +16,8 @@ class TestController extends Controller
     {
     }
 
-    public function index(TestRequest $request)
+    public function index(CreateFormality $request)
     {
-        DB::beginTransaction();
-
-        try {
-            $address = $this->addressService->createAddress($request->CreateAddressDto());
-
-            $user = $this->userService->create($request->createUserDto());
-
-            $user->details()->create(['user_id' => $user->id, 'address_id' => $address->id]);
-            DB::commit();
-
-        } catch (\Throwable $th) {
-
-            DB::rollBack();
-            throw CustomException::badRequestException($th->getMessage());
-        }
-
+        return response($request->getCreatUserDetailDto()->clientTypeId, 200);
     }
 }
