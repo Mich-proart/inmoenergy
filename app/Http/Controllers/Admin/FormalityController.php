@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domain\Enums\formalityStatusEnum;
 use App\Domain\Services\Address\AddressService;
 use App\Domain\Services\Formality\CreateFormalityService;
+use App\Domain\Services\Formality\FormalityService;
 use App\Domain\Services\User\UserService;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
@@ -23,7 +25,8 @@ class FormalityController extends Controller
     public function __construct(
         private UserService $userService,
         private AddressService $addressService,
-        private CreateFormalityService $createFormalityService
+        private CreateFormalityService $createFormalityService,
+        private FormalityService $formalityService
     ) {
     }
     /**

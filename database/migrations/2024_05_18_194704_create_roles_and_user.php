@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Enums\RolesEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,8 +12,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        foreach (RolesEnum::cases() as $role) {
-            Role::create(['name' => $role->value]);
+
+        $mainValues = [
+            "superadmin",
+            "comercial",
+            "inmobiliaria"
+        ];
+
+        foreach ($mainValues as $role) {
+            Role::create(['name' => $role]);
         }
 
         $user = User::create([
@@ -23,7 +29,7 @@ return new class extends Migration {
             'password' => Hash::make('superadmindev'),
         ]);
 
-        $superAdmin = Role::findByName(RolesEnum::SUPERADMIN->value);
+        $superAdmin = Role::findByName('superadmin');
 
         $user->assignRole($superAdmin);
     }

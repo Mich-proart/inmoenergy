@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Enums\HousingTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,9 +15,11 @@ return new class extends Migration {
             $table->string('name');
         });
 
-        foreach (HousingTypeEnum::cases() as $case) {
+        $mainValue = ["vivienda", "local"];
+
+        foreach ($mainValue as $case) {
             DB::table('housing_type')->insert([
-                'name' => $case->value
+                'name' => $case
             ]);
         }
     }

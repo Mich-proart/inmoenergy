@@ -4,7 +4,7 @@ namespace App\Domain\Enums;
 
 enum RolesEnum: string
 {
-    case SUPERADMIN = 'super-admin';
+    case SUPERADMIN = 'superadmin';
     case COMERCIAL = 'comercial';
     case INMOBILIARIA = 'inmobiliaria';
     // case RYMES = 'rymes';

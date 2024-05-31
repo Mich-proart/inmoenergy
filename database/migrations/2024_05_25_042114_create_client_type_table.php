@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Enums\ClientTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,9 +15,11 @@ return new class extends Migration {
             $table->string('name');
         });
 
-        foreach (ClientTypeEnum::cases() as $case) {
+        $mainValue = ["persona física", "persona jurídica"];
+
+        foreach ($mainValue as $case) {
             DB::table('client_type')->insert([
-                'name' => $case->value
+                'name' => $case
             ]);
         }
     }

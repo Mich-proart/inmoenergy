@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Enums\AccessRateEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,9 +15,11 @@ return new class extends Migration {
             $table->string('name');
         });
 
-        foreach (AccessRateEnum::cases() as $case) {
+        $mainValues = ["2.0", "3.0", "RL1", "RL2", "RL3"];
+
+        foreach ($mainValues as $case) {
             DB::table('access_rate')->insert([
-                'name' => $case->value
+                'name' => $case
             ]);
         }
     }
