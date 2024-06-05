@@ -314,6 +314,11 @@ return [
                     'text' => 'Nuevo Tramite',
                     'route' => 'admin.formality.create',
                     'icon' => 'fas fa-fw fa-file-invoice',
+                ],
+                [
+                    'text' => 'Tramite En Curso',
+                    'route' => 'admin.formality.inprogress',
+                    'icon' => 'fas fa-fw fa-file-invoice',
                 ]
             ]
         ],

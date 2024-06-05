@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Address\AddressController;
+use App\Http\Controllers\Formality\FormalityController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // TODO: Move this to a the bellow router group
+Route::resource('/formality', FormalityController::class)->names('formality')->except(['create']);
 Route::get("/address", [AddressController::class, 'getProvinces']);
 Route::get("/address/street", [AddressController::class, 'getStreetTypes']);
 Route::get("/address/{provinceId}", [AddressController::class, 'getLocations']);
