@@ -10,9 +10,9 @@ use App\Domain\Services\User\UserService;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Formality\CreateFormality;
-use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FormalityController extends Controller
 {
@@ -88,7 +88,7 @@ class FormalityController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('admin.formality.index');
+            return redirect()->route('admin.formality.inprogress');
         } catch (\Throwable $th) {
 
             DB::rollBack();

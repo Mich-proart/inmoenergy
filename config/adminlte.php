@@ -316,8 +316,13 @@ return [
                     'icon' => 'fas fa-fw fa-file-invoice',
                 ],
                 [
-                    'text' => 'Tramite En Curso',
+                    'text' => 'Tramites En Curso',
                     'route' => 'admin.formality.inprogress',
+                    'icon' => 'fas fa-fw fa-file-invoice',
+                ],
+                [
+                    'text' => 'Tramites Cerrados',
+                    'route' => 'admin.formality.closed',
                     'icon' => 'fas fa-fw fa-file-invoice',
                 ]
             ]

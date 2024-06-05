@@ -31,6 +31,8 @@ class FormalityService
                 'formality.id',
                 'formality.created_at',
                 'formality.activation_date',
+                'formality.issuer_observation',
+                'formality.completion_date',
                 'issuer.name as issuer',
                 'status.name as status',
                 'service.name as service',

@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites en curso</h1>
+<h1>Tramites cerrados</h1>
 @stop
 
 @section('content')
@@ -33,8 +33,8 @@
                         <th>Escalera</th>
                         <th>Piso</th>
                         <th>Puerta</th>
+                        <th>Fecha Finalizacion del tramite</th>
                         <th>Estado Tramite</th>
-                        <th>Observaciones del tramitador</th>
                     </tr>
                 </thead>
 
@@ -68,7 +68,7 @@
             "type": "GET",
             "data": {
                 "issuerId": "{{Auth::id()}}",
-                "exceptStatus": ["tramitado", "en vigor"]
+                "onlyStatus": ["tramitado", "en vigor"]
             }
         },
         "language": {
@@ -91,15 +91,15 @@
             { data: 'block_staircase' },
             { data: 'floor' },
             { data: 'door' },
+            { data: 'completion_date' },
             { data: 'status' },
-            { data: 'issuer_observation' },
         ],
         "columnDefs": [
             {
                 "render": function (data, type, row) {
                     return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                 },
-                "targets": 16
+                "targets": 17
             },
             { className: "dt-head-center", targets: [0] },
 

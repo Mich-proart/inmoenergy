@@ -34,6 +34,7 @@ class Formality extends Model
         'formality_status_id',
         'access_rate_id',
         'service_id',
+        'issuer_observation'
     ];
 
     public function client(): BelongsTo
