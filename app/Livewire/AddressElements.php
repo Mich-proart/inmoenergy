@@ -2,8 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Domain\Services\Address\AddressService;
-use App\Models\Address;
+use App\Domain\Address\Services\AddressService;
 use App\Models\StreetType;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Computed;

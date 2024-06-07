@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Formality;
 
-use App\Domain\Dto\Formality\FormalityQuery;
-use App\Domain\Services\Address\AddressService;
-use App\Domain\Services\Formality\CreateFormalityService;
-use App\Domain\Services\Formality\FormalityService;
-use App\Domain\Services\User\UserService;
+use App\Domain\Address\Services\AddressService;
+use App\Domain\Formality\Dtos\FormalityQuery;
+use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Formality\Services\FormalityService;
+use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Formality\CreateFormality;

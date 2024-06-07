@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Services\Formality;
+namespace App\Domain\Formality\Services;
 
 
-use App\Domain\Dto\Formality\FormalityQuery;
+use App\Domain\Formality\Dtos\FormalityQuery;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
 use App\Models\FormalityType;

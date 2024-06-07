@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Formality;
 
-use App\Domain\Services\Formality\FormalityService;
-use App\Domain\Services\User\UserService;
+use App\Domain\Formality\Services\FormalityService;
+use App\Domain\User\Services\UserService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

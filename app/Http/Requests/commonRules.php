@@ -2,10 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Domain\Enums\ClientTypeEnum;
-use App\Domain\Enums\DocumentTypeEnum;
-use App\Domain\Enums\HousingTypeEnum;
-use App\Domain\Enums\UserTitleEnum;
 use Illuminate\Validation\Rule;
 
 trait commonRules

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Dto\Formality;
+namespace App\Domain\Formality\Dtos;
 
 class FormalityQuery
 {

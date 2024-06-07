@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Services\Address;
+namespace App\Domain\Address\Services;
 
-use App\Domain\Dto\Address\CreateAddressDto;
+use App\Domain\Address\Dtos\CreateAddressDto;
 use App\Exceptions\CustomException;
 use App\Models\Address;
 use App\Models\Location;

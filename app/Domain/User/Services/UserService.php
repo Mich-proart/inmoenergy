@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Domain\Services\User;
+namespace App\Domain\User\Services;
 
-use App\Domain\Dto\User\CreateUserDetailDto;
-use App\Domain\Dto\User\CreateUserDto;
+
+use App\Domain\User\Dtos\CreateUserDetailDto;
+use App\Domain\User\Dtos\CreateUserDto;
 use App\Exceptions\CustomException;
 use App\Models\User;
 use App\Models\UserDetail;

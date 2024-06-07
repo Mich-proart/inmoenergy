@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Services\Formality;
+namespace App\Domain\Formality\Services;
 
 
 use App\Domain\Enums\FormalityStatusEnum;
