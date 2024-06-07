@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites cerrados</h1>
+<h1>Tramites asignados</h1>
 @stop
 
 @section('content')
@@ -33,8 +33,9 @@
                         <th>Escalera</th>
                         <th>Piso</th>
                         <th>Puerta</th>
-                        <th>Fecha Finalizacion del tramite</th>
                         <th>Estado Tramite</th>
+                        <th>Tramite Critico</th>
+                        <th>Observaciones del tramite</th>
                     </tr>
                 </thead>
 
@@ -69,8 +70,8 @@
             "url": "{{route('api.formality.index')}}",
             "type": "GET",
             "data": {
-                "issuerId": "{{Auth::id()}}",
-                "onlyStatus": ["tramitado", "en vigor"]
+                "assignedId": "{{Auth::id()}}",
+                "exceptStatus": ["tramitado", "en vigor"]
             }
         },
         "language": {
@@ -93,15 +94,16 @@
             { data: 'block_staircase' },
             { data: 'floor' },
             { data: 'door' },
-            { data: 'completion_date' },
             { data: 'status' },
+            { data: 'isCritical' },
+            { data: 'observation' },
         ],
         "columnDefs": [
             {
                 "render": function (data, type, row) {
                     return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                 },
-                "targets": 17
+                "targets": 16
             },
             { className: "dt-head-center", targets: [0] }
         ]

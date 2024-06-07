@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites cerrados</h1>
+<h1>Tramites realizados</h1>
 @stop
 
 @section('content')
@@ -33,8 +33,12 @@
                         <th>Escalera</th>
                         <th>Piso</th>
                         <th>Puerta</th>
-                        <th>Fecha Finalizacion del tramite</th>
                         <th>Estado Tramite</th>
+                        <th>Fecha finalizacion tramite</th>
+                        <th>Consumo anual</th>
+                        <th>CUPS</th>
+                        <th>Renovacion</th>
+                        <th>Fecha de activacion</th>
                     </tr>
                 </thead>
 
@@ -69,7 +73,7 @@
             "url": "{{route('api.formality.index')}}",
             "type": "GET",
             "data": {
-                "issuerId": "{{Auth::id()}}",
+                "assignedId": "{{Auth::id()}}",
                 "onlyStatus": ["tramitado", "en vigor"]
             }
         },
@@ -93,15 +97,19 @@
             { data: 'block_staircase' },
             { data: 'floor' },
             { data: 'door' },
-            { data: 'completion_date' },
             { data: 'status' },
+            { data: 'completion_date' },
+            { data: 'annual_consumption' },
+            { data: 'CUPS' },
+            { data: 'isRenewable' },
+            { data: 'activation_date' },
         ],
         "columnDefs": [
             {
                 "render": function (data, type, row) {
                     return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                 },
-                "targets": 17
+                "targets": 16
             },
             { className: "dt-head-center", targets: [0] }
         ]

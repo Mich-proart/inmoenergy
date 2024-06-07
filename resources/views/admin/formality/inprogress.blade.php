@@ -9,7 +9,7 @@
 @section('content')
 
 <div>
-    <div class="card">
+    <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title">{{Auth::user()->name}}</h3>
         </div>
@@ -63,6 +63,8 @@
 
 <script>
     new DataTable('#formality-content', {
+        "processing": true,
+        "serverSide": true,
         "ajax": {
             "url": "{{route('api.formality.index')}}",
             "type": "GET",
@@ -101,9 +103,7 @@
                 },
                 "targets": 16
             },
-            { className: "dt-head-center", targets: [0] },
-
-            { className: "dt-body-center", targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] }
+            { className: "dt-head-center", targets: [0] }
         ]
     });
 </script>

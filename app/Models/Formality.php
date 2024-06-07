@@ -27,7 +27,7 @@ class Formality extends Model
         'is_active',
         'CUPS',
         'internal_observation',
-        'annual_consupmption',
+        'annual_consumption',
         'isClientAddress',
         'address_id',
         'formality_type_id',

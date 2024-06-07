@@ -28,11 +28,18 @@ class FormalityService
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
             ->select(
-                'formality.id',
+                'formality.id as formality_id',
                 'formality.created_at',
                 'formality.activation_date',
                 'formality.issuer_observation',
+                'formality.isCritical',
+                'formality.observation',
                 'formality.completion_date',
+                'formality.CUPS',
+                'formality.annual_consumption',
+                'formality.completion_date',
+                'formality.activation_date',
+                'formality.isRenewable',
                 'issuer.name as issuer',
                 'status.name as status',
                 'service.name as service',

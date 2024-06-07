@@ -39,18 +39,24 @@ class FormalityController extends Controller
         if ($onlyStatus) {
             $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $onlyStatus);
             $formality = $this->formalityService->findByStatus($query);
-            return datatables()->of($formality)->toJson();
+            return datatables()->of($formality)
+                ->setRowAttr(['align' => 'center'])
+                ->setRowId(function ($formality) {
+                    return $formality->formality_id;
+                })
+                ->toJson();
         }
 
         if ($exceptStatus) {
             $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $exceptStatus);
             $formality = $this->formalityService->findByDistintStatus($query);
-            return datatables()->of($formality)->toJson();
+            return datatables()->of($formality)
+                ->setRowAttr(['align' => 'center'])
+                ->setRowId(function ($formality) {
+                    return $formality->formality_id;
+                })
+                ->toJson();
         }
-
-        $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $onlyStatus);
-        $formality = $this->formalityService->findByDistintStatus($query);
-        return datatables()->of($formality)->toJson();
     }
 
     /**

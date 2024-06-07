@@ -19,5 +19,11 @@ Route::prefix('formality')->group(function () {
     Route::get('/create', [CreateFormalityController::class, 'index'])->name('admin.formality.create');
     Route::get('/inprogress', [InProgressFormalityController::class, 'index'])->name('admin.formality.inprogress');
     Route::get('/closed', [ClosedFormalityController::class, 'index'])->name('admin.formality.closed');
+    Route::get('/assigned', function () {
+        return view('admin.formality.assigned');
+    })->name('admin.formality.assigned');
+    Route::get('/completed', function () {
+        return view('admin.formality.completed');
+    })->name('admin.formality.completed');
 
 });
