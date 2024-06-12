@@ -1,37 +1,62 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Formality;
 
-use App\Domain\Services\Address\AddressService;
-use App\Domain\Services\Formality\CreateFormalityService;
-use App\Domain\Services\User\UserService;
+use App\Domain\Address\Services\AddressService;
+use App\Domain\Formality\Dtos\FormalityQuery;
+use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Formality\Services\FormalityService;
+use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Formality\CreateFormality;
-use App\Models\ClientType;
-use App\Models\DocumentType;
-use App\Models\FormalityType;
-use App\Models\HousingType;
-use App\Models\Service;
-use App\Models\UserTitle;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FormalityController extends Controller
 {
+
     public function __construct(
         private UserService $userService,
         private AddressService $addressService,
-        private CreateFormalityService $createFormalityService
+        private CreateFormalityService $createFormalityService,
+        private FormalityService $formalityService
     ) {
     }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.formality.index');
+        $issuerId = $request->query('issuerId');
+        $assignedId = $request->query('assignedId');
+        $exceptStatus = $request->query('exceptStatus');
+        $onlyStatus = $request->query('onlyStatus');
+        $activationDateNull = $request->query('activationDateNull');
+
+
+        if ($onlyStatus) {
+            $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $onlyStatus);
+            $formality = $this->formalityService->findByStatus($query);
+            return datatables()->of($formality)
+                ->setRowAttr(['align' => 'center'])
+                ->setRowId(function ($formality) {
+                    return $formality->formality_id;
+                })
+                ->toJson();
+        }
+
+        if ($exceptStatus) {
+            $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $exceptStatus);
+            $formality = $this->formalityService->findByDistintStatus($query);
+            return datatables()->of($formality)
+                ->setRowAttr(['align' => 'center'])
+                ->setRowId(function ($formality) {
+                    return $formality->formality_id;
+                })
+                ->toJson();
+        }
     }
 
     /**
@@ -39,13 +64,7 @@ class FormalityController extends Controller
      */
     public function create()
     {
-        $documentTypes = DocumentType::all();
-        $clientTypes = ClientType::all();
-        $userTitles = UserTitle::all();
-        $housingTypes = HousingType::all();
-        $formalitytypes = FormalityType::all();
-        $services = Service::all();
-        return view('admin.formality.create', compact(['formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles', 'housingTypes']));
+        //
     }
 
     /**
@@ -75,7 +94,7 @@ class FormalityController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('admin.formality.index');
+            return redirect()->route('admin.formality.inprogress');
         } catch (\Throwable $th) {
 
             DB::rollBack();

@@ -7,7 +7,13 @@
 @stop
 
 @section('content')
-<p>Welcome to this beautiful admin panel.</p>
+<div>
+    <div class="card">
+        <div class="card-body">
+            <h2>Bienvenido</h2>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('css')

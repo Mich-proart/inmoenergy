@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Enums\formalityStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,9 +15,20 @@ return new class extends Migration {
             $table->string('name');
         });
 
-        foreach (formalityStatusEnum::cases() as $case) {
+        $mainValues = [
+            "pendiente tramitar",
+            "asignado",
+            "revisando documentación",
+            "en curso",
+            "tramitado",
+            "en vigor",
+            "KO",
+            "incidencia"
+        ];
+
+        foreach ($mainValues as $case) {
             DB::table('formality_status')->insert([
-                'name' => $case->value
+                'name' => $case
             ]);
         }
     }

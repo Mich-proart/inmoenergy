@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Domain\Services\Formality;
+namespace App\Domain\Formality\Services;
 
-use App\Domain\Enums\formalityStatusEnum;
+
+use App\Domain\Enums\FormalityStatusEnum;
 use App\Models\Formality;
 use App\Models\FormalityStatus;
 
@@ -16,7 +17,7 @@ class CreateFormalityService
 
     public function __construct()
     {
-        $this->formalityStatus = FormalityStatus::where('name', formalityStatusEnum::PENDIENTE->value)->first();
+        $this->formalityStatus = FormalityStatus::where('name', FormalityStatusEnum::PENDIENTE->value)->first();
     }
 
     public function execute(int $serviceId, int $formalitytypeId, ?string $observation)

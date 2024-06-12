@@ -27,13 +27,14 @@ class Formality extends Model
         'is_active',
         'CUPS',
         'internal_observation',
-        'annual_consupmption',
+        'annual_consumption',
         'isClientAddress',
         'address_id',
         'formality_type_id',
         'formality_status_id',
         'access_rate_id',
         'service_id',
+        'issuer_observation'
     ];
 
     public function client(): BelongsTo

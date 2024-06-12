@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Dto\Address;
+namespace App\Domain\Address\Dtos;
 
 class CreateAddressDto
 {

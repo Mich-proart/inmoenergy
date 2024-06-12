@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->boolean('is_active')->default(true);
             $table->string('CUPS')->nullable();
             $table->text('internal_observation')->nullable();
-            $table->integer('annual_consupmption')->nullable();
+            $table->integer('annual_consumption')->nullable();
             $table->boolean('isClientAddress')->default(false);
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('formality_type_id')->constrained('formality_type');

@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Domain\Services\User;
+namespace App\Domain\User\Services;
 
-use App\Domain\Dto\User\CreateUserDetailDto;
-use App\Domain\Dto\User\CreateUserDto;
+
+use App\Domain\User\Dtos\CreateUserDetailDto;
+use App\Domain\User\Dtos\CreateUserDto;
 use App\Exceptions\CustomException;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Models\ClientType;
+use App\Models\DocumentType;
+use App\Models\HousingType;
+use App\Models\UserTitle;
 use Hash;
 
 class UserService
@@ -52,5 +57,25 @@ class UserService
             'housing_type_id' => $dto->housingTypeId,
             'IBAN' => $dto->IBAN
         ]);
+    }
+
+    public function getClientTypes()
+    {
+        return ClientType::all();
+    }
+
+    public function getDocumentTypes()
+    {
+        return DocumentType::all();
+    }
+
+    public function getUserTitles()
+    {
+        return UserTitle::all();
+    }
+
+    public function getHousingTypes()
+    {
+        return HousingType::all();
     }
 }

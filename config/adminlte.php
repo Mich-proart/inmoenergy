@@ -313,14 +313,30 @@ return [
                 [
                     'text' => 'Nuevo Tramite',
                     'route' => 'admin.formality.create',
-                    'icon' => 'fas fa-fw fa-file-invoice',
+                ],
+                [
+                    'text' => 'Tramites En Curso',
+                    'route' => 'admin.formality.inprogress',
+                ],
+                [
+                    'text' => 'Tramites Cerrados',
+                    'route' => 'admin.formality.closed',
                 ]
             ]
         ],
         [
             'text' => 'Tramites & Tickets',
-            'icon' => 'fas fa-fw fa-file-invoice',
-            'submenu' => []
+            'icon' => 'fas fa-copy',
+            'submenu' => [
+                [
+                    'text' => 'Tramites Asignados',
+                    'route' => 'admin.formality.assigned'
+                ],
+                [
+                    'text' => 'Tramites Realizados',
+                    'route' => 'admin.formality.completed'
+                ],
+            ]
         ],
         [
             'text' => 'Documentation',

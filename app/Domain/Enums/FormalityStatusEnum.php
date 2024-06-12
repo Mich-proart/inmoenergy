@@ -2,7 +2,7 @@
 
 namespace App\Domain\Enums;
 
-enum formalityStatusEnum: string
+enum FormalityStatusEnum: string
 {
     case PENDIENTE = 'pendiente tramitar';
     case ASIGNADO = 'asignado';

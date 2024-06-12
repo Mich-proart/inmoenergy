@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Enums\FormalityTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,9 +15,11 @@ return new class extends Migration {
             $table->string('name');
         });
 
-        foreach (FormalityTypeEnum::cases() as $case) {
+        $stringArray = ["alta nueva", "cambio de titular"];
+
+        foreach ($stringArray as $case) {
             DB::table('formality_type')->insert([
-                'name' => $case->value
+                'name' => $case
             ]);
         }
     }

@@ -9,9 +9,9 @@
 @section('content')
 <div>
 
-    <div class="card">
+    <div class="card card-primary card-outline">
         <div class="card-body">
-            {{html()->form('POST', route('admin.formality.store'))->class('form-horizontal needs-validation')->open()}}
+            {{html()->form('POST', route('api.formality.store'))->class('form-horizontal needs-validation')->open()}}
             @csrf
             <div class="form-group">
                 <div class="row">

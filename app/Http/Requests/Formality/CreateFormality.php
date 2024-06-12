@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Formality;
 
-use App\Domain\Dto\Address\CreateAddressDto;
-use App\Domain\Dto\User\CreateUserDetailDto;
-use App\Domain\Dto\User\CreateUserDto;
+use App\Domain\Address\Dtos\CreateAddressDto;
+use App\Domain\User\Dtos\CreateUserDetailDto;
+use App\Domain\User\Dtos\CreateUserDto;
 use App\Http\Requests\commonRules;
 use Hash;
 use Illuminate\Foundation\Http\FormRequest;
