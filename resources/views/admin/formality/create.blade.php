@@ -4,6 +4,7 @@
 
 @section('content_header')
 <h1>Nuevo Tramite</h1>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
 @section('content')
@@ -161,24 +162,6 @@
                     <label for="inputAddress">telf: </label>
                     <input type="text" class="form-control" id="inputAddress" placeholder="" name="phone">
                 </div>
-                <div class="form-group col-md-3">
-                    <label for="inputAddress">Tipo de vivienda: </label>
-                    <select class="form-control @error('housingTypeId') is-invalid @enderror" name="housingTypeId"
-                        required>
-                        <option value="">-- selecione --</option>
-                        @if (isset($housingTypes))
-                            @foreach ($housingTypes as $housingType)
-                                <option value="{{ $housingType->id }}">{{ $housingType->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                    @error('housingTypeId')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-
-                </div>
             </div>
             <div class=" form-group">
                 <label for="inputAddress2">Cuenta Bancaria: </label>
@@ -217,5 +200,6 @@
 @stop
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 @stop

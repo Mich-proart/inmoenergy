@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Province;
 use App\Models\Region;
 use App\Models\StreetType;
+use App\Models\HousingType;
 
 class AddressService
 {
@@ -23,6 +24,11 @@ class AddressService
             return Province::with('region')->get();
 
         return Province::where('region_id', $regionId)->with('region')->get();
+    }
+
+    public function getHousingTypes()
+    {
+        return HousingType::all();
     }
 
     public function getLocations(int $provinceId)
@@ -50,9 +56,10 @@ class AddressService
             throw CustomException::badRequestException('street type id ' . $dto->streetTypeId . ' required');
 
 
-        return Address::firstOrCreate([
+        return Address::create([
             'location_id' => $location->id,
             'street_type_id' => $streetType->id,
+            'housing_type_id' => $dto->housingTypeId,
             'street_name' => $dto->streetName,
             'street_number' => $dto->streetNumber,
             'zip_code' => $dto->zipCode,

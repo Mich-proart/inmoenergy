@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\ClientType;
 use App\Models\DocumentType;
-use App\Models\HousingType;
 use App\Models\UserTitle;
 use Hash;
 
@@ -54,7 +53,6 @@ class UserService
             'adviser_assigned_id' => $dto->adviserAssignedId,
             'responsible_id' => $dto->responsibleId,
             'user_title_id' => $dto->userTitleId,
-            'housing_type_id' => $dto->housingTypeId,
             'IBAN' => $dto->IBAN
         ]);
     }
@@ -72,10 +70,5 @@ class UserService
     public function getUserTitles()
     {
         return UserTitle::all();
-    }
-
-    public function getHousingTypes()
-    {
-        return HousingType::all();
     }
 }

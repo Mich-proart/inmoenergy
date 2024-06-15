@@ -6,6 +6,8 @@ class CreateAddressDto
 {
     public int $locationId;
     public int $streetTypeId;
+
+    public int $housingTypeId;
     public string $streetName;
     public string $streetNumber;
     public string $zipCode;
@@ -14,10 +16,11 @@ class CreateAddressDto
     public ?string $floor;
     public ?string $door;
 
-    public function __construct(int $locationId, int $streetTypeId, string $streetName, string $streetNumber, string $zipCode, ?string $block, ?string $blockStaircase, ?string $floor, ?string $door)
+    public function __construct(int $locationId, int $streetTypeId, int $housingTypeId, string $streetName, string $streetNumber, string $zipCode, ?string $block, ?string $blockStaircase, ?string $floor, ?string $door)
     {
         $this->locationId = $locationId;
         $this->streetTypeId = $streetTypeId;
+        $this->housingTypeId = $housingTypeId;
         $this->streetName = strtolower($streetName);
         $this->streetNumber = $streetNumber;
         $this->zipCode = $zipCode;

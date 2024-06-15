@@ -1,8 +1,8 @@
 <div>
     <div class="row">
         <div class="col-md-3">
-            <label for="inputState">Direccion: </label>
-            <select wire:model.live="provinceId" class="form-control" required>
+            <label for="inputState">Provincia: </label>
+            <select wire:model.live="provinceId" class="form-control" id="inputProvince" required>
                 <option value="">-- seleccione --</option>
                 @foreach ($this->provinces as $province)
                     @if ($province->region->name === $province->name)
@@ -16,7 +16,8 @@
         </div>
         <div class="col-md-3">
             <label for="inputState">Poblacion: </label>
-            <select class="form-control @error('locationId') is-invalid @enderror" name="locationId" required>
+            <select class="form-control @error('locationId') is-invalid @enderror" id="inputLocation" name="locationId"
+                required>
                 <option value="">-- seleccione --</option>
                 @foreach ($this->locations as $location)
                     <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -27,6 +28,23 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
+        </div>
+        <div class="form-group col-md-3">
+            <label for="inputAddress">Tipo de vivienda: </label>
+            <select class="form-control @error('housingTypeId') is-invalid @enderror" name="housingTypeId" required>
+                <option value="">-- selecione --</option>
+                @if (isset($housingTypes))
+                    @foreach ($housingTypes as $housingType)
+                        <option value="{{ $housingType->id }}">{{ $housingType->name }}</option>
+                    @endforeach
+                @endif
+            </select>
+            @error('housingTypeId')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+
         </div>
     </div>
     <div class="row">
@@ -47,21 +65,21 @@
                 </span>
             @enderror
         </div>
-        <div class="col-md-1">
-            <label for="inputZip">N°: </label>
-            <input type="text" class="form-control @error('streetNumber') is-invalid @enderror" id="inputZip"
-                name="streetNumber" required>
-            @error('streetNumber')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
         <div class="col-md-3">
             <label for="inputZip">Calle Nombre: </label>
             <input type="text" class="form-control @error('streetName') is-invalid @enderror" id="inputZip"
                 name="streetName" required>
             @error('streetName')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+        <div class="col-md-1">
+            <label for="inputZip">N°: </label>
+            <input type="text" class="form-control @error('streetNumber') is-invalid @enderror" id="inputZip"
+                name="streetNumber" required>
+            @error('streetNumber')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -79,19 +97,46 @@
         </div>
         <div class="col-md-1">
             <label for="inputZip">Bloq: </label>
-            <input type="text" class="form-control" id="inputZip" name="block">
+            <input type="text" class="form-control @error('block') is-invalid @enderror" id="inputZip" name="block">
+            @error('block')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="col-md-1">
             <label for="inputZip">Escal: </label>
-            <input type="text" class="form-control" id="inputZip" name="blockstaircase">
+            <input type="text" class="form-control @error('blockstaircase') is-invalid @enderror" id="inputZip"
+                name="blockstaircase">
+            @error('blockstaircase')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="col-md-1">
             <label for="inputZip">Piso: </label>
-            <input type="text" class="form-control" id="inputZip" name="floor">
+            <input type="text" class="form-control @error('floor') is-invalid @enderror" id="inputZip" name="floor">
+            @error('floor')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="col-md-1">
             <label for="inputZip">Puerta: </label>
-            <input type="text" class="form-control" id="inputZip" name="door">
+            <input type="text" class="form-control @error('door') is-invalid @enderror" id="inputZip" name="door">
+            @error('door')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
     </div>
+    <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
 </div>

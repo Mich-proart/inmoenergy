@@ -16,7 +16,6 @@ class CreateUserDetailDto
         public string $phone,
         public int $clientTypeId,
         public int $userTitleId,
-        public int $housingTypeId,
         public string $IBAN,
         public ?int $responsibleId,
         public ?int $adviserAssignedId,

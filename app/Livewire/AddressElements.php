@@ -36,6 +36,7 @@ class AddressElements extends Component
     public function render()
     {
         $streetTypes = StreetType::all();
-        return view('livewire.address-elements', compact('streetTypes'));
+        $housingTypes = $this->addressService->getHousingTypes();
+        return view('livewire.address-elements', compact(['streetTypes', 'housingTypes']));
     }
 }
