@@ -13,6 +13,8 @@ class CreateFormalityService
     private int $user_issuer_id;
     private int $client_id;
 
+    private int $address_id;
+
     private FormalityStatus $formalityStatus;
 
     public function __construct()
@@ -28,7 +30,8 @@ class CreateFormalityService
             'service_id' => $serviceId,
             'observation' => $observation,
             'formality_status_id' => $this->formalityStatus->id,
-            'formality_type_id' => $formalitytypeId
+            'formality_type_id' => $formalitytypeId,
+            'address_id' => $this->address_id
         ]);
     }
 
@@ -40,5 +43,10 @@ class CreateFormalityService
     public function setClientId(int $client_id)
     {
         $this->client_id = $client_id;
+    }
+
+    public function setAddresId(int $address_id)
+    {
+        $this->address_id = $address_id;
     }
 }
