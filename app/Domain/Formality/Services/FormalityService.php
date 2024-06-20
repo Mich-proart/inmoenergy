@@ -23,7 +23,7 @@ class FormalityService
             ->join('users as issuer', 'issuer.id', '=', 'formality.user_issuer_id')
             ->join('user_detail as detail', 'detail.user_id', '=', 'client.id')
             ->join('document_type', 'document_type.id', '=', 'detail.document_type_id')
-            ->join('address', 'address.id', '=', 'detail.address_id')
+            ->join('address', 'address.id', '=', 'formality.address_id')
             ->join('street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
