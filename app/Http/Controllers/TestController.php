@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Address\Services\AddressService;
+use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Http\Requests\Formality\CreateFormality;
 use App\Http\Requests\TestRequest;
-use App\Domain\Services\Address\AddressService;
-use App\Domain\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

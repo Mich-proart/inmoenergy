@@ -534,10 +534,27 @@
                         </div>
                     </div>
                 </section>
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones</label>
-                    <textarea wire:model="form.observation" class="form-control" id="exampleFormControlTextarea1"
-                        rows="3" name="observation"></textarea>
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Observaciones</label>
+                        <textarea wire:model="form.observation" class="form-control" id="exampleFormControlTextarea1"
+                            rows="3" name="observation"></textarea>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                            Documentos
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="inputZip">DNI: </label>
+                            <input type="file" name="file" id="dni">
+                            <input type="text" name="file_code" id="file_code" value="{{ now()->timestamp }}" hidden>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Tramitar</button>
             </form>
@@ -547,6 +564,34 @@
     <script>
         $(document).ready(function () {
 
+            const file_code = $('#file_code').val();
+
+            function file_upload_config(file_name, file_code) {
+                return {
+                    labelIdle: 'Arrastra y suelta el archivo o <span class="filepond--label-action">Selecciona uno</span>',
+                    labelInvalidField: 'El archivo es invalido',
+                    labelFileWaitingForSize: 'Cargando',
+                    labelFileLoading: 'Cargando',
+                    labelFileSizeNotAvailable: 'No disponible',
+                    labelFileProcessingComplete: 'Procesado',
+                    labelFileProcessingAborted: 'Cancelado',
+                    acceptedFileTypes: ['application/pdf'],
+                    labelFileTypeNotAllowed: 'Archivo no permitido',
+                    labelMaxFileSizeExceeded: 'El archivo es demasiado grande',
+                    labelMaxFileSize: 'El tamaña maximo es 2MB',
+                    maxFileSize: '2MB',
+                    server: {
+                        url: `/admin/api/formality/?filename=${file_name}&filecode=${file_code}`,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }
+                }
+            }
+            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+            $("#dni").filepond(file_upload_config('dni', file_code));
             const is_same_address_field = [
                 '#client_locationId',
                 '#client_housingTypeId',
