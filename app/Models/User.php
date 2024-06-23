@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -51,15 +52,23 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetail::class);
     }
-    public function adminlte_image(){
-        return 'https://picsum.photos/300/300';    
+    public function adminlte_image()
+    {
+        return 'https://picsum.photos/300/300';
     }
 
-    public function adminlte_desc(){
+    public function adminlte_desc()
+    {
         return 'Aqui va Role';
     }
 
-    public function adminlte_profile_url(){
+    public function adminlte_profile_url()
+    {
         return 'profile/username';
+    }
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
     }
 }

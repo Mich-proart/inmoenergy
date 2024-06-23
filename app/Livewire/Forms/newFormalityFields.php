@@ -8,9 +8,11 @@ use App\Domain\Address\Dtos\CreateAddressDto;
 use App\Domain\User\Dtos\CreateUserDetailDto;
 use App\Domain\User\Dtos\CreateUserDto;
 use Hash;
+use Livewire\WithFileUploads;
 
 class newFormalityFields extends Form
 {
+    use WithFileUploads;
     public $formalityTypeId = [];
     public $serviceIds = [];
 
@@ -49,6 +51,11 @@ class newFormalityFields extends Form
     public $is_same_address = false;
     public $observation;
 
+    public $dni;
+    public $factura_agua;
+    public $factura_gas;
+    public $factura_luz;
+
     protected $rules = [
         'formalityTypeId' => 'required|exists:formality_type,id',
         'serviceIds' => 'required|array|exists:service,id',
@@ -83,6 +90,10 @@ class newFormalityFields extends Form
         'client_floor' => 'sometimes|nullable|string',
         'client_door' => 'sometimes|nullable|string',
         'observation' => 'sometimes|nullable|string|max:255',
+        'dni' => 'required|mimes:pdf|max:1024',
+        'factura_agua' => 'sometimes|nullable|mimes:pdf|max:1024',
+        'factura_gas' => 'sometimes|nullable|mimes:pdf|max:1024',
+        'factura_luz' => 'sometimes|nullable|mimes:pdf|max:1024',
     ];
 
     public function getCreateUserDto(): CreateUserDto

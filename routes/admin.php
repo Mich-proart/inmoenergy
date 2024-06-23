@@ -13,7 +13,6 @@ Route::get('/', [HomeController::class, 'index']);
 Route::resource('/roles', RoleController::class)->names('admin.roles');
 Route::group(['prefix' => 'api'], function () {
     Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
-    Route::post('/formality', [FormalityController::class, 'upload'])->name('api.formality.upload');
 });
 
 Route::prefix('formality')->group(function () {

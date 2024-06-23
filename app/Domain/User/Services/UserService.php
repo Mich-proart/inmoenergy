@@ -17,6 +17,7 @@ class UserService
 {
 
     private User $user;
+    private $file = null;
     public function __construct()
     {
         //
@@ -70,5 +71,32 @@ class UserService
     public function getUserTitles()
     {
         return UserTitle::all();
+    }
+
+    public function addFile($file)
+    {
+        $this->file = $file;
+        return $this;
+    }
+
+    public function collesionFile(string $folder, string $name)
+    {
+        $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
+
+        if ($this->file) {
+            $this->user->files()->create([
+                'name' => $name,
+                'filename' => $newFilename,
+                'mime_type' => $this->file->getMimeType(),
+                'folder' => $folder
+            ]);
+            $this->file->storeAs('public/' . $folder, $newFilename);
+        }
+    }
+
+    public function getUser()
+    {
+
+        return $this->user;
     }
 }

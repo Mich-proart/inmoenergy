@@ -14,9 +14,11 @@ use DB;
 use App\Models\StreetType;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\App;
+use Livewire\WithFileUploads;
 
 class NewFormalityForm extends Component
 {
+    use WithFileUploads;
 
     public newFormalityFields $form;
     protected $addressService;
@@ -27,6 +29,10 @@ class NewFormalityForm extends Component
     public $target_provinceId;
     public $target_clientProvinceId;
 
+    public $folder;
+
+    public $file_fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
+
 
 
     public function __construct()
@@ -35,6 +41,7 @@ class NewFormalityForm extends Component
         $this->formalityService = App::make(FormalityService::class);
         $this->addressService = App::make(AddressService::class);
         $this->createFormalityService = App::make(CreateFormalityService::class);
+        $this->folder = uniqid() . '_' . now()->timestamp;
     }
 
     public function save()
@@ -69,6 +76,17 @@ class NewFormalityForm extends Component
                 $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
             }
 
+            $fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
+
+            foreach ($fields as $field) {
+                if ($this->form->$field) {
+                    $this->userService
+                        ->addFile($this->form->$field)
+                        ->collesionFile($this->folder, $field);
+                }
+            }
+
+
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
         } catch (\Throwable $th) {
@@ -78,6 +96,26 @@ class NewFormalityForm extends Component
         }
 
     }
+
+    public function updateDni()
+    {
+        $this->validateOnly($this->form->dni);
+    }
+
+    public function updateFacturaAgua()
+    {
+        $this->validateOnly($this->form->factura_agua);
+    }
+
+    public function updateFacturaGas()
+    {
+        $this->validateOnly($this->form->factura_gas);
+    }
+    public function updateFacturaLuz()
+    {
+        $this->validateOnly($this->form->factura_luz);
+    }
+
 
     public function render()
     {

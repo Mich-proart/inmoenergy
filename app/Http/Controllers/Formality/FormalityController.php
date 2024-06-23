@@ -133,20 +133,4 @@ class FormalityController extends Controller
     {
         //
     }
-
-    public function upload(Request $request)
-    {
-
-        $query = 'dni';
-
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $folder = uniqid() . '-' . now()->timestamp;
-            $file->storeAs('tmp/' . $folder, $query . '.' . $extension);
-
-            return $folder;
-        }
-    }
 }
