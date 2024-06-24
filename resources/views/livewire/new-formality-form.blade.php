@@ -75,7 +75,7 @@
                             <label for="inputState">Tipo Cliente: </label>
                             <select wire:model="form.clientTypeId"
                                 class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                name="clientTypeId">
+                                name="clientTypeId" required>
                                 <option value="">-- selecione --</option>
                                 @if (isset($clientTypes))
                                     @foreach ($clientTypes as $clientType)
@@ -92,7 +92,8 @@
                         <div class="form-group col-md-3">
                             <label for="inputState">Titulo: </label>
                             <select wire:model="form.userTitleId"
-                                class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId">
+                                class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId"
+                                required>
                                 <option value="">-- selecione --</option>
                                 @if (isset($userTitles))
                                     @foreach ($userTitles as $userTitle)
@@ -111,8 +112,8 @@
                         <div class="form-group col-md-3">
                             <label for="inputCity">Nombre</label>
                             <input wire:model="form.name" type="text"
-                                class="form-control @error('form.name') is-invalid @enderror" id="inputCity"
-                                name="name">
+                                class="form-control @error('form.name') is-invalid @enderror" id="inputCity" name="name"
+                                required>
                             @error('form.name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -123,7 +124,7 @@
                             <label for="inputState">Apellido 1: </label>
                             <input wire:model="form.firstLastName" type="text"
                                 class="form-control @error('form.firstLastName') is-invalid @enderror" id="inputCity"
-                                name="firstLastName">
+                                name="firstLastName" required>
                             @error('form.firstLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -144,7 +145,7 @@
                             <label for="inputZip">Email: </label>
                             <input wire:model="form.email" type="text"
                                 class="form-control @error('form.email') is-invalid @enderror" id="inputZip"
-                                name="email">
+                                name="email" required>
                             @error('form.email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -157,7 +158,7 @@
                             <label for="inputState">Tipo Document: </label>
                             <select wire:model="form.documentTypeId"
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
-                                name="documentTypeId">
+                                name="documentTypeId" required>
                                 <option value="">-- selecione --</option>
                                 @if (isset($documentTypes))
                                     @foreach ($documentTypes as $option)
@@ -175,7 +176,7 @@
                             <label for="inputState">Numero Documento: </label>
                             <input wire:model="form.documentNumber" type="text"
                                 class="form-control @error('form.documentNumber') is-invalid @enderror" id="inputZip"
-                                name="documentNumber">
+                                name="documentNumber" required>
                             @error('form.documentNumber')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -185,13 +186,13 @@
                         <div class="form-group col-md-3">
                             <label for="inputAddress">telf: </label>
                             <input wire:model="form.phone" type="text" class="form-control" id="inputAddress"
-                                placeholder="" name="phone">
+                                placeholder="" name="phone" required>
                         </div>
                     </div>
                     <div class=" form-group">
                         <label for="inputAddress2">Cuenta Bancaria: </label>
                         <input wire:model="form.IBAN" type="text" class="form-control" id="inputAddress2" placeholder=""
-                            name="IBAN">
+                            name="IBAN" required>
                     </div>
                 </section>
                 <section>
@@ -221,7 +222,7 @@
                             <label for="inputState">Poblacion: </label>
                             <select wire:model="form.locationId"
                                 class="form-control @error('form.locationId') is-invalid @enderror" id="inputLocation"
-                                name="locationId">
+                                name="locationId" required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->locations as $location)
                                     <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -237,7 +238,7 @@
                             <label for="inputAddress">Tipo de vivienda: </label>
                             <select wire:model="form.housingTypeId"
                                 class="form-control @error('form.housingTypeId') is-invalid @enderror"
-                                name="housingTypeId">
+                                name="housingTypeId" required>
                                 <option value="">-- selecione --</option>
                                 @if (isset($housingTypes))
                                     @foreach ($housingTypes as $housingType)
@@ -258,7 +259,7 @@
                             <label for="inputZip">Calle: </label>
                             <select wire:model="form.streetTypeId"
                                 class="form-control @error('form.streetTypeId') is-invalid @enderror"
-                                name="streetTypeId">
+                                name="streetTypeId" required>
                                 <option value="">-- seleccione --</option>
                                 @if (isset($streetTypes))
                                     @foreach ($streetTypes as $streetType)
@@ -277,7 +278,7 @@
                             <label for="inputZip">Calle Nombre: </label>
                             <input wire:model="form.streetName" type="text"
                                 class="form-control @error('form.streetName') is-invalid @enderror" id="inputZip"
-                                name="streetName">
+                                name="streetName" required>
                             @error('form.streetName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -288,7 +289,7 @@
                             <label for="inputZip">N°: </label>
                             <input wire:model="form.streetNumber" type="text"
                                 class="form-control @error('form.streetNumber') is-invalid @enderror" id="inputZip"
-                                name="streetNumber">
+                                name="streetNumber" required>
                             @error('form.streetNumber')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -299,7 +300,7 @@
                             <label for="inputZip">Codigo Postal: </label>
                             <input wire:model="form.zipCode" type="text"
                                 class="form-control @error('form.zipCode') is-invalid @enderror" id="inputZip"
-                                name="zipCode">
+                                name="zipCode" required>
                             @error('form.zipCode')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -553,7 +554,7 @@
                             <label for="inputZip">DNI: </label>
                             <input wire:model="form.dni" accept=".pdf"
                                 class="form-control @error('form.dni') is-invalid @enderror" type="file" name="file"
-                                id="dni">
+                                id="dni" required>
                             @error('form.dni')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
