@@ -154,4 +154,32 @@ class newFormalityFields extends Form
             $this->client_door
         );
     }
+
+    protected $messages = [
+        'formalityTypeId.required' => 'Tipo de formulario es requerido',
+        'serviceIds.required' => 'Servicio es requerido',
+        'name.required' => 'Nombre es requerido',
+        'email.required' => 'Email es requerido',
+        'email.email' => 'Email no es valido',
+        'firstLastName.required' => 'Primer apellido es requerido',
+        'documentTypeId.required' => 'Tipo de documento es requerido',
+        'documentTypeId.integer' => 'Tipo de documento no es valido',
+        'documentNumber.required' => 'Numero de documento es requerido',
+        'phone.required' => 'Telefono es requerido',
+        'clientTypeId.required' => 'Tipo de cliente es requerido',
+        'userTitleId.required' => 'Titulo es requerido',
+        'IBAN.required' => 'Cuenta bancaria es requerido',
+        'locationId.required' => 'Locacion es requerido',
+        'streetTypeId.required' => 'Tipo de calle es requerido',
+        'housingTypeId.required' => 'Tipo de vivienda es requerido',
+        'streetName.required' => 'Nombre de calle es requerido',
+        'streetNumber.required' => 'N° de calle es requerido',
+        'zipCode.required' => 'Codigo postal es requerido',
+        'dni.required' => 'DNI es requerido',
+        'dni.max' => 'Tamanio maximo de DNI es 1MB',
+        'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
+        'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
+        'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB',
+
+    ];
 }

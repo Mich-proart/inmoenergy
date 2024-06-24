@@ -1,10 +1,5 @@
 <div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div>{{$error}}</div>
-        @endforeach
-    @endif
     @error('form.formalityTypeId')
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             {{ $message }}
@@ -553,23 +548,55 @@
                             Documentos
                         </span>
                     </div>
-                    @if (isset($file_fields))
-                        @foreach ($file_fields as $field)
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="inputZip">{{ $field }}: </label>
-                                    <input wire:model="form.{{ $field }}" accept=".pdf"
-                                        class="form-control @error('form.{{ $field }}') is-invalid @enderror" type="file"
-                                        name="file" id="{{ $field }}">
-                                    @error('form.{{ $field }}')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="inputZip">DNI: </label>
+                            <input wire:model="form.dni" accept=".pdf"
+                                class="form-control @error('form.dni') is-invalid @enderror" type="file" name="file"
+                                id="dni">
+                            @error('form.dni')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="inputZip">Factura de Agua: </label>
+                            <input wire:model="form.factura_agua" accept=".pdf" class="form-control" type="file"
+                                name="file" id="factura_agua">
+                            @error('form.factura_agua')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="inputZip">Factura de Gas: </label>
+                            <input wire:model="form.factura_gas" accept=".pdf" class="form-control" type="file"
+                                name="file" id="factura_gas">
+                            @error('form.factura_gas')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="inputZip">Factura de Luz: </label>
+                            <input wire:model="form.factura_luz" accept=".pdf" class="form-control" type="file"
+                                name="file" id="factura_luz">
+                            @error('form.factura_luz')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
 
                 <div style="margin-top: 50px; margin-bottom: 25px">

@@ -62,7 +62,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
 
 <script>
-    new DataTable('#formality-content', {
+    const table = new DataTable('#formality-content', {
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -106,6 +106,12 @@
             { className: "dt-head-center", targets: [0] }
         ]
     });
+
+
+    $('#formality-content').on('click', 'tbody tr', function () {
+        const row = table.row(this).data();
+        console.log(row);
+    })
 </script>
 
 @stop
