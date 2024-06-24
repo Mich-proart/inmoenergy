@@ -22,17 +22,9 @@
                         <th>Tipo</th>
                         <th>Suministro</th>
                         <th>Nombre</th>
-                        <th>1 Apellido</th>
-                        <th>2 Apellido</th>
                         <th>Tipo document</th>
                         <th>N documento</th>
-                        <th>Tipo Calle</th>
-                        <th>Nombre Calle</th>
-                        <th>N calle</th>
-                        <th>Bloque</th>
-                        <th>Escalera</th>
-                        <th>Piso</th>
-                        <th>Puerta</th>
+                        <th>Dirección</th>
                         <th>Fecha Finalizacion del tramite</th>
                         <th>Estado Tramite</th>
                     </tr>
@@ -81,18 +73,10 @@
             { data: 'assigned' },
             { data: 'type' },
             { data: 'service' },
-            { data: 'name' },
-            { data: 'firstLastName' },
-            { data: 'secondLastName' },
+            { data: 'fullName' },
             { data: 'document_type' },
             { data: 'documentNumber' },
-            { data: 'street_type' },
-            { data: 'street_name' },
-            { data: 'street_number' },
-            { data: 'block' },
-            { data: 'block_staircase' },
-            { data: 'floor' },
-            { data: 'door' },
+            { data: 'fullAddress' },
             { data: 'completion_date' },
             { data: 'status' },
         ],
@@ -101,9 +85,10 @@
                 "render": function (data, type, row) {
                     return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                 },
-                "targets": 17
+                "targets": 9
             },
-            { className: "dt-head-center", targets: [0] }
+            { className: "dt-head-center", targets: [0] },
+            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 9] }
         ]
     });
 </script>
