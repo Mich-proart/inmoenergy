@@ -44,6 +44,12 @@ class FormalityController extends Controller
                 ->setRowId(function ($formality) {
                     return $formality->formality_id;
                 })
+                ->addColumn('fullName', function ($formality) {
+                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+                })
+                ->addColumn('fullAddress', function ($formality) {
+                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                })
                 ->toJson();
         }
 
@@ -54,6 +60,12 @@ class FormalityController extends Controller
                 ->setRowAttr(['align' => 'center'])
                 ->setRowId(function ($formality) {
                     return $formality->formality_id;
+                })
+                ->addColumn('fullName', function ($formality) {
+                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+                })
+                ->addColumn('fullAddress', function ($formality) {
+                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
                 })
                 ->toJson();
         }

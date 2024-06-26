@@ -57,7 +57,6 @@ class CreateFormality extends FormRequest
             $this->phone,
             $this->clientTypeId,
             $this->userTitleId,
-            $this->housingTypeId,
             $this->IBAN,
             null,
             null,
@@ -69,6 +68,7 @@ class CreateFormality extends FormRequest
         return new CreateAddressDto(
             $this->locationId,
             $this->streetTypeId,
+            $this->housingTypeId,
             $this->streetName,
             $this->streetNumber,
             $this->zipCode,

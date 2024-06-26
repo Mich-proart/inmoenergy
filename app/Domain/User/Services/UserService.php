@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\ClientType;
 use App\Models\DocumentType;
-use App\Models\HousingType;
 use App\Models\UserTitle;
 use Hash;
 
@@ -18,6 +17,7 @@ class UserService
 {
 
     private User $user;
+    private $file = null;
     public function __construct()
     {
         //
@@ -54,7 +54,6 @@ class UserService
             'adviser_assigned_id' => $dto->adviserAssignedId,
             'responsible_id' => $dto->responsibleId,
             'user_title_id' => $dto->userTitleId,
-            'housing_type_id' => $dto->housingTypeId,
             'IBAN' => $dto->IBAN
         ]);
     }
@@ -74,8 +73,30 @@ class UserService
         return UserTitle::all();
     }
 
-    public function getHousingTypes()
+    public function addFile($file)
     {
-        return HousingType::all();
+        $this->file = $file;
+        return $this;
+    }
+
+    public function collesionFile(string $folder, string $name)
+    {
+        $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
+
+        if ($this->file) {
+            $this->user->files()->create([
+                'name' => $name,
+                'filename' => $newFilename,
+                'mime_type' => $this->file->getMimeType(),
+                'folder' => $folder
+            ]);
+            $this->file->storeAs('public/' . $folder, $newFilename);
+        }
+    }
+
+    public function getUser()
+    {
+
+        return $this->user;
     }
 }

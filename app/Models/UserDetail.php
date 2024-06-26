@@ -26,7 +26,6 @@ class UserDetail extends Model
         'adviser_assigned_id',
         'responsible_id',
         'user_title_id',
-        'housing_type_id',
         'IBAN'
     ];
 
@@ -59,13 +58,6 @@ class UserDetail extends Model
     {
         return $this->belongsTo(ClientType::class, 'client_type');
     }
-
-
-    public function housingType(): BelongsTo
-    {
-        return $this->belongsTo(HousingType::class, 'housing_type');
-    }
-
 
     public function documentType(): BelongsTo
     {

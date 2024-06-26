@@ -16,6 +16,7 @@ class Address extends Model
     protected $fillable = [
         'location_id',
         'street_type_id',
+        'housing_type_id',
         'street_name',
         'street_number',
         'zip_code',
@@ -34,5 +35,10 @@ class Address extends Model
     public function streetType(): BelongsTo
     {
         return $this->belongsTo(StreetType::class);
+    }
+
+    public function housingType(): BelongsTo
+    {
+        return $this->belongsTo(HousingType::class, 'housing_type');
     }
 }

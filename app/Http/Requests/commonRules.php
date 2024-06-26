@@ -24,7 +24,6 @@ trait commonRules
             'phone' => 'required|string',
             'clientTypeId' => 'required|integer|exists:client_type,id',
             'userTitleId' => 'required|integer|exists:user_title,id',
-            'housingTypeId' => 'required|integer|exists:housing_type,id',
             'IBAN' => 'required|string',
         ];
     }
@@ -34,11 +33,12 @@ trait commonRules
         return [
             'locationId' => 'required|integer|exists:location,id',
             'streetTypeId' => 'required|integer|exists:street_type,id',
+            'housingTypeId' => 'required|integer|exists:housing_type,id',
             'streetName' => 'required|string',
             'streetNumber' => 'required|string',
             'zipCode' => 'required|string',
             'block' => 'sometimes|nullable|string',
-            'blockstaircase' => 'required|string',
+            'blockstaircase' => 'sometimes|nullable|string',
             'floor' => 'sometimes|nullable|string',
             'door' => 'sometimes|nullable|string',
         ];
