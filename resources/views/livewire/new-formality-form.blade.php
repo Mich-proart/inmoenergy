@@ -32,8 +32,8 @@
                                 @if (isset($formalitytypes))
                                     @foreach ($formalitytypes as $formalitytype)
                                         <div class="form-check form-check-inline">
-                                            <input wire:model="form.formalityTypeId" class="form-check-input" type="checkbox"
-                                                id="" name="formalityTypeId" value="{{ $formalitytype->id }}">
+                                            <input wire:model="form.formalityTypeId" class="form-check-input" type="radio" id=""
+                                                name="formalityTypeId" value="{{ $formalitytype->id }}">
                                             <label class="form-check-label"
                                                 for="inlineCheckbox1">{{ ucfirst($formalitytype->name) }}</label>
                                         </div>
@@ -133,7 +133,7 @@
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
                             <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
-                                name="secondLastName">
+                                name="secondLastName" required>
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -654,7 +654,6 @@
                 })
 
             })
-
         });
     </script>
 </div>
