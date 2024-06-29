@@ -89,7 +89,10 @@
             },
             { className: "dt-head-center", targets: [0] },
             { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 9] }
-        ]
+        ],
+        "order": [
+            [0, "desc"]
+        ],
     });
 </script>
 

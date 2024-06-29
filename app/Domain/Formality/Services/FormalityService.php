@@ -113,4 +113,9 @@ class FormalityService
     {
         return Service::all();
     }
+
+    public function findById(int $id)
+    {
+        return $this->formalityQuery()->where('formality.id', $id)->first();
+    }
 }
