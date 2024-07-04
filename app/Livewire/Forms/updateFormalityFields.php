@@ -35,6 +35,7 @@ class updateFormalityFields extends Form
     public $door;
 
     public $client_locationId;
+    public $client_provinceId;
     public $client_streetTypeId;
     public $client_housingTypeId;
     public $client_streetName;
@@ -79,6 +80,7 @@ class updateFormalityFields extends Form
 
         $this->is_same_address = $formality->isSameCorrespondenceAddress;
 
+        $this->client_provinceId = $formality->client_provinceId;
         $this->client_locationId = $formality->client_locationId;
         $this->client_streetTypeId = $formality->client_streetTypeId;
         $this->client_streetTypeId = $formality->client_streetTypeId;
@@ -160,7 +162,7 @@ class updateFormalityFields extends Form
         'formalityTypeId' => 'sometimes|nullable|exists:formality_type,id',
         'serviceIds' => 'sometimes|nullable|array|exists:service,id',
         'name' => 'sometimes|nullable|string',
-        'email' => 'sometimes|nullable|email|unique:users,email',
+        'email' => 'sometimes|nullable|email',
         'firstLastName' => 'sometimes|nullable|string',
         'secondLastName' => 'sometimes|nullable|string',
         'documentTypeId' => 'sometimes|nullable|integer|exists:document_type,id',
@@ -169,9 +171,9 @@ class updateFormalityFields extends Form
         'clientTypeId' => 'sometimes|nullable|integer|exists:client_type,id',
         'userTitleId' => 'sometimes|nullable|integer|exists:user_title,id',
         'IBAN' => 'sometimes|nullable|string',
-        'locationId' => 'requiredsometimes|nullable|exists:location,id',
-        'streetTypeId' => 'requiredsometimes|nullable|exists:street_type,id',
-        'housingTypeId' => 'requiredsometimes|nullable|exists:housing_type,id',
+        'locationId' => 'sometimes|nullable|exists:location,id',
+        'streetTypeId' => 'sometimes|nullable|exists:street_type,id',
+        'housingTypeId' => 'sometimes|nullable|exists:housing_type,id',
         'streetName' => 'sometimes|nullable|string',
         'streetNumber' => 'sometimes|nullable|string',
         'zipCode' => 'sometimes|nullable|string',

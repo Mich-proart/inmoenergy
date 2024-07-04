@@ -130,6 +130,8 @@ class FormalityService
             ->join('street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
+            ->leftJoin('location as corresponce_location', 'corresponce_location.id', '=', 'correspondence_address.location_id')
+            ->leftJoin('province as corresponce_province', 'corresponce_province.id', '=', 'corresponce_location.province_id')
             ->select(
                 'formality.id as formality_id',
                 'formality.created_at',
@@ -189,7 +191,8 @@ class FormalityService
                 'street_type.name as streetType',
                 'location.name as location',
                 'province.id as provinceId',
-                'province.name as province'
+                'corresponce_province.id as client_provinceId',
+                'province.name as province',
             )->where('formality.id', $id)->first();
     }
 }

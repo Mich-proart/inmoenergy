@@ -48,7 +48,7 @@ class newFormalityFields extends Form
     public $client_floor;
     public $client_door;
 
-    public $is_same_address = false;
+    public $is_same_address = true;
     public $observation;
 
     public $dni;

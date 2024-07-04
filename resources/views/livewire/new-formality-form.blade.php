@@ -368,7 +368,7 @@
 
 
                 </section>
-                <section x-data="{ buttonDisabled: false }">
+                <section x-data="{ buttonDisabled: true }">
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 25px">

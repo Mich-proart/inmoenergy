@@ -46,6 +46,8 @@ class EditFormality extends Component
         $this->formalityId = $formalityId;
         $this->formality = $this->formalityService->findById($formalityId);
         $this->form->setformality($this->formality);
+        $this->target_provinceId = $this->form->provinceId;
+        $this->target_clientProvinceId = $this->form->client_provinceId;
     }
 
     public function render()
@@ -64,7 +66,7 @@ class EditFormality extends Component
     public function update()
     {
 
-        //$this->form->validate();
+        $this->form->validate();
 
 
         DB::beginTransaction();
@@ -79,6 +81,11 @@ class EditFormality extends Component
 
             $address = Address::firstWhere('id', $data->address->id);
             $address->update($this->form->getaddressUpdate());
+
+            if ($data->CorrespondenceAddress !== null) {
+                $corresponceAddress = Address::firstWhere('id', $data->CorrespondenceAddress->id);
+                $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
+            }
 
             $data->update($this->form->getFormalityUpdate());
 
