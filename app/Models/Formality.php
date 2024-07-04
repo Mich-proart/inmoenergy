@@ -34,7 +34,9 @@ class Formality extends Model
         'formality_status_id',
         'access_rate_id',
         'service_id',
-        'issuer_observation'
+        'issuer_observation',
+        'correspondence_address_id',
+        'isSameCorrespondenceAddress'
     ];
 
     public function client(): BelongsTo
@@ -55,6 +57,10 @@ class Formality extends Model
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class, 'address_id');
+    }
+    public function CorrespondenceAddress(): BelongsTo
+    {
+        return $this->belongsTo(Address::class, 'correspondence_address_id');
     }
 
     public function type(): BelongsTo

@@ -99,6 +99,7 @@
     $('#formality-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
         console.log(row);
+        window.location.href = "{{ route('admin.formality.edit', ':id') }}".replace(':id', row.formality_id);
     })
 </script>
 

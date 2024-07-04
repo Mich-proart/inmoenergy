@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\Formality\ClosedFormalityController;
-use App\Http\Controllers\Admin\Formality\CreateFormalityController;
-use App\Http\Controllers\Admin\Formality\InProgressFormalityController;
+use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Formality\FormalityController;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +14,14 @@ Route::group(['prefix' => 'api'], function () {
 });
 
 Route::prefix('formality')->group(function () {
-    Route::get('/create', [CreateFormalityController::class, 'index'])->name('admin.formality.create');
-    Route::get('/inprogress', [InProgressFormalityController::class, 'index'])->name('admin.formality.inprogress');
-    Route::get('/closed', [ClosedFormalityController::class, 'index'])->name('admin.formality.closed');
+    Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
+    Route::get('/{id}/edit', [FormalityAdminController::class, 'edit'])->name('admin.formality.edit');
+    Route::get('/inprogress', function () {
+        return view('admin.formality.inprogress');
+    })->name('admin.formality.inprogress');
+    Route::get('/closed', function () {
+        return view('admin.formality.closed');
+    })->name('admin.formality.closed');
     Route::get('/assigned', function () {
         return view('admin.formality.assigned');
     })->name('admin.formality.assigned');

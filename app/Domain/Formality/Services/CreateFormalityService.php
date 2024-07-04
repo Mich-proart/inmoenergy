@@ -15,6 +15,10 @@ class CreateFormalityService
 
     private int $address_id;
 
+    private int|null $correspondence_address_id = null;
+
+    private bool $isSameCorrespondenceAddress = true;
+
     private FormalityStatus $formalityStatus;
 
     public function __construct()
@@ -31,7 +35,9 @@ class CreateFormalityService
             'observation' => $observation,
             'formality_status_id' => $this->formalityStatus->id,
             'formality_type_id' => $formalitytypeId,
-            'address_id' => $this->address_id
+            'address_id' => $this->address_id,
+            'correspondence_address_id' => $this->correspondence_address_id,
+            'isSameCorrespondenceAddress' => $this->isSameCorrespondenceAddress
         ]);
     }
 
@@ -48,5 +54,15 @@ class CreateFormalityService
     public function setAddresId(int $address_id)
     {
         $this->address_id = $address_id;
+    }
+
+    public function setCorrespondenceAddressId(int $correspondence_address_id)
+    {
+        $this->correspondence_address_id = $correspondence_address_id;
+    }
+
+    public function setIsSameCorrespondenceAddress(bool $isSameCorrespondenceAddress)
+    {
+        $this->isSameCorrespondenceAddress = $isSameCorrespondenceAddress;
     }
 }

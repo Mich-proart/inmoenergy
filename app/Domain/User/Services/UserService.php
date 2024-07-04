@@ -50,7 +50,6 @@ class UserService
             'document_number' => $dto->documentNumber,
             'document_type_id' => $dto->documentTypeId,
             'client_type_id' => $dto->clientTypeId,
-            'address_id' => $dto->addressId,
             'adviser_assigned_id' => $dto->adviserAssignedId,
             'responsible_id' => $dto->responsibleId,
             'user_title_id' => $dto->userTitleId,
