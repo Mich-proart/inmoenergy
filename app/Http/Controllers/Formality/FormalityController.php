@@ -95,7 +95,7 @@ class FormalityController extends Controller
 
             $userdetails = $request->getCreatUserDetailDto();
             $userdetails->setUserId($user->id);
-            $userdetails->setAddressId($address->id);
+            //$userdetails->setAddressId($address->id);
             $this->userService->setUserDetails($userdetails);
 
             $this->createFormalityService->setClientId($user->id);
