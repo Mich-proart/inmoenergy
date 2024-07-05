@@ -17,6 +17,7 @@ Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
     Route::get('/{id}/edit', [FormalityAdminController::class, 'edit'])->name('admin.formality.edit');
     Route::get('/{id}/view', [FormalityAdminController::class, 'get'])->name('admin.formality.get');
+    Route::get('/{id}/modify', [FormalityAdminController::class, 'modify'])->name('admin.formality.modify');
     Route::get('/inprogress', function () {
         return view('admin.formality.inprogress');
     })->name('admin.formality.inprogress');

@@ -627,9 +627,13 @@
                         </div>
                     </div>
                 </div>
-
-                <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button type="submit" class="btn btn-primary">Tramitar</button>
+                <div class="row no-print">
+                    <div class="col-12">
+                        <div style="margin-top: 50px; margin-bottom: 25px">
+                            <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
+                                Tramitar</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

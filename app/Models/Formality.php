@@ -17,7 +17,7 @@ class Formality extends Model
         'user_issuer_id',
         'user_Assigned_id',
         'observation',
-        'canIssuerEdit',
+        'canClientEdit',
         'isCritical',
         'isRenewable',
         'assignment_date',

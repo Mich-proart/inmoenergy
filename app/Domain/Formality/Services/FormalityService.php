@@ -3,7 +3,10 @@
 namespace App\Domain\Formality\Services;
 
 
+use App\Domain\Enums\FormalityTypeEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
+use App\Models\AccessRate;
+use App\Models\FormalityStatus;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
 use App\Models\FormalityType;
@@ -112,6 +115,20 @@ class FormalityService
     public function getServices()
     {
         return Service::all();
+    }
+
+    public function getAccessRates()
+    {
+        return AccessRate::all();
+    }
+
+    public function getFormalityStatus(string $status)
+    {
+        return FormalityStatus::where('name', $status)->first();
+    }
+    public function findStatusById(int $id)
+    {
+        return FormalityStatus::where('id', $id)->first();
     }
 
     public function findById(int $id)

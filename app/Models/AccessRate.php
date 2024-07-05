@@ -9,7 +9,7 @@ class AccessRate extends Model
 {
     use HasFactory;
 
-    protected $table = 'access_rates';
+    protected $table = 'access_rate';
 
     public $timestamps = false;
 

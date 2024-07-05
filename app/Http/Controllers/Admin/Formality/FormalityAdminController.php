@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Formality;
 
+use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Services\FormalityService;
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
+use App\Models\Formality;
 use Illuminate\Http\Request;
+use DB;
 
 class FormalityAdminController extends Controller
 {
@@ -28,6 +32,37 @@ class FormalityAdminController extends Controller
 
         if ($formality)
             return view('admin.formality.get', ['formality' => $formality]);
+
+    }
+    public function modify(int $id)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_CURSO->value);
+            $data = Formality::where('id', $id)->first();
+
+            if ($data) {
+
+                $prevStatus = $data->formality_status_id;
+
+                $data->update(['formality_status_id' => $status->id]);
+
+                $formality = $this->formalityService->findByIdDetail($id);
+
+                DB::commit();
+                return view('admin.formality.modify', ['formality' => $formality, 'prevStatus' => $prevStatus]);
+            }
+
+
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+
+
 
     }
 }

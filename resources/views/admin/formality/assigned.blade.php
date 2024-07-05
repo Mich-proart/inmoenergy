@@ -35,6 +35,32 @@
         </div>
 
     </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" id="tigger_modal" data-bs-toggle="modal"
+        data-bs-target="#exampleModal" hidden>
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold"> ¿Quieres abrir este trámite? Al abrir iniciará su proceso de tramitación. </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" id="trigger_formality">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -55,7 +81,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
 
 <script>
-    new DataTable('#formality-content', {
+    const table = new DataTable('#formality-content', {
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -96,6 +122,18 @@
             [0, "desc"]
         ],
     });
+
+    let formality_id = 0;
+    $('#formality-content').on('click', 'tbody tr', function () {
+        const row = table.row(this).data();
+        formality_id = row.formality_id;
+        console.log(row);
+        $('#tigger_modal').click();
+    })
+
+    $('#trigger_formality').on('click', function () {
+        window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+    })
 </script>
 
 @stop
