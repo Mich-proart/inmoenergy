@@ -40,8 +40,10 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Producto Compañía:</label>
                         </div>
-
-
+                        <div class="col-sm-4 invoice-col">
+                            <label for="">Tramite critico:</label>
+                            <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isCritical)) onclick="return false;">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -68,39 +70,49 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="inputState">Tipo Cliente: </label> {{ucfirst($formality->clientType)}}
+                        <label for="inputState">Tipo Cliente: </label>
+                        <div>{{ucfirst($formality->clientType)}}</div>
                     </div>
                     <div class="form-group col-md-1">
-                        <label for="inputState">Título: </label> {{ucfirst($formality->userTitle)}}
+                        <label for="inputState">Título: </label>
+                        <div>{{ucfirst($formality->userTitle)}}</div>
                     </div>
 
                     <div class="form-group col-md-3">
-                        <label for="inputCity">Nombre</label> {{ucfirst($formality->name)}}
+                        <label for="inputCity">Nombre</label>
+                        <div>{{ucfirst($formality->name)}}</div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputState">Primer apellido: </label> {{ucfirst($formality->firstLastName)}}
+                        <label for="inputState">Primer apellido: </label>
+                        <div>{{ucfirst($formality->firstLastName)}}</div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputZip">Segundo apellido: </label> {{ucfirst($formality->secondLastName)}}
+                        <label for="inputZip">Segundo apellido: </label>
+                        <div>{{ucfirst($formality->secondLastName)}}</div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="inputState">Tipo document: </label> {{ucfirst($formality->document_type)}}
+                        <label for="inputState">Tipo document: </label>
+                        <div>{{ucfirst($formality->document_type)}}</div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputState">Número documento: </label> {{$formality->documentNumber}}
+                        <label for="inputState">Número documento: </label>
+                        <div>{{$formality->documentNumber}}</div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Teléfono: </label> {{$formality->phone}}
+                        <label for="inputAddress">Teléfono: </label>
+                        <div>{{$formality->phone}}</div>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputZip">Email: </label> {{$formality->email}}
+                        <label for="inputZip">Email: </label>
+                        <div>{{$formality->email}}</div>
                     </div>
                 </div>
 
                 <div class=" form-group">
-                    <label for="inputAddress2">Cuenta Bancaria: </label> {{$formality->IBAN}}
+                    <label for="inputAddress2">Cuenta Bancaria: </label>
+                    <div>{{$formality->IBAN}}</div>
                 </div>
             </section>
             <section>
@@ -115,50 +127,61 @@
                 <div class="row">
                     <!-- street type -->
                     <div class="col-md-2">
-                        <label for="inputZip">Tipo de calle: </label> {{ucfirst($formality->streetType)}}
+                        <label for="inputZip">Tipo de calle: </label>
+                        <div>{{ucfirst($formality->streetType)}}</div>
                     </div>
                     <!-- street name -->
                     <div class="col-md-2">
-                        <label for="inputZip">Nombre calle: </label> {{ucfirst($formality->streetName)}}
+                        <label for="inputZip">Nombre calle: </label>
+                        <div>{{ucfirst($formality->streetName)}}</div>
                     </div>
                     <!-- street number -->
                     <div class="col-md-1">
-                        <label for="inputZip">N°: </label> {{$formality->streetNumber}}
+                        <label for="inputZip">N°: </label>
+                        <div>{{$formality->streetNumber}}</div>
                     </div>
                     <!-- block -->
                     <div class="col-md-1">
-                        <label for="inputZip">Bloque: </label> {{$formality->block}}
+                        <label for="inputZip">Bloque: </label>
+                        <div>{{$formality->block}}</div>
                     </div>
                     <!-- staircase -->
                     <div class="col-md-1">
-                        <label for="inputZip">Escalera: </label> {{$formality->blockstaircase}}
+                        <label for="inputZip">Escalera: </label>
+                        <div>{{$formality->blockstaircase}}</div>
                     </div>
                     <!-- floor -->
                     <div class="col-md-1">
-                        <label for="inputZip">Piso: </label> {{$formality->floor}}
+                        <label for="inputZip">Piso: </label>
+                        <div>{{$formality->floor}}</div>
                     </div>
                     <!-- door -->
                     <div class="col-md-1">
-                        <label for="inputZip">Puerta: </label> {{$formality->door}}
+                        <label for="inputZip">Puerta: </label>
+                        <div>{{$formality->door}}</div>
                     </div>
                     <!-- housing -->
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Tipo de vivienda: </label> {{ucfirst($formality->housingType)}}
+                        <label for="inputAddress">Tipo de vivienda: </label>
+                        <div>{{ucfirst($formality->housingType)}}</div>
                     </div>
                 </div>
 
                 <div class="row">
                     <!-- province -->
                     <div class="col-md-3">
-                        <label for="inputState">Provincia: </label> {{ucfirst($formality->province)}}
+                        <label for="inputState">Provincia: </label>
+                        <div>{{ucfirst($formality->province)}}</div>
                     </div>
                     <!-- location -->
                     <div class="col-md-3">
-                        <label for="inputState">Población: </label> {{ucfirst($formality->location)}}
+                        <label for="inputState">Población: </label>
+                        <div>{{ucfirst($formality->location)}}</div>
                     </div>
                     <!-- zip code -->
                     <div class="col-md-2">
-                        <label for="inputZip">Código postal: </label> {{$formality->zipCode}}
+                        <label for="inputZip">Código postal: </label>
+                        <div>{{$formality->zipCode}}</div>
                     </div>
                 </div>
             </section>
@@ -189,52 +212,62 @@
                     <div class="row">
                         <!-- client street type -->
                         <div class="col-md-2">
-                            <label for="inputZip">Tipo de calle: </label> {{ucfirst($formality->client_streetType)}}
+                            <label for="inputZip">Tipo de calle: </label>
+                            <div>{{ucfirst($formality->client_streetType)}}</div>
                         </div>
                         <!-- client street name -->
                         <div class="col-md-2">
-                            <label for="inputZip">Nombre calle: </label> {{ucfirst($formality->client_streetName)}}
+                            <label for="inputZip">Nombre calle: </label>
+                            <div>{{ucfirst($formality->client_streetName)}}</div>
                         </div>
 
                         <!-- client street number -->
                         <div class="col-md-1">
-                            <label for="inputZip">N°: </label> {{$formality->client_streetNumber}}
+                            <label for="inputZip">N°: </label>
+                            <div>{{$formality->client_streetNumber}}</div>
                         </div>
                         <!-- client block -->
                         <div class="col-md-1">
-                            <label for="inputZip">Bloque: </label> {{$formality->client_block}}
+                            <label for="inputZip">Bloque: </label>
+                            <div>{{$formality->client_block}}</div>
                         </div>
                         <!-- client block staircase -->
                         <div class="col-md-1">
-                            <label for="inputZip">Escalera: </label> {{$formality->client_blockstaircase}}
+                            <label for="inputZip">Escalera: </label>
+                            <div>{{$formality->client_blockstaircase}}</div>
                         </div>
                         <!-- client floor -->
                         <div class="col-md-1">
-                            <label for="inputZip">Piso: </label> {{$formality->client_floor}}
+                            <label for="inputZip">Piso: </label>
+                            <div>{{$formality->client_floor}}</div>
                         </div>
                         <!-- client door -->
                         <div class="col-md-1">
-                            <label for="inputZip">Puerta: </label> {{$formality->door}}
+                            <label for="inputZip">Puerta: </label>
+                            <div>{{$formality->door}}</div>
                         </div>
                         <!-- client housing type -->
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Tipo de vivienda: </label>
-                            {{ucfirst($formality->client_housingType)}}
+                            <div>{{ucfirst($formality->client_housingType)}}</div>
                         </div>
                     </div>
                     <div class="row">
                         <!-- client province -->
                         <div class="col-md-3">
-                            <label for="inputState">Provincia: </label> {{ucfirst($formality->client_province)}}
+                            <label for="inputState">Provincia: </label>
+                            <div>{{ucfirst($formality->client_province)}}</div>
                         </div>
 
                         <!-- client location -->
                         <div class="col-md-3">
-                            <label for="inputState">Población: </label> {{ucfirst($formality->client_location)}}
+                            <label for="inputState">Población: </label>
+                            <div>{{ucfirst($formality->client_location)}}</div>
                         </div>
                         <!-- client zip code -->
                         <div class="col-md-2">
-                            <label for="inputZip">Código postal: </label> {{$formality->client_zipCode}}
+                            <label for="inputZip">Código postal: </label>
+                            <div>{{$formality->client_zipCode}}</div>
                         </div>
                     </div>
                 </div>

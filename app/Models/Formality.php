@@ -36,7 +36,10 @@ class Formality extends Model
         'service_id',
         'issuer_observation',
         'correspondence_address_id',
-        'isSameCorrespondenceAddress'
+        'isSameCorrespondenceAddress',
+        'product_id',
+        'commission',
+        'potency',
     ];
 
     public function client(): BelongsTo
@@ -81,5 +84,9 @@ class Formality extends Model
     public function accessRate(): BelongsTo
     {
         return $this->belongsTo(AccessRate::class, 'access_rate_id');
+    }
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

@@ -20,11 +20,11 @@ class modifyFormalityFields extends Form
 
     public $product_id;
 
-    public $company_id;
 
     public $commission;
 
-    public $potential;
+    public $potency;
+
 
     public function setData($formality)
     {
@@ -38,9 +38,25 @@ class modifyFormalityFields extends Form
         'annual_consumption' => 'required|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
-        'product_id' => 'required|integer',
-        'company_id' => 'required|integer',
+        'product_id' => 'required|integer|exists:product,id',
         'commission' => 'required|integer',
-        'potential' => 'required|integer',
+        'potency' => 'required|integer',
     ];
+
+
+    public function getDataToUpdate()
+    {
+
+        return [
+            'issuer_observation' => $this->issuer_observation,
+            'CUPS' => $this->CUPS,
+            'access_rate_id' => $this->access_rate_id,
+            'annual_consumption' => $this->annual_consumption,
+            'canClientEdit' => $this->canClientEdit,
+            'internal_observation' => $this->internal_observation,
+            'product_id' => $this->product_id,
+            'commission' => $this->commission,
+            'potency' => $this->potency,
+        ];
+    }
 }

@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
                     <textarea wire:model="form.issuer_observation" class="form-control" id="exampleFormControlTextarea1"
-                        rows="3" name="observation" disabled></textarea>
+                        rows="3" name="observation"></textarea>
                 </div>
             </div>
         </section>
@@ -28,10 +28,12 @@
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="">Compañía suministro: </label>
-                    <select wire:model="form.company_id"
+                    <select wire:model.live="companyId"
                         class="form-control @error('form.company_id') is-invalid @enderror" name="company_id">
                         <option value="">-- seleccione --</option>
-
+                        @foreach ($this->companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
                     </select>
                     @error('form.company_id')
                         <span class="invalid-feedback" role="alert">
@@ -45,7 +47,9 @@
                     <select wire:model="form.product_id"
                         class="form-control @error('form.product_id') is-invalid @enderror" name="product_id">
                         <option value="">-- seleccione --</option>
-
+                        @foreach ($this->products as $product)
+                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                        @endforeach
                     </select>
                     @error('form.product_id')
                         <span class="invalid-feedback" role="alert">
@@ -110,10 +114,9 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="">Potencia: </label>
-                    <input wire:model="form.potential" type="text"
-                        class="form-control @error('form.potential') is-invalid @enderror" id="inputZip"
-                        name="potential">
-                    @error('form.potential')
+                    <input wire:model="form.potency" type="text"
+                        class="form-control @error('form.potency') is-invalid @enderror" id="inputZip" name="potency">
+                    @error('form.potency')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
