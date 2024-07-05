@@ -53,10 +53,14 @@ class FormalityAdminController extends Controller
 
                 $data->update(['formality_status_id' => $status->id]);
 
-                $formality = $this->formalityService->findByIdDetail($id);
+                $formality = $this->formalityService->getById($id);
+                $client = $formality->client;
+                $clientdetail = $client->details;
+                $address = $formality->address;
+                $CorrespondenceAddress = $formality->CorrespondenceAddress;
 
                 DB::commit();
-                return view('admin.formality.modify', ['formality' => $formality, 'prevStatus' => $prevStatus]);
+                return view('admin.formality.modify', ['formality' => $formality, 'client' => $client, 'clientdetail' => $clientdetail, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress, 'prevStatus' => $prevStatus]);
             }
 
 

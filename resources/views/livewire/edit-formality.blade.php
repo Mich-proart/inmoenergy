@@ -13,14 +13,16 @@
                     <div class="form-group">
                         <div class="row invoice-info">
                             <div class="col-sm-4 invoice-col">
-                                <label for=""> Usuario asignado: </label> {{$formality->assigned}}
+                                <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
+                                    {{$formality->assigned->name}}
+                                @endif
                             </div>
                             <div class="col-sm-4 invoice-col">
                                 <label for="">Fecha:</label> {{$formality->created_at}}
                             </div>
                             <div class="col-sm-4 invoice-col">
                                 <label for="">Estado:</label> <span
-                                    class="badge rounded-pill bg-info text-dark">{{$formality->status}} </span>
+                                    class="badge rounded-pill bg-info text-dark">{{$formality->status->name}} </span>
                             </div>
 
                         </div>

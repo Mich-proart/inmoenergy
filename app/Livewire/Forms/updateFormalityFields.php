@@ -54,44 +54,52 @@ class updateFormalityFields extends Form
     public function setformality($formality)
     {
 
-        $this->formalityTypeId[0] = $formality->formalityTypeId;
-        $this->serviceIds[0] = $formality->serviceId;
-        $this->clientTypeId = $formality->clientTypeId;
-        $this->userTitleId = $formality->userTitleId;
-        $this->name = $formality->name;
-        $this->email = $formality->email;
-        $this->firstLastName = $formality->firstLastName;
-        $this->secondLastName = $formality->secondLastName;
-        $this->documentTypeId = $formality->documentTypeId;
-        $this->documentNumber = $formality->documentNumber;
-        $this->phone = $formality->phone;
-        $this->IBAN = $formality->IBAN;
-        $this->provinceId = $formality->provinceId;
-        $this->locationId = $formality->locationId;
-        $this->streetTypeId = $formality->streetTypeId;
-        $this->housingTypeId = $formality->housingTypeId;
-        $this->streetName = $formality->streetName;
-        $this->streetNumber = $formality->streetNumber;
-        $this->zipCode = $formality->zipCode;
-        $this->block = $formality->block;
-        $this->blockstaircase = $formality->blockstaircase;
-        $this->floor = $formality->floor;
-        $this->door = $formality->door;
+        $client = $formality->client;
+        $clientdetail = $client->details;
+        $address = $formality->address;
+        $CorrespondenceAddress = $formality->CorrespondenceAddress;
+
+        $this->formalityTypeId[0] = $formality->type->id;
+        $this->serviceIds[0] = $formality->service->id;
+        $this->clientTypeId = $clientdetail->clientType->id;
+        $this->userTitleId = $clientdetail->title->id;
+        $this->name = $client->name;
+        $this->email = $client->email;
+        $this->firstLastName = $clientdetail->first_last_name;
+        $this->secondLastName = $clientdetail->second_last_name;
+        $this->documentTypeId = $clientdetail->documentType->id;
+        $this->documentNumber = $clientdetail->document_number;
+        $this->phone = $clientdetail->phone;
+        $this->IBAN = $clientdetail->IBAN;
+        $this->provinceId = $address->location->province->id;
+        $this->locationId = $address->location->id;
+        $this->streetTypeId = $address->streetType->id;
+        $this->housingTypeId = $address->housingType->id;
+        $this->streetName = $address->street_name;
+        $this->streetNumber = $address->street_number;
+        $this->zipCode = $address->zip_code;
+        $this->block = $address->block;
+        $this->blockstaircase = $address->block_staircase;
+        $this->floor = $address->floor;
+        $this->door = $address->door;
 
         $this->is_same_address = $formality->isSameCorrespondenceAddress;
 
-        $this->client_provinceId = $formality->client_provinceId;
-        $this->client_locationId = $formality->client_locationId;
-        $this->client_streetTypeId = $formality->client_streetTypeId;
-        $this->client_streetTypeId = $formality->client_streetTypeId;
-        $this->client_housingTypeId = $formality->client_housingTypeId;
-        $this->client_streetName = $formality->client_streetName;
-        $this->client_streetNumber = $formality->client_streetNumber;
-        $this->client_zipCode = $formality->client_zipCode;
-        $this->client_block = $formality->client_block;
-        $this->client_blockstaircase = $formality->client_blockstaircase;
-        $this->client_floor = $formality->client_floor;
-        $this->client_door = $formality->client_door;
+        if (isset($CorrespondenceAddress)) {
+            $this->client_provinceId = $CorrespondenceAddress->location->province->id;
+            $this->client_locationId = $CorrespondenceAddress->location->id;
+            $this->client_streetTypeId = $CorrespondenceAddress->streetType->id;
+            $this->client_streetTypeId = $CorrespondenceAddress->streetType->id;
+            $this->client_housingTypeId = $CorrespondenceAddress->housingType->id;
+            $this->client_streetName = $CorrespondenceAddress->street_name;
+            $this->client_streetNumber = $CorrespondenceAddress->street_number;
+            $this->client_zipCode = $CorrespondenceAddress->zip_code;
+            $this->client_block = $CorrespondenceAddress->block;
+            $this->client_blockstaircase = $CorrespondenceAddress->block_staircase;
+            $this->client_floor = $CorrespondenceAddress->floor;
+            $this->client_door = $CorrespondenceAddress->door;
+
+        }
 
         $this->issuer_observation = $formality->issuer_observation;
         $this->observation = $formality->observation;

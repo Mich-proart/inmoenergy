@@ -51,6 +51,7 @@ class ModifyFormality extends Component
     public function mount($formality, $prevStatus)
     {
         $this->formality = $formality;
+        $this->form->setData($this->formality);
         $this->prevStatus = $prevStatus;
     }
 
@@ -71,9 +72,9 @@ class ModifyFormality extends Component
                 ]
             );
 
-            Formality::firstWhere('id', $this->formality->formality_id)->update($updates);
+            Formality::firstWhere('id', $this->formality->id)->update($updates);
             DB::commit();
-            return redirect()->route('admin.formality.assigned');
+            return redirect()->route('admin.formality.completed');
         } catch (\Throwable $th) {
 
             DB::rollBack();

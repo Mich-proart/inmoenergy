@@ -44,7 +44,7 @@ class EditFormality extends Component
     public function mount($formalityId)
     {
         $this->formalityId = $formalityId;
-        $this->formality = $this->formalityService->findById($formalityId);
+        $this->formality = $this->formalityService->getById($formalityId);
         $this->form->setformality($this->formality);
         $this->target_provinceId = $this->form->provinceId;
         $this->target_clientProvinceId = $this->form->client_provinceId;

@@ -23,14 +23,16 @@
                 <div class="form-group">
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
-                            <label for=""> Usuario asignado: </label> {{$formality->assigned}}
+                            <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
+                                {{$formality->assigned->name}}
+                            @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
                             <label for="">Fecha:</label> {{$formality->created_at}}
                         </div>
                         <div class="col-sm-4 invoice-col">
                             <label for="">Estado:</label> <span
-                                class="badge rounded-pill bg-info text-dark">{{$formality->status}} </span>
+                                class="badge rounded-pill bg-info text-dark">{{$formality->status->name}} </span>
                         </div>
                     </div>
                     <div class="row invoice-info">
@@ -51,12 +53,12 @@
                 <div class="form-group">
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Tipo de trámite: </label> {{ucfirst($formality->type)}}
+                            <label for="">Tipo de trámite: </label> {{ucfirst($formality->type->name)}}
                         </div>
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Suministro tramitado: </label> {{ucfirst($formality->service)}}
+                            <label for="">Suministro tramitado: </label> {{ucfirst($formality->service->name)}}
                         </div>
                     </div>
                 </div>
@@ -70,49 +72,45 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="inputState">Tipo Cliente: </label>
-                        <div>{{ucfirst($formality->clientType)}}</div>
+                        <label for="inputState">Tipo Cliente: </label> @if (isset($clientdetail->clientType))
+                            {{ucfirst($clientdetail->clientType->name)}}
+                        @endif
                     </div>
                     <div class="form-group col-md-1">
-                        <label for="inputState">Título: </label>
-                        <div>{{ucfirst($formality->userTitle)}}</div>
+                        <label for="inputState">Título: </label> @if (isset($clientdetail->title))
+                            {{ucfirst($clientdetail->title->name)}}
+                        @endif
                     </div>
 
                     <div class="form-group col-md-3">
-                        <label for="inputCity">Nombre</label>
-                        <div>{{ucfirst($formality->name)}}</div>
+                        <label for="inputCity">Nombre</label> {{ucfirst($client->name)}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputState">Primer apellido: </label>
-                        <div>{{ucfirst($formality->firstLastName)}}</div>
+                        <label for="inputState">Primer apellido: </label> {{ucfirst($clientdetail->first_last_name)}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputZip">Segundo apellido: </label>
-                        <div>{{ucfirst($formality->secondLastName)}}</div>
+                        <label for="inputZip">Segundo apellido: </label> {{ucfirst($clientdetail->second_last_name)}}
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="inputState">Tipo document: </label>
-                        <div>{{ucfirst($formality->document_type)}}</div>
+                        <label for="inputState">Tipo document: </label> @if (isset($clientdetail->documentType))
+                            {{ucfirst($clientdetail->documentType->name)}}
+                        @endif
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputState">Número documento: </label>
-                        <div>{{$formality->documentNumber}}</div>
+                        <label for="inputState">Número documento: </label> {{$clientdetail->document_number}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Teléfono: </label>
-                        <div>{{$formality->phone}}</div>
+                        <label for="inputAddress">Teléfono: </label> {{$clientdetail->phone}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputZip">Email: </label>
-                        <div>{{$formality->email}}</div>
+                        <label for="inputZip">Email: </label> {{$client->email}}
                     </div>
                 </div>
 
                 <div class=" form-group">
-                    <label for="inputAddress2">Cuenta Bancaria: </label>
-                    <div>{{$formality->IBAN}}</div>
+                    <label for="inputAddress2">Cuenta Bancaria: </label> {{$clientdetail->IBAN}}
                 </div>
             </section>
             <section>
@@ -127,61 +125,64 @@
                 <div class="row">
                     <!-- street type -->
                     <div class="col-md-2">
-                        <label for="inputZip">Tipo de calle: </label>
-                        <div>{{ucfirst($formality->streetType)}}</div>
+                        <label for="inputZip">Tipo de calle: </label> @if (isset($address->streetType))
+                            {{ucfirst($address->streetType->name)}}
+                        @endif
                     </div>
                     <!-- street name -->
                     <div class="col-md-2">
-                        <label for="inputZip">Nombre calle: </label>
-                        <div>{{ucfirst($formality->streetName)}}</div>
+                        <label for="inputZip">Nombre calle: </label> @if (isset($address->street_name))
+                            {{ucfirst($address->street_name)}}
+                        @endif
                     </div>
                     <!-- street number -->
                     <div class="col-md-1">
-                        <label for="inputZip">N°: </label>
-                        <div>{{$formality->streetNumber}}</div>
+                        <label for="inputZip">N°: </label> {{$address->street_number}}
                     </div>
                     <!-- block -->
                     <div class="col-md-1">
-                        <label for="inputZip">Bloque: </label>
-                        <div>{{$formality->block}}</div>
+                        <label for="inputZip">Bloque: </label> {{$address->block}}
                     </div>
                     <!-- staircase -->
                     <div class="col-md-1">
-                        <label for="inputZip">Escalera: </label>
-                        <div>{{$formality->blockstaircase}}</div>
+                        <label for="inputZip">Escalera: </label> {{$address->block_staircase}}
                     </div>
                     <!-- floor -->
                     <div class="col-md-1">
-                        <label for="inputZip">Piso: </label>
-                        <div>{{$formality->floor}}</div>
+                        <label for="inputZip">Piso: </label> {{$address->floor}}
                     </div>
                     <!-- door -->
                     <div class="col-md-1">
-                        <label for="inputZip">Puerta: </label>
-                        <div>{{$formality->door}}</div>
+                        <label for="inputZip">Puerta: </label> {{$address->door}}
                     </div>
                     <!-- housing -->
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Tipo de vivienda: </label>
-                        <div>{{ucfirst($formality->housingType)}}</div>
+                        <label for="inputAddress">Tipo de vivienda: </label> @if (isset($address->housingType))
+                            {{ucfirst($address->housingType->name)}}
+                        @endif
                     </div>
                 </div>
 
                 <div class="row">
                     <!-- province -->
                     <div class="col-md-3">
-                        <label for="inputState">Provincia: </label>
-                        <div>{{ucfirst($formality->province)}}</div>
+                        <label for="inputState">Provincia: </label> @if (isset($address->location->province))
+                            @if ($address->location->province->region->name === $address->location->province->name)
+                                {{ucfirst($address->location->province->name)}}
+                            @else
+                                {{ $address->location->province->region->name }}, {{ $address->location->province->name }}
+                            @endif 
+                        @endif
                     </div>
                     <!-- location -->
                     <div class="col-md-3">
-                        <label for="inputState">Población: </label>
-                        <div>{{ucfirst($formality->location)}}</div>
+                        <label for="inputState">Población: </label> @if (isset($address->location))
+                            {{ucfirst($address->location->name)}}
+                        @endif
                     </div>
                     <!-- zip code -->
                     <div class="col-md-2">
-                        <label for="inputZip">Código postal: </label>
-                        <div>{{$formality->zipCode}}</div>
+                        <label for="inputZip">Código postal: </label> {{$address->zip_code}}
                     </div>
                 </div>
             </section>
@@ -213,61 +214,85 @@
                         <!-- client street type -->
                         <div class="col-md-2">
                             <label for="inputZip">Tipo de calle: </label>
-                            <div>{{ucfirst($formality->client_streetType)}}</div>
+                            @if (isset($CorrespondenceAddress) && isset($CorrespondenceAddress->streetType))
+                                @if (isset($CorrespondenceAddress->streetType))
+                                    {{ucfirst($CorrespondenceAddress->streetType->name)}}
+                                @endif
+
+                            @endif
                         </div>
                         <!-- client street name -->
                         <div class="col-md-2">
-                            <label for="inputZip">Nombre calle: </label>
-                            <div>{{ucfirst($formality->client_streetName)}}</div>
+                            <label for="inputZip">Nombre calle: </label> @if (isset($CorrespondenceAddress))
+                                {{ucfirst($CorrespondenceAddress->street_name)}}
+                            @endif
                         </div>
 
                         <!-- client street number -->
                         <div class="col-md-1">
-                            <label for="inputZip">N°: </label>
-                            <div>{{$formality->client_streetNumber}}</div>
+                            <label for="inputZip">N°: </label> @if (isset($CorrespondenceAddress))
+                                {{$CorrespondenceAddress->street_number}}
+                            @endif
                         </div>
                         <!-- client block -->
                         <div class="col-md-1">
-                            <label for="inputZip">Bloque: </label>
-                            <div>{{$formality->client_block}}</div>
+                            <label for="inputZip">Bloque: </label> @if (isset($CorrespondenceAddress))
+                                {{$CorrespondenceAddress->block}}
+                            @endif
                         </div>
                         <!-- client block staircase -->
                         <div class="col-md-1">
-                            <label for="inputZip">Escalera: </label>
-                            <div>{{$formality->client_blockstaircase}}</div>
+                            <label for="inputZip">Escalera: </label> @if (isset($CorrespondenceAddress))
+                                {{$CorrespondenceAddress->block_staircase}}
+                            @endif
                         </div>
                         <!-- client floor -->
                         <div class="col-md-1">
-                            <label for="inputZip">Piso: </label>
-                            <div>{{$formality->client_floor}}</div>
+                            <label for="inputZip">Piso: </label> @if (isset($CorrespondenceAddress))
+                                {{$CorrespondenceAddress->floor}}
+                            @endif
                         </div>
                         <!-- client door -->
                         <div class="col-md-1">
-                            <label for="inputZip">Puerta: </label>
-                            <div>{{$formality->door}}</div>
+                            <label for="inputZip">Puerta: </label> @if (isset($CorrespondenceAddress))
+                                {{$CorrespondenceAddress->door}}
+                            @endif
                         </div>
                         <!-- client housing type -->
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Tipo de vivienda: </label>
-                            <div>{{ucfirst($formality->client_housingType)}}</div>
+                            @if (isset($CorrespondenceAddress) && isset($CorrespondenceAddress->housingType))
+                                {{ucfirst($CorrespondenceAddress->housingType->name)}}
+                            @endif
+
                         </div>
                     </div>
                     <div class="row">
                         <!-- client province -->
                         <div class="col-md-3">
                             <label for="inputState">Provincia: </label>
-                            <div>{{ucfirst($formality->client_province)}}</div>
+                            @if (isset($CorrespondenceAddress) && isset($CorrespondenceAddress->location) && isset($CorrespondenceAddress->location->province))
+                                @if ($CorrespondenceAddress->location->province->region->name === $CorrespondenceAddress->location->province->name)
+                                    {{ucfirst($CorrespondenceAddress->location->province->name)}}
+                                @else
+                                    {{ $CorrespondenceAddress->location->province->region->name }},
+                                    {{ $CorrespondenceAddress->location->province->name }}
+                                @endif 
+                            @endif
                         </div>
 
                         <!-- client location -->
                         <div class="col-md-3">
                             <label for="inputState">Población: </label>
-                            <div>{{ucfirst($formality->client_location)}}</div>
+                            @if (isset($CorrespondenceAddress) && isset($CorrespondenceAddress->location))
+                                {{ucfirst($CorrespondenceAddress->location->name)}}
+                            @endif
                         </div>
                         <!-- client zip code -->
                         <div class="col-md-2">
-                            <label for="inputZip">Código postal: </label>
-                            <div>{{$formality->client_zipCode}}</div>
+                            <label for="inputZip">Código postal: </label> @if (isset($CorrespondenceAddress))
+                                {{$CorrespondenceAddress->zip_code}}
+                            @endif
                         </div>
                     </div>
                 </div>
