@@ -28,10 +28,14 @@ class FormalityAdminController extends Controller
     }
     public function get(int $id)
     {
-        $formality = $this->formalityService->findByIdDetail($id);
+        $formality = $this->formalityService->getById($id);
+        $client = $formality->client;
+        $clientdetail = $client->details;
+        $address = $formality->address;
+        $CorrespondenceAddress = $formality->CorrespondenceAddress;
 
         if ($formality)
-            return view('admin.formality.get', ['formality' => $formality]);
+            return view('admin.formality.get', ['formality' => $formality, 'client' => $client, 'clientdetail' => $clientdetail, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress]);
 
     }
     public function modify(int $id)

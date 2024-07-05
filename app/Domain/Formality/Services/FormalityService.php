@@ -6,6 +6,7 @@ namespace App\Domain\Formality\Services;
 use App\Domain\Enums\FormalityTypeEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
 use App\Models\AccessRate;
+use App\Models\Formality;
 use App\Models\FormalityStatus;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -306,5 +307,41 @@ class FormalityService
                 'corresponce_province.id as client_provinceId',
                 'corresponce_province.name as client_province',
             )->where('formality.id', $id)->first();
+    }
+
+    public function getById(int $id)
+    {
+        return Formality::where('id', $id)
+            ->with(
+                [
+                    'client',
+                    'client.details',
+                    'client.details.clientType',
+                    'client.details.documentType',
+                    'client.details.title',
+                    'issuer',
+                    'issuer.details',
+                    'assigned',
+                    'assigned.details',
+                    'address',
+                    'address.streetType',
+                    'address.housingType',
+                    'address.location',
+                    'address.location.province',
+                    'address.location.province.region',
+                    'CorrespondenceAddress',
+                    'CorrespondenceAddress.streetType',
+                    'CorrespondenceAddress.housingType',
+                    'CorrespondenceAddress.location',
+                    'CorrespondenceAddress.location.province',
+                    'CorrespondenceAddress.location.province.region',
+                    'type',
+                    'status',
+                    'service',
+                    'accessRate',
+                    'product',
+                    'product.company',
+                ]
+            )->first();
     }
 }

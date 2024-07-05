@@ -56,17 +56,17 @@ class UserDetail extends Model
 
     public function clientType(): BelongsTo
     {
-        return $this->belongsTo(ClientType::class, 'client_type');
+        return $this->belongsTo(ClientType::class, 'client_type_id');
     }
 
     public function documentType(): BelongsTo
     {
-        return $this->belongsTo(DocumentType::class, 'document_type');
+        return $this->belongsTo(DocumentType::class, 'document_type_id');
     }
 
     public function title(): BelongsTo
     {
-        return $this->belongsTo(UserTitle::class, 'user_title');
+        return $this->belongsTo(UserTitle::class, 'user_title_id');
     }
 
 }
