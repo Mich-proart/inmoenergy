@@ -31,6 +31,8 @@ class FormalityService
             ->join('street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
+            ->leftJoin('product', 'product.id', '=', 'formality.product_id')
+            ->leftJoin('company', 'company.id', '=', 'product.company_id')
             ->select(
                 'formality.id as formality_id',
                 'formality.created_at',
@@ -57,7 +59,9 @@ class FormalityService
                 'address.*',
                 'street_type.name as street_type',
                 'location.name as location',
-                'province.name as province'
+                'province.name as province',
+                'company.name as company',
+                'product.name as product'
             );
 
     }

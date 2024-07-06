@@ -14,7 +14,7 @@
             <h3 class="card-title">{{Auth::user()->name}}</h3>
         </div>
         <div class="card-body table-responsive p-0">
-            <table id="formality-content" class="table table-hover text-nowrap">
+            <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -26,6 +26,8 @@
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Estado Tramite</th>
+                        <th>Compañía Suministro</th>
+                        <th>Producto Compañía</th>
                         <th>Fecha finalizacion tramite</th>
                         <th>Consumo anual</th>
                         <th>CUPS</th>
@@ -82,6 +84,8 @@
             { data: 'documentNumber' },
             { data: 'fullAddress' },
             { data: 'status' },
+            { data: 'company' },
+            { data: 'product' },
             { data: 'completion_date' },
             { data: 'annual_consumption' },
             { data: 'CUPS' },
@@ -96,7 +100,7 @@
                 "targets": 8
             },
             { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8] }
+            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] }
         ], "order": [
             [0, "desc"]
         ],

@@ -14,7 +14,7 @@
             <h3 class="card-title">{{Auth::user()->name}}</h3>
         </div>
         <div class="card-body table-responsive p-0">
-            <table id="formality-content" class="table table-hover text-nowrap">
+            <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -27,6 +27,8 @@
                         <th>Dirección</th>
                         <th>Fecha Finalizacion del tramite</th>
                         <th>Estado Tramite</th>
+                        <th>Compañía Suministro</th>
+                        <th>Producto Compañía</th>
                     </tr>
                 </thead>
 
@@ -79,6 +81,8 @@
             { data: 'fullAddress' },
             { data: 'completion_date' },
             { data: 'status' },
+            { data: 'company' },
+            { data: 'product' },
         ],
         "columnDefs": [
             {
@@ -88,7 +92,7 @@
                 "targets": 9
             },
             { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 9] }
+            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 9, 10, 11] }
         ],
         "order": [
             [0, "desc"]

@@ -56,17 +56,19 @@ class AddressService
             throw CustomException::badRequestException('street type id ' . $dto->streetTypeId . ' required');
 
 
-        return Address::create([
-            'location_id' => $location->id,
-            'street_type_id' => $streetType->id,
-            'housing_type_id' => $dto->housingTypeId,
-            'street_name' => $dto->streetName,
-            'street_number' => $dto->streetNumber,
-            'zip_code' => $dto->zipCode,
-            'block' => $dto->block,
-            'block_staircase' => $dto->blockStaircase,
-            'floor' => $dto->floor,
-            'door' => $dto->door
-        ]);
+        $address = new Address();
+        $address->location_id = $location->id;
+        $address->street_type_id = $streetType->id;
+        $address->street_name = $dto->streetName;
+        $address->street_number = $dto->streetNumber;
+        $address->zip_code = $dto->zipCode;
+        $address->block = $dto->block;
+        $address->block_staircase = $dto->blockStaircase;
+        $address->floor = $dto->floor;
+        $address->door = $dto->door;
+        $address->housing_type_id = $dto->housingTypeId;
+        $address->save();
+
+        return $address;
     }
 }

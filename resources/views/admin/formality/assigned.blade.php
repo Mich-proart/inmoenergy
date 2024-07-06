@@ -14,7 +14,7 @@
             <h3 class="card-title">{{Auth::user()->name}}</h3>
         </div>
         <div class="card-body table-responsive p-0">
-            <table id="formality-content" class="table table-hover text-nowrap">
+            <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -28,6 +28,8 @@
                         <th>Estado Tramite</th>
                         <th>Tramite Critico</th>
                         <th>Observaciones del tramite</th>
+                        <th>Compañía Suministro</th>
+                        <th>Producto Compañía</th>
                     </tr>
                 </thead>
 
@@ -107,6 +109,8 @@
             { data: 'status' },
             { data: 'isCritical' },
             { data: 'observation' },
+            { data: 'company' },
+            { data: 'product' },
         ],
         "columnDefs": [
             {
@@ -116,7 +120,7 @@
                 "targets": 8
             },
             { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8] }
+            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 11, 12] }
         ],
         "order": [
             [0, "desc"]

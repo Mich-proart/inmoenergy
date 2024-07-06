@@ -36,9 +36,15 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Compañía suministro: </label>
+                            @if (isset($formality->product) && isset($formality->product->company))
+                                {{ucfirst($formality->product->company->name)}}
+                            @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
                             <label for="">Producto Compañía:</label>
+                            @if (isset($formality->product))
+                                {{ucfirst($formality->product->name)}}
+                            @endif
                         </div>
 
 
