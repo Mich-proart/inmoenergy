@@ -10,6 +10,7 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::resource('/roles', RoleController::class)->names('admin.roles');
 Route::group(['prefix' => 'api'], function () {
+    Route::get('/formality/pending', [FormalityController::class, 'getPending'])->name('api.formality.activation.pending');
     Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
 });
 
@@ -30,5 +31,11 @@ Route::prefix('formality')->group(function () {
     Route::get('/completed', function () {
         return view('admin.formality.completed');
     })->name('admin.formality.completed');
+    Route::get('/pending', function () {
+        return view('admin.formality.pending');
+    })->name('admin.formality.pending');
+    Route::get('/assignment', function () {
+        return view('admin.formality.assignment');
+    })->name('admin.formality.assignment');
 
 });

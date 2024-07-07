@@ -336,6 +336,20 @@ return [
                     'text' => 'Tramites Realizados',
                     'route' => 'admin.formality.completed'
                 ],
+                [
+                    'text' => 'Altas pendientes',
+                    'route' => 'admin.formality.pending'
+                ],
+            ]
+        ],
+        [
+            'text' => 'Herramientas',
+            'icon' => 'nav-icon fas fa-th',
+            'submenu' => [
+                [
+                    'text' => 'Asignación de tramites',
+                    'route' => 'admin.formality.assignment'
+                ],
             ]
         ],
         [

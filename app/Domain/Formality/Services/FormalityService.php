@@ -43,9 +43,9 @@ class FormalityService
                 'formality.completion_date',
                 'formality.CUPS',
                 'formality.annual_consumption',
-                'formality.completion_date',
                 'formality.activation_date',
                 'formality.isRenewable',
+                'formality.renewal_date',
                 'issuer.name as issuer',
                 'status.name as status',
                 'service.name as service',
@@ -64,6 +64,14 @@ class FormalityService
                 'product.name as product'
             );
 
+    }
+
+    public function getActicationDateNull(int $assignedId)
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->whereNull('formality.activation_date');
+        return $queryBuilder->get();
     }
 
     public function findByDistintStatus(FormalityQuery $formalityQuery)
