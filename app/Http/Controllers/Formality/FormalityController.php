@@ -74,23 +74,30 @@ class FormalityController extends Controller
     public function getPending(Request $request)
     {
         $assignedId = $request->query('assignedId');
+        $activation_date_null = $request->query('assignedId');
 
-        if ($assignedId) {
+        $formality = null;
+
+        if ($assignedId && $activation_date_null) {
             $formality = $this->formalityService->getActicationDateNull($assignedId);
-
-            return datatables()->of($formality)
-                ->setRowAttr(['align' => 'center'])
-                ->setRowId(function ($formality) {
-                    return $formality->formality_id;
-                })
-                ->addColumn('fullName', function ($formality) {
-                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
-                })
-                ->addColumn('fullAddress', function ($formality) {
-                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
-                })
-                ->toJson();
         }
+
+        if (!$assignedId && !$activation_date_null) {
+            $formality = $this->formalityService->getAssignedNull();
+        }
+
+        return datatables()->of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson();
     }
 
     /**

@@ -46,7 +46,7 @@ class FormalityService
                 'formality.activation_date',
                 'formality.isRenewable',
                 'formality.renewal_date',
-                'issuer.name as issuer',
+                'issuer.name as issuer_name',
                 'status.name as status',
                 'service.name as service',
                 'type.name as type',
@@ -71,6 +71,12 @@ class FormalityService
         $queryBuilder = $this->formalityQuery();
         $queryBuilder->where('userAssigned.id', $assignedId);
         $queryBuilder->whereNull('formality.activation_date');
+        return $queryBuilder->get();
+    }
+    public function getAssignedNull()
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->whereNull('userAssigned.id');
         return $queryBuilder->get();
     }
 

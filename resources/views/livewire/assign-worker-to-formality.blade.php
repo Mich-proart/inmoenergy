@@ -9,20 +9,15 @@
                     <thead>
                         <tr>
                             <th>Fecha</th>
-                            <th>Usuario asignado</th>
                             <th>Suministro</th>
                             <th>Nombre</th>
+                            <th>Tipo document</th>
+                            <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Fecha finalización tramite</th>
+                            <th>Observaciones del tramite</th>
                             <th>Estado Tramite</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
-                            <th>Consumo anual</th>
-                            <th>CUPS</th>
-                            <th>Fecha de activación</th>
-                            <th>Renovacion</th>
-                            <th>Fecha de renovación</th>
-                            <th>Optiones</th>
+                            <th>Tramite Critico</th>
+                            <th hidden>Optiones</th>
                         </tr>
                     </thead>
 
@@ -106,8 +101,7 @@
                 "url": "{{route('api.formality.activation.pending')}}",
                 "type": "GET",
                 "data": {
-                    "assignedId": "{{Auth::id()}}",
-                    "activation_date_null": true,
+
                 }
             },
             "language": {
@@ -115,24 +109,17 @@
             },
             "columns": [
                 { data: 'created_at' },
-                { data: 'assigned' },
                 { data: 'service' },
                 { data: 'fullName' },
+                { data: 'document_type' },
+                { data: 'documentNumber' },
                 { data: 'fullAddress' },
-                { data: 'completion_date' },
+                { data: 'observation' },
                 { data: 'status' },
-                { data: 'company' },
-                { data: 'product' },
-                { data: 'annual_consumption' },
-                { data: 'CUPS' },
-                { data: 'activation_date' },
-                { data: 'isRenewable' },
-                { data: 'renewal_date' },
+                { data: 'isCritical' },
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Volver a tramitar</button>
-                            <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-times"></i> K.O</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
                         `;
@@ -144,11 +131,11 @@
                     "render": function (data, type, row) {
                         return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                     },
-                    "targets": 6
+                    "targets": 7
                 },
                 { className: "dt-head-center", targets: [0] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13] },
+                // { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
+                // { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13] },
             ], "order": [
                 [0, "desc"]
             ],
