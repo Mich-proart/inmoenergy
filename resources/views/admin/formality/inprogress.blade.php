@@ -17,6 +17,7 @@
             <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
+                        <th>Cliente emisor</th>
                         <th>Fecha</th>
                         <th>Usuario asignado</th>
                         <th>Tipo</th>
@@ -71,6 +72,7 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
+            { data: 'issuer' },
             { data: 'created_at' },
             { data: 'assigned' },
             { data: 'type' },
@@ -89,10 +91,10 @@
                 "render": function (data, type, row) {
                     return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                 },
-                "targets": 8
+                "targets": 9
             },
             { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 10, 11] }
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12] }
         ],
         "order": [
             [0, "desc"]

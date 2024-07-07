@@ -34,41 +34,35 @@ class FormalityController extends Controller
         $exceptStatus = $request->query('exceptStatus');
         $onlyStatus = $request->query('onlyStatus');
         $activationDateNull = $request->query('activationDateNull');
-
+        $formality = null;
 
         if ($onlyStatus) {
             $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $onlyStatus);
             $formality = $this->formalityService->findByStatus($query);
-            return datatables()->of($formality)
-                ->setRowAttr(['align' => 'center'])
-                ->setRowId(function ($formality) {
-                    return $formality->formality_id;
-                })
-                ->addColumn('fullName', function ($formality) {
-                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
-                })
-                ->addColumn('fullAddress', function ($formality) {
-                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
-                })
-                ->toJson();
         }
 
         if ($exceptStatus) {
             $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $exceptStatus);
             $formality = $this->formalityService->findByDistintStatus($query);
-            return datatables()->of($formality)
-                ->setRowAttr(['align' => 'center'])
-                ->setRowId(function ($formality) {
-                    return $formality->formality_id;
-                })
-                ->addColumn('fullName', function ($formality) {
-                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
-                })
-                ->addColumn('fullAddress', function ($formality) {
-                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
-                })
-                ->toJson();
         }
+        return datatables()->of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson();
     }
 
     public function getPending(Request $request)
