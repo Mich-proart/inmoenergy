@@ -16,7 +16,7 @@ return new class extends Migration {
 
         });
 
-        $mainValues = ["DNI", "passport"];
+        $mainValues = ["DNI", "pasaporte"];
 
         foreach ($mainValues as $case) {
             DB::table('document_type')->insert([

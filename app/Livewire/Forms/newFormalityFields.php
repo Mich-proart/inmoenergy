@@ -103,13 +103,7 @@ class newFormalityFields extends Form
             $this->name,
             $this->email,
             Hash::make($pass),
-            false
-        );
-    }
-
-    public function getCreatUserDetailDto(): CreateUserDetailDto
-    {
-        return new CreateUserDetailDto(
+            false,
             $this->firstLastName,
             $this->secondLastName,
             $this->documentTypeId,
@@ -122,6 +116,8 @@ class newFormalityFields extends Form
             null,
         );
     }
+
+
 
     public function getCreateAddressDto(): CreateAddressDto
     {

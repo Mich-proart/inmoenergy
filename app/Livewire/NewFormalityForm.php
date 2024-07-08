@@ -56,12 +56,6 @@ class NewFormalityForm extends Component
             $user = $this->userService->create($this->form->getCreateUserDto());
 
             $address = $this->addressService->createAddress($this->form->getCreateAddressDto());
-            $userdetails = $this->form->getCreatUserDetailDto();
-            $userdetails->setUserId($user->id);
-
-
-            $this->userService->setUserDetails($userdetails);
-
 
             $this->createFormalityService->setClientId($user->id);
             $this->createFormalityService->setUserIssuerId(Auth::user()->id);

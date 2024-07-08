@@ -33,13 +33,23 @@ class UserService
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => Hash::make('test'),
-            'isWorker' => 0
+            'isWorker' => 0,
+            'first_last_name' => $dto->firstLastName,
+            'second_last_name' => $dto->secondLastName,
+            'phone' => $dto->phone,
+            'document_number' => $dto->documentNumber,
+            'document_type_id' => $dto->documentTypeId,
+            'client_type_id' => $dto->clientTypeId,
+            'adviser_assigned_id' => $dto->adviserAssignedId,
+            'responsible_id' => $dto->responsibleId,
+            'user_title_id' => $dto->userTitleId,
+            'IBAN' => $dto->IBAN
         ]);
 
         return $this->user;
 
     }
-
+    /*
     public function setUserDetails(CreateUserDetailDto $dto)
     {
         $details = UserDetail::create([
@@ -56,6 +66,7 @@ class UserService
             'IBAN' => $dto->IBAN
         ]);
     }
+        */
 
     public function getClientTypes()
     {

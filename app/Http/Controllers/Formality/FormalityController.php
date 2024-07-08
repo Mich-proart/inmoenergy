@@ -111,22 +111,6 @@ class FormalityController extends Controller
 
         try {
 
-            $user = $this->userService->create($request->getCreateUserDto());
-
-            $address = $this->addressService->createAddress($request->getCreateAddressDto());
-
-
-            $userdetails = $request->getCreatUserDetailDto();
-            $userdetails->setUserId($user->id);
-            //$userdetails->setAddressId($address->id);
-            $this->userService->setUserDetails($userdetails);
-
-            $this->createFormalityService->setClientId($user->id);
-            $this->createFormalityService->setUserIssuerId(Auth::user()->id);
-
-            foreach ($request->serviceIds as $serviceId) {
-                $this->createFormalityService->execute($serviceId, $request->formalityTypeId, $request->observation);
-            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');

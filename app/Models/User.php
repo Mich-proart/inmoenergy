@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -24,7 +25,18 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'isWorker'
+        'isWorker',
+        'first_last_name',
+        'second_last_name',
+        'document_number',
+        'document_type_id',
+        'phone',
+        'client_type_id',
+        'address_id',
+        'adviser_assigned_id',
+        'responsible_id',
+        'user_title_id',
+        'IBAN'
     ];
 
     /**
@@ -48,9 +60,31 @@ class User extends Authenticatable
     ];
 
 
-    public function details(): HasOne
+    public function adviserAssigned(): BelongsTo
     {
-        return $this->hasOne(UserDetail::class);
+        return $this->belongsTo(User::class, 'adviser_assigned_id');
+    }
+
+
+    public function responsible(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsible_id');
+    }
+
+
+    public function clientType(): BelongsTo
+    {
+        return $this->belongsTo(ClientType::class, 'client_type_id');
+    }
+
+    public function documentType(): BelongsTo
+    {
+        return $this->belongsTo(DocumentType::class, 'document_type_id');
+    }
+
+    public function title(): BelongsTo
+    {
+        return $this->belongsTo(UserTitle::class, 'user_title_id');
     }
     public function adminlte_image()
     {

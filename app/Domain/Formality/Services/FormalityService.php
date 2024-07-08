@@ -25,10 +25,7 @@ class FormalityService
             ->leftJoin('users as userAssigned', 'userAssigned.id', '=', 'formality.user_assigned_id')
             ->join('users as client', 'client.id', '=', 'formality.user_client_id')
             ->join('users as issuer', 'issuer.id', '=', 'formality.user_issuer_id')
-            ->join('user_detail as detail', 'detail.user_id', '=', 'client.id')
-            ->leftJoin('user_detail as issuer_detail', 'issuer_detail.user_id', '=', 'issuer.id')
-            ->leftJoin('user_detail as assigned_detail', 'assigned_detail.user_id', '=', 'userAssigned.id')
-            ->join('document_type', 'document_type.id', '=', 'detail.document_type_id')
+            ->join('document_type', 'document_type.id', '=', 'client.document_type_id')
             ->join('address', 'address.id', '=', 'formality.address_id')
             ->join('street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
@@ -54,13 +51,13 @@ class FormalityService
                 'type.name as type',
                 'userAssigned.name as assigned_name',
                 'client.name as name',
-                'detail.first_last_name as firstLastName',
-                'detail.second_last_name as secondLastName',
-                'issuer_detail.first_last_name as issuer_firstLastName',
-                'issuer_detail.second_last_name as issuer_secondLastName',
-                'assigned_detail.first_last_name as assigned_firstLastName',
-                'assigned_detail.second_last_name as assigned_secondLastName',
-                'detail.document_number as documentNumber',
+                'client.first_last_name as firstLastName',
+                'client.second_last_name as secondLastName',
+                'issuer.first_last_name as issuer_firstLastName',
+                'issuer.second_last_name as issuer_secondLastName',
+                'userAssigned.first_last_name as assigned_firstLastName',
+                'userAssigned.second_last_name as assigned_secondLastName',
+                'client.document_number as documentNumber',
                 'document_type.name as document_type',
                 'address.*',
                 'street_type.name as street_type',
@@ -162,14 +159,11 @@ class FormalityService
             ->with(
                 [
                     'client',
-                    'client.details',
-                    'client.details.clientType',
-                    'client.details.documentType',
-                    'client.details.title',
+                    'client.clientType',
+                    'client.documentType',
+                    'client.title',
                     'issuer',
-                    'issuer.details',
                     'assigned',
-                    'assigned.details',
                     'address',
                     'address.streetType',
                     'address.housingType',

@@ -75,13 +75,13 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="inputState">Tipo Cliente: </label> @if (isset($clientdetail->clientType))
-                            {{ucfirst($clientdetail->clientType->name)}}
+                        <label for="inputState">Tipo Cliente: </label> @if (isset($client->clientType))
+                            {{ucfirst($client->clientType->name)}}
                         @endif
                     </div>
                     <div class="form-group col-md-1">
-                        <label for="inputState">Título: </label> @if (isset($clientdetail->title))
-                            {{ucfirst($clientdetail->title->name)}}
+                        <label for="inputState">Título: </label> @if (isset($client->title))
+                            {{ucfirst($client->title->name)}}
                         @endif
                     </div>
 
@@ -89,23 +89,23 @@
                         <label for="inputCity">Nombre</label> {{ucfirst($client->name)}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputState">Primer apellido: </label> {{ucfirst($clientdetail->first_last_name)}}
+                        <label for="inputState">Primer apellido: </label> {{ucfirst($client->first_last_name)}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputZip">Segundo apellido: </label> {{ucfirst($clientdetail->second_last_name)}}
+                        <label for="inputZip">Segundo apellido: </label> {{ucfirst($client->second_last_name)}}
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="inputState">Tipo document: </label> @if (isset($clientdetail->documentType))
-                            {{ucfirst($clientdetail->documentType->name)}}
+                        <label for="inputState">Tipo document: </label> @if (isset($client->documentType))
+                            {{ucfirst($client->documentType->name)}}
                         @endif
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputState">Número documento: </label> {{$clientdetail->document_number}}
+                        <label for="inputState">Número documento: </label> {{$client->document_number}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Teléfono: </label> {{$clientdetail->phone}}
+                        <label for="inputAddress">Teléfono: </label> {{$client->phone}}
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputZip">Email: </label> {{$client->email}}
@@ -113,7 +113,7 @@
                 </div>
 
                 <div class=" form-group">
-                    <label for="inputAddress2">Cuenta Bancaria: </label> {{$clientdetail->IBAN}}
+                    <label for="inputAddress2">Cuenta Bancaria: </label> {{$client->IBAN}}
                 </div>
             </section>
             <section>

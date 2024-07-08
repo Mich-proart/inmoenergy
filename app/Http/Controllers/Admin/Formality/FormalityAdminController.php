@@ -30,12 +30,11 @@ class FormalityAdminController extends Controller
     {
         $formality = $this->formalityService->getById($id);
         $client = $formality->client;
-        $clientdetail = $client->details;
         $address = $formality->address;
         $CorrespondenceAddress = $formality->CorrespondenceAddress;
 
         if ($formality)
-            return view('admin.formality.get', ['formality' => $formality, 'client' => $client, 'clientdetail' => $clientdetail, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress]);
+            return view('admin.formality.get', ['formality' => $formality, 'client' => $client, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress]);
 
     }
     public function modify(int $id)
@@ -55,12 +54,11 @@ class FormalityAdminController extends Controller
 
                 $formality = $this->formalityService->getById($id);
                 $client = $formality->client;
-                $clientdetail = $client->details;
                 $address = $formality->address;
                 $CorrespondenceAddress = $formality->CorrespondenceAddress;
 
                 DB::commit();
-                return view('admin.formality.modify', ['formality' => $formality, 'client' => $client, 'clientdetail' => $clientdetail, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress, 'prevStatus' => $prevStatus]);
+                return view('admin.formality.modify', ['formality' => $formality, 'client' => $client, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress, 'prevStatus' => $prevStatus]);
             }
 
 

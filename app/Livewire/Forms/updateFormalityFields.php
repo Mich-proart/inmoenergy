@@ -55,22 +55,21 @@ class updateFormalityFields extends Form
     {
 
         $client = $formality->client;
-        $clientdetail = $client->details;
         $address = $formality->address;
         $CorrespondenceAddress = $formality->CorrespondenceAddress;
 
         $this->formalityTypeId[0] = $formality->type->id;
         $this->serviceIds[0] = $formality->service->id;
-        $this->clientTypeId = $clientdetail->clientType->id;
-        $this->userTitleId = $clientdetail->title->id;
+        $this->clientTypeId = $client->clientType->id;
+        $this->userTitleId = $client->title->id;
         $this->name = $client->name;
         $this->email = $client->email;
-        $this->firstLastName = $clientdetail->first_last_name;
-        $this->secondLastName = $clientdetail->second_last_name;
-        $this->documentTypeId = $clientdetail->documentType->id;
-        $this->documentNumber = $clientdetail->document_number;
-        $this->phone = $clientdetail->phone;
-        $this->IBAN = $clientdetail->IBAN;
+        $this->firstLastName = $client->first_last_name;
+        $this->secondLastName = $client->second_last_name;
+        $this->documentTypeId = $client->documentType->id;
+        $this->documentNumber = $client->document_number;
+        $this->phone = $client->phone;
+        $this->IBAN = $client->IBAN;
         $this->provinceId = $address->location->province->id;
         $this->locationId = $address->location->id;
         $this->streetTypeId = $address->streetType->id;
@@ -112,11 +111,6 @@ class updateFormalityFields extends Form
         return [
             'name' => $this->name,
             'email' => $this->email,
-        ];
-    }
-    public function getDetailsUpdate()
-    {
-        return [
             'first_last_name' => $this->firstLastName,
             'second_last_name' => $this->secondLastName,
             'phone' => $this->phone,

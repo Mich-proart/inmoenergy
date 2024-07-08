@@ -76,9 +76,6 @@ class EditFormality extends Component
             $data = Formality::firstWhere('id', $this->formalityId);
             $data->client()->update($this->form->getclientUpdate());
 
-            $details = UserDetail::firstWhere('user_id', $data->client->id);
-            $details->update($this->form->getDetailsUpdate());
-
             $address = Address::firstWhere('id', $data->address->id);
             $address->update($this->form->getaddressUpdate());
 
