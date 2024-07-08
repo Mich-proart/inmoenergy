@@ -37,5 +37,8 @@ Route::prefix('formality')->group(function () {
     Route::get('/assignment', function () {
         return view('admin.formality.assignment');
     })->name('admin.formality.assignment');
+    Route::get('/total', function () {
+        return view('admin.formality.totalInProgress');
+    })->name('admin.formality.totalInProgress');
 
 });

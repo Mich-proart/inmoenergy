@@ -10,6 +10,7 @@
                         <tr>
                             <th>Fecha</th>
                             <th>Usuario asignado</th>
+                            <th>Tipo de tramite</th>
                             <th>Suministro</th>
                             <th>Nombre</th>
                             <th>Dirección</th>
@@ -19,9 +20,6 @@
                             <th>Producto Compañía</th>
                             <th>Consumo anual</th>
                             <th>CUPS</th>
-                            <th>Fecha de activación</th>
-                            <th>Renovacion</th>
-                            <th>Fecha de renovación</th>
                             <th>Optiones</th>
                         </tr>
                     </thead>
@@ -116,6 +114,7 @@
             "columns": [
                 { data: 'created_at' },
                 { data: 'assigned' },
+                { data: 'type' },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'fullAddress' },
@@ -125,9 +124,6 @@
                 { data: 'product' },
                 { data: 'annual_consumption' },
                 { data: 'CUPS' },
-                { data: 'activation_date' },
-                { data: 'isRenewable' },
-                { data: 'renewal_date' },
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
@@ -144,11 +140,11 @@
                     "render": function (data, type, row) {
                         return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                     },
-                    "targets": 6
+                    "targets": 7
                 },
                 { className: "dt-head-center", targets: [0] },
                 { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
             ], "order": [
                 [0, "desc"]
             ],

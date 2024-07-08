@@ -69,6 +69,7 @@ class FormalityController extends Controller
     {
         $assignedId = $request->query('assignedId');
         $activation_date_null = $request->query('assignedId');
+        $exceptStatus = $request->query('exceptStatus');
 
         $formality = null;
 
@@ -80,6 +81,11 @@ class FormalityController extends Controller
             $formality = $this->formalityService->getAssignedNull();
         }
 
+        if ($exceptStatus) {
+            $query = new FormalityQuery(null, null, null, $exceptStatus);
+            $formality = $this->formalityService->findByDistintStatus($query);
+        }
+
         return datatables()->of($formality)
             ->setRowAttr(['align' => 'center'])
             ->setRowId(function ($formality) {
@@ -87,6 +93,12 @@ class FormalityController extends Controller
             })
             ->addColumn('fullName', function ($formality) {
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
             })
             ->addColumn('fullAddress', function ($formality) {
                 return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;

@@ -350,6 +350,10 @@ return [
                     'text' => 'Asignación de tramites',
                     'route' => 'admin.formality.assignment'
                 ],
+                [
+                    'text' => 'Consultas totales',
+                    'route' => 'admin.formality.totalInProgress'
+                ],
             ]
         ],
         [

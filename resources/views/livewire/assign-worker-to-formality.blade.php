@@ -8,6 +8,7 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
+                            <th>Client emisor</th>
                             <th>Fecha</th>
                             <th>Suministro</th>
                             <th>Nombre</th>
@@ -35,7 +36,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="editRenovationModalLabel">Asignacion de fecha de activacion
+                        <h1 class="modal-title fs-5" id="editRenovationModalLabel">Asignación de usuario
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -43,23 +44,22 @@
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputState">Fecha de activación: </label>
-                                    <input wire:model="form.activation_date" type="date"
-                                        class="form-control @error('form.activation_date') is-invalid @enderror"
-                                        id="inputCity" name="activation_date">
-                                    @error('form.activation_date')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    <label for="inputState">Asignar usuario: </label>
+                                    <select wire:model="user_Assigned_id" class="form-control" id="inputProvince">
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->workers as $worker)
+                                            <option value="{{ $worker->id }}">
+                                                {{ $worker->name . ' ' . $worker->first_last_name . ' ' . $worker->second_last_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-
-                                    <input id="formalityId" type="text" wire:model="form.formalityId" value=""
-                                        class="form-control @error('form.formalityId') is-invalid @enderror" hidden>
-                                    @error('form.formalityId')
+                                    <input id="formalityId" type="text" wire:model="formalityId" value=""
+                                        class="form-control @error('formalityId') is-invalid @enderror" hidden>
+                                    @error('formalityId')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -69,10 +69,10 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <div class="form-check">
-                                        <input wire:model="form.isRenewable" class="form-check-input" type="checkbox"
-                                            value="0" id="isRenewable">
+                                        <input wire:model="isCritical" class="form-check-input" type="checkbox"
+                                            value="0" id="isCritical">
                                         <label class="form-check-label" for="invalidCheck2">
-                                            Renovación
+                                            Tramite Critico
                                         </label>
 
                                     </div>
@@ -108,6 +108,7 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
+                { data: 'issuer' },
                 { data: 'created_at' },
                 { data: 'service' },
                 { data: 'fullName' },
@@ -116,12 +117,20 @@
                 { data: 'fullAddress' },
                 { data: 'observation' },
                 { data: 'status' },
-                { data: 'isCritical' },
+                {
+                    data: 'isCritical', render: function (data, type, row, meta) {
+                        if (data == 0) {
+                            return `<div><i class="fas fa-times"></i></div>`;
+                        } else {
+                            return `<div><i class="fas fa-check"></i></div>`
+                        }
+                    }
+                },
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
-                            data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
+                            <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
+                             hidden><i class="fas fa-times"></i> </button>
                         `;
                     }
                 }
@@ -131,18 +140,17 @@
                     "render": function (data, type, row) {
                         return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                     },
-                    "targets": 7
+                    "targets": 8
                 },
                 { className: "dt-head-center", targets: [0] },
-                // { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
-                // { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13] },
+                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
             ], "order": [
                 [0, "desc"]
             ],
         });
         $('#formality-content').on('click', '.target', function () {
             const row = table.row(this).data();
-            $('#formalityId').val(row.formality_id);
             $(`#editFormality${row.formality_id}`).click();
         })
     </script>
