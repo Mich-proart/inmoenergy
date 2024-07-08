@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites asignados</h1>
+<h1>Consultas de tramites en curso totales</h1>
 @stop
 
 @section('content')
@@ -17,51 +17,26 @@
             <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
+                        <th>Client emisor</th>
                         <th>Fecha</th>
-                        <th>Usuario asignado</th>
-                        <th>Tipo</th>
                         <th>Suministro</th>
                         <th>Nombre</th>
                         <th>Tipo document</th>
                         <th>N documento</th>
                         <th>Dirección</th>
+                        <th>Observaciones del tramite</th>
                         <th>Estado Tramite</th>
                         <th>Tramite Critico</th>
-                        <th>Observaciones del tramite</th>
                         <th>Compañía Suministro</th>
                         <th>Producto Compañía</th>
+                        <th>Consumo anual</th>
+                        <th>CUPS</th>
                     </tr>
                 </thead>
 
             </table>
         </div>
 
-    </div>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" id="tigger_modal" data-bs-toggle="modal"
-        data-bs-target="#exampleModal" hidden>
-        Launch demo modal
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="fw-bold"> ¿Quieres abrir este trámite? Al abrir iniciará su proceso de tramitación. </p>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" id="trigger_formality">Si</button>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -87,10 +62,9 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{route('api.formality.index')}}",
+            "url": "{{route('api.formality.activation.pending')}}",
             "type": "GET",
             "data": {
-                "assignedId": "{{Auth::id()}}",
                 "exceptStatus": ["tramitado", "en vigor"]
             }
         },
@@ -98,14 +72,14 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
+            { data: 'issuer' },
             { data: 'created_at' },
-            { data: 'assigned' },
-            { data: 'type' },
             { data: 'service' },
             { data: 'fullName' },
             { data: 'document_type' },
             { data: 'documentNumber' },
             { data: 'fullAddress' },
+            { data: 'observation' },
             { data: 'status' },
             {
                 data: 'isCritical', render: function (data, type, row, meta) {
@@ -116,9 +90,10 @@
                     }
                 }
             },
-            { data: 'observation' },
             { data: 'company' },
             { data: 'product' },
+            { data: 'annual_consumption' },
+            { data: 'CUPS' },
         ],
         "columnDefs": [
             {
@@ -128,24 +103,21 @@
                 "targets": 8
             },
             { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 11, 12] }
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 8] }
         ],
         "order": [
             [0, "desc"]
         ],
     });
 
-    let formality_id = 0;
+
     $('#formality-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
-        formality_id = row.formality_id;
         console.log(row);
-        $('#tigger_modal').click();
+
     })
 
-    $('#trigger_formality').on('click', function () {
-        window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
-    })
+
 </script>
 
 @stop

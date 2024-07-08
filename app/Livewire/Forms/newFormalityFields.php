@@ -48,7 +48,7 @@ class newFormalityFields extends Form
     public $client_floor;
     public $client_door;
 
-    public $is_same_address = false;
+    public $is_same_address = true;
     public $observation;
 
     public $dni;
@@ -62,7 +62,7 @@ class newFormalityFields extends Form
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
         'firstLastName' => 'required|string',
-        'secondLastName' => 'sometimes|nullable|string',
+        'secondLastName' => 'required|string',
         'documentTypeId' => 'required|integer|exists:document_type,id',
         'documentNumber' => 'required|string',
         'phone' => 'required|string',
@@ -103,13 +103,7 @@ class newFormalityFields extends Form
             $this->name,
             $this->email,
             Hash::make($pass),
-            false
-        );
-    }
-
-    public function getCreatUserDetailDto(): CreateUserDetailDto
-    {
-        return new CreateUserDetailDto(
+            false,
             $this->firstLastName,
             $this->secondLastName,
             $this->documentTypeId,
@@ -122,6 +116,8 @@ class newFormalityFields extends Form
             null,
         );
     }
+
+
 
     public function getCreateAddressDto(): CreateAddressDto
     {
@@ -161,6 +157,7 @@ class newFormalityFields extends Form
         'name.required' => 'Nombre es requerido',
         'email.required' => 'Email es requerido',
         'email.email' => 'Email no es valido',
+        'email.unique' => 'Email ya se encuentra registrado',
         'firstLastName.required' => 'Primer apellido es requerido',
         'documentTypeId.required' => 'Tipo de documento es requerido',
         'documentTypeId.integer' => 'Tipo de documento no es valido',

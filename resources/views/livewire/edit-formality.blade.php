@@ -1,30 +1,53 @@
 <div>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @error('form.formalityTypeId')
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ $message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @enderror
-    @error('form.serviceIds')
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ $message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @enderror
     <div class="card card-primary card-outline">
+        <div class="mt-3 mr-3">
+            <div class="col-12 ">
+                <h4>
+                    <small class="float-right"><button class="btn btn-primary btn-sm">Nuevo ticket</button></small>
+                </h4>
+            </div>
+        </div>
         <div class="card-body">
-            <form wire:submit="save">
-                @csrf
+            <form wire:submit="update">
+                <section>
+                    <div class="form-group">
+                        <div class="row invoice-info">
+                            <div class="col-sm-4 invoice-col">
+                                <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
+                                    {{$formality->assigned->name}}
+                                @endif
+                            </div>
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha:</label> {{$formality->created_at}}
+                            </div>
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Estado:</label> <span
+                                    class="badge rounded-pill bg-info text-dark">{{$formality->status->name}} </span>
+                            </div>
+
+                        </div>
+                        <div class="row invoice-info">
+                            <div class="col-sm-4 invoice-col">
+                                <label for=""> Compañía suministro: </label>
+                                @if (isset($formality->product) && isset($formality->product->company))
+                                    {{ucfirst($formality->product->company->name)}}
+                                @endif
+                            </div>
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Producto Compañía:</label> @if (isset($formality->product))
+                                    {{ucfirst($formality->product->name)}}
+                                @endif
+                            </div>
+
+
+                        </div>
+                    </div>
+                </section>
                 <section>
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
-                                <label for="">¿Qué quieres realizar?</label>
+                                <label for="">Tipo de trámite</label>
                             </div>
                         </div>
                         <div class="row">
@@ -45,7 +68,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
-                                <label for="">¿Qué suministro quieres tramitar? (Selecciona uno o varios).</label>
+                                <label for="">Suministro tramitado.</label>
                             </div>
                         </div>
                         <div class="row">
@@ -53,7 +76,7 @@
                                 @if (isset($services))
                                     @foreach ($services as $service)
                                         <div class="form-check form-check-inline">
-                                            <input wire:model="form.serviceIds" class="form-check-input" type="checkbox" id=""
+                                            <input wire:model="form.serviceIds" class="form-check-input" type="radio" id=""
                                                 name="serviceIds[]" value="{{ $service->id }}">
                                             <label class="form-check-label"
                                                 for="inlineCheckbox1">{{ ucfirst($service->name) }}</label>
@@ -76,7 +99,7 @@
                             <label for="inputState">Tipo Cliente: </label>
                             <select wire:model="form.clientTypeId"
                                 class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                name="clientTypeId" required>
+                                name="clientTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($clientTypes))
                                     @foreach ($clientTypes as $clientType)
@@ -93,8 +116,7 @@
                         <div class="form-group col-md-1">
                             <label for="inputState">Título: </label>
                             <select wire:model="form.userTitleId"
-                                class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId"
-                                required>
+                                class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($userTitles))
                                     @foreach ($userTitles as $userTitle)
@@ -108,11 +130,12 @@
                                 </span>
                             @enderror
                         </div>
+
                         <div class="form-group col-md-3">
                             <label for="inputCity">Nombre</label>
                             <input wire:model="form.name" type="text"
-                                class="form-control @error('form.name') is-invalid @enderror" id="inputCity" name="name"
-                                required>
+                                class="form-control @error('form.name') is-invalid @enderror" id="inputCity"
+                                name="name">
                             @error('form.name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -123,7 +146,7 @@
                             <label for="inputState">Primer apellido: </label>
                             <input wire:model="form.firstLastName" type="text"
                                 class="form-control @error('form.firstLastName') is-invalid @enderror" id="inputCity"
-                                name="firstLastName" required>
+                                name="firstLastName">
                             @error('form.firstLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -133,7 +156,7 @@
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
                             <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
-                                name="secondLastName" required>
+                                name="secondLastName">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -146,7 +169,7 @@
                             <label for="inputState">Tipo document: </label>
                             <select wire:model="form.documentTypeId"
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
-                                name="documentTypeId" required>
+                                name="documentTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($documentTypes))
                                     @foreach ($documentTypes as $option)
@@ -164,7 +187,7 @@
                             <label for="inputState">Número documento: </label>
                             <input wire:model="form.documentNumber" type="text"
                                 class="form-control @error('form.documentNumber') is-invalid @enderror" id="inputZip"
-                                name="documentNumber" required>
+                                name="documentNumber">
                             @error('form.documentNumber')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -174,13 +197,13 @@
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Teléfono: </label>
                             <input wire:model="form.phone" type="text" class="form-control" id="inputAddress"
-                                placeholder="" name="phone" required>
+                                placeholder="" name="phone">
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Email: </label>
                             <input wire:model="form.email" type="text"
                                 class="form-control @error('form.email') is-invalid @enderror" id="inputZip"
-                                name="email" required>
+                                name="email">
                             @error('form.email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -192,7 +215,7 @@
                     <div class=" form-group">
                         <label for="inputAddress2">Cuenta Bancaria: </label>
                         <input wire:model="form.IBAN" type="text" class="form-control" id="inputAddress2" placeholder=""
-                            name="IBAN" required>
+                            name="IBAN">
                     </div>
                 </section>
                 <section>
@@ -210,7 +233,7 @@
                             <label for="inputZip">Tipo de calle: </label>
                             <select wire:model="form.streetTypeId"
                                 class="form-control @error('form.streetTypeId') is-invalid @enderror"
-                                name="streetTypeId" required>
+                                name="streetTypeId">
                                 <option value="">-- seleccione --</option>
                                 @if (isset($streetTypes))
                                     @foreach ($streetTypes as $streetType)
@@ -230,7 +253,7 @@
                             <label for="inputZip">Nombre calle: </label>
                             <input wire:model="form.streetName" type="text"
                                 class="form-control @error('form.streetName') is-invalid @enderror" id="inputZip"
-                                name="streetName" required>
+                                name="streetName">
                             @error('form.streetName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -242,7 +265,7 @@
                             <label for="inputZip">N°: </label>
                             <input wire:model="form.streetNumber" type="text"
                                 class="form-control @error('form.streetNumber') is-invalid @enderror" id="inputZip"
-                                name="streetNumber" required>
+                                name="streetNumber">
                             @error('form.streetNumber')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -301,7 +324,7 @@
                             <label for="inputAddress">Tipo de vivienda: </label>
                             <select wire:model="form.housingTypeId"
                                 class="form-control @error('form.housingTypeId') is-invalid @enderror"
-                                name="housingTypeId" required>
+                                name="housingTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($housingTypes))
                                     @foreach ($housingTypes as $housingType)
@@ -340,7 +363,7 @@
                             <label for="inputState">Población: </label>
                             <select wire:model="form.locationId"
                                 class="form-control @error('form.locationId') is-invalid @enderror" id="inputLocation"
-                                name="locationId" required>
+                                name="locationId">
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->locations as $location)
                                     <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -357,7 +380,7 @@
                             <label for="inputZip">Código postal: </label>
                             <input wire:model="form.zipCode" type="text"
                                 class="form-control @error('form.zipCode') is-invalid @enderror" id="inputZip"
-                                name="zipCode" required>
+                                name="zipCode">
                             @error('form.zipCode')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -368,7 +391,7 @@
 
 
                 </section>
-                <section x-data="{ buttonDisabled: true }">
+                <section x-data="{ buttonDisabled: false }">
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 25px">
@@ -396,7 +419,7 @@
                                 <label for="inputZip">Tipo de calle: </label>
                                 <select wire:model="form.client_streetTypeId"
                                     class="form-control @error('form.client_streetTypeId') is-invalid @enderror"
-                                    name="client_streetTypeId" id="client_streetTypeId" required
+                                    name="client_streetTypeId" id="client_streetTypeId"
                                     x-bind:disabled="buttonDisabled">
                                     <option value="">-- seleccione --</option>
                                     @if (isset($streetTypes))
@@ -417,8 +440,7 @@
                                 <label for="inputZip">Nombre calle: </label>
                                 <input wire:model="form.client_streetName" type="text"
                                     class="form-control @error('form.client_streetName') is-invalid @enderror"
-                                    id="client_streetName" name="client_streetName" required
-                                    x-bind:disabled="buttonDisabled">
+                                    id="client_streetName" name="client_streetName" x-bind:disabled="buttonDisabled">
                                 @error('form.client_streetName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -431,7 +453,7 @@
                                 <label for="inputZip">N°: </label>
                                 <input wire:model="form.client_streetNumber" type="text"
                                     class="form-control @error('form.client_streetNumber') is-invalid @enderror"
-                                    id="client_streetNumber" name="client_streetNumber" required
+                                    id="client_streetNumber" name="client_streetNumber"
                                     x-bind:disabled="buttonDisabled">
                                 @error('form.client_streetNumber')
                                     <span class="invalid-feedback" role="alert">
@@ -493,7 +515,7 @@
                                 <label for="inputAddress">Tipo de vivienda: </label>
                                 <select wire:model="form.client_housingTypeId"
                                     class="form-control @error('form.client_housingTypeId') is-invalid @enderror"
-                                    name="client_housingTypeId" id="client_housingTypeId" required
+                                    name="client_housingTypeId" id="client_housingTypeId"
                                     x-bind:disabled="buttonDisabled">
                                     <option value="">-- selecione --</option>
                                     @if (isset($housingTypes))
@@ -535,8 +557,7 @@
                                 <label for="inputState">Población: </label>
                                 <select wire:model="form.client_locationId"
                                     class="form-control @error('form.client_locationId') is-invalid @enderror"
-                                    id="client_locationId" name="client_locationId" required
-                                    x-bind:disabled="buttonDisabled">
+                                    id="client_locationId" name="client_locationId" x-bind:disabled="buttonDisabled">
                                     <option value="">-- seleccione --</option>
                                     @foreach ($this->clientLocations as $clientLocation)
                                         <option value="{{ $clientLocation->id }}">{{ $clientLocation->name }}</option>
@@ -553,7 +574,7 @@
                                 <label for="inputZip">Código postal: </label>
                                 <input wire:model="form.client_zipCode" type="text"
                                     class="form-control @error('form.client_zipCode') is-invalid @enderror"
-                                    id="client_zipCode" name="client_zipCode" required x-bind:disabled="buttonDisabled">
+                                    id="client_zipCode" name="client_zipCode" x-bind:disabled="buttonDisabled">
                                 @error('form.client_zipCode')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -571,67 +592,19 @@
                     </div>
 
                 </div>
-                <div>
-                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
-                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
-                            Documentos
-                        </span>
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
+                        <textarea wire:model="form.issuer_observation" class="form-control"
+                            id="exampleFormControlTextarea1" rows="3" name="observation" disabled></textarea>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">DNI: </label>
-                            <input wire:model="form.dni" accept=".pdf"
-                                class="form-control @error('form.dni') is-invalid @enderror" type="file" name="file"
-                                id="dni" required>
-                            @error('form.dni')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">Factura de Agua: </label>
-                            <input wire:model="form.factura_agua" accept=".pdf" class="form-control" type="file"
-                                name="file" id="factura_agua">
-                            @error('form.factura_agua')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">Factura de Gas: </label>
-                            <input wire:model="form.factura_gas" accept=".pdf" class="form-control" type="file"
-                                name="file" id="factura_gas">
-                            @error('form.factura_gas')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">Factura de Luz: </label>
-                            <input wire:model="form.factura_luz" accept=".pdf" class="form-control" type="file"
-                                name="file" id="factura_luz">
-                            @error('form.factura_luz')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
+
                 </div>
                 <div class="row no-print">
                     <div class="col-12">
                         <div style="margin-top: 50px; margin-bottom: 25px">
                             <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
-                                Tramitar</button>
+                                Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -642,22 +615,8 @@
     <script>
         $(document).ready(function () {
 
-            const is_same_address_field = [
-                '#client_locationId',
-                '#client_housingTypeId',
-                '#client_streetTypeId',
-                '#client_streetName',
-                '#client_streetNumber',
-                '#client_zipCode'
-            ];
-            $('#is_same_address').on('change', function () {
-                const select = $('#is_same_address').is(':checked');
-                console.log(select)
-                is_same_address_field.forEach(element => {
-                    $(element).prop('required', !select);
-                })
 
-            })
+
         });
     </script>
 </div>

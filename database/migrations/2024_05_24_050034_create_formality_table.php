@@ -16,8 +16,10 @@ return new class extends Migration {
             $table->foreignId('user_issuer_id')->constrained('users');
             $table->foreignId('user_Assigned_id')->nullable()->constrained('users');
             $table->text('observation')->nullable();
+            $table->text('issuer_observation')->nullable();
             $table->boolean('canIssuerEdit')->default(false);
             $table->boolean('isCritical')->default(false);
+            $table->boolean('canClientEdit')->default(false);
             $table->boolean('isRenewable')->default(false);
             $table->timestamp('assignment_date')->nullable();
             $table->timestamp('completion_date')->nullable();
@@ -27,8 +29,9 @@ return new class extends Migration {
             $table->string('CUPS')->nullable();
             $table->text('internal_observation')->nullable();
             $table->integer('annual_consumption')->nullable();
-            $table->boolean('isClientAddress')->default(false);
             $table->foreignId('address_id')->nullable()->constrained('address');
+            $table->foreignId('correspondence_address_id')->nullable()->constrained('address');
+            $table->boolean('isSameCorrespondenceAddress')->default(true);
             $table->foreignId('formality_type_id')->constrained('formality_type');
             $table->foreignId('formality_status_id')->constrained('formality_status');
             $table->foreignId('access_rate_id')->nullable()->constrained('access_rate');

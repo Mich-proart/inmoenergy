@@ -6,7 +6,6 @@ class CreateUserDetailDto
 {
 
     public int $userId;
-    public int $addressId;
 
     public function __construct(
         public string $firstLastName,
@@ -27,8 +26,4 @@ class CreateUserDetailDto
         $this->userId = $userId;
     }
 
-    public function setAddressId(int $addressId)
-    {
-        $this->addressId = $addressId;
-    }
 }

@@ -17,7 +17,7 @@ class Formality extends Model
         'user_issuer_id',
         'user_Assigned_id',
         'observation',
-        'canIssuerEdit',
+        'canClientEdit',
         'isCritical',
         'isRenewable',
         'assignment_date',
@@ -34,7 +34,12 @@ class Formality extends Model
         'formality_status_id',
         'access_rate_id',
         'service_id',
-        'issuer_observation'
+        'issuer_observation',
+        'correspondence_address_id',
+        'isSameCorrespondenceAddress',
+        'product_id',
+        'commission',
+        'potency',
     ];
 
     public function client(): BelongsTo
@@ -56,6 +61,10 @@ class Formality extends Model
     {
         return $this->belongsTo(Address::class, 'address_id');
     }
+    public function CorrespondenceAddress(): BelongsTo
+    {
+        return $this->belongsTo(Address::class, 'correspondence_address_id');
+    }
 
     public function type(): BelongsTo
     {
@@ -75,5 +84,9 @@ class Formality extends Model
     public function accessRate(): BelongsTo
     {
         return $this->belongsTo(AccessRate::class, 'access_rate_id');
+    }
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

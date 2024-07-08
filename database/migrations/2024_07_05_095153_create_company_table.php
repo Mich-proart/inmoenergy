@@ -10,8 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('formality', function (Blueprint $table) {
-            $table->text('issuer_observation')->nullable();
+        Schema::create('company', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -20,8 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('formality', function (Blueprint $table) {
-            $table->dropColumn('issuer_observation');
-        });
+        Schema::dropIfExists('company');
     }
 };

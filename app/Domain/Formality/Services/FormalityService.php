@@ -3,7 +3,11 @@
 namespace App\Domain\Formality\Services;
 
 
+use App\Domain\Enums\FormalityTypeEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
+use App\Models\AccessRate;
+use App\Models\Formality;
+use App\Models\FormalityStatus;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
 use App\Models\FormalityType;
@@ -21,12 +25,13 @@ class FormalityService
             ->leftJoin('users as userAssigned', 'userAssigned.id', '=', 'formality.user_assigned_id')
             ->join('users as client', 'client.id', '=', 'formality.user_client_id')
             ->join('users as issuer', 'issuer.id', '=', 'formality.user_issuer_id')
-            ->join('user_detail as detail', 'detail.user_id', '=', 'client.id')
-            ->join('document_type', 'document_type.id', '=', 'detail.document_type_id')
+            ->join('document_type', 'document_type.id', '=', 'client.document_type_id')
             ->join('address', 'address.id', '=', 'formality.address_id')
             ->join('street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
+            ->leftJoin('product', 'product.id', '=', 'formality.product_id')
+            ->leftJoin('company', 'company.id', '=', 'product.company_id')
             ->select(
                 'formality.id as formality_id',
                 'formality.created_at',
@@ -37,25 +42,45 @@ class FormalityService
                 'formality.completion_date',
                 'formality.CUPS',
                 'formality.annual_consumption',
-                'formality.completion_date',
                 'formality.activation_date',
                 'formality.isRenewable',
-                'issuer.name as issuer',
+                'formality.renewal_date',
+                'issuer.name as issuer_name',
                 'status.name as status',
                 'service.name as service',
                 'type.name as type',
-                'userAssigned.name as assigned',
+                'userAssigned.name as assigned_name',
                 'client.name as name',
-                'detail.first_last_name as firstLastName',
-                'detail.second_last_name as secondLastName',
-                'detail.document_number as documentNumber',
+                'client.first_last_name as firstLastName',
+                'client.second_last_name as secondLastName',
+                'issuer.first_last_name as issuer_firstLastName',
+                'issuer.second_last_name as issuer_secondLastName',
+                'userAssigned.first_last_name as assigned_firstLastName',
+                'userAssigned.second_last_name as assigned_secondLastName',
+                'client.document_number as documentNumber',
                 'document_type.name as document_type',
                 'address.*',
                 'street_type.name as street_type',
                 'location.name as location',
-                'province.name as province'
+                'province.name as province',
+                'company.name as company',
+                'product.name as product'
             );
 
+    }
+
+    public function getActicationDateNull(int $assignedId)
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->whereNull('formality.activation_date');
+        return $queryBuilder->get();
+    }
+    public function getAssignedNull()
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->whereNull('userAssigned.id');
+        return $queryBuilder->get();
     }
 
     public function findByDistintStatus(FormalityQuery $formalityQuery)
@@ -112,5 +137,52 @@ class FormalityService
     public function getServices()
     {
         return Service::all();
+    }
+
+    public function getAccessRates()
+    {
+        return AccessRate::all();
+    }
+
+    public function getFormalityStatus(string $status)
+    {
+        return FormalityStatus::where('name', $status)->first();
+    }
+    public function findStatusById(int $id)
+    {
+        return FormalityStatus::where('id', $id)->first();
+    }
+
+    public function getById(int $id)
+    {
+        return Formality::where('id', $id)
+            ->with(
+                [
+                    'client',
+                    'client.clientType',
+                    'client.documentType',
+                    'client.title',
+                    'issuer',
+                    'assigned',
+                    'address',
+                    'address.streetType',
+                    'address.housingType',
+                    'address.location',
+                    'address.location.province',
+                    'address.location.province.region',
+                    'CorrespondenceAddress',
+                    'CorrespondenceAddress.streetType',
+                    'CorrespondenceAddress.housingType',
+                    'CorrespondenceAddress.location',
+                    'CorrespondenceAddress.location.province',
+                    'CorrespondenceAddress.location.province.region',
+                    'type',
+                    'status',
+                    'service',
+                    'accessRate',
+                    'product',
+                    'product.company',
+                ]
+            )->first();
     }
 }

@@ -34,41 +34,76 @@ class FormalityController extends Controller
         $exceptStatus = $request->query('exceptStatus');
         $onlyStatus = $request->query('onlyStatus');
         $activationDateNull = $request->query('activationDateNull');
-
+        $formality = null;
 
         if ($onlyStatus) {
             $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $onlyStatus);
             $formality = $this->formalityService->findByStatus($query);
-            return datatables()->of($formality)
-                ->setRowAttr(['align' => 'center'])
-                ->setRowId(function ($formality) {
-                    return $formality->formality_id;
-                })
-                ->addColumn('fullName', function ($formality) {
-                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
-                })
-                ->addColumn('fullAddress', function ($formality) {
-                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
-                })
-                ->toJson();
         }
 
         if ($exceptStatus) {
             $query = new FormalityQuery($issuerId, $assignedId, $activationDateNull, $exceptStatus);
             $formality = $this->formalityService->findByDistintStatus($query);
-            return datatables()->of($formality)
-                ->setRowAttr(['align' => 'center'])
-                ->setRowId(function ($formality) {
-                    return $formality->formality_id;
-                })
-                ->addColumn('fullName', function ($formality) {
-                    return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
-                })
-                ->addColumn('fullAddress', function ($formality) {
-                    return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
-                })
-                ->toJson();
         }
+        return datatables()->of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson();
+    }
+
+    public function getPending(Request $request)
+    {
+        $assignedId = $request->query('assignedId');
+        $activation_date_null = $request->query('assignedId');
+        $exceptStatus = $request->query('exceptStatus');
+
+        $formality = null;
+
+        if ($assignedId && $activation_date_null) {
+            $formality = $this->formalityService->getActicationDateNull($assignedId);
+        }
+
+        if (!$assignedId && !$activation_date_null) {
+            $formality = $this->formalityService->getAssignedNull();
+        }
+
+        if ($exceptStatus) {
+            $query = new FormalityQuery(null, null, null, $exceptStatus);
+            $formality = $this->formalityService->findByDistintStatus($query);
+        }
+
+        return datatables()->of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson();
     }
 
     /**
@@ -88,22 +123,6 @@ class FormalityController extends Controller
 
         try {
 
-            $user = $this->userService->create($request->getCreateUserDto());
-
-            $address = $this->addressService->createAddress($request->getCreateAddressDto());
-
-
-            $userdetails = $request->getCreatUserDetailDto();
-            $userdetails->setUserId($user->id);
-            $userdetails->setAddressId($address->id);
-            $this->userService->setUserDetails($userdetails);
-
-            $this->createFormalityService->setClientId($user->id);
-            $this->createFormalityService->setUserIssuerId(Auth::user()->id);
-
-            foreach ($request->serviceIds as $serviceId) {
-                $this->createFormalityService->execute($serviceId, $request->formalityTypeId, $request->observation);
-            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');

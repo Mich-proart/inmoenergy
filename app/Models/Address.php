@@ -39,6 +39,6 @@ class Address extends Model
 
     public function housingType(): BelongsTo
     {
-        return $this->belongsTo(HousingType::class, 'housing_type');
+        return $this->belongsTo(HousingType::class, 'housing_type_id');
     }
 }
