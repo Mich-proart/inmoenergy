@@ -12,6 +12,8 @@ use App\Models\ClientType;
 use App\Models\DocumentType;
 use App\Models\UserTitle;
 use Hash;
+use DB;
+use Illuminate\Contracts\Database\Query\Builder;
 
 class UserService
 {
@@ -108,5 +110,16 @@ class UserService
     {
 
         return $this->user;
+    }
+
+    private function UsersQueryBuilder(): Builder
+    {
+        return DB::table('users')
+            ->select('users.*');
+    }
+
+    private function getClientUsers()
+    {
+
     }
 }
