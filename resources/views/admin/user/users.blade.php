@@ -66,7 +66,7 @@
             "url": "{{route('api.user.query')}}",
             "type": "GET",
             "data": {
-                "isClient": "true"
+                "isClient": "false"
             }
         },
         "language": {
@@ -78,7 +78,7 @@
             { data: 'fullAddress' },
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0] },
+            { className: "dt-head-center", targets: [0, 1, 2] },
             { className: "text-capitalize", targets: [1, 2] }
         ],
         "order": [

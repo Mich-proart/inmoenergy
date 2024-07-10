@@ -20,9 +20,11 @@ class UserConntroller extends Controller
 
         if ($isClient && $isClient == 'true') {
             $users = $this->userService->getClientUsers(true);
+        } else {
+
+            $users = $this->userService->getClientUsers(false);
         }
 
-        $users = $this->userService->getClientUsers(false);
 
         return datatables()->of($users)
             ->setRowAttr(['align' => 'center'])

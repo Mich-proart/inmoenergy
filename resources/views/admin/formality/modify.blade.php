@@ -94,7 +94,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="inputState">Tipo document: </label> @if (isset($client->documentType))
+                        <label for="inputState">Tipo documento: </label> @if (isset($client->documentType))
                             {{ucfirst($client->documentType->name)}}
                         @endif
                     </div>

@@ -49,5 +49,8 @@ Route::prefix('users')->group(function () {
     Route::get('/', function () {
         return view('admin.user.users');
     })->name('admin.users');
+    Route::get('/client', function () {
+        return view('admin.user.clients');
+    })->name('admin.clients');
     Route::get('/create', [UserConntroller::class, 'create'])->name('admin.users.create');
 });

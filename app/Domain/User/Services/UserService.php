@@ -148,11 +148,14 @@ class UserService
     {
 
         $queryBuilder = $this->UsersQueryBuilder();
-        if ($isCliente && $isCliente == true) {
-            $queryBuilder->where('users.isWorker', '!=', 1);
+        if ($isCliente == true) {
+            $queryBuilder->where('users.isWorker', '=', 0);
+        }
+        if (!$isCliente) {
+            $queryBuilder->where('users.isWorker', '=', 1);
         }
 
-        $queryBuilder->where('users.isWorker', '=', 1);
+
 
         return $queryBuilder->get();
 

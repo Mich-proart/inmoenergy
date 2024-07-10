@@ -6,7 +6,7 @@
                 <section>
                     <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
                         <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
-                            Datos del usuario
+                            Datos personales
                         </span>
                     </div>
                     <div class="form-row">
@@ -80,7 +80,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="inputState">Tipo document: </label>
+                            <label for="inputState">Tipo documento: </label>
                             <select wire:model="form.documentTypeId"
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
                                 name="documentTypeId">
@@ -336,6 +336,15 @@
                         </div>
                     </div>
                 </section>
+                @if (!$this->form->isWorker)
+                    <section>
+                        <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                            <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                                Datos cliente
+                            </span>
+                        </div>
+                    </section>
+                @endif
                 <div class="row no-print">
                     <div class="col-12">
                         <div style="margin-top: 50px; margin-bottom: 25px">
