@@ -20,7 +20,7 @@ class CreateUserDto
         public string $phone,
         public int $clientTypeId,
         public int $userTitleId,
-        public string $IBAN,
+        public ?string $IBAN,
         public ?int $responsibleId,
         public ?int $adviserAssignedId,
     ) {

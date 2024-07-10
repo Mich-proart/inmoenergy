@@ -366,6 +366,11 @@ return [
             'icon' => 'fas fa-fw fa-cog',
             'submenu' => [
                 [
+                    'text' => 'Gestión de usuarios',
+                    'route' => 'admin.users',
+                    'icon' => 'fas fa-fw fa-users-cog',
+                ],
+                [
                     'text' => 'Gestion de roles',
                     'route' => 'admin.roles.index',
                     'icon' => 'fas fa-fw fa-users-cog',
