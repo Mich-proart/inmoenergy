@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Formality\FormalityController;
+use App\Http\Controllers\User\UserConntroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
@@ -12,6 +13,7 @@ Route::resource('/roles', RoleController::class)->names('admin.roles');
 Route::group(['prefix' => 'api'], function () {
     Route::get('/formality/pending', [FormalityController::class, 'getPending'])->name('api.formality.activation.pending');
     Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
+    Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
 });
 
 Route::prefix('formality')->group(function () {
@@ -41,4 +43,14 @@ Route::prefix('formality')->group(function () {
         return view('admin.formality.totalInProgress');
     })->name('admin.formality.totalInProgress');
 
+});
+
+Route::prefix('users')->group(function () {
+    Route::get('/', function () {
+        return view('admin.user.users');
+    })->name('admin.users');
+    Route::get('/client', function () {
+        return view('admin.user.clients');
+    })->name('admin.clients');
+    Route::get('/create', [UserConntroller::class, 'create'])->name('admin.users.create');
 });

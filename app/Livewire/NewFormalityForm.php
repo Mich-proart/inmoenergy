@@ -65,6 +65,7 @@ class NewFormalityForm extends Component
                 $clientAddres = $this->addressService->createAddress($this->form->getCreateClientAddressDto());
                 $this->createFormalityService->setCorrespondenceAddressId($clientAddres->id);
                 $this->createFormalityService->setIsSameCorrespondenceAddress(false);
+                $user->update(['address_id' => $clientAddres->id]);
             }
             foreach ($this->form->serviceIds as $serviceId) {
                 $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);

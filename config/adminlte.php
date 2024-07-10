@@ -307,33 +307,33 @@ return [
 
         // Sidebar items:
         [
-            'text' => 'Tramites Clientes',
+            'text' => 'Trámites clientes',
             'icon' => 'fas fa-fw fa-file-invoice',
             'submenu' => [
                 [
-                    'text' => 'Nuevo Tramite',
+                    'text' => 'Nuevo trámite',
                     'route' => 'admin.formality.create',
                 ],
                 [
-                    'text' => 'Tramites En Curso',
+                    'text' => 'Trámites en curso',
                     'route' => 'admin.formality.inprogress',
                 ],
                 [
-                    'text' => 'Tramites Cerrados',
+                    'text' => 'Trámites cerrados',
                     'route' => 'admin.formality.closed',
                 ]
             ]
         ],
         [
-            'text' => 'Tramites & Tickets',
+            'text' => 'Trámites y tickets',
             'icon' => 'fas fa-copy',
             'submenu' => [
                 [
-                    'text' => 'Tramites Asignados',
+                    'text' => 'Trámites asignados',
                     'route' => 'admin.formality.assigned'
                 ],
                 [
-                    'text' => 'Tramites Realizados',
+                    'text' => 'Trámites realizados',
                     'route' => 'admin.formality.completed'
                 ],
                 [
@@ -347,7 +347,7 @@ return [
             'icon' => 'nav-icon fas fa-th',
             'submenu' => [
                 [
-                    'text' => 'Asignación de tramites',
+                    'text' => 'Asignación de trámites',
                     'route' => 'admin.formality.assignment'
                 ],
                 [
@@ -357,16 +357,26 @@ return [
             ]
         ],
         [
-            'text' => 'Documentation',
+            'text' => 'Documentación',
             'icon' => 'fas fa-fw fa-file',
             'submenu' => []
         ],
         [
-            'text' => 'configuracion',
+            'text' => 'Configuración',
             'icon' => 'fas fa-fw fa-cog',
             'submenu' => [
                 [
-                    'text' => 'Gestion de roles',
+                    'text' => 'Gestión de usuarios',
+                    'route' => 'admin.users',
+                    'icon' => 'fas fa-fw fa-users-cog',
+                ],
+                [
+                    'text' => 'Gestión de clientes',
+                    'route' => 'admin.clients',
+                    'icon' => 'fas fa-fw fa-users-cog',
+                ],
+                [
+                    'text' => 'Gestión de roles',
                     'route' => 'admin.roles.index',
                     'icon' => 'fas fa-fw fa-users-cog',
                 ]

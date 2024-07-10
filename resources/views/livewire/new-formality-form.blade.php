@@ -143,7 +143,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="inputState">Tipo document: </label>
+                            <label for="inputState">Tipo documento: </label>
                             <select wire:model="form.documentTypeId"
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
                                 name="documentTypeId" required>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Address\AddressController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\User\UserConntroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,4 @@ Route::get("/address", [AddressController::class, 'getProvinces']);
 Route::get("/address/street", [AddressController::class, 'getStreetTypes']);
 Route::get("/address/{provinceId}", [AddressController::class, 'getLocations']);
 
-Route::get("/test", [TestController::class, 'index']);
+Route::get("/test", [UserConntroller::class, 'index']);

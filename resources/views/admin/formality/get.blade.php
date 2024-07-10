@@ -46,8 +46,6 @@
                                 {{ucfirst($formality->product->name)}}
                             @endif
                         </div>
-
-
                     </div>
                 </div>
             </section>
@@ -58,11 +56,21 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tipo de trámite: </label> {{ucfirst($formality->type->name)}}
                         </div>
+                        @if (isset($formality->completion_date))
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha de finalización: </label> {{$formality->completion_date}}
+                            </div>
+                        @endif
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for="">Suministro tramitado: </label> {{ucfirst($formality->service->name)}}
                         </div>
+                        @if (isset($formality->assignment_date))
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha de asignación: </label> {{$formality->assignment_date}}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
@@ -97,7 +105,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="inputState">Tipo document: </label> @if (isset($client->documentType))
+                        <label for="inputState">Tipo documento: </label> @if (isset($client->documentType))
                             {{ucfirst($client->documentType->name)}}
                         @endif
                     </div>
@@ -316,7 +324,67 @@
                 </div>
 
             </div>
+            @if ($formality->completion_date !== null)
 
+                <section>
+                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                            Datos de trámite
+                        </span>
+                    </div>
+                    <!--
+                                                                                                                        <div class="form-row">
+                                                                                                                            <div class="form-group col-md-4" style="margin-bottom: 25px">
+                                                                                                                                <div class="form-check form-switch">
+                                                                                                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                                                                                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
+                                                                                                                                        editar este tramite</label>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        -->
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
+                                {{$formality->accessRate->name}}
+                            @endif
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="">CUPS: </label> @if (isset($formality->CUPS))
+                                {{$formality->CUPS}}
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="">Consumo anual: </label> @if (isset($formality->annual_consumption))
+                                {{$formality->annual_consumption}}
+                            @endif
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="">Comisión bruta: </label> @if (isset($formality->commission))
+                                {{$formality->commission}}
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="">Potencia: </label> @if (isset($formality->potency))
+                                {{$formality->potency}}
+                            @endif
+                        </div>
+
+                    </div>
+                </section>
+
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Observaciones internas</label>
+                        <textarea class="form-control" @readonly(true) id="exampleFormControlTextarea1" rows="3"
+                            name="internal_observation">{{$formality->internal_observation}}</textarea>
+                    </div>
+
+                </div>
+            @endif
         </div>
     </div>
 

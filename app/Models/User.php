@@ -36,7 +36,8 @@ class User extends Authenticatable
         'adviser_assigned_id',
         'responsible_id',
         'user_title_id',
-        'IBAN'
+        'IBAN',
+        'address_id'
     ];
 
     /**
@@ -85,6 +86,10 @@ class User extends Authenticatable
     public function title(): BelongsTo
     {
         return $this->belongsTo(UserTitle::class, 'user_title_id');
+    }
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class, 'address_id');
     }
     public function adminlte_image()
     {

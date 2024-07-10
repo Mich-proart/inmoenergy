@@ -21,7 +21,7 @@
                         <th>Fecha</th>
                         <th>Suministro</th>
                         <th>Nombre</th>
-                        <th>Tipo document</th>
+                        <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Observaciones del tramite</th>
