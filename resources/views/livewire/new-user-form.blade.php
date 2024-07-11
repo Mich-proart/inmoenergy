@@ -387,7 +387,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-3">
-                                <label for="inputState">Tipo incentivo: </label>
+                                <label for="inputState">Asesor asignado: </label>
                                 <select wire:model="form.adviserAssignedId"
                                     class="form-control @error('form.adviserAssignedId') is-invalid @enderror"
                                     name="adviserAssignedId">
