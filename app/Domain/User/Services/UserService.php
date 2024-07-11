@@ -132,6 +132,7 @@ class UserService
             ->leftJoin('province', 'province.id', '=', 'location.province_id')
             ->select(
                 'users.*',
+                'users.id as user_id',
                 'address.id as address_id',
                 'location.name as location',
                 'location.id as location_id',
@@ -168,7 +169,7 @@ class UserService
 
     public function getById(int $id)
     {
-        return User::firstWhere('id', $id)
+        return User::where('id', $id)
             ->with([
                 'address',
                 'address.streetType',
@@ -181,6 +182,8 @@ class UserService
                 'title',
                 'adviserAssigned',
                 'responsible',
-            ]);
+                'incentive',
+                'roles'
+            ])->first();
     }
 }
