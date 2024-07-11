@@ -6,6 +6,7 @@ namespace App\Domain\User\Services;
 use App\Domain\User\Dtos\CreateUserDetailDto;
 use App\Domain\User\Dtos\CreateUserDto;
 use App\Exceptions\CustomException;
+use App\Models\IncentiveType;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\ClientType;
@@ -75,6 +76,10 @@ class UserService
     {
         return ClientType::all();
     }
+    public function getIncentiveTypes()
+    {
+        return IncentiveType::all();
+    }
     public function getRoles()
     {
         return Role::all();
@@ -127,6 +132,7 @@ class UserService
             ->leftJoin('province', 'province.id', '=', 'location.province_id')
             ->select(
                 'users.*',
+                'users.id as user_id',
                 'address.id as address_id',
                 'location.name as location',
                 'location.id as location_id',
@@ -163,7 +169,7 @@ class UserService
 
     public function getById(int $id)
     {
-        return User::firstWhere('id', $id)
+        return User::where('id', $id)
             ->with([
                 'address',
                 'address.streetType',
@@ -176,6 +182,8 @@ class UserService
                 'title',
                 'adviserAssigned',
                 'responsible',
-            ]);
+                'incentive',
+                'roles'
+            ])->first();
     }
 }

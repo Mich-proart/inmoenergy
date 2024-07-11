@@ -90,7 +90,7 @@
     $('#user-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
         console.log(row);
-        // window.location.href = "{{ route('admin.formality.edit', ':id') }}".replace(':id', row.formality_id);
+        window.location.href = "{{ route('admin.users.edit', ':id') }}".replace(':id', Number(row.user_id));
     })
 
 

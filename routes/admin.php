@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\User\UserAdminController;
 use App\Http\Controllers\Formality\FormalityController;
 use App\Http\Controllers\User\UserConntroller;
 use Illuminate\Support\Facades\Route;
@@ -53,4 +54,5 @@ Route::prefix('users')->group(function () {
         return view('admin.user.clients');
     })->name('admin.clients');
     Route::get('/create', [UserConntroller::class, 'create'])->name('admin.users.create');
+    Route::get('/{id}/edit/', [UserAdminController::class, 'edit'])->name('admin.users.edit');
 });
