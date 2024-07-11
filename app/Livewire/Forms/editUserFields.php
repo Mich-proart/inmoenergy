@@ -49,7 +49,7 @@ class editUserFields extends Form
         $this->email = $user->email;
         $this->firstLastName = $user->first_last_name;
         $this->secondLastName = $user->second_last_name;
-        $this->documentTypeId = $user->documentType->id;
+        $this->documentTypeId = $user->documentType->id ?? null;
         $this->documentNumber = $user->document_number;
         $this->phone = $user->phone;
         $this->clientTypeId = $user->clientType->id ?? null;
