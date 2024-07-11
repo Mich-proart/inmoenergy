@@ -51,7 +51,18 @@ class NewUserForm extends Component
         $streetTypes = StreetType::all();
         $housingTypes = $this->addressService->getHousingTypes();
         $roles = $this->userService->getRoles();
-        return view('livewire.new-user-form', compact(['documentTypes', 'clientTypes', 'userTitles', 'streetTypes', 'housingTypes', 'roles']));
+        $incentiveTypes = $this->userService->getIncentiveTypes();
+        $advisers = User::where('isWorker', 1)->get();
+        return view('livewire.new-user-form', compact([
+            'documentTypes',
+            'clientTypes',
+            'userTitles',
+            'streetTypes',
+            'housingTypes',
+            'roles',
+            'incentiveTypes',
+            'advisers'
+        ]));
     }
 
     #[Computed()]
@@ -88,7 +99,13 @@ class NewUserForm extends Component
             $user->update(['address_id' => $address->id]);
 
             DB::commit();
-            return redirect()->route('admin.users');
+
+            if ($this->form->isWorker == true) {
+                return redirect()->route('admin.users');
+            } else {
+                return redirect()->route('admin.clients');
+            }
+
         } catch (\Throwable $th) {
 
             DB::rollBack();

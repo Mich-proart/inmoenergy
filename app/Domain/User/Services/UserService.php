@@ -6,6 +6,7 @@ namespace App\Domain\User\Services;
 use App\Domain\User\Dtos\CreateUserDetailDto;
 use App\Domain\User\Dtos\CreateUserDto;
 use App\Exceptions\CustomException;
+use App\Models\IncentiveType;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\ClientType;
@@ -74,6 +75,10 @@ class UserService
     public function getClientTypes()
     {
         return ClientType::all();
+    }
+    public function getIncentiveTypes()
+    {
+        return IncentiveType::all();
     }
     public function getRoles()
     {

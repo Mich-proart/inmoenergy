@@ -37,7 +37,10 @@ class User extends Authenticatable
         'responsible_id',
         'user_title_id',
         'IBAN',
-        'address_id'
+        'address_id',
+        'incentive_type_id',
+        'business_group',
+        'user_office'
     ];
 
     /**
@@ -109,5 +112,9 @@ class User extends Authenticatable
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+    public function incentive(): BelongsTo
+    {
+        return $this->belongsTo(IncentiveType::class, 'incentive_type_id');
     }
 }

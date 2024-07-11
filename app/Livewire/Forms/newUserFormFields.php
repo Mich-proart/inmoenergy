@@ -25,6 +25,12 @@ class newUserFormFields extends Form
     public $userTitleId;
     // public $IBAN;
 
+    public $incentiveTypeTd;
+    public $businessGroup;
+    public $userOffice;
+    public $adviserAssignedId;
+
+
     public $roleId;
     public $locationId;
     public $streetTypeId;
@@ -59,6 +65,10 @@ class newUserFormFields extends Form
         'userTitleId' => 'required|integer|exists:user_title,id',
         'password' => 'required|string|min:8',
         // 'IBAN' => 'required|string',
+        'incentiveTypeTd' => 'sometimes|nullable|integer|exists:incentive_type,id',
+        'businessGroup' => 'sometimes|nullable|string',
+        'userOffice' => 'sometimes|nullable|string',
+        'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
         'roleId' => 'required|integer|exists:roles,id',
         'locationId' => 'required|integer|exists:location,id',
         'streetTypeId' => 'required|integer|exists:street_type,id',
@@ -107,10 +117,13 @@ class newUserFormFields extends Form
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
             'client_type_id' => $this->clientTypeId,
-            'adviser_assigned_id' => null,
-            'responsible_id' => null,
+            'adviser_assigned_id' => $this->adviserAssignedId,
+            'responsible_id' => auth()->user()->id,
             'user_title_id' => $this->userTitleId,
-            'IBAN' => null
+            'IBAN' => null,
+            'incentive_type_id' => $this->incentiveTypeTd,
+            'business_group' => $this->businessGroup,
+            'user_office' => $this->userOffice,
         ];
     }
 

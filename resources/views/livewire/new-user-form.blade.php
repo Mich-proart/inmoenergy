@@ -343,6 +343,70 @@
                                 Datos cliente
                             </span>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Tipo incentivo: </label>
+                                <select wire:model="form.incentiveTypeTd"
+                                    class="form-control @error('form.incentiveTypeTd') is-invalid @enderror"
+                                    name="incentiveTypeTd">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($incentiveTypes))
+                                        @foreach ($incentiveTypes as $type)
+                                            <option value="{{ $type->id }}">{{ ucfirst($type->name) }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('form.incentiveTypeTd')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputCity">Oficina usuario</label>
+                                <input wire:model="form.userOffice" type="text"
+                                    class="form-control @error('form.userOffice') is-invalid @enderror" id="inputCity"
+                                    name="userOffice">
+                                @error('form.userOffice')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Grupo empresarial: </label>
+                                <input wire:model="form.businessGroup" type="text"
+                                    class="form-control @error('form.businessGroup') is-invalid @enderror" id="inputCity"
+                                    name="businessGroup">
+                                @error('form.businessGroup')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Tipo incentivo: </label>
+                                <select wire:model="form.adviserAssignedId"
+                                    class="form-control @error('form.adviserAssignedId') is-invalid @enderror"
+                                    name="adviserAssignedId">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($advisers))
+                                        @foreach ($advisers as $adviser)
+                                            <option value="{{ $adviser->id }}">
+                                                {{ ucfirst($adviser->name . ' ' . $adviser->first_last_name . ' ' . $adviser->second_last_name) }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('form.adviserAssignedId')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                     </section>
                 @endif
                 <div class="row no-print">
