@@ -17,10 +17,10 @@
             <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
-                        <th>Client emisor</th>
+                        <th>Cliente emisor</th>
                         <th>Fecha</th>
                         <th>Suministro</th>
-                        <th>Nombre</th>
+                        <th>Cliente final</th>
                         <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
@@ -102,8 +102,8 @@
                 },
                 "targets": 8
             },
-            { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 8] }
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8] }
         ],
         "order": [
             [0, "desc"]

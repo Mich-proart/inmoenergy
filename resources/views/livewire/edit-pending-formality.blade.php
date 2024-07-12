@@ -14,7 +14,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancalar</button>
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="submit" class="btn btn-success float-right">Confirmar</button>
                     </div>
                 </form>
             </div>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancalar</button>
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="submit" class="btn btn-success float-right">Confirmar</button>
                     </div>
                 </form>
             </div>
@@ -54,7 +54,7 @@
                             <th>Usuario asignado</th>
                             <th>Tipo de tramite</th>
                             <th>Suministro</th>
-                            <th>Nombre</th>
+                            <th>Cliente final</th>
                             <th>Dirección</th>
                             <th>Fecha finalización tramite</th>
                             <th>Estado Tramite</th>
@@ -184,7 +184,7 @@
                     },
                     "targets": 7
                 },
-                { className: "dt-head-center", targets: [0] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12] },
                 { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
             ], "order": [

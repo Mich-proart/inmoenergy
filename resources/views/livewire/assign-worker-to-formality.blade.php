@@ -11,7 +11,7 @@
                             <th>Client emisor</th>
                             <th>Fecha</th>
                             <th>Suministro</th>
-                            <th>Nombre</th>
+                            <th>Cliente final</th>
                             <th>Tipo documento</th>
                             <th>N documento</th>
                             <th>Dirección</th>
