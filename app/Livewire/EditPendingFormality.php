@@ -62,4 +62,47 @@ class EditPendingFormality extends Component
     {
         $this->form->setId($formalityId);
     }
+
+    public function saveKo()
+    {
+        $this->form->validateOnly('formalityId');
+
+        DB::beginTransaction();
+
+        try {
+            $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::KO->value);
+
+            Formality::firstWhere('id', $this->form->formalityId)
+                ->update(['formality_status_id' => $status->id]);
+            DB::commit();
+            return redirect()->route('admin.formality.pending');
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+    }
+    public function resetFormality()
+    {
+        $this->form->validateOnly('formalityId');
+
+        DB::beginTransaction();
+
+        try {
+            $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_CURSO->value);
+
+            $updates = [
+                'formality_status_id' => $status->id,
+                'product_id' => null
+            ];
+
+            Formality::firstWhere('id', $this->form->formalityId)->update($updates);
+            DB::commit();
+            return redirect()->route('admin.formality.pending');
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+    }
 }
