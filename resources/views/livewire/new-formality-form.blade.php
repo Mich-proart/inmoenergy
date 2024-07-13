@@ -650,12 +650,24 @@
                 '#client_streetNumber',
                 '#client_zipCode'
             ];
+            const corresponced_address_field = is_same_address_field.concat([
+                '#inputProvince',
+                '#client_block',
+                '#client_blockstaircase',
+                '#client_floor',
+                '#client_door'
+            ])
             $('#is_same_address').on('change', function () {
                 const select = $('#is_same_address').is(':checked');
-                console.log(select)
+
                 is_same_address_field.forEach(element => {
                     $(element).prop('required', !select);
                 })
+
+                if (select === true) {
+                    $('#inputProvince').val(0);
+                    corresponced_address_field.forEach(element => $(element).val(''))
+                }
 
             })
         });
