@@ -51,6 +51,7 @@ class ModifyFormality extends Component
     public function mount($formality, $prevStatus)
     {
         $this->formality = $formality;
+        $this->companyId = $formality->product->company->id ?? 0;
         $this->form->setData($this->formality);
         $this->prevStatus = $prevStatus;
     }
