@@ -37,7 +37,7 @@ class EditCompany extends Component
         try {
 
             $updates = [
-                'name' => $this->company_name
+                'name' => strtolower($this->company_name),
             ];
 
             Company::firstWhere('id', $this->company->id)->update($updates);
