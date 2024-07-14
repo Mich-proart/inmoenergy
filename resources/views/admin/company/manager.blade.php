@@ -15,8 +15,8 @@
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
-                        <livewire:create-company />
                         @role('superadmin')
+                        <livewire:create-company />
                         @endrole
 
                     </div>
@@ -83,22 +83,12 @@
     });
 
 
-    $('#user-content').on('click', 'tbody tr', function () {
+    $('#company-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
         console.log(row);
-
+        window.location.href = "{{ route('admin.company.manager.details', ':id') }}".replace(':id', row.id);
     })
 
-
 </script>
-<script>
-    function addQueryParam() {
-        var url = new URL('{{ route('admin.users.create') }}');
-        var params = new URLSearchParams(url.search);
-        params.set('content', 'client');
-        url.search = params.toString();
-        window.location.href = url.toString();
-    }
 
-</script>
 @stop

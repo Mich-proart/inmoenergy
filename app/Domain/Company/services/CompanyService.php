@@ -32,9 +32,14 @@ class CompanyService
     public function getAll()
     {
         $query = $this->CompanyQuery();
-        $query->whereNotNull('is_available');
+        $query->where('is_available', 1);
 
         return $query->get();
+    }
+
+    public function getByid(int $id)
+    {
+        return Company::where('id', $id)->first();
     }
 
 }

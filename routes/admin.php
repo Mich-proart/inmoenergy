@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\Company\CompanyAdminController;
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\User\UserAdminController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Formality\FormalityController;
+use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\User\UserConntroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
@@ -17,6 +19,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
     Route::get('/company', [CompanyController::class, 'index'])->name('api.company.query');
+    Route::get('/product', [ProductController::class, 'index'])->name('api.product.query');
 });
 
 Route::prefix('formality')->group(function () {
@@ -62,4 +65,5 @@ Route::prefix('company')->group(function () {
     Route::get('/', function () {
         return view('admin.company.manager');
     })->name('admin.company.manager');
+    Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
 });
