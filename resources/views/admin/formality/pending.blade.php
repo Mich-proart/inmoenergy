@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Altas pendientes fecha de activation</h1>
+<h1>Altas pendientes fecha de activación</h1>
 @stop
 
 @section('content')

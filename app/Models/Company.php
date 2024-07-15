@@ -13,5 +13,6 @@ class Company extends Model
 
     protected $fillable = [
         'name',
+        'is_available'
     ];
 }

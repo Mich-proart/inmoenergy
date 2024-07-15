@@ -22,7 +22,7 @@
                         <th>Usuario asignado</th>
                         <th>Tipo</th>
                         <th>Suministro</th>
-                        <th>Nombre</th>
+                        <th>Cliente final</th>
                         <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
@@ -91,10 +91,10 @@
                 "render": function (data, type, row) {
                     return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
                 },
-                "targets": 9
+                "targets": 10
             },
-            { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 9, 10, 11, 12] }
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12] },
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12] }
         ],
         "order": [
             [0, "desc"]

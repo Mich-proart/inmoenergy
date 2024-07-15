@@ -22,7 +22,7 @@
                         <th>Usuario asignado</th>
                         <th>Tipo</th>
                         <th>Suministro</th>
-                        <th>Nombre</th>
+                        <th>Cliente final</th>
                         <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
@@ -93,7 +93,7 @@
                 },
                 "targets": 9
             },
-            { className: "dt-head-center", targets: [0] },
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8] },
             { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12] }
         ],
         "order": [

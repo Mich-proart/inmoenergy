@@ -28,7 +28,15 @@ class modifyFormalityFields extends Form
 
     public function setData($formality)
     {
-        $this->issuer_observation = $formality->issuer_observation;
+        $this->issuer_observation = $formality->issuer_observation ?? '';
+        $this->CUPS = $formality->CUPS ?? '';
+        $this->access_rate_id = $formality->access_rate_id ?? '';
+        $this->annual_consumption = $formality->annual_consumption ?? '';
+        $this->canClientEdit = $formality->canClientEdit ?? false;
+        $this->internal_observation = $formality->internal_observation ?? '';
+        $this->product_id = $formality->product_id ?? '';
+        $this->commission = $formality->commission ?? '';
+        $this->potency = $formality->potency ?? '';
     }
 
     protected $rules = [
@@ -41,6 +49,17 @@ class modifyFormalityFields extends Form
         'product_id' => 'required|integer|exists:product,id',
         'commission' => 'required|integer',
         'potency' => 'required|integer',
+    ];
+    public $rules_to_update = [
+        'issuer_observation' => 'sometimes|nullable|string',
+        'CUPS' => 'sometimes|nullable|string',
+        'access_rate_id' => 'sometimes|nullable|integer|exists:access_rate,id',
+        'annual_consumption' => 'sometimes|nullable|integer',
+        'canClientEdit' => 'sometimes|nullable|boolean',
+        'internal_observation' => 'sometimes|nullable|string',
+        'product_id' => 'sometimes|nullable|integer|exists:product,id',
+        'commission' => 'sometimes|nullable|integer',
+        'potency' => 'sometimes|nullable|integer',
     ];
 
 

@@ -15,6 +15,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'company_id',
+        'is_available'
     ];
 
     public function company(): BelongsTo

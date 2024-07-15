@@ -379,6 +379,11 @@ return [
                     'text' => 'Gestión de roles',
                     'route' => 'admin.roles.index',
                     'icon' => 'fas fa-fw fa-users-cog',
+                ],
+                [
+                    'text' => 'Gestión de comercializadoras',
+                    'route' => 'admin.company.manager',
+                    'icon' => 'fas fa-fw fa-tools',
                 ]
             ]
         ],

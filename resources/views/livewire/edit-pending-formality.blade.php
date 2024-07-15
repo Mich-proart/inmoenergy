@@ -1,4 +1,46 @@
 <div>
+    <!-- Modal -->
+    <div wire:ignore.self class="modal fade" id="koModal" tabindex="-1" aria-labelledby="koModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Rechazar trámite</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form wire:submit.prevent="saveKo">
+                    <div class="modal-body">
+                        <p>¿Estas seguro de rechazar el trámite?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancalar</button>
+                        <button type="submit" class="btn btn-success float-right">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div wire:ignore.self class="modal fade" id="resetFormalityModal" tabindex="-1"
+        aria-labelledby="resetFormalityModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="resetFormalityModalLabel">Volver a tramitar</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form wire:submit.prevent="resetFormality">
+                    <div class="modal-body">
+                        <p>¿Estas seguro de volver a tramitar este registro?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancalar</button>
+                        <button type="submit" class="btn btn-success float-right">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div>
         <div class="card card-primary card-outline">
             <div class="card-header">
@@ -12,7 +54,7 @@
                             <th>Usuario asignado</th>
                             <th>Tipo de tramite</th>
                             <th>Suministro</th>
-                            <th>Nombre</th>
+                            <th>Cliente final</th>
                             <th>Dirección</th>
                             <th>Fecha finalización tramite</th>
                             <th>Estado Tramite</th>
@@ -38,7 +80,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="editRenovationModalLabel">Asignacion de fecha de activacion
+                        <h1 class="modal-title fs-5" id="editRenovationModalLabel">Asignacion de fecha de activación
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -127,8 +169,8 @@
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Volver a tramitar</button>
-                            <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-times"></i> K.O</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-edit"></i> Volver a tramitar</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
                         `;
@@ -142,7 +184,7 @@
                     },
                     "targets": 7
                 },
-                { className: "dt-head-center", targets: [0] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12] },
                 { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
             ], "order": [
