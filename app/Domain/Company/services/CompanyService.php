@@ -2,7 +2,6 @@
 
 namespace App\Domain\Company\Services;
 
-use App\Domain\Company\Dtos\CreateCompanyDto;
 use App\Exceptions\CustomException;
 use App\Models\Company;
 use Illuminate\Contracts\Database\Query\Builder;
