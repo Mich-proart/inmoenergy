@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Domain\Company\Services\CompanyService;
 use App\Exceptions\CustomException;
+use App\Models\Company;
 use Livewire\Component;
 use Illuminate\Support\Facades\App;
 use DB;
@@ -12,11 +13,11 @@ class CreateCompany extends Component
 {
     public $name;
 
-    protected $companyService;
+    // protected $companyService;
 
     public function __construct()
     {
-        $this->companyService = App::make(CompanyService::class);
+        // $this->companyService = App::make(CompanyService::class);
     }
     public function render()
     {
@@ -35,7 +36,13 @@ class CreateCompany extends Component
         DB::beginTransaction();
 
         try {
-            $this->companyService->create($this->name);
+            $found = Company::where('name', $this->name)->first();
+            if ($found)
+                throw CustomException::badRequestException('Company already exists');
+
+            Company::create([
+                'name' => strtolower($this->name),
+            ]);
             DB::commit();
             return redirect()->route('admin.company.manager');
         } catch (\Throwable $th) {
