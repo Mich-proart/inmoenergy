@@ -82,6 +82,30 @@ class newUserFormFields extends Form
         'door' => 'sometimes|nullable|string',
     ];
 
+    protected $messages = [
+        'name.required' => 'El nombre es requerido',
+        'email.unique' => 'El correo electronico ya se encuentra registrado',
+        'email.email' => 'El correo electronico no es valido',
+        'email.required' => 'El correo electronico es requerido',
+        'password.min' => 'La contraseña debe tener al menos 8 caracteres',
+        'password.required' => 'La contraseña es requerida',
+        'firstLastName.required' => 'El primer apellido es requerido',
+        'secondLastName.required' => 'El segundo apellido es requerido',
+        'documentTypeId.required' => 'El tipo de documento es requerido',
+        'documentNumber.required' => 'El numero de documento es requerido',
+        'phone.required' => 'El numero de telefono es requerido',
+        'clientTypeId.required' => 'El tipo de cliente es requerido',
+        'userTitleId.required' => 'El cargo es requerido',
+        'incentiveTypeTd.required' => 'El tipo de incentivo es requerido',
+        'roleId.required' => 'El rol es requerido',
+        'locationId.required' => 'La ubicacion es requerida',
+        'streetTypeId.required' => 'El tipo de calle es requerido',
+        'housingTypeId.required' => 'El tipo de vivienda es requerido',
+        'streetName.required' => 'El nombre de la calle es requerido',
+        'streetNumber.required' => 'El numero de la calle es requerido',
+        'zipCode.required' => 'El C.P. es requerido'
+    ];
+
     public function getCreateUserDto(): CreateUserDto
     {
         $pass = Hash::make($this->password);

@@ -50,7 +50,13 @@ class AssignWorkerToFormality extends Component
         'isCritical' => 'nullable|boolean',
     ];
 
-
+    protected $messages = [
+        'formalityId.required' => 'Debes seleccionar un tramite',
+        'formalityId.exists' => 'Debes seleccionar un tramite existente',
+        'user_Assigned_id.required' => 'Debes seleccionar un usuario',
+        'user_Assigned_id.exists' => 'Debes seleccionar un usuario existente',
+        'isCritical.boolean' => 'Debe ser un valor booleano',
+    ];
 
     public function save()
     {

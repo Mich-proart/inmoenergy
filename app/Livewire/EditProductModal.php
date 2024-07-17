@@ -32,6 +32,13 @@ class EditProductModal extends Component
         'name' => 'required|max:255|min:3|unique:product,name',
     ];
 
+    protected $messages = [
+        'name.required' => 'Debes introducir un nombre',
+        'name.max' => 'El nombre no puede superar los 255 caracteres',
+        'name.min' => 'El nombre debe tener al menos 3 caracteres',
+        'name.unique' => 'El nombre ya existe',
+    ];
+
     public function save()
     {
 

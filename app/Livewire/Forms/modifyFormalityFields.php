@@ -50,6 +50,23 @@ class modifyFormalityFields extends Form
         'commission' => 'required|integer',
         'potency' => 'required|integer',
     ];
+
+    protected $messages = [
+        'CUPS' => 'Debes rellenar el CUPS',
+        'access_rate_id.required' => 'Debes seleccionar una tarifa de acceso',
+        'access_rate_id.integer' => 'Debes seleccionar una tarifa de acceso',
+        'access_rate_id.exists' => 'Debes seleccionar una tarifa de acceso existente',
+        'annual_consumption.required' => 'Debes rellenar el consumo anual',
+        'annual_consumption.integer' => 'Debes rellenar el consumo anual valido',
+        'product_id.required' => 'Debes seleccionar un producto',
+        'product_id.integer' => 'Debes seleccionar un producto',
+        'product_id.exists' => 'Debes seleccionar un proyecto existente',
+        'commission.required' => 'Debes rellenar la comision',
+        'commission.integer' => 'Debes rellenar la comision',
+        'potency.required' => 'Debes rellenar la potencia',
+        'potency.integer' => 'Debes rellenar la potencia',
+
+    ];
     public $rules_to_update = [
         'issuer_observation' => 'sometimes|nullable|string',
         'CUPS' => 'sometimes|nullable|string',

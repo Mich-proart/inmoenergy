@@ -45,7 +45,9 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputState">Asignar usuario: </label>
-                                    <select wire:model="user_Assigned_id" class="form-control" id="inputProvince">
+                                    <select wire:model="user_Assigned_id"
+                                        class="form-control @error('user_Assigned_id') is-invalid @enderror"" id="
+                                        inputProvince">
                                         <option value="">-- seleccione --</option>
                                         @foreach ($this->workers as $worker)
                                             <option value="{{ $worker->id }}">
@@ -53,6 +55,11 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('user_Assigned_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-row">

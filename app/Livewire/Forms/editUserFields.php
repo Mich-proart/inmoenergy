@@ -118,6 +118,11 @@ class editUserFields extends Form
         'door' => 'sometimes|nullable|string',
     ];
 
+    protected $messages = [
+        'email.unique' => 'El correo electronico ya se encuentra registrado',
+        'email.email' => 'El correo electronico no es valido',
+    ];
+
     public function getclientUpdate()
     {
 

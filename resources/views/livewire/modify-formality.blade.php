@@ -29,7 +29,7 @@
                 <div class="form-group col-md-3">
                     <label for="">Compañía suministro: </label>
                     <select wire:model.live="companyId"
-                        class="form-control @error('form.company_id') is-invalid @enderror" name="company_id">
+                        class="form-control @error('form.company_id') is-invalid @enderror" name="company_id" required>
                         <option value="">-- seleccione --</option>
                         @foreach ($this->companies as $company)
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -45,7 +45,7 @@
                 <div class="form-group col-md-3">
                     <label for="">Producto compañía: </label>
                     <select wire:model="form.product_id"
-                        class="form-control @error('form.product_id') is-invalid @enderror" name="product_id">
+                        class="form-control @error('form.product_id') is-invalid @enderror" name="product_id" required>
                         <option value="">-- seleccione --</option>
                         @foreach ($this->products as $product)
                             <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -61,7 +61,7 @@
                     <label for="">Tarifa acceso: </label>
                     <select wire:model="form.access_rate_id"
                         class="form-control @error('form.access_rate_id') is-invalid @enderror" id="inputLocation"
-                        name="access_rate_id">
+                        name="access_rate_id" required>
                         <option value="">-- seleccione --</option>
                         @if (isset($accessRate))
                             @foreach ($accessRate as $rate)
@@ -80,7 +80,8 @@
                     <label for="">CUPS: </label>
 
                     <input wire:model="form.CUPS" type="text"
-                        class="form-control @error('form.CUPS') is-invalid @enderror" id="inputZip" name="CUPS">
+                        class="form-control @error('form.CUPS') is-invalid @enderror" id="inputZip" name="CUPS"
+                        required>
                     @error('form.CUPS')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -93,7 +94,7 @@
                     <label for="">Consumo anual: </label>
                     <input wire:model="form.annual_consumption" type="text"
                         class="form-control @error('form.annual_consumption') is-invalid @enderror" id="inputZip"
-                        name="annual_consumption">
+                        name="annual_consumption" required>
                     @error('form.annual_consumption')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -105,7 +106,7 @@
                     <label for="">Comisión bruta: </label>
                     <input wire:model="form.commission" type="text"
                         class="form-control @error('form.commission') is-invalid @enderror" id="inputZip"
-                        name="commission">
+                        name="commission" required>
                     @error('form.commission')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -115,7 +116,8 @@
                 <div class="form-group col-md-3">
                     <label for="">Potencia: </label>
                     <input wire:model="form.potency" type="text"
-                        class="form-control @error('form.potency') is-invalid @enderror" id="inputZip" name="potency">
+                        class="form-control @error('form.potency') is-invalid @enderror" id="inputZip" name="potency"
+                        required>
                     @error('form.potency')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
