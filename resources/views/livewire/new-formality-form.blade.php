@@ -565,7 +565,7 @@
                 </section>
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones</label>
+                        <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
                         <textarea wire:model="form.observation" class="form-control" id="exampleFormControlTextarea1"
                             rows="3" name="observation"></textarea>
                     </div>
