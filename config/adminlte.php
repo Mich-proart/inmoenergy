@@ -384,6 +384,11 @@ return [
                     'text' => 'Gestión de comercializadoras',
                     'route' => 'admin.company.manager',
                     'icon' => 'fas fa-fw fa-tools',
+                ],
+                [
+                    'text' => 'Gestión de productos',
+                    'route' => 'admin.product.manager',
+                    'icon' => 'fas fa-fw fa-tools',
                 ]
             ]
         ],
