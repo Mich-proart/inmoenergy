@@ -17,19 +17,16 @@
             <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
-                        <th>Cliente emisor</th>
+
                         <th>Fecha</th>
                         <th>Usuario asignado</th>
                         <th>Tipo</th>
                         <th>Suministro</th>
                         <th>Cliente final</th>
-                        <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Estado Tramite</th>
                         <th>Observaciones del tramitador</th>
-                        <th>Compañía Suministro</th>
-                        <th>Producto Compañía</th>
                     </tr>
                 </thead>
 
@@ -88,29 +85,23 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
-            { data: 'issuer' },
             { data: 'created_at' },
             { data: 'assigned' },
             { data: 'type' },
             { data: 'service' },
             { data: 'fullName' },
-            { data: 'document_type' },
             { data: 'documentNumber' },
             { data: 'fullAddress' },
-            { data: 'status' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
+                }
+            },
             { data: 'issuer_observation' },
-            { data: 'company' },
-            { data: 'product' },
         ],
         "columnDefs": [
-            {
-                "render": function (data, type, row) {
-                    return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
-                },
-                "targets": 9
-            },
             { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 12] }
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] }
         ],
         "order": [
             [0, "desc"]
