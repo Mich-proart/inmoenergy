@@ -155,7 +155,7 @@ class UserService
 
         $queryBuilder = $this->UsersQueryBuilder();
         if ($isCliente == true) {
-            $queryBuilder->where('users.isWorker', '=', 0);
+            $queryBuilder->where('users.isWorker', '=', 0)->where('users.incentive_type_id', '!=', null);
         }
         if (!$isCliente) {
             $queryBuilder->where('users.isWorker', '=', 1);
