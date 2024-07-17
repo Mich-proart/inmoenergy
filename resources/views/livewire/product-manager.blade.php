@@ -36,8 +36,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="create-product-modal-Label">Asignacion de fecha de
-                                activación
+                            <h1 class="modal-title fs-5" id="create-product-modal-Label">Crear un nuevo proyecto
                             </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
