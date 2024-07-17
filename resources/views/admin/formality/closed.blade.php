@@ -70,7 +70,7 @@
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Tramites cerrados'
+                title: `Tramites cerrados - ${new Date()}`
             }
         ],
         "processing": true,

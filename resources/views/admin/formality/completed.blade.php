@@ -73,7 +73,7 @@
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Tramites realizados'
+                title: `Tramites realizados - ${new Date()}`
             }
         ],
         "processing": true,
