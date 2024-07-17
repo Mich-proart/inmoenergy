@@ -140,6 +140,9 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
                         Finalizar trámite</button>
+                    <button wire:click="insertData" type="button" class="btn btn-primary float-right"
+                        style="margin-right: 10px"><i class="far fa-save"></i>
+                        Guardar datos</button>
                 </div>
             </div>
         </div>

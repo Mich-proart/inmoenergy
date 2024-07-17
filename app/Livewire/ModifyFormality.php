@@ -82,4 +82,27 @@ class ModifyFormality extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
     }
+    public function insertData()
+    {
+        $this->form->validate();
+
+        DB::beginTransaction();
+
+        try {
+            $updates = array_merge(
+                $this->form->getDataToUpdate(),
+                [
+                    'completion_date' => now()
+                ]
+            );
+
+            Formality::firstWhere('id', $this->formality->id)->update($updates);
+            DB::commit();
+            return redirect()->route('admin.formality.completed');
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+    }
 }
