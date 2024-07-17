@@ -151,7 +151,7 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: 'Tramites en curso'
+                    title: `Altas pendientes fecha de activación - ${new Date()}`
                 }
             ],
             "processing": true,

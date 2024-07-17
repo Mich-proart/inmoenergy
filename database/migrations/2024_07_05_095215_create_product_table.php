@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->foreignId('company_id')->constrained('company');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

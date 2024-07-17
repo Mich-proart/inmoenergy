@@ -71,7 +71,7 @@
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Tramites en curso'
+                title: `Tramites en curso ${new Date()}`
             }
         ],
         "processing": true,

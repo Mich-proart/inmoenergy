@@ -3,12 +3,15 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Asignación de tramites</h1>
+<h1>Gestión de productos</h1>
 @stop
 
 @section('content')
 
-@livewire('assign-worker-to-formality')
+<div>
+    <livewire:product-manager />
+
+</div>
 
 
 @stop
@@ -24,10 +27,6 @@
 
 @section('js')
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
-
 
 
 @stop

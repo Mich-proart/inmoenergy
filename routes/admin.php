@@ -67,3 +67,9 @@ Route::prefix('company')->group(function () {
     })->name('admin.company.manager');
     Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
 });
+Route::prefix('product')->group(function () {
+    Route::get('/', function () {
+        return view('admin.product.manager');
+    })->name('admin.product.manager');
+    // Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
+});

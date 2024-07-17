@@ -96,7 +96,7 @@
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Consultas de tramites en curso totales'
+                title: `Consultas de tramites en curso totales - ${new Date()}`
             }
         ],
         "processing": true,

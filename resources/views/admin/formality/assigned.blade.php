@@ -96,7 +96,7 @@
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Tramites asignados'
+                title: `Tramites asignados - ${new Date()}`
             }
         ],
         "processing": true,
