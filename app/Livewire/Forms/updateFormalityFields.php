@@ -162,7 +162,7 @@ class updateFormalityFields extends Form
 
     protected $rules = [
         'formalityTypeId' => 'required|nullable|exists:formality_type,id',
-        'serviceIds' => 'required|nullable|array|exists:service,id',
+        'serviceIds' => 'required|nullable|exists:service,id',
         'name' => 'required|nullable|string',
         'email' => 'required|nullable|email',
         'firstLastName' => 'required|nullable|string',
