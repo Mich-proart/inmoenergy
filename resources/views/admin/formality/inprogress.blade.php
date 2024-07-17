@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites en curso</h1>
+<h1>Trámites en curso</h1>
 @stop
 
 @section('content')

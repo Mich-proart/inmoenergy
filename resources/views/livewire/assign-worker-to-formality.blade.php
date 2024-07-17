@@ -8,16 +8,16 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Client emisor</th>
+                            <th>Cliente emisor</th>
                             <th>Fecha</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Tipo documento</th>
                             <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Observaciones del tramite</th>
-                            <th>Estado Tramite</th>
-                            <th>Tramite Critico</th>
+                            <th>Observaciones del trámite</th>
+                            <th>Estado Trámite</th>
+                            <th>Trámite Crítico</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -72,7 +72,7 @@
                                         <input wire:model="isCritical" class="form-check-input" type="checkbox"
                                             value="0" id="isCritical">
                                         <label class="form-check-label" for="invalidCheck2">
-                                            Tramite Critico
+                                            Trámite Crítico
                                         </label>
 
                                     </div>
@@ -106,7 +106,7 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: `Asignación de tramites - ${new Date()}`
+                    title: `Asignación de trámites - ${new Date()}`
                 }
             ],
             "processing": true,

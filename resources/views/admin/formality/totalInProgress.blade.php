@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Consultas de tramites en curso totales</h1>
+<h1>Consultas de trámites en curso totales</h1>
 @stop
 
 @section('content')
@@ -24,9 +24,9 @@
                         <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
-                        <th>Observaciones del tramite</th>
-                        <th>Estado Tramite</th>
-                        <th>Tramite Critico</th>
+                        <th>Observaciones del trámite</th>
+                        <th>Estado Trámite</th>
+                        <th>Trámite Crítico</th>
                         <th>Compañía Suministro</th>
                         <th>Producto Compañía</th>
                         <th>Consumo anual</th>

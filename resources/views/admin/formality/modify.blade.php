@@ -43,7 +43,7 @@
                             <label for="">Producto Compañía:</label>
                         </div>
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Tramite critico:</label>
+                            <label for="">Tramite crítico:</label>
                             <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isCritical)) onclick="return false;">
                         </div>
                     </div>

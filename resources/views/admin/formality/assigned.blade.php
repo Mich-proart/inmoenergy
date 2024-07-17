@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites asignados</h1>
+<h1>Trámites asignados</h1>
 @stop
 
 @section('content')
@@ -26,7 +26,7 @@
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Estado Tramite</th>
-                        <th>Tramite Critico</th>
+                        <th>Trámite Crítico</th>
                         <th>Observaciones del tramite</th>
                         <th>Compañía Suministro</th>
                         <th>Producto Compañía</th>
