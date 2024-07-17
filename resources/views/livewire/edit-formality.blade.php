@@ -529,11 +529,11 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-
                             </div>
                         </div>
+
                         <div class="row">
-                            <!-- client province -->
+
                             <div class="col-md-3">
                                 <label for="inputState">Provincia: </label>
                                 <select wire:model.live="target_clientProvinceId" class="form-control"
@@ -611,7 +611,7 @@
             </form>
         </div>
     </div>
-    <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
 

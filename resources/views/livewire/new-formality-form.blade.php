@@ -638,7 +638,7 @@
             </form>
         </div>
     </div>
-    <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
 
