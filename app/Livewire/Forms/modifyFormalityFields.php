@@ -42,7 +42,7 @@ class modifyFormalityFields extends Form
     protected $rules = [
         'issuer_observation' => 'sometimes|nullable|string',
         'CUPS' => 'required|string',
-        'access_rate_id' => 'required|integer|exists:access_rate,id',
+        'access_rate_id' => 'required|integer|exists:component_option,id',
         'annual_consumption' => 'required|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
@@ -70,7 +70,7 @@ class modifyFormalityFields extends Form
     public $rules_to_update = [
         'issuer_observation' => 'sometimes|nullable|string',
         'CUPS' => 'sometimes|nullable|string',
-        'access_rate_id' => 'sometimes|nullable|integer|exists:access_rate,id',
+        'access_rate_id' => 'sometimes|nullable|integer|exists:component_option,id',
         'annual_consumption' => 'sometimes|nullable|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
