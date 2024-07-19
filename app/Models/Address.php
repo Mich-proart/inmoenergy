@@ -34,11 +34,11 @@ class Address extends Model
 
     public function streetType(): BelongsTo
     {
-        return $this->belongsTo(StreetType::class);
+        return $this->belongsTo(ComponentOption::class, 'street_type_id');
     }
 
     public function housingType(): BelongsTo
     {
-        return $this->belongsTo(HousingType::class, 'housing_type_id');
+        return $this->belongsTo(ComponentOption::class, 'housing_type_id');
     }
 }

@@ -389,6 +389,11 @@ return [
                     'text' => 'Gestión de productos',
                     'route' => 'admin.product.manager',
                     'icon' => 'fas fa-fw fa-tools',
+                ],
+                [
+                    'text' => 'Desplegables',
+                    'route' => 'admin.config.component',
+                    'icon' => 'fas fa-fw fa-tools',
                 ]
             ]
         ],

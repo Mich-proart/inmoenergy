@@ -43,7 +43,7 @@ class EditPendingFormality extends Component
             $updates = array_merge(
                 $this->form->getDataToUpdate(),
                 [
-                    'formality_status_id' => $status->id,
+                    'status_id' => $status->id,
                     'renewal_date' => $renewal_date
                 ]
             );

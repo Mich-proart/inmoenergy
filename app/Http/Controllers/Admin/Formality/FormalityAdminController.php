@@ -50,7 +50,7 @@ class FormalityAdminController extends Controller
 
                 $prevStatus = $data->formality_status_id;
 
-                $data->update(['formality_status_id' => $status->id]);
+                $data->update(['status_id' => $status->id]);
 
                 $formality = $this->formalityService->getById($id);
                 $client = $formality->client;

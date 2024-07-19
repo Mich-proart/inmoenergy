@@ -29,13 +29,16 @@ return new class extends Migration {
             $table->string('CUPS')->nullable();
             $table->text('internal_observation')->nullable();
             $table->integer('annual_consumption')->nullable();
+            $table->decimal('commission', 10, 2)->nullable();
+            $table->decimal('potency', 10, 2)->nullable();
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('correspondence_address_id')->nullable()->constrained('address');
             $table->boolean('isSameCorrespondenceAddress')->default(true);
-            $table->foreignId('formality_type_id')->constrained('formality_type');
-            $table->foreignId('formality_status_id')->constrained('formality_status');
-            $table->foreignId('access_rate_id')->nullable()->constrained('access_rate');
-            $table->foreignId('service_id')->constrained('service');
+            $table->foreignId('formality_type_id')->constrained('component_option');
+            $table->foreignId('status_id')->constrained('status');
+            $table->foreignId('access_rate_id')->nullable()->constrained('component_option');
+            $table->foreignId('service_id')->constrained('component_option');
+            $table->foreignId('product_id')->nullable()->constrained('product');
             $table->timestamps();
         });
     }

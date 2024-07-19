@@ -14,12 +14,15 @@ return new class extends Migration {
             $table->string('first_last_name')->nullable();
             $table->string('second_last_name')->nullable();
             $table->string('document_number')->nullable();
-            $table->foreignId('document_type_id')->nullable()->constrained('document_type');
+            $table->foreignId('document_type_id')->nullable()->constrained('component_option');
             $table->string('phone')->nullable();
-            $table->foreignId('client_type_id')->nullable()->constrained('client_type');
+            $table->foreignId('client_type_id')->nullable()->constrained('component_option');
             $table->foreignId('adviser_assigned_id')->nullable()->constrained('users');
             $table->foreignId('responsible_id')->nullable()->constrained('users');
-            $table->foreignId('user_title_id')->nullable()->constrained('user_title');
+            $table->foreignId('user_title_id')->nullable()->constrained('component_option');
+            $table->foreignId('address_id')->nullable()->constrained('address');
+            $table->foreignId('incentive_type_id')->nullable()->constrained('component_option');
+            $table->foreignId('office_id')->nullable()->constrained('office');
             $table->string('IBAN')->nullable();
         });
     }

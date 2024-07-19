@@ -7,7 +7,6 @@ use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\editUserFields;
 use App\Models\Address;
-use App\Models\StreetType;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\App;
@@ -40,7 +39,7 @@ class EditUser extends Component
         $documentTypes = $this->userService->getDocumentTypes();
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
-        $streetTypes = StreetType::all();
+        $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();

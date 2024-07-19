@@ -10,15 +10,24 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('service', function (Blueprint $table) {
+        Schema::create('status', function (Blueprint $table) {
             $table->id();
             $table->string('name');
         });
 
-        $mainValues = ["luz", "agua", "gas"];
+        $mainValues = [
+            "pendiente tramitar",
+            "asignado",
+            "revisando documentación",
+            "en curso",
+            "tramitado",
+            "en vigor",
+            "KO",
+            "incidencia"
+        ];
 
         foreach ($mainValues as $case) {
-            DB::table('service')->insert([
+            DB::table('status')->insert([
                 'name' => $case
             ]);
         }
@@ -29,6 +38,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('service');
+        Schema::dropIfExists('status');
     }
 };

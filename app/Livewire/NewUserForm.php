@@ -10,7 +10,6 @@ use App\Livewire\Forms\newUserFormFields;
 use App\Models\User;
 use Livewire\Component;
 use DB;
-use App\Models\StreetType;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\App;
 use Livewire\WithFileUploads;
@@ -48,7 +47,7 @@ class NewUserForm extends Component
         $documentTypes = $this->userService->getDocumentTypes();
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
-        $streetTypes = StreetType::all();
+        $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();

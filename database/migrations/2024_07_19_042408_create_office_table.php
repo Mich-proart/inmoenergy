@@ -10,19 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('document_type', function (Blueprint $table) {
+        Schema::create('office', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-
+            $table->foreignId('business_group_id')->constrained('business_group');
+            $table->timestamps();
         });
-
-        $mainValues = ["DNI", "pasaporte"];
-
-        foreach ($mainValues as $case) {
-            DB::table('document_type')->insert([
-                'name' => $case
-            ]);
-        }
     }
 
     /**
@@ -30,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('document_type');
+        Schema::dropIfExists('office');
     }
 };

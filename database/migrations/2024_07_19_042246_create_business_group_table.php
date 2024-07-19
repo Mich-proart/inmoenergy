@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('formality', function (Blueprint $table) {
-            $table->foreignId('product_id')->nullable()->constrained('product');
-            $table->integer('commission')->nullable();
-            $table->integer('potency')->nullable();
+        Schema::create('business_group', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('formality', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('business_group');
     }
 };

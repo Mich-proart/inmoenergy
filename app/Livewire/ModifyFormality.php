@@ -69,7 +69,7 @@ class ModifyFormality extends Component
                 $this->form->getDataToUpdate(),
                 [
                     'completion_date' => now(),
-                    'formality_status_id' => $status->id
+                    'status_id' => $status->id
                 ]
             );
 

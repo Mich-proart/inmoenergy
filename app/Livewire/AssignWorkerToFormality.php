@@ -69,7 +69,7 @@ class AssignWorkerToFormality extends Component
 
 
             $updates = [
-                'formality_status_id' => $status->id,
+                'status_id' => $status->id,
                 'user_Assigned_id' => $this->user_Assigned_id,
                 'isCritical' => $this->isCritical,
                 'assignment_date' => now()

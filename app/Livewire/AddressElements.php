@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Domain\Address\Services\AddressService;
-use App\Models\StreetType;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -35,7 +34,7 @@ class AddressElements extends Component
 
     public function render()
     {
-        $streetTypes = StreetType::all();
+        $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         return view('livewire.address-elements', compact(['streetTypes', 'housingTypes']));
     }

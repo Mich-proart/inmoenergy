@@ -11,7 +11,6 @@ use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Auth;
 use DB;
-use App\Models\StreetType;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\App;
 use Livewire\WithFileUploads;
@@ -71,6 +70,7 @@ class NewFormalityForm extends Component
                 $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
             }
 
+            /*
             $fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
 
             foreach ($fields as $field) {
@@ -80,7 +80,7 @@ class NewFormalityForm extends Component
                         ->collesionFile($this->folder, $field);
                 }
             }
-
+            */
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
@@ -119,7 +119,7 @@ class NewFormalityForm extends Component
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
         $services = $this->formalityService->getServices();
-        $streetTypes = StreetType::all();
+        $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         return view('livewire.new-formality-form', compact(['streetTypes', 'housingTypes', 'formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles']));
     }
