@@ -40,7 +40,7 @@ class User extends Authenticatable
         'address_id',
         'incentive_type_id',
         'business_group',
-        'user_office'
+        'office_id',
     ];
 
     /**

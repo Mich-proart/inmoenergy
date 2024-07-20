@@ -344,7 +344,7 @@
                                 Datos cliente
                             </span>
                         </div>
-                        <div wire:ignore class="form-row">
+                        <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="inputState">Tipo incentivo: </label>
                                 <select wire:model="form.incentiveTypeTd"
@@ -371,7 +371,7 @@
                                     <option value="">-- selecione --</option>
                                     @if (isset($this->business))
                                         @foreach ($this->business as $option)
-                                            <option value="{{ $option->name }}">{{ $option->name }}</option>
+                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -383,19 +383,19 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="inputCity">Oficina usuario</label>
-                                <select wire:model="form.office"
-                                    class="form-control @error('form.office') is-invalid @enderror" name="office"
-                                    id="office">
+                                <select wire:model="form.officeId"
+                                    class="form-control @error('form.officeId') is-invalid @enderror" name="officeId"
+                                    id="officeId">
                                     <option value="">-- selecione --</option>
                                     @if (isset($this->offices))
                                         @foreach ($this->offices as $option)
-                                            <option value="{{ $option->name }}">{{ $option->name }}</option>
+                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
                                         @endforeach
 
                                     @endif
 
                                 </select>
-                                @error('form.office')
+                                @error('form.officeId')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -446,6 +446,7 @@
 <script>
 
     $(document).ready(function () {
+        /*
         $('#businessGroup').select2({
             tags: true
         });
@@ -457,6 +458,7 @@
             $wire.$set('business_target', event.target.value)
             console.log(event.target.value)
         });
+        */
     });
 </script>
 @endscript

@@ -91,7 +91,6 @@ class NewUserForm extends Component
         DB::beginTransaction();
 
         try {
-
             $user = User::create($this->form->getUserData());
 
             $role = Role::firstWhere('id', $this->form->getRoleId());
@@ -125,13 +124,8 @@ class NewUserForm extends Component
     #[Computed()]
     public function offices()
     {
-        $business = BusinessGroup::where('name', $this->business_target)->first();
-
-        if ($business) {
-            $office = Office::whereBelongsTo($business)->get();
-            return $office;
-        }
-
+        $offices = Office::where('business_group_id', $this->business_target)->get();
+        return $offices;
     }
 
 }

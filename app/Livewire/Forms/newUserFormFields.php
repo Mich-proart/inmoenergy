@@ -27,7 +27,7 @@ class newUserFormFields extends Form
 
     public $incentiveTypeTd;
     public $businessGroup;
-    public $userOffice;
+    public $officeId;
     public $adviserAssignedId;
 
 
@@ -66,8 +66,8 @@ class newUserFormFields extends Form
         'password' => 'required|string|min:8',
         // 'IBAN' => 'required|string',
         'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
-        'userOffice' => 'sometimes|nullable|string',
-        'businessGroup' => 'sometimes|nullable|string',
+        'officeId' => 'sometimes|nullable|integer|exists:office,id',
+        // 'businessGroup' => 'sometimes|nullable|string',
         'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
         'roleId' => 'required|integer|exists:roles,id',
         'locationId' => 'required|integer|exists:location,id',
@@ -146,7 +146,7 @@ class newUserFormFields extends Form
             'user_title_id' => $this->userTitleId,
             'IBAN' => null,
             'incentive_type_id' => $this->incentiveTypeTd,
-            'office_id' => $this->userOffice,
+            'office_id' => $this->officeId,
         ];
     }
 
