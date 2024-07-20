@@ -61,7 +61,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+<script src="/vendor/custom/badge.code.js"></script>
 <script>
     const table = new DataTable('#formality-content', {
         dom: 'Bfrtip',
@@ -94,7 +94,7 @@
             { data: 'fullAddress' },
             {
                 data: 'status', render: function (data, type, row, meta) {
-                    return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
+                    return statusColor(data);
                 }
             },
             { data: 'issuer_observation' },

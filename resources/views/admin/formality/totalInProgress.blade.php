@@ -89,7 +89,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+<script src="/vendor/custom/badge.code.js"></script>
 <script>
     const table = new DataTable('#formality-content', {
         dom: 'Bfrtip',
@@ -120,7 +120,11 @@
             { data: 'documentNumber' },
             { data: 'fullAddress' },
             { data: 'observation' },
-            { data: 'status' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return statusColor(data);
+                }
+            },
             {
                 data: 'isCritical', render: function (data, type, row, meta) {
                     if (data == 0) {
@@ -136,12 +140,6 @@
             { data: 'CUPS' },
         ],
         "columnDefs": [
-            {
-                "render": function (data, type, row) {
-                    return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
-                },
-                "targets": 8
-            },
             { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
             { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8] }
         ],

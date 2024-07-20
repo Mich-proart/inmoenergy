@@ -89,7 +89,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+<script src="/vendor/custom/badge.code.js"></script>
 <script>
     const table = new DataTable('#formality-content', {
         dom: 'Bfrtip',
@@ -121,7 +121,11 @@
             { data: 'document_type' },
             { data: 'documentNumber' },
             { data: 'fullAddress' },
-            { data: 'status' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return statusColor(data);
+                }
+            },
             {
                 data: 'isCritical', render: function (data, type, row, meta) {
                     if (data == 0) {

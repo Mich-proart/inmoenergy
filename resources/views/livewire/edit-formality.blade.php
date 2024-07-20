@@ -20,9 +20,9 @@
                             <div class="col-sm-4 invoice-col">
                                 <label for="">Fecha:</label> {{$formality->created_at}}
                             </div>
-                            <div class="col-sm-4 invoice-col">
-                                <label for="">Estado:</label> <span
-                                    class="badge rounded-pill bg-info text-dark">{{$formality->status->name}} </span>
+                            <div id="status" class="col-sm-4 invoice-col">
+                                <label for="">Estado:</label>
+
                             </div>
 
                         </div>
@@ -618,11 +618,16 @@
         </div>
     </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/custom/badge.code.js"></script>
     <script>
         $(document).ready(function () {
-
-
-
+            function statuscode(code) {
+                return statusColor(code);
+            }
+            $('#status').html(
+                `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
+                }`
+            );
         });
     </script>
 </div>
