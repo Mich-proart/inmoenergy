@@ -173,8 +173,14 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Teléfono: </label>
-                            <input wire:model="form.phone" type="text" class="form-control" id="inputAddress"
+                            <input wire:model="form.phone" type="text"
+                                class="form-control @error('form.phone') is-invalid @enderror" id="inputAddress"
                                 placeholder="" name="phone" required>
+                            @error('form.phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Email: </label>
@@ -191,8 +197,14 @@
 
                     <div class=" form-group">
                         <label for="inputAddress2">Cuenta Bancaria: </label>
-                        <input wire:model="form.IBAN" type="text" class="form-control" id="inputAddress2" placeholder=""
-                            name="IBAN" required>
+                        <input wire:model="form.IBAN" type="text"
+                            class="form-control @error('form.email') is-invalid @enderror" id="inputAddress2"
+                            placeholder="" name="IBAN" required>
+                        @error('form.IBAN')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                 </section>
                 <section>

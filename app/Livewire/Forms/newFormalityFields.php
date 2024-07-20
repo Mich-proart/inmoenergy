@@ -65,16 +65,16 @@ class newFormalityFields extends Form
         'secondLastName' => 'required|string',
         'documentTypeId' => 'required|integer|exists:component_option,id',
         'documentNumber' => 'required|string',
-        'phone' => 'required|string',
+        'phone' => 'required|string|spanish_phone',
         'clientTypeId' => 'required|integer|exists:component_option,id',
         'userTitleId' => 'required|integer|exists:component_option,id',
-        'IBAN' => 'required|string',
+        'IBAN' => 'required|string|iban',
         'locationId' => 'required|integer|exists:location,id',
         'streetTypeId' => 'required|integer|exists:component_option,id',
         'housingTypeId' => 'required|integer|exists:component_option,id',
         'streetName' => 'required|string',
         'streetNumber' => 'required|string',
-        'zipCode' => 'required|string',
+        'zipCode' => 'required|string|spanish_postal_code',
         'block' => 'sometimes|nullable|string',
         'blockstaircase' => 'sometimes|nullable|string',
         'floor' => 'sometimes|nullable|string',
@@ -166,6 +166,7 @@ class newFormalityFields extends Form
         'clientTypeId.required' => 'Tipo de cliente es requerido',
         'userTitleId.required' => 'Titulo es requerido',
         'IBAN.required' => 'Cuenta bancaria es requerido',
+        'IBAN.iban' => 'El IBAN introducido no es válido',
         'locationId.required' => 'Locacion es requerido',
         'streetTypeId.required' => 'Tipo de calle es requerido',
         'housingTypeId.required' => 'Tipo de vivienda es requerido',
@@ -176,7 +177,7 @@ class newFormalityFields extends Form
         'dni.max' => 'Tamanio maximo de DNI es 1MB',
         'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
         'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
-        'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB',
+        'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB'
 
     ];
 }
