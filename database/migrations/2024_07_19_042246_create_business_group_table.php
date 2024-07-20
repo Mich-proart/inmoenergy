@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('business_group', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
         <i class="far fa-plus-square"></i> Agregar comercializadora
     </button>
 

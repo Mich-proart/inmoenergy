@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('alias')->nullable();
             $table->foreignId('program_id')->nullable()->constrained('program');
+            $table->boolean('is_available')->default(true);
             $table->string('description')->nullable();
         });
 
@@ -24,7 +25,7 @@ return new class extends Migration {
                 "suministro" => "service",
                 "tipo de cliente" => "client_type",
                 "título de cliente" => "user_title",
-                "tipo de documento de cliente" => "document_type",
+                "tipo de documento cliente" => "document_type",
                 "tipo de calle" => "street_type",
                 "tarifa de acceso" => "access_rate",
                 "tipo de vivienda" => "housing_type",

@@ -72,5 +72,6 @@ class EditComponentOptions extends Component
     public function resetName()
     {
         $this->name = null;
+        $this->option = null;
     }
 }

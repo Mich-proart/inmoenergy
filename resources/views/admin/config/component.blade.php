@@ -15,6 +15,9 @@
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
+                        <button type="button" class="btn btn-primary float-right btn-sm" onclick="checkbusiness()">
+                            <i class="far fa-plus-square"></i> Ver grupo empresarial
+                        </button>
                     </div>
                 </div>
             </div>
@@ -61,13 +64,6 @@
 
 <script>
     const table = new DataTable('#component-content', {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                title: `Gestión de comercializadoras - ${new Date()}`
-            }
-        ],
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -97,6 +93,11 @@
         console.log(row);
         window.location.href = "{{ route('admin.component.details', ':id') }}".replace(':id', row.id);
     })
+
+    function checkbusiness() {
+        var url = new URL('{{ route('admin.config.businessGroup') }}');
+        window.location.href = url.toString();
+    }
 
 </script>
 

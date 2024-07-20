@@ -14,7 +14,7 @@ class ComponentOption extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['name', 'component_id', 'description'];
+    protected $fillable = ['name', 'component_id', 'description', 'is_available'];
 
 
     public function component(): BelongsTo

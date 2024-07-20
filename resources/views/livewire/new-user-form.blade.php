@@ -1,4 +1,5 @@
 <div>
+    @section('plugins.select2', true)
     <div class="card card-primary card-outline">
         <div class="card-body">
             <form wire:submit="save">
@@ -343,7 +344,7 @@
                                 Datos cliente
                             </span>
                         </div>
-                        <div class="form-row">
+                        <div wire:ignore class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="inputState">Tipo incentivo: </label>
                                 <select wire:model="form.incentiveTypeTd"
@@ -363,22 +364,38 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="inputCity">Oficina usuario</label>
-                                <input wire:model="form.userOffice" type="text"
-                                    class="form-control @error('form.userOffice') is-invalid @enderror" id="inputCity"
-                                    name="userOffice">
-                                @error('form.userOffice')
+                                <label for="inputState">Grupo empresarial: </label>
+                                <select wire:model.live="business_target"
+                                    class="form-control @error('form.businessGroup') is-invalid @enderror"
+                                    name="businessGroup" id="businessGroup">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($this->business))
+                                        @foreach ($this->business as $option)
+                                            <option value="{{ $option->name }}">{{ $option->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('form.businessGroup')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="inputState">Grupo empresarial: </label>
-                                <input wire:model="form.businessGroup" type="text"
-                                    class="form-control @error('form.businessGroup') is-invalid @enderror" id="inputCity"
-                                    name="businessGroup">
-                                @error('form.businessGroup')
+                                <label for="inputCity">Oficina usuario</label>
+                                <select wire:model="form.office"
+                                    class="form-control @error('form.office') is-invalid @enderror" name="office"
+                                    id="office">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($this->offices))
+                                        @foreach ($this->offices as $option)
+                                            <option value="{{ $option->name }}">{{ $option->name }}</option>
+                                        @endforeach
+
+                                    @endif
+
+                                </select>
+                                @error('form.office')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -422,4 +439,24 @@
     </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
 
+
 </div>
+
+@script
+<script>
+
+    $(document).ready(function () {
+        $('#businessGroup').select2({
+            tags: true
+        });
+        $('#office').select2({
+            tags: true
+        });
+
+        $('#businessGroup').on('change', function (event) {
+            $wire.$set('business_target', event.target.value)
+            console.log(event.target.value)
+        });
+    });
+</script>
+@endscript

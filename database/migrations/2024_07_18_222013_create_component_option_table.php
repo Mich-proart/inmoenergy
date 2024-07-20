@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->foreignId('component_id')->nullable()->constrained('component');
+            $table->boolean('is_available')->default(true);
             $table->string('description')->nullable();
         });
 
@@ -47,7 +48,7 @@ return new class extends Migration {
                     "Sra."
                 )
             ),
-            "tipo de documento de cliente" => array(
+            "tipo de documento cliente" => array(
                 "alias" => "document_type",
                 "data" => array(
                     "DNI",

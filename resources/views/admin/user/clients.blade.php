@@ -16,7 +16,7 @@
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
                         @role('superadmin')
-                        <button type="submit" onclick="addQueryParam()" class="btn btn-primary float-right"><i
+                        <button type="submit" onclick="addQueryParam()" class="btn btn-primary float-right btn-sm"><i
                                 class="far fa-plus-square"></i>
                             Agregar usuario</button>
                         @endrole

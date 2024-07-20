@@ -14,7 +14,7 @@ class Component extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['name', 'program_id', 'alias', 'description'];
+    protected $fillable = ['name', 'program_id', 'alias', 'description', 'is_available'];
 
 
     public function program(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Program\Services;
 
+use App\Models\BusinessGroup;
 use App\Models\Component;
 use Illuminate\Database\Query\Builder;
 use DB;
@@ -16,6 +17,27 @@ class ComponentService
                 'component.id as id',
                 'component.name as component_name'
             );
+    }
+    private function businessGroupQuery(): Builder
+    {
+        return DB::table('business_group')
+            ->select(
+                'business_group.id as id',
+                'business_group.name as name'
+            );
+    }
+
+    public function getBusinessGroup()
+    {
+        $query = $this->businessGroupQuery();
+        return $query->get();
+    }
+    public function officeByBusinessGroup(int $id)
+    {
+        return DB::table('office')
+            ->where('business_group_id', '=', $id)
+            ->select('office.id as id', 'office.name as name')
+            ->get();
     }
 
     public function getAll()
@@ -37,5 +59,11 @@ class ComponentService
     {
         $component = Component::find($id);
         return $component;
+    }
+
+    public function getBusinessById(int $id)
+    {
+        $business = BusinessGroup::find($id);
+        return $business;
     }
 }

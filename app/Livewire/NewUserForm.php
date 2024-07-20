@@ -7,6 +7,8 @@ use App\Domain\Formality\Services\CreateFormalityService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\newUserFormFields;
+use App\Models\BusinessGroup;
+use App\Models\Office;
 use App\Models\User;
 use Livewire\Component;
 use DB;
@@ -20,6 +22,8 @@ use Spatie\Permission\Models\Role;
 class NewUserForm extends Component
 {
     public $target_provinceId;
+
+    public $business_target;
 
     public function __construct()
     {
@@ -112,4 +116,22 @@ class NewUserForm extends Component
         }
 
     }
+    #[Computed()]
+    public function business()
+    {
+        $businessGroup = BusinessGroup::all();
+        return $businessGroup;
+    }
+    #[Computed()]
+    public function offices()
+    {
+        $business = BusinessGroup::where('name', $this->business_target)->first();
+
+        if ($business) {
+            $office = Office::whereBelongsTo($business)->get();
+            return $office;
+        }
+
+    }
+
 }

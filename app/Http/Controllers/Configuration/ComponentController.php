@@ -25,6 +25,7 @@ class ComponentController extends Controller
             ->toJson();
     }
 
+
     public function options(Request $request)
     {
 
@@ -40,5 +41,32 @@ class ComponentController extends Controller
                 ->toJson();
         }
 
+    }
+
+    public function business()
+    {
+
+        $businessGroup = $this->componentService->getBusinessGroup();
+        return datatables()->of($businessGroup)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($businessGroup) {
+                return $businessGroup->id;
+            })
+            ->toJson();
+    }
+
+    public function offices(Request $request)
+    {
+        $businessId = $request->query('businessId');
+
+        if ($businessId) {
+            $options = $this->componentService->officeByBusinessGroup($businessId);
+            return datatables()->of($options)
+                ->setRowAttr(['align' => 'center'])
+                ->setRowId(function ($option) {
+                    return $option->id;
+                })
+                ->toJson();
+        }
     }
 }

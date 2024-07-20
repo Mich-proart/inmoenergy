@@ -21,4 +21,11 @@ class ComponentAdminController extends Controller
         if ($component)
             return view('admin.config.componentDetails', ['component' => $component]);
     }
+    public function buinessDetails(int $id)
+    {
+
+        $business = $this->componentService->getBusinessById($id);
+        if ($business)
+            return view('admin.config.office', ['business' => $business]);
+    }
 }

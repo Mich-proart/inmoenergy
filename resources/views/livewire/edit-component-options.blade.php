@@ -25,7 +25,8 @@
                 @role('superadmin')
                 <h4>
                     <small class="float-right"><button wire:click="resetName" type="button"
-                            class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
                             <i class="far fa-plus-square"></i> Crear opción</button>
                     </small>
                 </h4>
@@ -53,7 +54,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar opción de {{$component->name}}</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"> {{ucfirst($component->name)}}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form wire:submit="save">
@@ -97,13 +98,6 @@
 
     <script>
         const table = new DataTable('#options-content', {
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    title: `Gestión de comercializadoras - ${new Date()}`
-                }
-            ],
             "processing": true,
             "serverSide": true,
             "ajax": {
@@ -121,7 +115,7 @@
                 {
                     data: "id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" wire:click="editoption(${data})" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button type="button" wire:click="editoption(${data})" class="btn btn-primary float-right btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="fas fa-edit"></i></button>
                         `;
                     }

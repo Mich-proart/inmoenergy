@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->foreignId('business_group_id')->constrained('business_group');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

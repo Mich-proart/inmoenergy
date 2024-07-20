@@ -24,6 +24,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/product', [ProductController::class, 'index'])->name('api.product.query');
     Route::get('/component', [ComponentController::class, 'index'])->name('api.component.query');
     Route::get('/component/options', [ComponentController::class, 'options'])->name('api.component.options.query');
+    Route::get('/component/business', [ComponentController::class, 'business'])->name('api.component.business.query');
+    Route::get('/component/offices', [ComponentController::class, 'offices'])->name('api.component.offices.query');
 });
 
 Route::prefix('formality')->group(function () {
@@ -83,5 +85,9 @@ Route::prefix('config')->group(function () {
             return view('admin.config.component');
         })->name('admin.config.component');
         Route::get('/{id}/details', [ComponentAdminController::class, 'details'])->name('admin.component.details');
+        Route::get('/business', function () {
+            return view('admin.config.businessGroup');
+        })->name('admin.config.businessGroup');
+        Route::get('/{id}/offices', [ComponentAdminController::class, 'buinessDetails'])->name('admin.config.offices');
     });
 });

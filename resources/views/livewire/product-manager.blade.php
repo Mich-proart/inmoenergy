@@ -7,7 +7,7 @@
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
                         @role('superadmin')
                         <button wire:click="resetVar" type="button" id="edit_renovation_btn"
-                            class="btn btn-primary float-right" data-bs-toggle="modal"
+                            class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
                             data-bs-target="#create-product-modal"><i class="far fa-plus-square"></i> Agregar
                             producto</button>
                         @endrole
@@ -36,7 +36,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="create-product-modal-Label">Crear un nuevo proyecto
+                            <h1 class="modal-title fs-5" id="create-product-modal-Label">Producto
                             </h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
