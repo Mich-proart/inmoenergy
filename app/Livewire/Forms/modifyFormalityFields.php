@@ -47,8 +47,8 @@ class modifyFormalityFields extends Form
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'required|integer|exists:product,id',
-        'commission' => 'required|integer',
-        'potency' => 'required|integer',
+        'commission' => 'required|numeric',
+        'potency' => 'required|numeric',
     ];
 
     protected $messages = [

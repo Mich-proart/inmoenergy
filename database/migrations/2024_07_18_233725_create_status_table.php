@@ -16,14 +16,12 @@ return new class extends Migration {
         });
 
         $mainValues = [
-            "pendiente tramitar",
+            "pendiente asignación",
             "asignado",
-            "revisando documentación",
             "en curso",
             "tramitado",
             "en vigor",
-            "KO",
-            "incidencia"
+            "K.O."
         ];
 
         foreach ($mainValues as $case) {

@@ -84,7 +84,7 @@ class newFormalityFields extends Form
         'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
         'client_streetName' => 'sometimes|nullable|string',
         'client_streetNumber' => 'sometimes|nullable|string',
-        'client_zipCode' => 'sometimes|nullable|string',
+        'client_zipCode' => 'sometimes|nullable|string|spanish_postal_code',
         'client_block' => 'sometimes|nullable|string',
         'client_blockstaircase' => 'sometimes|nullable|string',
         'client_floor' => 'sometimes|nullable|string',

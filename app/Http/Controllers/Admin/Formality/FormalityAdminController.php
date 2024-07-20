@@ -48,7 +48,7 @@ class FormalityAdminController extends Controller
 
             if ($data) {
 
-                $prevStatus = $data->formality_status_id;
+                $prevStatus = $data->status_id;
 
                 $data->update(['status_id' => $status->id]);
 

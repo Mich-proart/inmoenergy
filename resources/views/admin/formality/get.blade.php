@@ -333,16 +333,16 @@
                         </span>
                     </div>
                     <!--
-                                                                                                                        <div class="form-row">
-                                                                                                                            <div class="form-group col-md-4" style="margin-bottom: 25px">
-                                                                                                                                <div class="form-check form-switch">
-                                                                                                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                                                                                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
-                                                                                                                                        editar este tramite</label>
+                                                                                                                            <div class="form-row">
+                                                                                                                                <div class="form-group col-md-4" style="margin-bottom: 25px">
+                                                                                                                                    <div class="form-check form-switch">
+                                                                                                                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                                                                                                                        <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
+                                                                                                                                            editar este tramite</label>
+                                                                                                                                    </div>
                                                                                                                                 </div>
                                                                                                                             </div>
-                                                                                                                        </div>
-                                                                                                                        -->
+                                                                                                                            -->
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))

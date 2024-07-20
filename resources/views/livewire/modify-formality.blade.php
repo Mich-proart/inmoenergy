@@ -105,7 +105,7 @@
                 <div class="form-group col-md-3">
                     <label for="">Comisión bruta: </label>
                     <input wire:model="form.commission" type="text"
-                        class="form-control @error('form.commission') is-invalid @enderror" id="inputZip"
+                        class="form-control @error('form.commission') is-invalid @enderror" id="commission"
                         name="commission" required>
                     @error('form.commission')
                         <span class="invalid-feedback" role="alert">
@@ -149,4 +149,5 @@
             </div>
         </div>
     </form>
+    <script src="/vendor/jquery/jquery.min.js"></script>
 </div>
