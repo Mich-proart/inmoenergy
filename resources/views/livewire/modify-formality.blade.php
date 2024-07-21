@@ -92,14 +92,19 @@
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="">Consumo anual: </label>
-                    <input wire:model="form.annual_consumption" type="text"
-                        class="form-control @error('form.annual_consumption') is-invalid @enderror" id="inputZip"
-                        name="annual_consumption" required>
-                    @error('form.annual_consumption')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            KW
                         </span>
-                    @enderror
+                        <input wire:model="form.annual_consumption" type="text"
+                            class="form-control @error('form.annual_consumption') is-invalid @enderror" id="inputZip"
+                            name="annual_consumption" required>
+                        @error('form.annual_consumption')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="form-group col-md-3">
@@ -124,14 +129,19 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="">Potencia: </label>
-                    <input wire:model="form.potency" type="text"
-                        class="form-control @error('form.potency') is-invalid @enderror" id="inputZip" name="potency"
-                        required>
-                    @error('form.potency')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            KW
                         </span>
-                    @enderror
+                        <input wire:model="form.potency" type="text"
+                            class="form-control @error('form.potency') is-invalid @enderror" id="inputZip"
+                            name="potency" required>
+                        @error('form.potency')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
                 </div>
 
             </div>

@@ -35,7 +35,7 @@ class modifyFormalityFields extends Form
         $this->canClientEdit = $formality->canClientEdit ?? false;
         $this->internal_observation = $formality->internal_observation ?? '';
         $this->product_id = $formality->product_id ?? '';
-        $this->commission = $formality->commission ?? '';
+        $this->commission = (string) $formality->commission->getAmount() ?? '';
         $this->potency = $formality->potency ?? '';
     }
 
@@ -47,8 +47,8 @@ class modifyFormalityFields extends Form
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'required|integer|exists:product,id',
-        'commission' => 'required|numeric',
-        'potency' => 'required|numeric',
+        'commission' => 'required|numeric|gt:0',
+        'potency' => 'required|numeric|gt:0',
     ];
 
     protected $messages = [
@@ -63,8 +63,11 @@ class modifyFormalityFields extends Form
         'product_id.exists' => 'Debes seleccionar un proyecto existente',
         'commission.required' => 'Debes rellenar la comision',
         'commission.integer' => 'Debes rellenar la comision',
+        'commission.gt' => 'La comision debe ser mayor que 0',
+        'commission.numeric' => 'La comision debe ser un valor valido',
         'potency.required' => 'Debes rellenar la potencia',
-        'potency.integer' => 'Debes rellenar la potencia',
+        'potency.numeric' => 'La potencia debe ser un valor valido',
+        'potency.gt' => 'La potencia debe ser mayor que 0',
 
     ];
     public $rules_to_update = [

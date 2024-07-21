@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Money;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -89,4 +90,8 @@ class Formality extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    protected $casts = [
+        'commission' => Money::class
+    ];
 }
