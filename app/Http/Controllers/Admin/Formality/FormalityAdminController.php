@@ -24,6 +24,11 @@ class FormalityAdminController extends Controller
 
     public function edit(int $id)
     {
+        $formality = $this->formalityService->getById($id);
+        if ($formality && $formality->canClientEdit == 0) {
+            return redirect()->route('admin.formality.get', ['id' => $id]);
+        }
+
         return view('admin.formality.edit', ['formalityId' => $id]);
     }
     public function get(int $id)
