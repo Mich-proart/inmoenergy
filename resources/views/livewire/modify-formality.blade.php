@@ -133,7 +133,7 @@
                         <span class="input-group-text" id="basic-addon1">
                             KW
                         </span>
-                        <input wire:model="form.potency" type="text"
+                        <input wire:model="form.potency" type="number"
                             class="form-control @error('form.potency') is-invalid @enderror" id="inputZip"
                             name="potency" required>
                         @error('form.potency')

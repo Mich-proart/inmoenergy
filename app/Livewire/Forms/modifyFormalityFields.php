@@ -41,7 +41,7 @@ class modifyFormalityFields extends Form
 
     protected $rules = [
         'issuer_observation' => 'sometimes|nullable|string',
-        'CUPS' => 'required|string',
+        'CUPS' => 'required|string|min:20|max:22',
         'access_rate_id' => 'required|integer|exists:component_option,id',
         'annual_consumption' => 'required|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
@@ -53,6 +53,9 @@ class modifyFormalityFields extends Form
 
     protected $messages = [
         'CUPS' => 'Debes rellenar el CUPS',
+        'CUPS.string' => 'Debes rellenar el CUPS',
+        'CUPS.min' => 'Minimo 20 caracteres',
+        'CUPS.max' => 'Maximo 22 caracteres',
         'access_rate_id.required' => 'Debes seleccionar una tarifa de acceso',
         'access_rate_id.integer' => 'Debes seleccionar una tarifa de acceso',
         'access_rate_id.exists' => 'Debes seleccionar una tarifa de acceso existente',

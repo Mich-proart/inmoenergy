@@ -152,7 +152,7 @@
                         </div>
                         <div class=" form-group col-md-3">
                             <label for="inputAddress2">Contraseña: </label>
-                            <input wire:model="form.password" type="text"
+                            <input wire:model="form.password" type="password"
                                 class="form-control @error('form.password') is-invalid @enderror" id="inputAddress2"
                                 placeholder="" name="password">
                             @error('form.password')
