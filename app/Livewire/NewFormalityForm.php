@@ -70,7 +70,7 @@ class NewFormalityForm extends Component
                 $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
             }
 
-            /*
+
             $fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
 
             foreach ($fields as $field) {
@@ -80,7 +80,7 @@ class NewFormalityForm extends Component
                         ->collesionFile($this->folder, $field);
                 }
             }
-            */
+
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');

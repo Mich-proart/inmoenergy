@@ -377,8 +377,6 @@
                             @enderror
                         </div>
                     </div>
-
-
                 </section>
                 <section x-data="{ buttonDisabled: true }">
                     <div class="form-group">
@@ -399,11 +397,7 @@
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button hidden id="toggleAccordion" class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                        aria-controls="collapseTwo">
 
-                                    </button>
                                 </h2>
                                 <div id="collapseTwo" class="accordion-collapse collapse show"
                                     data-bs-parent="#accordionExample">
@@ -623,10 +617,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="inputZip">DNI: </label>
+                            <label for="inputZip">DNI (Ambas caras): </label>
                             <input wire:model="form.dni" accept=".pdf"
                                 class="form-control @error('form.dni') is-invalid @enderror" type="file" name="file"
                                 id="dni" required>
+                            <div wire:loading wire:target="form.dni">Subiendo archivo...</div>
                             @error('form.dni')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -639,6 +634,7 @@
                             <label for="inputZip">Factura de Agua: </label>
                             <input wire:model="form.factura_agua" accept=".pdf" class="form-control" type="file"
                                 name="file" id="factura_agua">
+                            <div wire:loading wire:target="form.factura_agua">Subiendo archivo...</div>
                             @error('form.factura_agua')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -651,6 +647,7 @@
                             <label for="inputZip">Factura de Gas: </label>
                             <input wire:model="form.factura_gas" accept=".pdf" class="form-control" type="file"
                                 name="file" id="factura_gas">
+                            <div wire:loading wire:target="form.factura_gas">Subiendo archivo...</div>
                             @error('form.factura_gas')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -663,6 +660,7 @@
                             <label for="inputZip">Factura de Luz: </label>
                             <input wire:model="form.factura_luz" accept=".pdf" class="form-control" type="file"
                                 name="file" id="factura_luz">
+                            <div wire:loading wire:target="form.factura_luz">Subiendo archivo...</div>
                             @error('form.factura_luz')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -694,7 +692,7 @@
             }
 
             $('#is_same_address').on('change', function () {
-                $('#toggleAccordion').click();
+                $('#collapseTwo').toggleClass('show');
             })
 
             const is_same_address_field = [
