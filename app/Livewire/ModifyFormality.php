@@ -24,6 +24,8 @@ class ModifyFormality extends Component
 
     public $companyId;
 
+    public $accessRate;
+
     public function __construct()
     {
         $this->formalityService = App::make(FormalityService::class);
@@ -44,13 +46,13 @@ class ModifyFormality extends Component
 
     public function render()
     {
-        $accessRate = $this->formalityService->getAccessRates();
-        return view('livewire.modify-formality', compact(['accessRate']));
+        return view('livewire.modify-formality');
     }
 
     public function mount($formality, $prevStatus)
     {
         $this->formality = $formality;
+        $this->accessRate = $this->formalityService->getAccessRates($this->formality->service->name);
         $this->companyId = $formality->product->company->id ?? 0;
         $this->form->setData($this->formality);
         $this->prevStatus = $prevStatus;

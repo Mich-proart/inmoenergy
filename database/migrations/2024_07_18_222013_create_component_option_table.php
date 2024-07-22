@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->foreignId('component_id')->nullable()->constrained('component');
+            $table->foreignId('option_id')->nullable()->constrained('component_option');
             $table->boolean('is_available')->default(true);
             $table->string('description')->nullable();
         });
@@ -90,6 +91,18 @@ return new class extends Migration {
             )
         );
 
+        $second_data = array(
+            "luz" => array(
+                "2.0",
+                "3.0",
+            ),
+            "gas" => array(
+                "RL1",
+                "RL2",
+                "RL3"
+            )
+        );
+
         foreach ($data as $component => $values) {
             $data_component = DB::table('component')->where('alias', $values['alias'])->first();
             foreach ($values['data'] as $name) {
@@ -99,6 +112,14 @@ return new class extends Migration {
                 ]);
             }
         }
+
+        foreach ($second_data as $component => $values) {
+            $option = DB::table('component_option')->where('name', $component)->first();
+            foreach ($values as $name) {
+                DB::table('component_option')->where('name', $name)->update(['option_id' => $option->id]);
+            }
+        }
+
     }
 
     /**

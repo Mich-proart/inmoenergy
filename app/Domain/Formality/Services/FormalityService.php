@@ -144,8 +144,24 @@ class FormalityService
         return ComponentOption::whereBelongsTo($component)->get();
     }
 
-    public function getAccessRates()
+    public function getServiceByName(string|null $name = null)
     {
+        if ($name) {
+            $component = $this->getComponent('service');
+            return ComponentOption::whereBelongsTo($component)->where('name', $name)->with('children')->first();
+        }
+    }
+
+    public function getAccessRates(string|null $name = null)
+    {
+        if ($name) {
+            $component = $this->getComponent('service');
+            return ComponentOption::whereBelongsTo($component)
+                ->where('name', $name)
+                ->with('children')
+                ->first()->children;
+        }
+
         $component = $this->getComponent('access_rate');
         return ComponentOption::whereBelongsTo($component)->get();
     }
