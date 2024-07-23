@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Money;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,7 +32,7 @@ class Formality extends Model
         'isClientAddress',
         'address_id',
         'formality_type_id',
-        'formality_status_id',
+        'status_id',
         'access_rate_id',
         'service_id',
         'issuer_observation',
@@ -68,25 +69,29 @@ class Formality extends Model
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo(FormalityType::class, 'formality_type_id');
+        return $this->belongsTo(ComponentOption::class, 'formality_type_id');
     }
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(FormalityStatus::class, 'formality_status_id');
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
     public function service(): BelongsTo
     {
-        return $this->belongsTo(Service::class, 'service_id');
+        return $this->belongsTo(ComponentOption::class, 'service_id');
     }
 
     public function accessRate(): BelongsTo
     {
-        return $this->belongsTo(AccessRate::class, 'access_rate_id');
+        return $this->belongsTo(ComponentOption::class, 'access_rate_id');
     }
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    protected $casts = [
+        'commission' => Money::class
+    ];
 }

@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Consultas de tramites en curso totales</h1>
+<h1>Consultas de trámites en curso totales</h1>
 @stop
 
 @section('content')
@@ -24,9 +24,9 @@
                         <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
-                        <th>Observaciones del tramite</th>
-                        <th>Estado Tramite</th>
-                        <th>Tramite Critico</th>
+                        <th>Observaciones del trámite</th>
+                        <th>Estado Trámite</th>
+                        <th>Trámite Crítico</th>
                         <th>Compañía Suministro</th>
                         <th>Producto Compañía</th>
                         <th>Consumo anual</th>
@@ -89,7 +89,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+<script src="/vendor/custom/badge.code.js"></script>
 <script>
     const table = new DataTable('#formality-content', {
         dom: 'Bfrtip',
@@ -120,7 +120,11 @@
             { data: 'documentNumber' },
             { data: 'fullAddress' },
             { data: 'observation' },
-            { data: 'status' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return statusColor(data);
+                }
+            },
             {
                 data: 'isCritical', render: function (data, type, row, meta) {
                     if (data == 0) {
@@ -136,12 +140,6 @@
             { data: 'CUPS' },
         ],
         "columnDefs": [
-            {
-                "render": function (data, type, row) {
-                    return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
-                },
-                "targets": 8
-            },
             { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
             { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8] }
         ],
@@ -155,7 +153,10 @@
     $('#formality-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
         formality_id = row.formality_id;
-        console.log(row);
+        if (row.status == "en curso") {
+            window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+            return;
+        }
         $('#tigger_modal').click();
     })
 

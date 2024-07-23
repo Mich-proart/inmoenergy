@@ -5,7 +5,7 @@ namespace App\Domain\Formality\Services;
 
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Models\Formality;
-use App\Models\FormalityStatus;
+use App\Models\Status;
 
 class CreateFormalityService
 {
@@ -19,11 +19,11 @@ class CreateFormalityService
 
     private bool $isSameCorrespondenceAddress = true;
 
-    private FormalityStatus $formalityStatus;
+    private Status $formalityStatus;
 
     public function __construct()
     {
-        $this->formalityStatus = FormalityStatus::where('name', FormalityStatusEnum::PENDIENTE->value)->first();
+        $this->formalityStatus = Status::where('name', FormalityStatusEnum::PENDIENTE->value)->first();
     }
 
     public function execute(int $serviceId, int $formalitytypeId, ?string $observation)
@@ -33,11 +33,11 @@ class CreateFormalityService
             'user_issuer_id' => $this->user_issuer_id,
             'service_id' => $serviceId,
             'observation' => $observation,
-            'formality_status_id' => $this->formalityStatus->id,
             'formality_type_id' => $formalitytypeId,
             'address_id' => $this->address_id,
             'correspondence_address_id' => $this->correspondence_address_id,
-            'isSameCorrespondenceAddress' => $this->isSameCorrespondenceAddress
+            'isSameCorrespondenceAddress' => $this->isSameCorrespondenceAddress,
+            'status_id' => $this->formalityStatus->id
         ]);
     }
 

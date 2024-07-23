@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5701b2aaa9b8be6c73501545f9a6362",
+    "content-hash": "4f4bf246ff5ed185d70fd9e4648714b1",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -108,6 +108,64 @@
                 }
             ],
             "time": "2023-11-29T23:19:16+00:00"
+        },
+        {
+            "name": "brick/money",
+            "version": "0.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/money.git",
+                "reference": "60f8b6ceab2e1c9527e625198a76498fa477804a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/money/zipball/60f8b6ceab2e1c9527e625198a76498fa477804a",
+                "reference": "60f8b6ceab2e1c9527e625198a76498fa477804a",
+                "shasum": ""
+            },
+            "require": {
+                "brick/math": "~0.12.0",
+                "ext-json": "*",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "brick/varexporter": "~0.3.0",
+                "ext-dom": "*",
+                "ext-pdo": "*",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^10.1",
+                "vimeo/psalm": "5.16.0"
+            },
+            "suggest": {
+                "ext-intl": "Required to format Money objects"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Money\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Money and currency library",
+            "keywords": [
+                "brick",
+                "currency",
+                "money"
+            ],
+            "support": {
+                "issues": "https://github.com/brick/money/issues",
+                "source": "https://github.com/brick/money/tree/0.9.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/BenMorel",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-11-26T16:51:39+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -619,6 +677,41 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "globalcitizen/php-iban",
+            "version": "v4.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/globalcitizen/php-iban.git",
+                "reference": "d8d2b7c60ba01286fc625763618760aa3b684c00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/globalcitizen/php-iban/zipball/d8d2b7c60ba01286fc625763618760aa3b684c00",
+                "reference": "d8d2b7c60ba01286fc625763618760aa3b684c00",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^5.5 || ^5.6 || ^7.0 || ^7.4 || ^8.0 || ^8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "oophp-iban.php",
+                    "php-iban.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "description": "php-iban is a library for parsing and validating IBAN (and IIBAN) bank account information.",
+            "support": {
+                "issues": "https://github.com/globalcitizen/php-iban/issues",
+                "source": "https://github.com/globalcitizen/php-iban/tree/v4.2.3"
+            },
+            "time": "2024-03-25T00:37:02+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -2710,6 +2803,73 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "orumad/laravel-spanish-validator",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/orumad/laravel-spanish-validator.git",
+                "reference": "aafff319559b817f0f85628ca884992db5ed209d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orumad/laravel-spanish-validator/zipball/aafff319559b817f0f85628ca884992db5ed209d",
+                "reference": "aafff319559b817f0f85628ca884992db5ed209d",
+                "shasum": ""
+            },
+            "require": {
+                "globalcitizen/php-iban": "^4.2",
+                "illuminate/support": "^10.0",
+                "php": "^8.0|^8.1|^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0",
+                "phpunit/phpunit": "^10.0",
+                "scrutinizer/ocular": "master-dev"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Orumad\\SpanishValidator\\SpanishValidatorServiceProvider"
+                    ],
+                    "aliases": {
+                        "SpanishValidator": "Orumad\\SpanishValidator\\Facades\\SpanishValidator"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Orumad\\SpanishValidator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Muñoz",
+                    "email": "dev@danielmunoz.io",
+                    "homepage": "https://danielmunoz.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel validator for spanish stuff: NIF, NIE, CIF, NSS, IBAN, Postal Code, Phone numbers",
+            "homepage": "https://github.com/orumad/laravel-spanish-validator",
+            "keywords": [
+                "laravel",
+                "laravel package",
+                "laravel validation rules",
+                "laravel validator",
+                "orumad"
+            ],
+            "support": {
+                "issues": "https://github.com/orumad/laravel-spanish-validator/issues",
+                "source": "https://github.com/orumad/laravel-spanish-validator/tree/1.3.0"
+            },
+            "time": "2023-04-12T16:01:21+00:00"
         },
         {
             "name": "phpoption/phpoption",

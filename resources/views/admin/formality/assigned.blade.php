@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites asignados</h1>
+<h1>Trámites asignados</h1>
 @stop
 
 @section('content')
@@ -26,7 +26,7 @@
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Estado Tramite</th>
-                        <th>Tramite Critico</th>
+                        <th>Trámite Crítico</th>
                         <th>Observaciones del tramite</th>
                         <th>Compañía Suministro</th>
                         <th>Producto Compañía</th>
@@ -89,7 +89,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+<script src="/vendor/custom/badge.code.js"></script>
 <script>
     const table = new DataTable('#formality-content', {
         dom: 'Bfrtip',
@@ -121,7 +121,11 @@
             { data: 'document_type' },
             { data: 'documentNumber' },
             { data: 'fullAddress' },
-            { data: 'status' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return statusColor(data);
+                }
+            },
             {
                 data: 'isCritical', render: function (data, type, row, meta) {
                     if (data == 0) {

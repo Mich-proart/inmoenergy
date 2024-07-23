@@ -8,16 +8,16 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Client emisor</th>
+                            <th>Cliente emisor</th>
                             <th>Fecha</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Tipo documento</th>
                             <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Observaciones del tramite</th>
-                            <th>Estado Tramite</th>
-                            <th>Tramite Critico</th>
+                            <th>Observaciones del trámite</th>
+                            <th>Estado Trámite</th>
+                            <th>Trámite Crítico</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -45,7 +45,9 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputState">Asignar usuario: </label>
-                                    <select wire:model="user_Assigned_id" class="form-control" id="inputProvince">
+                                    <select wire:model="user_Assigned_id"
+                                        class="form-control @error('user_Assigned_id') is-invalid @enderror"" id="
+                                        inputProvince">
                                         <option value="">-- seleccione --</option>
                                         @foreach ($this->workers as $worker)
                                             <option value="{{ $worker->id }}">
@@ -53,6 +55,11 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('user_Assigned_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-row">
@@ -72,7 +79,7 @@
                                         <input wire:model="isCritical" class="form-check-input" type="checkbox"
                                             value="0" id="isCritical">
                                         <label class="form-check-label" for="invalidCheck2">
-                                            Tramite Critico
+                                            Trámite Crítico
                                         </label>
 
                                     </div>
@@ -99,6 +106,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="/vendor/custom/badge.code.js"></script>
 
     <script>
         const table = new DataTable('#formality-content', {
@@ -106,7 +114,7 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: `Asignación de tramites - ${new Date()}`
+                    title: `Asignación de trámites - ${new Date()}`
                 }
             ],
             "processing": true,
@@ -130,7 +138,11 @@
                 { data: 'documentNumber' },
                 { data: 'fullAddress' },
                 { data: 'observation' },
-                { data: 'status' },
+                {
+                    data: 'status', render: function (data, type, row, meta) {
+                        return statusColor(data);
+                    }
+                },
                 {
                     data: 'isCritical', render: function (data, type, row, meta) {
                         if (data == 0) {
@@ -150,12 +162,6 @@
                 }
             ],
             "columnDefs": [
-                {
-                    "render": function (data, type, row) {
-                        return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
-                    },
-                    "targets": 8
-                },
                 { className: "dt-head-center", targets: [0] },
                 { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },

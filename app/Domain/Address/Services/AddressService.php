@@ -5,11 +5,11 @@ namespace App\Domain\Address\Services;
 use App\Domain\Address\Dtos\CreateAddressDto;
 use App\Exceptions\CustomException;
 use App\Models\Address;
+use App\Models\Component;
+use App\Models\ComponentOption;
 use App\Models\Location;
 use App\Models\Province;
 use App\Models\Region;
-use App\Models\StreetType;
-use App\Models\HousingType;
 
 class AddressService
 {
@@ -26,9 +26,16 @@ class AddressService
         return Province::where('region_id', $regionId)->with('region')->get();
     }
 
+    private function getComponent(string $componentName)
+    {
+        $component = Component::where('alias', $componentName)->first();
+        return $component;
+    }
+
     public function getHousingTypes()
     {
-        return HousingType::all();
+        $component = $this->getComponent('housing_type');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
     public function getLocations(int $provinceId)
@@ -41,7 +48,8 @@ class AddressService
 
     public function getStreetTypes()
     {
-        return StreetType::all();
+        $component = $this->getComponent('street_type');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
     public function createAddress(CreateAddressDto $dto)
@@ -51,7 +59,7 @@ class AddressService
         if (!isset($location))
             throw CustomException::badRequestException('location id ' . $dto->locationId . ' required');
 
-        $streetType = StreetType::find($dto->streetTypeId);
+        $streetType = ComponentOption::find($dto->streetTypeId);
         if (!isset($streetType))
             throw CustomException::badRequestException('street type id ' . $dto->streetTypeId . ' required');
 

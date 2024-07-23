@@ -9,8 +9,6 @@ use App\Exceptions\CustomException;
 use App\Livewire\Forms\updateFormalityFields;
 use App\Models\Address;
 use App\Models\Formality;
-use App\Models\StreetType;
-use App\Models\UserDetail;
 use Livewire\Component;
 use Illuminate\Support\Facades\App;
 use DB;
@@ -58,7 +56,7 @@ class EditFormality extends Component
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
         $services = $this->formalityService->getServices();
-        $streetTypes = StreetType::all();
+        $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         return view('livewire.edit-formality', compact(['streetTypes', 'housingTypes', 'formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles']));
     }

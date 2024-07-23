@@ -43,7 +43,7 @@ class EditPendingFormality extends Component
             $updates = array_merge(
                 $this->form->getDataToUpdate(),
                 [
-                    'formality_status_id' => $status->id,
+                    'status_id' => $status->id,
                     'renewal_date' => $renewal_date
                 ]
             );
@@ -73,7 +73,7 @@ class EditPendingFormality extends Component
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::KO->value);
 
             Formality::firstWhere('id', $this->form->formalityId)
-                ->update(['formality_status_id' => $status->id]);
+                ->update(['status_id' => $status->id]);
             DB::commit();
             return redirect()->route('admin.formality.pending');
         } catch (\Throwable $th) {
@@ -92,7 +92,7 @@ class EditPendingFormality extends Component
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_CURSO->value);
 
             $updates = [
-                'formality_status_id' => $status->id,
+                'status_id' => $status->id,
                 'product_id' => null
             ];
 

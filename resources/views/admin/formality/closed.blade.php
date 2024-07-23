@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Tramites cerrados</h1>
+<h1>Trámites cerrados</h1>
 @stop
 
 @section('content')
@@ -17,19 +17,16 @@
             <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
                     <tr>
-                        <th>Cliente emisor</th>
+
                         <th>Fecha</th>
                         <th>Usuario asignado</th>
                         <th>Tipo</th>
                         <th>Suministro</th>
                         <th>Cliente final</th>
-                        <th>Tipo documento</th>
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Fecha Finalizacion del tramite</th>
                         <th>Estado Tramite</th>
-                        <th>Compañía Suministro</th>
-                        <th>Producto Compañía</th>
                     </tr>
                 </thead>
 
@@ -63,7 +60,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
+<script src="/vendor/custom/badge.code.js"></script>
 <script>
     const table = new DataTable('#formality-content', {
         dom: 'Bfrtip',
@@ -87,29 +84,23 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
-            { data: 'issuer' },
             { data: 'created_at' },
             { data: 'assigned' },
             { data: 'type' },
             { data: 'service' },
             { data: 'fullName' },
-            { data: 'document_type' },
             { data: 'documentNumber' },
             { data: 'fullAddress' },
             { data: 'completion_date' },
-            { data: 'status' },
-            { data: 'company' },
-            { data: 'product' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return statusColor(data);
+                }
+            },
         ],
         "columnDefs": [
-            {
-                "render": function (data, type, row) {
-                    return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
-                },
-                "targets": 10
-            },
-            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12] }
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] }
         ],
         "order": [
             [0, "desc"]

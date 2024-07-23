@@ -7,10 +7,11 @@ use App\Domain\Formality\Services\CreateFormalityService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\newUserFormFields;
+use App\Models\BusinessGroup;
+use App\Models\Office;
 use App\Models\User;
 use Livewire\Component;
 use DB;
-use App\Models\StreetType;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\App;
 use Livewire\WithFileUploads;
@@ -21,6 +22,8 @@ use Spatie\Permission\Models\Role;
 class NewUserForm extends Component
 {
     public $target_provinceId;
+
+    public $business_target;
 
     public function __construct()
     {
@@ -48,7 +51,7 @@ class NewUserForm extends Component
         $documentTypes = $this->userService->getDocumentTypes();
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
-        $streetTypes = StreetType::all();
+        $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
@@ -88,7 +91,6 @@ class NewUserForm extends Component
         DB::beginTransaction();
 
         try {
-
             $user = User::create($this->form->getUserData());
 
             $role = Role::firstWhere('id', $this->form->getRoleId());
@@ -113,4 +115,17 @@ class NewUserForm extends Component
         }
 
     }
+    #[Computed()]
+    public function business()
+    {
+        $businessGroup = BusinessGroup::all();
+        return $businessGroup;
+    }
+    #[Computed()]
+    public function offices()
+    {
+        $offices = Office::where('business_group_id', $this->business_target)->get();
+        return $offices;
+    }
+
 }

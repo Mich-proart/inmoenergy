@@ -2,16 +2,13 @@
 
 namespace App\Domain\Formality\Services;
 
-
-use App\Domain\Enums\FormalityTypeEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
-use App\Models\AccessRate;
+use App\Models\Component;
+use App\Models\ComponentOption;
 use App\Models\Formality;
-use App\Models\FormalityStatus;
+use App\Models\Status;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
-use App\Models\FormalityType;
-use App\Models\Service;
 
 class FormalityService
 {
@@ -19,15 +16,15 @@ class FormalityService
     private function formalityQuery(): Builder
     {
         return DB::table('formality')
-            ->join('formality_status as status', 'status.id', '=', 'formality.formality_status_id')
-            ->join('formality_type as type', 'type.id', '=', 'formality.formality_type_id')
-            ->join('service', 'service.id', '=', 'formality.service_id')
+            ->join('status', 'status.id', '=', 'formality.status_id')
+            ->join('component_option as type', 'type.id', '=', 'formality.formality_type_id')
+            ->join('component_option as service', 'service.id', '=', 'formality.service_id')
             ->leftJoin('users as userAssigned', 'userAssigned.id', '=', 'formality.user_assigned_id')
             ->join('users as client', 'client.id', '=', 'formality.user_client_id')
             ->join('users as issuer', 'issuer.id', '=', 'formality.user_issuer_id')
-            ->join('document_type', 'document_type.id', '=', 'client.document_type_id')
+            ->join('component_option as document_type', 'document_type.id', '=', 'client.document_type_id')
             ->join('address', 'address.id', '=', 'formality.address_id')
-            ->join('street_type', 'street_type.id', '=', 'address.street_type_id')
+            ->join('component_option as street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
             ->leftJoin('product', 'product.id', '=', 'formality.product_id')
@@ -129,28 +126,53 @@ class FormalityService
         return $queryBuilder->get();
     }
 
+    private function getComponent(string $componentName)
+    {
+        $component = Component::where('alias', $componentName)->first();
+        return $component;
+    }
+
     public function getFormalityTypes()
     {
-        return FormalityType::all();
+        $component = $this->getComponent('formality_type');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
     public function getServices()
     {
-        return Service::all();
+        $component = $this->getComponent('service');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
-    public function getAccessRates()
+    public function getServiceByName(string|null $name = null)
     {
-        return AccessRate::all();
+        if ($name) {
+            $component = $this->getComponent('service');
+            return ComponentOption::whereBelongsTo($component)->where('name', $name)->with('children')->first();
+        }
+    }
+
+    public function getAccessRates(string|null $name = null)
+    {
+        if ($name) {
+            $component = $this->getComponent('service');
+            return ComponentOption::whereBelongsTo($component)
+                ->where('name', $name)
+                ->with('children')
+                ->first()->children;
+        }
+
+        $component = $this->getComponent('access_rate');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
     public function getFormalityStatus(string $status)
     {
-        return FormalityStatus::where('name', $status)->first();
+        return Status::where('name', $status)->first();
     }
     public function findStatusById(int $id)
     {
-        return FormalityStatus::where('id', $id)->first();
+        return Status::where('id', $id)->first();
     }
 
     public function getById(int $id)

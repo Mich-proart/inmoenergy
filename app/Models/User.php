@@ -40,7 +40,7 @@ class User extends Authenticatable
         'address_id',
         'incentive_type_id',
         'business_group',
-        'user_office'
+        'office_id',
     ];
 
     /**
@@ -78,17 +78,17 @@ class User extends Authenticatable
 
     public function clientType(): BelongsTo
     {
-        return $this->belongsTo(ClientType::class, 'client_type_id');
+        return $this->belongsTo(ComponentOption::class, 'client_type_id');
     }
 
     public function documentType(): BelongsTo
     {
-        return $this->belongsTo(DocumentType::class, 'document_type_id');
+        return $this->belongsTo(ComponentOption::class, 'document_type_id');
     }
 
     public function title(): BelongsTo
     {
-        return $this->belongsTo(UserTitle::class, 'user_title_id');
+        return $this->belongsTo(ComponentOption::class, 'user_title_id');
     }
     public function address(): BelongsTo
     {
@@ -115,6 +115,6 @@ class User extends Authenticatable
     }
     public function incentive(): BelongsTo
     {
-        return $this->belongsTo(IncentiveType::class, 'incentive_type_id');
+        return $this->belongsTo(ComponentOption::class, 'incentive_type_id');
     }
 }

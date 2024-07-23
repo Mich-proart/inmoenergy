@@ -1,4 +1,5 @@
 <div>
+    @section('plugins.select2', true)
     <div class="card card-primary card-outline">
         <div class="card-body">
             <form wire:submit="save">
@@ -151,7 +152,7 @@
                         </div>
                         <div class=" form-group col-md-3">
                             <label for="inputAddress2">Contraseña: </label>
-                            <input wire:model="form.password" type="text"
+                            <input wire:model="form.password" type="password"
                                 class="form-control @error('form.password') is-invalid @enderror" id="inputAddress2"
                                 placeholder="" name="password">
                             @error('form.password')
@@ -363,22 +364,38 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="inputCity">Oficina usuario</label>
-                                <input wire:model="form.userOffice" type="text"
-                                    class="form-control @error('form.userOffice') is-invalid @enderror" id="inputCity"
-                                    name="userOffice">
-                                @error('form.userOffice')
+                                <label for="inputState">Grupo empresarial: </label>
+                                <select wire:model.live="business_target"
+                                    class="form-control @error('form.businessGroup') is-invalid @enderror"
+                                    name="businessGroup" id="businessGroup">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($this->business))
+                                        @foreach ($this->business as $option)
+                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('form.businessGroup')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="inputState">Grupo empresarial: </label>
-                                <input wire:model="form.businessGroup" type="text"
-                                    class="form-control @error('form.businessGroup') is-invalid @enderror" id="inputCity"
-                                    name="businessGroup">
-                                @error('form.businessGroup')
+                                <label for="inputCity">Oficina usuario</label>
+                                <select wire:model="form.officeId"
+                                    class="form-control @error('form.officeId') is-invalid @enderror" name="officeId"
+                                    id="officeId">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($this->offices))
+                                        @foreach ($this->offices as $option)
+                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
+                                        @endforeach
+
+                                    @endif
+
+                                </select>
+                                @error('form.officeId')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -420,6 +437,28 @@
             </form>
         </div>
     </div>
-    <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+
 
 </div>
+
+@script
+<script>
+
+    $(document).ready(function () {
+        /*
+        $('#businessGroup').select2({
+            tags: true
+        });
+        $('#office').select2({
+            tags: true
+        });
+
+        $('#businessGroup').on('change', function (event) {
+            $wire.$set('business_target', event.target.value)
+            console.log(event.target.value)
+        });
+        */
+    });
+</script>
+@endscript

@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\Company\CompanyAdminController;
+use App\Http\Controllers\Admin\Config\ComponentAdminController;
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\User\UserAdminController;
 use App\Http\Controllers\Company\CompanyController;
+use App\Http\Controllers\Configuration\ComponentController;
 use App\Http\Controllers\Formality\FormalityController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\User\UserConntroller;
@@ -20,6 +22,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
     Route::get('/company', [CompanyController::class, 'index'])->name('api.company.query');
     Route::get('/product', [ProductController::class, 'index'])->name('api.product.query');
+    Route::get('/component', [ComponentController::class, 'index'])->name('api.component.query');
+    Route::get('/component/options', [ComponentController::class, 'options'])->name('api.component.options.query');
+    Route::get('/component/business', [ComponentController::class, 'business'])->name('api.component.business.query');
+    Route::get('/component/offices', [ComponentController::class, 'offices'])->name('api.component.offices.query');
 });
 
 Route::prefix('formality')->group(function () {
@@ -72,4 +78,23 @@ Route::prefix('product')->group(function () {
         return view('admin.product.manager');
     })->name('admin.product.manager');
     // Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
+});
+Route::prefix('config')->group(function () {
+    Route::prefix('component')->group(function () {
+        Route::get('/', function () {
+            return view('admin.config.component');
+        })->name('admin.config.component');
+        Route::get('/{id}/details', [ComponentAdminController::class, 'details'])->name('admin.component.details');
+        Route::get('/business', function () {
+            return view('admin.config.businessGroup');
+        })->name('admin.config.businessGroup');
+        Route::get('/{id}/offices', [ComponentAdminController::class, 'buinessDetails'])->name('admin.config.offices');
+        Route::get('/documents', [ComponentAdminController::class, 'docsManager'])->name('admin.config.documents');
+        Route::get('/documents/{id}/download', [ComponentAdminController::class, 'donwload'])->name('admin.documents.download');
+    });
+});
+
+Route::prefix('documents')->group(function () {
+    Route::get('/auth', [ComponentAdminController::class, 'docsAuth'])->name('admin.document.authorization');
+    Route::get('/change', [ComponentAdminController::class, 'docsChange'])->name('admin.document.changeTitle');
 });

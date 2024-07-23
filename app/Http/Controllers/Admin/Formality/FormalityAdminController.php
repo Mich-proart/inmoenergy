@@ -24,6 +24,11 @@ class FormalityAdminController extends Controller
 
     public function edit(int $id)
     {
+        $formality = $this->formalityService->getById($id);
+        if ($formality && $formality->canClientEdit == 0) {
+            return redirect()->route('admin.formality.get', ['id' => $id]);
+        }
+
         return view('admin.formality.edit', ['formalityId' => $id]);
     }
     public function get(int $id)
@@ -48,9 +53,9 @@ class FormalityAdminController extends Controller
 
             if ($data) {
 
-                $prevStatus = $data->formality_status_id;
+                $prevStatus = $data->status_id;
 
-                $data->update(['formality_status_id' => $status->id]);
+                $data->update(['status_id' => $status->id]);
 
                 $formality = $this->formalityService->getById($id);
                 $client = $formality->client;

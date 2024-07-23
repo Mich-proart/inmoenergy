@@ -27,7 +27,7 @@ class newUserFormFields extends Form
 
     public $incentiveTypeTd;
     public $businessGroup;
-    public $userOffice;
+    public $officeId;
     public $adviserAssignedId;
 
 
@@ -58,28 +58,52 @@ class newUserFormFields extends Form
         'email' => 'required|email|unique:users,email',
         'firstLastName' => 'required|string',
         'secondLastName' => 'required|string',
-        'documentTypeId' => 'required|integer|exists:document_type,id',
+        'documentTypeId' => 'required|integer|exists:component_option,id',
         'documentNumber' => 'required|string',
-        'phone' => 'required|string',
-        'clientTypeId' => 'required|integer|exists:client_type,id',
-        'userTitleId' => 'required|integer|exists:user_title,id',
+        'phone' => 'required|string|spanish_phone',
+        'clientTypeId' => 'required|integer|exists:component_option,id',
+        'userTitleId' => 'required|integer|exists:component_option,id',
         'password' => 'required|string|min:8',
         // 'IBAN' => 'required|string',
-        'incentiveTypeTd' => 'sometimes|nullable|integer|exists:incentive_type,id',
-        'businessGroup' => 'sometimes|nullable|string',
-        'userOffice' => 'sometimes|nullable|string',
+        'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
+        'officeId' => 'sometimes|nullable|integer|exists:office,id',
+        // 'businessGroup' => 'sometimes|nullable|string',
         'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
         'roleId' => 'required|integer|exists:roles,id',
         'locationId' => 'required|integer|exists:location,id',
-        'streetTypeId' => 'required|integer|exists:street_type,id',
-        'housingTypeId' => 'required|integer|exists:housing_type,id',
+        'streetTypeId' => 'required|integer|exists:component_option,id',
+        'housingTypeId' => 'required|integer|exists:component_option,id',
         'streetName' => 'required|string',
         'streetNumber' => 'required|string',
-        'zipCode' => 'required|string',
+        'zipCode' => 'required|string|spanish_postal_code',
         'block' => 'sometimes|nullable|string',
         'blockstaircase' => 'sometimes|nullable|string',
         'floor' => 'sometimes|nullable|string',
         'door' => 'sometimes|nullable|string',
+    ];
+
+    protected $messages = [
+        'name.required' => 'El nombre es requerido',
+        'email.unique' => 'El correo electronico ya se encuentra registrado',
+        'email.email' => 'El correo electronico no es valido',
+        'email.required' => 'El correo electronico es requerido',
+        'password.min' => 'La contraseña debe tener al menos 8 caracteres',
+        'password.required' => 'La contraseña es requerida',
+        'firstLastName.required' => 'El primer apellido es requerido',
+        'secondLastName.required' => 'El segundo apellido es requerido',
+        'documentTypeId.required' => 'El tipo de documento es requerido',
+        'documentNumber.required' => 'El numero de documento es requerido',
+        'phone.required' => 'El numero de telefono es requerido',
+        'clientTypeId.required' => 'El tipo de cliente es requerido',
+        'userTitleId.required' => 'El cargo es requerido',
+        'incentiveTypeTd.required' => 'El tipo de incentivo es requerido',
+        'roleId.required' => 'El rol es requerido',
+        'locationId.required' => 'La ubicacion es requerida',
+        'streetTypeId.required' => 'El tipo de calle es requerido',
+        'housingTypeId.required' => 'El tipo de vivienda es requerido',
+        'streetName.required' => 'El nombre de la calle es requerido',
+        'streetNumber.required' => 'El numero de la calle es requerido',
+        'zipCode.required' => 'El C.P. es requerido'
     ];
 
     public function getCreateUserDto(): CreateUserDto
@@ -122,8 +146,7 @@ class newUserFormFields extends Form
             'user_title_id' => $this->userTitleId,
             'IBAN' => null,
             'incentive_type_id' => $this->incentiveTypeTd,
-            'business_group' => $this->businessGroup,
-            'user_office' => $this->userOffice,
+            'office_id' => $this->officeId,
         ];
     }
 

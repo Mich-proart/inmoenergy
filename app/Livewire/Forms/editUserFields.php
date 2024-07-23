@@ -90,32 +90,42 @@ class editUserFields extends Form
     }
 
     protected $rules = [
-        'name' => 'sometimes|nullable|string',
-        'email' => 'sometimes|nullable|email',
-        'firstLastName' => 'sometimes|nullable|string',
-        'secondLastName' => 'sometimes|nullable|string',
-        'documentTypeId' => 'sometimes|nullable|integer|exists:document_type,id',
-        'documentNumber' => 'sometimes|nullable|string',
-        'phone' => 'sometimes|nullable|string',
-        'clientTypeId' => 'sometimes|nullable|integer|exists:client_type,id',
-        'userTitleId' => 'sometimes|nullable|integer|exists:user_title,id',
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'firstLastName' => 'required|string',
+        'secondLastName' => 'required|string',
+        'documentTypeId' => 'required|integer|exists:component_option,id',
+        'documentNumber' => 'required|string',
+        'phone' => 'required|string|spanish_phone',
+        'clientTypeId' => 'required|integer|exists:component_option,id',
+        'userTitleId' => 'required|integer|exists:component_option,id',
         'password' => 'sometimes|nullable|string|min:8',
         // 'IBAN' => 'sometimes|nullable|string',
-        'incentiveTypeTd' => 'sometimes|nullable|integer|exists:incentive_type,id',
-        'businessGroup' => 'sometimes|nullable|string',
+        'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
         'userOffice' => 'sometimes|nullable|string',
+        'businessGroup' => 'sometimes|nullable|string',
         'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
-        'roleId' => 'sometimes|nullable|integer|exists:roles,id',
-        'locationId' => 'sometimes|nullable|integer|exists:location,id',
-        'streetTypeId' => 'sometimes|nullable|integer|exists:street_type,id',
-        'housingTypeId' => 'sometimes|nullable|integer|exists:housing_type,id',
-        'streetName' => 'sometimes|nullable|string',
-        'streetNumber' => 'sometimes|nullable|string',
-        'zipCode' => 'sometimes|nullable|string',
+        'roleId' => 'required|integer|exists:roles,id',
+        'locationId' => 'required|integer|exists:location,id',
+        'streetTypeId' => 'required|integer|exists:component_option,id',
+        'housingTypeId' => 'required|integer|exists:component_option,id',
+        'streetName' => 'required|string',
+        'streetNumber' => 'required|string',
+        'zipCode' => 'required|string|spanish_postal_code',
         'block' => 'sometimes|nullable|string',
         'blockstaircase' => 'sometimes|nullable|string',
         'floor' => 'sometimes|nullable|string',
         'door' => 'sometimes|nullable|string',
+    ];
+
+    protected $messages = [
+        'email.unique' => 'El correo electronico ya se encuentra registrado',
+        'email.email' => 'El correo electronico no es valido',
+        'name.required' => 'El nombre es requerido',
+        'documentTypeId.required' => 'El tipo de documento es requerido',
+        'clientTypeId.required' => 'El tipo de cliente es requerido',
+        'userTitleId.required' => 'El cargo es requerido',
+        'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
     ];
 
     public function getclientUpdate()
@@ -136,8 +146,7 @@ class editUserFields extends Form
             'user_title_id' => $this->userTitleId,
             'IBAN' => null,
             'incentive_type_id' => $this->incentiveTypeTd,
-            'business_group' => $this->businessGroup,
-            'user_office' => $this->userOffice,
+            'office_id' => $this->userOffice,
         ];
 
         if ($this->password != null) {

@@ -3,15 +3,11 @@
 namespace App\Domain\User\Services;
 
 
-use App\Domain\User\Dtos\CreateUserDetailDto;
 use App\Domain\User\Dtos\CreateUserDto;
 use App\Exceptions\CustomException;
-use App\Models\IncentiveType;
+use App\Models\Component;
+use App\Models\ComponentOption;
 use App\Models\User;
-use App\Models\UserDetail;
-use App\Models\ClientType;
-use App\Models\DocumentType;
-use App\Models\UserTitle;
 use Hash;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -72,13 +68,21 @@ class UserService
     }
         */
 
+    private function getComponent(string $componentName)
+    {
+        $component = Component::where('alias', $componentName)->first();
+        return $component;
+    }
+
     public function getClientTypes()
     {
-        return ClientType::all();
+        $component = $this->getComponent('client_type');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
     public function getIncentiveTypes()
     {
-        return IncentiveType::all();
+        $component = $this->getComponent('incentive_type');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
     public function getRoles()
     {
@@ -87,12 +91,14 @@ class UserService
 
     public function getDocumentTypes()
     {
-        return DocumentType::all();
+        $component = $this->getComponent('document_type');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
     public function getUserTitles()
     {
-        return UserTitle::all();
+        $component = $this->getComponent('user_title');
+        return ComponentOption::whereBelongsTo($component)->get();
     }
 
     public function addFile($file)
@@ -126,8 +132,8 @@ class UserService
     {
         return DB::table('users')
             ->leftJoin('address', 'address.id', '=', 'users.address_id')
-            ->leftJoin('street_type', 'street_type.id', '=', 'address.street_type_id')
-            ->leftJoin('housing_type', 'housing_type.id', '=', 'address.housing_type_id')
+            ->leftJoin('component_option as street_type', 'street_type.id', '=', 'address.street_type_id')
+            ->leftJoin('component_option as housing_type', 'housing_type.id', '=', 'address.housing_type_id')
             ->leftJoin('location', 'location.id', '=', 'address.location_id')
             ->leftJoin('province', 'province.id', '=', 'location.province_id')
             ->select(
@@ -155,7 +161,7 @@ class UserService
 
         $queryBuilder = $this->UsersQueryBuilder();
         if ($isCliente == true) {
-            $queryBuilder->where('users.isWorker', '=', 0);
+            $queryBuilder->where('users.isWorker', '=', 0)->where('users.incentive_type_id', '!=', null);
         }
         if (!$isCliente) {
             $queryBuilder->where('users.isWorker', '=', 1);

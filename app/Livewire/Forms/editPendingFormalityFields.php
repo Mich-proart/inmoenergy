@@ -20,6 +20,13 @@ class editPendingFormalityFields extends Form
         //'renewal_date' => 'nullable|date',
     ];
 
+    protected $messages = [
+        'formalityId.required' => 'Debes seleccionar un tramite',
+        'formalityId.exists' => 'Debes seleccionar un tramite existente',
+        'activation_date.required' => 'Debes seleccionar una fecha de activación',
+        'activation_date.date' => 'Debes seleccionar una fecha de activación valida'
+    ];
+
     public function setId($formalityId)
     {
         $this->formalityId = $formalityId;

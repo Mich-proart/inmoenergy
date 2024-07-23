@@ -35,25 +35,48 @@ class modifyFormalityFields extends Form
         $this->canClientEdit = $formality->canClientEdit ?? false;
         $this->internal_observation = $formality->internal_observation ?? '';
         $this->product_id = $formality->product_id ?? '';
-        $this->commission = $formality->commission ?? '';
+        $this->commission = (string) $formality->commission->getAmount() ?? '';
         $this->potency = $formality->potency ?? '';
     }
 
     protected $rules = [
         'issuer_observation' => 'sometimes|nullable|string',
-        'CUPS' => 'required|string',
-        'access_rate_id' => 'required|integer|exists:access_rate,id',
+        'CUPS' => 'required|string|min:20|max:22',
+        'access_rate_id' => 'required|integer|exists:component_option,id',
         'annual_consumption' => 'required|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'required|integer|exists:product,id',
-        'commission' => 'required|integer',
-        'potency' => 'required|integer',
+        'commission' => 'required|numeric|gt:0',
+        'potency' => 'required|numeric|gt:0',
+    ];
+
+    protected $messages = [
+        'CUPS' => 'Debes rellenar el CUPS',
+        'CUPS.string' => 'Debes rellenar el CUPS',
+        'CUPS.min' => 'Minimo 20 caracteres',
+        'CUPS.max' => 'Maximo 22 caracteres',
+        'access_rate_id.required' => 'Debes seleccionar una tarifa de acceso',
+        'access_rate_id.integer' => 'Debes seleccionar una tarifa de acceso',
+        'access_rate_id.exists' => 'Debes seleccionar una tarifa de acceso existente',
+        'annual_consumption.required' => 'Debes rellenar el consumo anual',
+        'annual_consumption.integer' => 'Debes rellenar el consumo anual valido',
+        'product_id.required' => 'Debes seleccionar un producto',
+        'product_id.integer' => 'Debes seleccionar un producto',
+        'product_id.exists' => 'Debes seleccionar un proyecto existente',
+        'commission.required' => 'Debes rellenar la comision',
+        'commission.integer' => 'Debes rellenar la comision',
+        'commission.gt' => 'La comision debe ser mayor que 0',
+        'commission.numeric' => 'La comision debe ser un valor valido',
+        'potency.required' => 'Debes rellenar la potencia',
+        'potency.numeric' => 'La potencia debe ser un valor valido',
+        'potency.gt' => 'La potencia debe ser mayor que 0',
+
     ];
     public $rules_to_update = [
         'issuer_observation' => 'sometimes|nullable|string',
         'CUPS' => 'sometimes|nullable|string',
-        'access_rate_id' => 'sometimes|nullable|integer|exists:access_rate,id',
+        'access_rate_id' => 'sometimes|nullable|integer|exists:component_option,id',
         'annual_consumption' => 'sometimes|nullable|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',

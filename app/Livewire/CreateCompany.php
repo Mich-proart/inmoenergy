@@ -28,6 +28,11 @@ class CreateCompany extends Component
         'name' => 'required|string|max:255'
     ];
 
+    protected $messages = [
+        'name.required' => 'Debes introducir un nombre',
+        'name.max' => 'El nombre no puede superar los 255 caracteres',
+    ];
+
     public function save()
     {
 

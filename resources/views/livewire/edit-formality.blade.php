@@ -20,9 +20,9 @@
                             <div class="col-sm-4 invoice-col">
                                 <label for="">Fecha:</label> {{$formality->created_at}}
                             </div>
-                            <div class="col-sm-4 invoice-col">
-                                <label for="">Estado:</label> <span
-                                    class="badge rounded-pill bg-info text-dark">{{$formality->status->name}} </span>
+                            <div id="status" class="col-sm-4 invoice-col">
+                                <label for="">Estado:</label>
+
                             </div>
 
                         </div>
@@ -134,8 +134,8 @@
                         <div class="form-group col-md-3">
                             <label for="inputCity">Nombre</label>
                             <input wire:model="form.name" type="text"
-                                class="form-control @error('form.name') is-invalid @enderror" id="inputCity"
-                                name="name">
+                                class="form-control @error('form.name') is-invalid @enderror" id="inputCity" name="name"
+                                required>
                             @error('form.name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -146,7 +146,7 @@
                             <label for="inputState">Primer apellido: </label>
                             <input wire:model="form.firstLastName" type="text"
                                 class="form-control @error('form.firstLastName') is-invalid @enderror" id="inputCity"
-                                name="firstLastName">
+                                name="firstLastName" required>
                             @error('form.firstLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -156,7 +156,7 @@
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
                             <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
-                                name="secondLastName">
+                                name="secondLastName" required>
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -169,7 +169,7 @@
                             <label for="inputState">Tipo documento: </label>
                             <select wire:model="form.documentTypeId"
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
-                                name="documentTypeId">
+                                name="documentTypeId" required>
                                 <option value="">-- selecione --</option>
                                 @if (isset($documentTypes))
                                     @foreach ($documentTypes as $option)
@@ -196,14 +196,20 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Teléfono: </label>
-                            <input wire:model="form.phone" type="text" class="form-control" id="inputAddress"
-                                placeholder="" name="phone">
+                            <input wire:model="form.phone" type="text"
+                                class="form-control @error('form.phone') is-invalid @enderror" id="inputAddress"
+                                placeholder="" name="phone" required>
+                            @error('form.phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Email: </label>
                             <input wire:model="form.email" type="text"
                                 class="form-control @error('form.email') is-invalid @enderror" id="inputZip"
-                                name="email">
+                                name="email" required>
                             @error('form.email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -215,7 +221,7 @@
                     <div class=" form-group">
                         <label for="inputAddress2">Cuenta Bancaria: </label>
                         <input wire:model="form.IBAN" type="text" class="form-control" id="inputAddress2" placeholder=""
-                            name="IBAN">
+                            name="IBAN" required>
                     </div>
                 </section>
                 <section>
@@ -233,7 +239,7 @@
                             <label for="inputZip">Tipo de calle: </label>
                             <select wire:model="form.streetTypeId"
                                 class="form-control @error('form.streetTypeId') is-invalid @enderror"
-                                name="streetTypeId">
+                                name="streetTypeId" required>
                                 <option value="">-- seleccione --</option>
                                 @if (isset($streetTypes))
                                     @foreach ($streetTypes as $streetType)
@@ -253,7 +259,7 @@
                             <label for="inputZip">Nombre calle: </label>
                             <input wire:model="form.streetName" type="text"
                                 class="form-control @error('form.streetName') is-invalid @enderror" id="inputZip"
-                                name="streetName">
+                                name="streetName" required>
                             @error('form.streetName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -265,7 +271,7 @@
                             <label for="inputZip">N°: </label>
                             <input wire:model="form.streetNumber" type="text"
                                 class="form-control @error('form.streetNumber') is-invalid @enderror" id="inputZip"
-                                name="streetNumber">
+                                name="streetNumber" required>
                             @error('form.streetNumber')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -529,11 +535,11 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-
                             </div>
                         </div>
+
                         <div class="row">
-                            <!-- client province -->
+
                             <div class="col-md-3">
                                 <label for="inputState">Provincia: </label>
                                 <select wire:model.live="target_clientProvinceId" class="form-control"
@@ -611,12 +617,17 @@
             </form>
         </div>
     </div>
-    <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/custom/badge.code.js"></script>
     <script>
         $(document).ready(function () {
-
-
-
+            function statuscode(code) {
+                return statusColor(code);
+            }
+            $('#status').html(
+                `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
+                }`
+            );
         });
     </script>
 </div>

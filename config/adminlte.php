@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Inmoenery</b>',
+    'logo' => '<b>InmoEnergy</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -359,7 +359,18 @@ return [
         [
             'text' => 'Documentación',
             'icon' => 'fas fa-fw fa-file',
-            'submenu' => []
+            'submenu' => [
+                [
+                    'text' => 'Autorización',
+                    'route' => 'admin.document.authorization',
+                    'icon' => 'fas fa-fw fa-file',
+                ],
+                [
+                    'text' => 'Cambio de tiúlo',
+                    'route' => 'admin.document.changeTitle',
+                    'icon' => 'fas fa-fw fa-file',
+                ],
+            ]
         ],
         [
             'text' => 'Configuración',
@@ -388,6 +399,11 @@ return [
                 [
                     'text' => 'Gestión de productos',
                     'route' => 'admin.product.manager',
+                    'icon' => 'fas fa-fw fa-tools',
+                ],
+                [
+                    'text' => 'Desplegables',
+                    'route' => 'admin.config.component',
                     'icon' => 'fas fa-fw fa-tools',
                 ]
             ]
