@@ -83,6 +83,17 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="col-sm-3 invoice-col">
+                                <label for="inputAddress">Dia para renovación: </label>
+                                <input wire:model="days_to_renew" type="text"
+                                    class="form-control @error('days_to_renew') is-invalid @enderror" id="inputAddress"
+                                    placeholder="" name="days_to_renew">
+                                @error('days_to_renew')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                             <div class=" form-group col-md-3" style="margin-top: 30px">
                                 <button type="submit" class="btn btn-success"><i class="far fa-save"></i>
                                     Guardar</button>

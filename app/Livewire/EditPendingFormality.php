@@ -15,6 +15,8 @@ class EditPendingFormality extends Component
 {
     protected $formalityService;
 
+    public $days_to_renew;
+
     public function __construct()
     {
         $this->formalityService = App::make(FormalityService::class);
@@ -32,23 +34,41 @@ class EditPendingFormality extends Component
         DB::beginTransaction();
 
         try {
-            $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_VIGOR->value);
-            $renewal_date = null;
+            $formality = $this->formalityService->getById($this->form->formalityId);
 
-            if ($this->form->isRenewable) {
-                $date = $this->form->activation_date;
-                $renewal_date = date('Y-m-d', strtotime($date . ' +12 months'));
+
+            if ($formality) {
+                $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_VIGOR->value);
+                $renewal_date = null;
+
+                $this->days_to_renew = $formality->product->company->days_to_renew;
+
+                if ($this->form->isRenewable) {
+
+                    $this->validate(
+                        [
+                            'days_to_renew' => 'required|integer|between:1,365'
+                        ],
+                        [
+                            'days_to_renew.required' => 'Por favor, Agregue un producto al trámite',
+                        ]
+                    );
+
+                    $date = $this->form->activation_date;
+                    $days = $formality->product->company->days_to_renew;
+                    $renewal_date = date('Y-m-d', strtotime($date . ' + ' . $days . ' days'));
+                }
+
+                $updates = array_merge(
+                    $this->form->getDataToUpdate(),
+                    [
+                        'status_id' => $status->id,
+                        'renewal_date' => $renewal_date
+                    ]
+                );
+                $formality->update($updates);
             }
 
-            $updates = array_merge(
-                $this->form->getDataToUpdate(),
-                [
-                    'status_id' => $status->id,
-                    'renewal_date' => $renewal_date
-                ]
-            );
-
-            Formality::firstWhere('id', $this->form->formalityId)->update($updates);
             DB::commit();
             return redirect()->route('admin.formality.pending');
         } catch (\Throwable $th) {

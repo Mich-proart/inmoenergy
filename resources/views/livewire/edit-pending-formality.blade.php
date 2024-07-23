@@ -141,7 +141,13 @@
                                         <label class="form-check-label" for="invalidCheck2">
                                             Renovación
                                         </label>
-
+                                        @error('days_to_renew')
+                                            <div class="form-row">
+                                                <span class="text-danger">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
