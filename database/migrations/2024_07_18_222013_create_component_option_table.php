@@ -62,7 +62,14 @@ return new class extends Migration {
                     "avenida",
                     "calle",
                     "pasaje",
-                    "paseo"
+                    "paseo",
+                    "rambla",
+                    "camino",
+                    "carretera",
+                    "gran vía",
+                    "plaza",
+                    "ronda",
+                    "urbanización"
                 )
             ),
             "tarifa de acceso" => array(
