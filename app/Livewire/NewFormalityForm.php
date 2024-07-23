@@ -142,6 +142,12 @@ class NewFormalityForm extends Component
     public function clientProvinces()
     {
         $clientProvince = $this->addressService->getProvinces();
+        $key = $clientProvince->where('name', 'Barcelona')->first();
+
+        if ($key) {
+            $this->target_provinceId = $key->id;
+        }
+
         return $clientProvince;
     }
 

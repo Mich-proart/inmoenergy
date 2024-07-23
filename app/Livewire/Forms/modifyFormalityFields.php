@@ -21,7 +21,7 @@ class modifyFormalityFields extends Form
     public $product_id;
 
 
-    public $commission;
+    //public $commission;
 
     public $potency;
 
@@ -35,7 +35,7 @@ class modifyFormalityFields extends Form
         $this->canClientEdit = $formality->canClientEdit ?? false;
         $this->internal_observation = $formality->internal_observation ?? '';
         $this->product_id = $formality->product_id ?? '';
-        $this->commission = (string) $formality->commission->getAmount() ?? '';
+        //$this->commission = (string) $formality->commission->getAmount() ?? '';
         $this->potency = $formality->potency ?? '';
     }
 
@@ -47,7 +47,7 @@ class modifyFormalityFields extends Form
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'required|integer|exists:product,id',
-        'commission' => 'required|numeric|gt:0',
+        //'commission' => 'required|numeric|gt:0',
         'potency' => 'required|numeric|gt:0',
     ];
 
@@ -64,10 +64,12 @@ class modifyFormalityFields extends Form
         'product_id.required' => 'Debes seleccionar un producto',
         'product_id.integer' => 'Debes seleccionar un producto',
         'product_id.exists' => 'Debes seleccionar un proyecto existente',
+        /*
         'commission.required' => 'Debes rellenar la comision',
         'commission.integer' => 'Debes rellenar la comision',
         'commission.gt' => 'La comision debe ser mayor que 0',
         'commission.numeric' => 'La comision debe ser un valor valido',
+        */
         'potency.required' => 'Debes rellenar la potencia',
         'potency.numeric' => 'La potencia debe ser un valor valido',
         'potency.gt' => 'La potencia debe ser mayor que 0',
@@ -81,7 +83,7 @@ class modifyFormalityFields extends Form
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'sometimes|nullable|integer|exists:product,id',
-        'commission' => 'sometimes|nullable|integer',
+        // 'commission' => 'sometimes|nullable|integer',
         'potency' => 'sometimes|nullable|integer',
     ];
 
@@ -97,7 +99,7 @@ class modifyFormalityFields extends Form
             'canClientEdit' => $this->canClientEdit,
             'internal_observation' => $this->internal_observation,
             'product_id' => $this->product_id,
-            'commission' => $this->commission,
+            // 'commission' => $this->commission,
             'potency' => $this->potency,
         ];
     }
