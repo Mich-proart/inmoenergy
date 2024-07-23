@@ -333,16 +333,16 @@
                         </span>
                     </div>
                     <!--
-                                                                                                                                                                                                        <div class="form-row">
-                                                                                                                                                                                                            <div class="form-group col-md-4" style="margin-bottom: 25px">
-                                                                                                                                                                                                                <div class="form-check form-switch">
-                                                                                                                                                                                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                                                                                                                                                                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
-                                                                                                                                                                                                                        editar este tramite</label>
+                                                                                                                                                                                                                <div class="form-row">
+                                                                                                                                                                                                                    <div class="form-group col-md-4" style="margin-bottom: 25px">
+                                                                                                                                                                                                                        <div class="form-check form-switch">
+                                                                                                                                                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                                                                                                                                                                                                            <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
+                                                                                                                                                                                                                                editar este tramite</label>
+                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                    </div>
                                                                                                                                                                                                                 </div>
-                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                        -->
+                                                                                                                                                                                                                -->
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
@@ -361,12 +361,6 @@
                                 <span>KW </span> {{$formality->annual_consumption}}
                             @endif
                         </div>
-
-                        <div class="form-group col-md-3">
-                            <label for="">Comisión bruta: </label> @if (isset($formality->commission))
-                                {{$formality->commission->formatTo('es', 'EUR')}}
-                            @endif
-                        </div>
                         <div class="form-group col-md-3">
                             <label for="">Potencia: </label> @if (isset($formality->potency))
                                 <span>KW </span>{{$formality->potency}}
@@ -375,15 +369,6 @@
 
                     </div>
                 </section>
-
-                <div style="margin-top: 50px; margin-bottom: 25px">
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones internas</label>
-                        <textarea class="form-control" @readonly(true) id="exampleFormControlTextarea1" rows="3"
-                            name="internal_observation">{{$formality->internal_observation}}</textarea>
-                    </div>
-
-                </div>
             @endif
         </div>
     </div>
