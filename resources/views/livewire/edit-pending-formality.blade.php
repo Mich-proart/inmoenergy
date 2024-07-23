@@ -145,11 +145,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
-                                    Guardar cambios</button>
+                            <div class="row no-print">
+                                <div class="col-12">
+                                    <div style="margin-top: 50px; margin-bottom: 25px">
+                                        <div class="">
+                                            <button type="button" wire:click="saveKo"
+                                                class="btn btn-danger float-left ">K.O.</button>
+                                            <button type="submit" class="btn btn-success float-right"><i
+                                                    class="far fa-save"></i>
+                                                Guardar cambios</button>
+                                            <button type="button" class="btn btn-secondary float-right"
+                                                style="margin-right: 10px" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                     </form>
                 </div>
             </div>
@@ -211,7 +222,7 @@
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
                             <button type="button" wire:click="editFormality(${data})" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-edit"></i> Volver a tramitar</button>
-                            <button type="button" wire:click="editFormality(${data})" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O.</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
                         `;

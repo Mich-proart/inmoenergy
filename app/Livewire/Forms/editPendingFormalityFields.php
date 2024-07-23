@@ -9,7 +9,7 @@ class editPendingFormalityFields extends Form
 {
     public $formalityId;
     public $activation_date;
-    public bool $isRenewable = false;
+    public bool $isRenewable = true;
 
     public $commission;
 

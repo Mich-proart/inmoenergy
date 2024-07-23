@@ -73,7 +73,12 @@ class EditPendingFormality extends Component
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::KO->value);
 
             Formality::firstWhere('id', $this->form->formalityId)
-                ->update(['status_id' => $status->id]);
+                ->update([
+                    'status_id' => $status->id,
+                    'activation_date' => null,
+                    'isRenewable' => false,
+                    'renewal_date' => null
+                ]);
             DB::commit();
             return redirect()->route('admin.formality.pending');
         } catch (\Throwable $th) {
