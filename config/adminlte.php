@@ -359,7 +359,18 @@ return [
         [
             'text' => 'Documentación',
             'icon' => 'fas fa-fw fa-file',
-            'submenu' => []
+            'submenu' => [
+                [
+                    'text' => 'Autorización',
+                    'route' => 'admin.document.authorization',
+                    'icon' => 'fas fa-fw fa-file',
+                ],
+                [
+                    'text' => 'Cambio de tiúlo',
+                    'route' => 'admin.document.changeTitle',
+                    'icon' => 'fas fa-fw fa-file',
+                ],
+            ]
         ],
         [
             'text' => 'Configuración',

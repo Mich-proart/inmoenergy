@@ -15,9 +15,13 @@
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
-                        <button type="button" class="btn btn-primary float-right btn-sm" onclick="checkbusiness()">
-                            <i class="far fa-plus-square"></i> Ver grupo empresarial
-                        </button>
+                        <a href="{{ route('admin.config.businessGroup') }}">
+                            <button type="button" class="btn btn-primary float-right btn-sm">
+                                <i class="far fa-plus-square"></i> Ver grupo empresarial
+                            </button>
+                        </a>
+                        <a href="{{route('admin.config.documents')}}"><button type="button"
+                                class="btn btn-primary float-right btn-sm mr-1">Documentos</button></a>
                     </div>
                 </div>
             </div>
@@ -93,12 +97,6 @@
         console.log(row);
         window.location.href = "{{ route('admin.component.details', ':id') }}".replace(':id', row.id);
     })
-
-    function checkbusiness() {
-        var url = new URL('{{ route('admin.config.businessGroup') }}');
-        window.location.href = url.toString();
-    }
-
 </script>
 
 @stop

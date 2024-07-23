@@ -89,5 +89,12 @@ Route::prefix('config')->group(function () {
             return view('admin.config.businessGroup');
         })->name('admin.config.businessGroup');
         Route::get('/{id}/offices', [ComponentAdminController::class, 'buinessDetails'])->name('admin.config.offices');
+        Route::get('/documents', [ComponentAdminController::class, 'docsManager'])->name('admin.config.documents');
+        Route::get('/documents/{id}/download', [ComponentAdminController::class, 'donwload'])->name('admin.documents.download');
     });
+});
+
+Route::prefix('documents')->group(function () {
+    Route::get('/auth', [ComponentAdminController::class, 'docsAuth'])->name('admin.document.authorization');
+    Route::get('/change', [ComponentAdminController::class, 'docsChange'])->name('admin.document.changeTitle');
 });

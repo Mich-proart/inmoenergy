@@ -35,7 +35,7 @@ return new class extends Migration {
                 "consultas totales" => "admin.formality.totalInProgress"
             ),
             "documentación" => array(
-                "autorizacion" => "admin.document.authorization",
+                "autorización" => "admin.document.authorization",
                 "documentos para realizar cambio de titular" => "admin.document.changeTitle",
             ),
             "configuración" => array(
