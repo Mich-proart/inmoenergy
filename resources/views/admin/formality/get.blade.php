@@ -28,9 +28,7 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Fecha:</label> {{$formality->created_at}}
                         </div>
-                        <div class="col-sm-4 invoice-col">
-                            <label for="">Estado:</label> <span
-                                class="badge rounded-pill bg-info text-dark">{{$formality->status->name}} </span>
+                        <div id="status" class="col-sm-4 invoice-col">
                         </div>
                     </div>
                     <div class="row invoice-info">
@@ -310,7 +308,7 @@
             </section>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones</label>
+                    <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
                         @readonly(true)>{{$formality->observation}}</textarea>
                 </div>
@@ -333,16 +331,16 @@
                         </span>
                     </div>
                     <!--
-                                                                                                                                                                                                                <div class="form-row">
-                                                                                                                                                                                                                    <div class="form-group col-md-4" style="margin-bottom: 25px">
-                                                                                                                                                                                                                        <div class="form-check form-switch">
-                                                                                                                                                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                                                                                                                                                                                                            <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
-                                                                                                                                                                                                                                editar este tramite</label>
-                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                -->
+                                                                                                                                                                                                                                <div class="form-row">
+                                                                                                                                                                                                                                    <div class="form-group col-md-4" style="margin-bottom: 25px">
+                                                                                                                                                                                                                                        <div class="form-check form-switch">
+                                                                                                                                                                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                                                                                                                                                                                                                            <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
+                                                                                                                                                                                                                                                editar este tramite</label>
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                -->
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
@@ -384,5 +382,16 @@
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+<script src="/vendor/custom/badge.code.js"></script>
+<script>
+    $(document).ready(function () {
+        function statuscode(code) {
+            return statusColor(code);
+        }
+        $('#status').html(
+            `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
+            }`
+        );
+    });
+</script>
 @stop
