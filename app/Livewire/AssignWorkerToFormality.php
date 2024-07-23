@@ -41,7 +41,7 @@ class AssignWorkerToFormality extends Component
 
     public function workers()
     {
-        return User::where('isWorker', true)->get();
+        return User::where('isWorker', true)->where('isActive', 1)->get();
     }
 
     protected $rules = [

@@ -7,6 +7,7 @@ use App\Domain\Formality\Services\CreateFormalityService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\newUserFormFields;
+use App\Models\Address;
 use App\Models\BusinessGroup;
 use App\Models\Office;
 use App\Models\User;
@@ -49,19 +50,11 @@ class NewUserForm extends Component
     public function render()
     {
         $documentTypes = $this->userService->getDocumentTypes();
-        $clientTypes = $this->userService->getClientTypes();
-        $userTitles = $this->userService->getUserTitles();
-        $streetTypes = $this->addressService->getStreetTypes();
-        $housingTypes = $this->addressService->getHousingTypes();
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
-        $advisers = User::where('isWorker', 1)->get();
+        $advisers = User::where('isWorker', 1)->where('isActive', 1)->get();
         return view('livewire.new-user-form', compact([
             'documentTypes',
-            'clientTypes',
-            'userTitles',
-            'streetTypes',
-            'housingTypes',
             'roles',
             'incentiveTypes',
             'advisers'
@@ -97,7 +90,7 @@ class NewUserForm extends Component
 
             $user->assignRole($role);
 
-            $address = $this->addressService->createAddress($this->form->getCreateAddressDto());
+            $address = Address::create($this->form->getCreateAddressDto());
             $user->update(['address_id' => $address->id]);
 
             DB::commit();

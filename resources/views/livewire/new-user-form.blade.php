@@ -11,41 +11,6 @@
                         </span>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="inputState">Tipo Cliente: </label>
-                            <select wire:model="form.clientTypeId"
-                                class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                name="clientTypeId">
-                                <option value="">-- selecione --</option>
-                                @if (isset($clientTypes))
-                                    @foreach ($clientTypes as $clientType)
-                                        <option value="{{ $clientType->id }}">{{ ucfirst($clientType->name) }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @error('form.clientTypeId')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-1">
-                            <label for="inputState">Título: </label>
-                            <select wire:model="form.userTitleId"
-                                class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId">
-                                <option value="">-- selecione --</option>
-                                @if (isset($userTitles))
-                                    @foreach ($userTitles as $userTitle)
-                                        <option value="{{ $userTitle->id }}">{{ $userTitle->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @error('form.userTitleId')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
                         <div class="form-group col-md-3">
                             <label for="inputCity">Nombre</label>
                             <input wire:model="form.name" type="text"
@@ -168,125 +133,25 @@
                     </div>
                 </section>
                 <section>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 25px">
+                                <div class="form-check">
+                                    <input wire:model="form.isActive" class="form-check-input" type="checkbox" value="0"
+                                        id="isActive" x-on:click="buttonDisabled = !buttonDisabled">
+                                    <label class="form-check-label" for="invalidCheck2">
+                                        Usuario activo
+                                    </label>
+
+                                </div>
+                            </div>
+                        </div>
+                </section>
+                <section>
                     <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
                         <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
                             Dirección
                         </span>
-                    </div>
-
-                    <!-- street group -->
-                    <div class="row">
-                        <!-- street type -->
-                        <div class="col-md-2">
-                            <label for="inputZip">Tipo de calle: </label>
-                            <select wire:model="form.streetTypeId"
-                                class="form-control @error('form.streetTypeId') is-invalid @enderror"
-                                name="streetTypeId">
-                                <option value="">-- seleccione --</option>
-                                @if (isset($streetTypes))
-                                    @foreach ($streetTypes as $streetType)
-                                        <option value="{{ $streetType->id }}">{{ ucfirst($streetType->name) }}</option>
-                                    @endforeach
-
-                                @endif
-                            </select>
-                            @error('form.streetTypeId')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- street name -->
-                        <div class="col-md-2">
-                            <label for="inputZip">Nombre calle: </label>
-                            <input wire:model="form.streetName" type="text"
-                                class="form-control @error('form.streetName') is-invalid @enderror" id="inputZip"
-                                name="streetName">
-                            @error('form.streetName')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- street number -->
-                        <div class="col-md-1">
-                            <label for="inputZip">N°: </label>
-                            <input wire:model="form.streetNumber" type="text"
-                                class="form-control @error('form.streetNumber') is-invalid @enderror" id="inputZip"
-                                name="streetNumber">
-                            @error('form.streetNumber')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- block -->
-                        <div class="col-md-1">
-                            <label for="inputZip">Bloque: </label>
-                            <input wire:model="form.block" type="text"
-                                class="form-control @error('form.block') is-invalid @enderror" id="inputZip"
-                                name="block">
-                            @error('form.block')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- staircase -->
-                        <div class="col-md-1">
-                            <label for="inputZip">Escalera: </label>
-                            <input wire:model="form.blockstaircase" type="text"
-                                class="form-control @error('form.blockstaircase') is-invalid @enderror" id="inputZip"
-                                name="blockstaircase">
-                            @error('form.blockstaircase')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- floor -->
-                        <div class="col-md-1">
-                            <label for="inputZip">Piso: </label>
-                            <input wire:model="form.floor" type="text"
-                                class="form-control @error('form.floor') is-invalid @enderror" id="inputZip"
-                                name="floor">
-                            @error('form.floor')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- door -->
-                        <div class="col-md-1">
-                            <label for="inputZip">Puerta: </label>
-                            <input wire:model="form.door" type="text"
-                                class="form-control @error('form.door') is-invalid @enderror" id="inputZip" name="door">
-                            @error('form.door')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <!-- housing -->
-                        <div class="form-group col-md-3">
-                            <label for="inputAddress">Tipo de vivienda: </label>
-                            <select wire:model="form.housingTypeId"
-                                class="form-control @error('form.housingTypeId') is-invalid @enderror"
-                                name="housingTypeId">
-                                <option value="">-- selecione --</option>
-                                @if (isset($housingTypes))
-                                    @foreach ($housingTypes as $housingType)
-                                        <option value="{{ $housingType->id }}">{{ ucfirst($housingType->name) }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            @error('form.housingTypeId')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-
-                        </div>
                     </div>
 
                     <div class="row">

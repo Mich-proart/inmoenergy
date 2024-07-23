@@ -37,19 +37,11 @@ class EditUser extends Component
     public function render()
     {
         $documentTypes = $this->userService->getDocumentTypes();
-        $clientTypes = $this->userService->getClientTypes();
-        $userTitles = $this->userService->getUserTitles();
-        $streetTypes = $this->addressService->getStreetTypes();
-        $housingTypes = $this->addressService->getHousingTypes();
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
         $advisers = User::where('isWorker', 1)->get();
         return view('livewire.edit-user', compact([
             'documentTypes',
-            'clientTypes',
-            'userTitles',
-            'streetTypes',
-            'housingTypes',
             'roles',
             'incentiveTypes',
             'advisers',
