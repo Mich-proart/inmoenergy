@@ -56,18 +56,20 @@ class newFormalityFields extends Form
     public $factura_gas;
     public $factura_luz;
 
+    public $prove;
+
     protected $rules = [
         'formalityTypeId' => 'required|exists:component_option,id',
         'serviceIds' => 'required|array|exists:component_option,id',
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
-        'firstLastName' => 'required|string',
-        'secondLastName' => 'required|string',
+        //'firstLastName' => 'required|string',
+        // 'secondLastName' => 'required|string',
         'documentTypeId' => 'required|integer|exists:component_option,id',
-        'documentNumber' => 'required|string',
+        // 'documentNumber' => 'required|string',
         'phone' => 'required|string|spanish_phone',
         'clientTypeId' => 'required|integer|exists:component_option,id',
-        'userTitleId' => 'required|integer|exists:component_option,id',
+        // 'userTitleId' => 'required|integer|exists:component_option,id',
         'IBAN' => 'required|string|iban',
         'locationId' => 'required|integer|exists:location,id',
         'streetTypeId' => 'required|integer|exists:component_option,id',
@@ -180,4 +182,9 @@ class newFormalityFields extends Form
         'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB'
 
     ];
+
+    public function setDocumentTypeId(int $value)
+    {
+        $this->documentTypeId = $value;
+    }
 }

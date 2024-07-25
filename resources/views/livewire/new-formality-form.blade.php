@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </section>
-                <section>
+                <section x-data="{ type: '' }">
                     <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
 
                         <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
@@ -74,9 +74,9 @@
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <label for="inputState">Tipo Cliente: </label>
-                            <select wire:model="form.clientTypeId"
+                            <select wire:model="form.clientTypeId" wire:change="formstate" x-model="type"
                                 class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                name="clientTypeId" required>
+                                name="clientTypeId" id="clientTypeId" required>
                                 <option value="">-- selecione --</option>
                                 @if (isset($clientTypes))
                                     @foreach ($clientTypes as $clientType)
@@ -94,7 +94,7 @@
                             <label for="inputState">Título: </label>
                             <select wire:model="form.userTitleId"
                                 class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId"
-                                required>
+                                id="userTitleId" :disabled="type === '{{$businessClientType->id}}'" :required="type !== '{{$businessClientType->id}}'">
                                 <option value="">-- selecione --</option>
                                 @if (isset($userTitles))
                                     @foreach ($userTitles as $userTitle)
@@ -109,7 +109,7 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputCity">Nombre</label>
+                            <label for="inputCity">{{$field_name}}</label>
                             <input wire:model="form.name" type="text"
                                 class="form-control @error('form.name') is-invalid @enderror" id="inputCity" name="name"
                                 required>
@@ -122,8 +122,9 @@
                         <div class="form-group col-md-3">
                             <label for="inputState">Primer apellido: </label>
                             <input wire:model="form.firstLastName" type="text"
-                                class="form-control @error('form.firstLastName') is-invalid @enderror" id="inputCity"
-                                name="firstLastName" required>
+                                class="form-control @error('form.firstLastName') is-invalid @enderror"
+                                name="firstLastName" id="first-LastName"
+                                :disabled="type === '{{$businessClientType->id}}'" :required="type !== '{{$businessClientType->id}}'">
                             @error('form.firstLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -132,8 +133,9 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
-                            <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
-                                name="secondLastName" required>
+                            <input wire:model="form.secondLastName" type="text" class="form-control"
+                                name="secondLastName" id="second-LastName"
+                                :disabled="type === '{{$businessClientType->id}}'" :required="type !== '{{$businessClientType->id}}'">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -146,8 +148,9 @@
                             <label for="inputState">Tipo documento: </label>
                             <select wire:model="form.documentTypeId"
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
-                                name="documentTypeId" required>
-                                <option value="">-- selecione --</option>
+                                name="documentTypeId" id="documentTypeId"
+                                :disabled="type === '{{$businessClientType->id}}'">
+                                <option value="0">-- selecione --</option>
                                 @if (isset($documentTypes))
                                     @foreach ($documentTypes as $option)
                                         <option value="{{ $option->id }}">{{ ucfirst($option->name) }}</option>
@@ -378,7 +381,7 @@
                         </div>
                     </div>
                 </section>
-                <section x-data="{ buttonDisabled: true }">
+                <section x-data="{ buttonDisabled: true, }">
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 25px">
@@ -393,213 +396,196 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
+                    <section x-show="!buttonDisabled">
+                        <div>
+                            <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
 
-                                </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse show"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div>
-                                            <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                                <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                                    Dirección de correspondencia
+                                </span>
+                            </div>
+                            <div class="row">
+                                <!-- client street type -->
+                                <div class="col-md-2">
+                                    <label for="inputZip">Tipo de calle: </label>
+                                    <select wire:model="form.client_streetTypeId"
+                                        class="form-control @error('form.client_streetTypeId') is-invalid @enderror"
+                                        name="client_streetTypeId" id="client_streetTypeId" required
+                                        x-bind:disabled="buttonDisabled">
+                                        <option value="">-- seleccione --</option>
+                                        @if (isset($streetTypes))
+                                            @foreach ($streetTypes as $streetType)
+                                                <option value="{{ $streetType->id }}">
+                                                    {{ ucfirst($streetType->name) }}
+                                                </option>
+                                            @endforeach
 
-                                                <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
-                                                    Dirección de correspondencia
-                                                </span>
-                                            </div>
-                                            <div class="row">
-                                                <!-- client street type -->
-                                                <div class="col-md-2">
-                                                    <label for="inputZip">Tipo de calle: </label>
-                                                    <select wire:model="form.client_streetTypeId"
-                                                        class="form-control @error('form.client_streetTypeId') is-invalid @enderror"
-                                                        name="client_streetTypeId" id="client_streetTypeId" required
-                                                        x-bind:disabled="buttonDisabled">
-                                                        <option value="">-- seleccione --</option>
-                                                        @if (isset($streetTypes))
-                                                            @foreach ($streetTypes as $streetType)
-                                                                <option value="{{ $streetType->id }}">
-                                                                    {{ ucfirst($streetType->name) }}
-                                                                </option>
-                                                            @endforeach
+                                        @endif
+                                    </select>
+                                    @error('form.client_streetTypeId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client street name -->
+                                <div class="col-md-2">
+                                    <label for="inputZip">Nombre calle: </label>
+                                    <input wire:model="form.client_streetName" type="text"
+                                        class="form-control @error('form.client_streetName') is-invalid @enderror"
+                                        id="client_streetName" name="client_streetName" required
+                                        x-bind:disabled="buttonDisabled">
+                                    @error('form.client_streetName')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
 
-                                                        @endif
-                                                    </select>
-                                                    @error('form.client_streetTypeId')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client street name -->
-                                                <div class="col-md-2">
-                                                    <label for="inputZip">Nombre calle: </label>
-                                                    <input wire:model="form.client_streetName" type="text"
-                                                        class="form-control @error('form.client_streetName') is-invalid @enderror"
-                                                        id="client_streetName" name="client_streetName" required
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_streetName')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
+                                <!-- client street number -->
+                                <div class="col-md-1">
+                                    <label for="inputZip">N°: </label>
+                                    <input wire:model="form.client_streetNumber" type="text"
+                                        class="form-control @error('form.client_streetNumber') is-invalid @enderror"
+                                        id="client_streetNumber" name="client_streetNumber" required
+                                        x-bind:disabled="buttonDisabled">
+                                    @error('form.client_streetNumber')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client block -->
+                                <div class="col-md-1">
+                                    <label for="inputZip">Bloque: </label>
+                                    <input wire:model="form.client_block" type="text"
+                                        class="form-control @error('form.client_block') is-invalid @enderror"
+                                        id="client_block" name="client_block" x-bind:disabled="buttonDisabled">
+                                    @error('form.client_block')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client block staircase -->
+                                <div class="col-md-1">
+                                    <label for="inputZip">Escalera: </label>
+                                    <input wire:model="form.client_blockstaircase" type="text"
+                                        class="form-control @error('form.client_blockstaircase') is-invalid @enderror"
+                                        id="client_blockstaircase" name="client_blockstaircase"
+                                        x-bind:disabled="buttonDisabled">
+                                    @error('form.client_blockstaircase')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client floor -->
+                                <div class="col-md-1">
+                                    <label for="inputZip">Piso: </label>
+                                    <input wire:model="form.client_floor" type="text"
+                                        class="form-control @error('form.client_floor') is-invalid @enderror"
+                                        id="client_floor" name="client_floor" x-bind:disabled="buttonDisabled">
+                                    @error('form.client_floor')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client door -->
+                                <div class="col-md-1">
+                                    <label for="inputZip">Puerta: </label>
+                                    <input wire:model="form.client_door" type="text"
+                                        class="form-control @error('form.client_door') is-invalid @enderror"
+                                        id="client_door" name="client_door" x-bind:disabled="buttonDisabled">
+                                    @error('form.client_door')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client housing type -->
+                                <div class="form-group col-md-3">
+                                    <label for="inputAddress">Tipo de vivienda: </label>
+                                    <select wire:model="form.client_housingTypeId"
+                                        class="form-control @error('form.client_housingTypeId') is-invalid @enderror"
+                                        name="client_housingTypeId" id="client_housingTypeId" required
+                                        x-bind:disabled="buttonDisabled">
+                                        <option value="">-- selecione --</option>
+                                        @if (isset($housingTypes))
+                                            @foreach ($housingTypes as $housingType)
+                                                <option value="{{ $housingType->id }}">
+                                                    {{ ucfirst($housingType->name) }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    @error('form.client_housingTypeId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
 
-                                                <!-- client street number -->
-                                                <div class="col-md-1">
-                                                    <label for="inputZip">N°: </label>
-                                                    <input wire:model="form.client_streetNumber" type="text"
-                                                        class="form-control @error('form.client_streetNumber') is-invalid @enderror"
-                                                        id="client_streetNumber" name="client_streetNumber" required
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_streetNumber')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client block -->
-                                                <div class="col-md-1">
-                                                    <label for="inputZip">Bloque: </label>
-                                                    <input wire:model="form.client_block" type="text"
-                                                        class="form-control @error('form.client_block') is-invalid @enderror"
-                                                        id="client_block" name="client_block"
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_block')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client block staircase -->
-                                                <div class="col-md-1">
-                                                    <label for="inputZip">Escalera: </label>
-                                                    <input wire:model="form.client_blockstaircase" type="text"
-                                                        class="form-control @error('form.client_blockstaircase') is-invalid @enderror"
-                                                        id="client_blockstaircase" name="client_blockstaircase"
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_blockstaircase')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client floor -->
-                                                <div class="col-md-1">
-                                                    <label for="inputZip">Piso: </label>
-                                                    <input wire:model="form.client_floor" type="text"
-                                                        class="form-control @error('form.client_floor') is-invalid @enderror"
-                                                        id="client_floor" name="client_floor"
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_floor')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client door -->
-                                                <div class="col-md-1">
-                                                    <label for="inputZip">Puerta: </label>
-                                                    <input wire:model="form.client_door" type="text"
-                                                        class="form-control @error('form.client_door') is-invalid @enderror"
-                                                        id="client_door" name="client_door"
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_door')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client housing type -->
-                                                <div class="form-group col-md-3">
-                                                    <label for="inputAddress">Tipo de vivienda: </label>
-                                                    <select wire:model="form.client_housingTypeId"
-                                                        class="form-control @error('form.client_housingTypeId') is-invalid @enderror"
-                                                        name="client_housingTypeId" id="client_housingTypeId" required
-                                                        x-bind:disabled="buttonDisabled">
-                                                        <option value="">-- selecione --</option>
-                                                        @if (isset($housingTypes))
-                                                            @foreach ($housingTypes as $housingType)
-                                                                <option value="{{ $housingType->id }}">
-                                                                    {{ ucfirst($housingType->name) }}
-                                                                </option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                    @error('form.client_housingTypeId')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- client province -->
+                                <div class="col-md-3">
+                                    <label for="inputState">Provincia: </label>
+                                    <select wire:model.live="target_clientProvinceId" class="form-control"
+                                        id="inputProvince" x-bind:disabled="buttonDisabled">
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->clientProvinces as $province)
+                                            @if ($province->region->name === $province->name)
+                                                <option value="{{ $province->id }}">{{ $province->name }}
+                                                </option>
+                                            @else
+                                                <option value="{{ $province->id }}">
+                                                    {{ $province->region->name }},
+                                                    {{ $province->name }}
+                                                </option>
+                                            @endif 
 
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <!-- client province -->
-                                                <div class="col-md-3">
-                                                    <label for="inputState">Provincia: </label>
-                                                    <select wire:model.live="target_clientProvinceId"
-                                                        class="form-control" id="inputProvince"
-                                                        x-bind:disabled="buttonDisabled">
-                                                        <option value="">-- seleccione --</option>
-                                                        @foreach ($this->clientProvinces as $province)
-                                                            @if ($province->region->name === $province->name)
-                                                                <option value="{{ $province->id }}">{{ $province->name }}
-                                                                </option>
-                                                            @else
-                                                                <option value="{{ $province->id }}">
-                                                                    {{ $province->region->name }},
-                                                                    {{ $province->name }}
-                                                                </option>
-                                                            @endif 
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <!-- client location -->
-                                                <div class="col-md-3">
-                                                    <label for="inputState">Población: </label>
-                                                    <select wire:model="form.client_locationId"
-                                                        class="form-control @error('form.client_locationId') is-invalid @enderror"
-                                                        id="client_locationId" name="client_locationId" required
-                                                        x-bind:disabled="buttonDisabled">
-                                                        <option value="">-- seleccione --</option>
-                                                        @foreach ($this->clientLocations as $clientLocation)
-                                                            <option value="{{ $clientLocation->id }}">
-                                                                {{ $clientLocation->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('form.client_locationId')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <!-- client zip code -->
-                                                <div class="col-md-2">
-                                                    <label for="inputZip">Código postal: </label>
-                                                    <input wire:model="form.client_zipCode" type="text"
-                                                        class="form-control @error('form.client_zipCode') is-invalid @enderror"
-                                                        id="client_zipCode" name="client_zipCode" required
-                                                        x-bind:disabled="buttonDisabled">
-                                                    @error('form.client_zipCode')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <!-- client location -->
+                                <div class="col-md-3">
+                                    <label for="inputState">Población: </label>
+                                    <select wire:model="form.client_locationId"
+                                        class="form-control @error('form.client_locationId') is-invalid @enderror"
+                                        id="client_locationId" name="client_locationId" required
+                                        x-bind:disabled="buttonDisabled">
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->clientLocations as $clientLocation)
+                                            <option value="{{ $clientLocation->id }}">
+                                                {{ $clientLocation->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('form.client_locationId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <!-- client zip code -->
+                                <div class="col-md-2">
+                                    <label for="inputZip">Código postal: </label>
+                                    <input wire:model="form.client_zipCode" type="text"
+                                        class="form-control @error('form.client_zipCode') is-invalid @enderror"
+                                        id="client_zipCode" name="client_zipCode" required
+                                        x-bind:disabled="buttonDisabled">
+                                    @error('form.client_zipCode')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </section>
                 </section>
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     <div class="form-group">
@@ -724,5 +710,22 @@
 
             })
         });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#clientTypeId').on('change', function () {
+                const select = $('#clientTypeId').val();
+                if (select === '{{$businessClientType->id}}') {
+                    setTimeout(() => {
+                        $('#documentTypeId').val('{{$businessDocumentType->id}}');
+                    }, 500);
+                    $('#first-LastName').val('');
+                    $('#second-LastName').val('');
+                    $('#userTitleId').val('');
+                } else {
+                    $('#documentTypeId').val(0);
+                }
+            })
+        })
     </script>
 </div>

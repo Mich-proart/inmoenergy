@@ -2,8 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Domain\Enums\ClientTypeEnum;
+use App\Domain\Enums\DocumentRule;
+use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\CreateFormalityService;
 use App\Livewire\Forms\newFormalityFields;
+use App\Models\ComponentOption;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Services\FormalityService;
@@ -33,6 +37,11 @@ class NewFormalityForm extends Component
     public $file_fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
 
 
+    public $businessClientType;
+    public $businessDocumentType;
+
+    public $documentTypes;
+
 
     public function __construct()
     {
@@ -41,12 +50,20 @@ class NewFormalityForm extends Component
         $this->addressService = App::make(AddressService::class);
         $this->createFormalityService = App::make(CreateFormalityService::class);
         $this->folder = uniqid() . '_' . now()->timestamp;
+        $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
+        $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
+    }
+
+
+    public function mount()
+    {
+        $this->documentTypes = $this->userService->getDocumentTypes();
     }
 
     public function save()
     {
 
-        $this->form->validate();
+        $this->formValidation();
 
         DB::beginTransaction();
 
@@ -114,14 +131,20 @@ class NewFormalityForm extends Component
 
     public function render()
     {
-        $documentTypes = $this->userService->getDocumentTypes();
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
-        return view('livewire.new-formality-form', compact(['streetTypes', 'housingTypes', 'formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles']));
+        return view('livewire.new-formality-form', [
+            'streetTypes' => $streetTypes,
+            'housingTypes' => $housingTypes,
+            'formalitytypes' => $formalitytypes,
+            'services' => $services,
+            'clientTypes' => $clientTypes,
+            'userTitles' => $userTitles
+        ]);
     }
 
     #[Computed()]
@@ -157,4 +180,79 @@ class NewFormalityForm extends Component
         $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
     }
+
+    public $field_name = 'Nombre';
+
+    public function formstate()
+    {
+        $current_client_type = null;
+
+
+        if ($this->form->clientTypeId !== null) {
+            $this->documentTypes = $this->userService->getDocumentTypes();
+            $current_client_type = ComponentOption::where('id', $this->form->clientTypeId)->first();
+
+            if ($current_client_type && $current_client_type->name === ClientTypeEnum::BUSINESS->value) {
+
+                $this->field_name = 'Razon social';
+
+                $documentType = $this->userService->getDocumentTypes();
+                $documentType = $documentType->where('name', DocumentTypeEnum::CIF->value)->first();
+
+                $this->form->setDocumentTypeId($documentType->id);
+                $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
+
+
+            }
+
+            if ($current_client_type && $current_client_type->name === ClientTypeEnum::PERSON->value) {
+                $this->field_name = 'Nombre';
+                $documentTypes = $this->userService->getDocumentTypes();
+                $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+            }
+
+        }
+    }
+
+    private function formValidation()
+    {
+        $this->form->validate();
+
+        $selectedClientType = ComponentOption::where('id', $this->form->clientTypeId)->first();
+        $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
+        if ($selectedClientType && $selectedClientType->name === ClientTypeEnum::PERSON->value) {
+
+            $documentRule = '';
+
+            if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
+                $documentRule = 'required|string|min:9|max:9';
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
+                $documentRule = DocumentRule::$DNI;
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
+                $documentRule = DocumentRule::$NIE;
+            }
+
+            $this->form->validate([
+                'firstLastName' => 'required|string',
+                'secondLastName' => 'required|string',
+                'userTitleId' => 'required|integer|exists:component_option,id',
+                'documentNumber' => $documentRule
+            ]);
+        }
+
+
+        if ($selectedClientType && $selectedClientType->name === ClientTypeEnum::BUSINESS->value) {
+            $this->form->validate(
+                [
+                    'documentNumber' => DocumentRule::$CIF
+                ],
+                [
+                    'documentNumber.required' => 'El campo Cif es obligatorio',
+                    'documentNumber.cif' => 'El Cif no es valido',
+                ],
+            );
+        }
+
+    }
+
 }
