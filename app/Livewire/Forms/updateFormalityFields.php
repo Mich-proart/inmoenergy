@@ -61,7 +61,7 @@ class updateFormalityFields extends Form
         $this->formalityTypeId[0] = $formality->type->id;
         $this->serviceIds[0] = $formality->service->id;
         $this->clientTypeId = $client->clientType->id;
-        $this->userTitleId = $client->title->id;
+        $this->userTitleId = $client->title->id ?? 0;
         $this->name = $client->name;
         $this->email = $client->email;
         $this->firstLastName = $client->first_last_name;
@@ -165,13 +165,13 @@ class updateFormalityFields extends Form
         'serviceIds' => 'required|nullable|exists:component_option,id',
         'name' => 'required|nullable|string',
         'email' => 'required|nullable|email',
-        'firstLastName' => 'required|nullable|string',
-        'secondLastName' => 'required|nullable|string',
+        // 'firstLastName' => 'required|nullable|string',
+        // 'secondLastName' => 'required|nullable|string',
         'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
-        'documentNumber' => 'required|nullable|string',
+        // 'documentNumber' => 'required|nullable|string',
         'phone' => 'required|nullable|string|spanish_phone',
         'clientTypeId' => 'required|nullable|integer|exists:component_option,id',
-        'userTitleId' => 'required|nullable|integer|exists:component_option,id',
+        // 'userTitleId' => 'required|nullable|integer|exists:component_option,id',
         'IBAN' => 'required|nullable|string|iban',
         'locationId' => 'required|nullable|exists:location,id',
         'streetTypeId' => 'required|nullable|exists:component_option,id',
@@ -224,4 +224,10 @@ class updateFormalityFields extends Form
         'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB',
 
     ];
+
+    public function setDocumentTypeId(int $value)
+    {
+        $this->documentTypeId = $value;
+    }
+
 }

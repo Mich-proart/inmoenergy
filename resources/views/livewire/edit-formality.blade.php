@@ -22,7 +22,25 @@
                             </div>
                             <div id="status" class="col-sm-4 invoice-col">
                                 <label for="">Estado:</label>
+                                @if (isset($formality->status))
+                                    @if ($formality->status->name == "pendiente asignación" || $formality->status->name === "asignado")
+                                        <span
+                                            class="badge rounded-pill bg-primary text-light">{{$formality->status->name}}</span>
+                                    @endif
 
+                                    @if ($formality->status->name == "K.O.")
+                                        <span
+                                            class="badge rounded-pill bg-danger text-bg-danger">{{$formality->status->name}}</span>
+                                    @endif
+                                    @if ($formality->status->name == "en curso")
+                                        <span
+                                            class="badge rounded-pill bg-warning text-dark">{{$formality->status->name}}</span>
+                                    @endif
+                                    @if ($formality->status->name == "tramitado" || $formality->status->name == "en vigor")
+                                        <span
+                                            class="badge rounded-pill bg-success text-bg-success">{{$formality->status->name}}</span>
+                                    @endif
+                                @endif
                             </div>
 
                         </div>
@@ -97,9 +115,9 @@
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <label for="inputState">Tipo Cliente: </label>
-                            <select wire:model="form.clientTypeId"
+                            <select wire:model="form.clientTypeId" wire:change="formstate"
                                 class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                name="clientTypeId">
+                                name="clientTypeId" id="clientTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($clientTypes))
                                     @foreach ($clientTypes as $clientType)
@@ -115,7 +133,8 @@
                         </div>
                         <div class="form-group col-md-1">
                             <label for="inputState">Título: </label>
-                            <select wire:model="form.userTitleId"
+                            <select wire:model="form.userTitleId" {{$isBusinessPerson ? '' : 'required'}}
+                                {{$isBusinessPerson ? 'disabled' : ''}}
                                 class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($userTitles))
@@ -132,7 +151,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="inputCity">Nombre</label>
+                            <label for="inputCity">{{$field_name}}</label>
                             <input wire:model="form.name" type="text"
                                 class="form-control @error('form.name') is-invalid @enderror" id="inputCity" name="name"
                                 required>
@@ -144,9 +163,10 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputState">Primer apellido: </label>
-                            <input wire:model="form.firstLastName" type="text"
+                            <input wire:model="form.firstLastName" type="text" {{$isBusinessPerson ? '' : 'required'}}
+                                {{$isBusinessPerson ? 'disabled' : ''}}
                                 class="form-control @error('form.firstLastName') is-invalid @enderror" id="inputCity"
-                                name="firstLastName" required>
+                                name="firstLastName" id="first-LastName">
                             @error('form.firstLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -155,8 +175,10 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
-                            <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
-                                name="secondLastName" required>
+                            <input wire:model="form.secondLastName" {{$isBusinessPerson ? 'disabled' : ''}} type="text"
+                                {{$isBusinessPerson ? '' : 'required'}}
+                                class="form-control @error('form.secondLastName') is-invalid @enderror"
+                                id="second-LastName" name="secondLastName">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -167,9 +189,9 @@
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="inputState">Tipo documento: </label>
-                            <select wire:model="form.documentTypeId"
+                            <select wire:model="form.documentTypeId" {{$isBusinessPerson ? 'disabled' : ''}}
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
-                                name="documentTypeId" required>
+                                name="documentTypeId" required id="documentTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($documentTypes))
                                     @foreach ($documentTypes as $option)
@@ -619,15 +641,27 @@
     </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
-    <script>
-        $(document).ready(function () {
-            function statuscode(code) {
-                return statusColor(code);
-            }
-            $('#status').html(
-                `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
-                }`
-            );
-        });
-    </script>
 </div>
+
+@script
+<script>
+    $(document).ready(function () {
+
+
+
+        $('#clientTypeId').on('change', function () {
+            const select = $('#clientTypeId').val();
+            if (select === '{{$businessClientType->id}}') {
+                setTimeout(() => {
+                    $('#documentTypeId').val('{{$businessDocumentType->id}}');
+                }, 500);
+                $('#first-LastName').val('');
+                $('#second-LastName').val('');
+                $('#userTitleId').val('');
+            } else {
+                $('#documentTypeId').val(0);
+            }
+        })
+    })
+</script>
+@endscript
