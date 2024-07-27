@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('user_Assigned_id')->nullable()->constrained('users');
             $table->text('observation')->nullable();
             $table->text('issuer_observation')->nullable();
+            $table->text('assigned_observation')->nullable();
             $table->boolean('isCritical')->default(false);
             $table->boolean('canClientEdit')->default(false);
             $table->boolean('isRenewable')->default(false);

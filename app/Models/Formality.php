@@ -36,6 +36,7 @@ class Formality extends Model
         'access_rate_id',
         'service_id',
         'issuer_observation',
+        'assigned_observation',
         'correspondence_address_id',
         'isSameCorrespondenceAddress',
         'product_id',

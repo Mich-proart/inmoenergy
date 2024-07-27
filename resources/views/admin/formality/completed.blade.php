@@ -33,6 +33,7 @@
                         <th>CUPS</th>
                         <th>Renovacion</th>
                         <th>Fecha de activacion</th>
+                        <th>Observaciones asesor</th>
                     </tr>
                 </thead>
 
@@ -110,9 +111,10 @@
             { data: 'CUPS' },
             { data: 'isRenewable' },
             { data: 'activation_date' },
+            { data: 'assigned_observation' },
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] },
             { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] }
         ], "order": [
             [0, "desc"]

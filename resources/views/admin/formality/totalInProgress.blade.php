@@ -31,6 +31,7 @@
                         <th>Producto Compañía</th>
                         <th>Consumo anual</th>
                         <th>CUPS</th>
+                        <th>Observaciones asesor</th>
                     </tr>
                 </thead>
 
@@ -138,9 +139,10 @@
             { data: 'product' },
             { data: 'annual_consumption' },
             { data: 'CUPS' },
+            { data: 'assigned_observation' },
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14] },
             { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8] }
         ],
         "order": [

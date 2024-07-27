@@ -48,7 +48,7 @@ class updateFormalityFields extends Form
 
     public bool $is_same_address;
 
-    public $issuer_observation;
+    public $assigned_observation;
     public $observation;
 
     public function setformality($formality)
@@ -100,7 +100,7 @@ class updateFormalityFields extends Form
 
         }
 
-        $this->issuer_observation = $formality->issuer_observation;
+        $this->assigned_observation = $formality->assigned_observation;
         $this->observation = $formality->observation;
 
 
@@ -157,6 +157,7 @@ class updateFormalityFields extends Form
             'service_id' => $this->serviceIds[0],
             'observation' => $this->observation,
             'formality_type_id' => $this->formalityTypeId[0],
+            'assigned_observation' => $this->assigned_observation
         ];
     }
 
@@ -193,7 +194,8 @@ class updateFormalityFields extends Form
         'client_blockstaircase' => 'sometimes|nullable|string',
         'client_floor' => 'sometimes|nullable|string',
         'client_door' => 'sometimes|nullable|string',
-        'observation' => 'sometimes|nullable|string|max:255'
+        'observation' => 'sometimes|nullable|string|max:255',
+        'assigned_observation' => 'sometimes|nullable|string|max:255'
     ];
 
     protected $messages = [
@@ -222,7 +224,6 @@ class updateFormalityFields extends Form
         'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
         'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
         'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB',
-
     ];
 
     public function setDocumentTypeId(int $value)

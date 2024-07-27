@@ -614,7 +614,7 @@
                 </section>
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones</label>
+                        <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
                         <textarea wire:model="form.observation" class="form-control" id="exampleFormControlTextarea1"
                             rows="3" name="observation"></textarea>
                     </div>
@@ -622,9 +622,9 @@
                 </div>
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
-                        <textarea wire:model="form.issuer_observation" class="form-control"
-                            id="exampleFormControlTextarea1" rows="3" name="observation" disabled></textarea>
+                        <label for="exampleFormControlTextarea1">Observaciones asesor</label>
+                        <textarea wire:model="form.assigned_observation" class="form-control"
+                            id="exampleFormControlTextarea1" rows="3" name="assigned_observation" disabled></textarea>
                     </div>
 
                 </div>

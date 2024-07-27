@@ -26,7 +26,7 @@
                         <th>N documento</th>
                         <th>Dirección</th>
                         <th>Estado Tramite</th>
-                        <th>Observaciones del tramitador</th>
+                        <th>Observaciones asesor</th>
                     </tr>
                 </thead>
 
@@ -97,7 +97,7 @@
                     return statusColor(data);
                 }
             },
-            { data: 'issuer_observation' },
+            { data: 'assigned_observation' },
         ],
         "columnDefs": [
             { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8] },

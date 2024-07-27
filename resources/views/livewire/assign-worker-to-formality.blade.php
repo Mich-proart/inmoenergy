@@ -16,8 +16,8 @@
                             <th>N documento</th>
                             <th>Dirección</th>
                             <th>Observaciones del trámite</th>
-                            <th>Estado Trámite</th>
-                            <th>Trámite Crítico</th>
+                            <th>Estado trámite</th>
+                            <th>Trámite crítico</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>

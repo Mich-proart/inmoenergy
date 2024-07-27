@@ -7,7 +7,7 @@ use Livewire\Form;
 
 class modifyFormalityFields extends Form
 {
-    public $issuer_observation;
+    public $assigned_observation;
 
     public $CUPS;
 
@@ -28,7 +28,7 @@ class modifyFormalityFields extends Form
 
     public function setData($formality)
     {
-        $this->issuer_observation = $formality->issuer_observation ?? '';
+        $this->assigned_observation = $formality->assigned_observation ?? '';
         $this->CUPS = $formality->CUPS ?? '';
         $this->access_rate_id = $formality->access_rate_id ?? '';
         $this->annual_consumption = $formality->annual_consumption ?? '';
@@ -40,7 +40,7 @@ class modifyFormalityFields extends Form
     }
 
     protected $rules = [
-        'issuer_observation' => 'sometimes|nullable|string',
+        'assigned_observation' => 'sometimes|nullable|string',
         'CUPS' => 'required|string|min:20|max:22',
         'access_rate_id' => 'required|integer|exists:component_option,id',
         'annual_consumption' => 'required|integer',
@@ -76,7 +76,7 @@ class modifyFormalityFields extends Form
 
     ];
     public $rules_to_update = [
-        'issuer_observation' => 'sometimes|nullable|string',
+        'assigned_observation' => 'sometimes|nullable|string',
         'CUPS' => 'sometimes|nullable|string',
         'access_rate_id' => 'sometimes|nullable|integer|exists:component_option,id',
         'annual_consumption' => 'sometimes|nullable|integer',
@@ -92,7 +92,7 @@ class modifyFormalityFields extends Form
     {
 
         return [
-            'issuer_observation' => $this->issuer_observation,
+            'assigned_observation' => $this->assigned_observation,
             'CUPS' => $this->CUPS,
             'access_rate_id' => $this->access_rate_id,
             'annual_consumption' => $this->annual_consumption,

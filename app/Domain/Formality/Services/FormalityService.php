@@ -33,7 +33,7 @@ class FormalityService
                 'formality.id as formality_id',
                 'formality.created_at',
                 'formality.activation_date',
-                'formality.issuer_observation',
+                'formality.assigned_observation',
                 'formality.isCritical',
                 'formality.observation',
                 'formality.completion_date',

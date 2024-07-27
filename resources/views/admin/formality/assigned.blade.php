@@ -27,7 +27,7 @@
                         <th>Dirección</th>
                         <th>Estado Tramite</th>
                         <th>Trámite Crítico</th>
-                        <th>Observaciones del tramite</th>
+                        <th>Observaciones del trámite</th>
                         <th>Compañía Suministro</th>
                         <th>Producto Compañía</th>
                     </tr>
