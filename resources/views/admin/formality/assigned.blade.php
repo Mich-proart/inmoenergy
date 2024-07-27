@@ -158,7 +158,10 @@
     $('#formality-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
         formality_id = row.formality_id;
-        console.log(row);
+        if (row.status == "en curso") {
+            window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+            return;
+        }
         $('#tigger_modal').click();
     })
 
