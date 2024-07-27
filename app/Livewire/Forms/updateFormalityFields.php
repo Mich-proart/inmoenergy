@@ -157,7 +157,8 @@ class updateFormalityFields extends Form
             'service_id' => $this->serviceIds[0],
             'observation' => $this->observation,
             'formality_type_id' => $this->formalityTypeId[0],
-            'assigned_observation' => $this->assigned_observation
+            'assigned_observation' => $this->assigned_observation,
+            'isSameCorrespondenceAddress' => $this->is_same_address
         ];
     }
 
@@ -189,7 +190,7 @@ class updateFormalityFields extends Form
         'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
         'client_streetName' => 'sometimes|nullable|string',
         'client_streetNumber' => 'sometimes|nullable|string',
-        'client_zipCode' => 'sometimes|nullable|string',
+        'client_zipCode' => 'sometimes|nullable|spanish_postal_code',
         'client_block' => 'sometimes|nullable|string',
         'client_blockstaircase' => 'sometimes|nullable|string',
         'client_floor' => 'sometimes|nullable|string',

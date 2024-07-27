@@ -41,6 +41,8 @@ class EditFormality extends Component
 
     public $isBusinessPerson = false;
 
+    public $same_address;
+
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
@@ -60,6 +62,8 @@ class EditFormality extends Component
         $this->target_provinceId = $this->form->provinceId;
         $this->target_clientProvinceId = $this->form->client_provinceId;
         $this->documentTypes = $this->userService->getDocumentTypes();
+
+        $this->same_address = $this->form->is_same_address;
 
         $this->clientTypeId = $this->form->clientTypeId;
 
@@ -105,14 +109,23 @@ class EditFormality extends Component
             $address = Address::firstWhere('id', $data->address->id);
             $address->update($this->form->getaddressUpdate());
 
-            if ($data->CorrespondenceAddress !== null) {
+            $data->update($this->form->getFormalityUpdate());
+
+            $data->save();
+
+            if ($data->CorrespondenceAddress !== null && $this->form->is_same_address === false) {
                 $corresponceAddress = Address::firstWhere('id', $data->CorrespondenceAddress->id);
                 $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
             }
 
-            $data->update($this->form->getFormalityUpdate());
+            if ($data->CorrespondenceAddress == null && $this->form->is_same_address === false) {
+                $clientAddres = Address::create($this->form->getCorresponceAddressUpdate());
+                $data->update(['correspondence_address_id' => $clientAddres->id]);
+            }
 
-            $data->save();
+            if ($data->CorrespondenceAddress !== null && $this->form->is_same_address === true) {
+                $data->update(['correspondence_address_id' => null]);
+            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
@@ -230,6 +243,27 @@ class EditFormality extends Component
                     'documentNumber.required' => 'El campo Cif es obligatorio',
                     'documentNumber.cif' => 'El Cif no es valido',
                 ],
+            );
+        }
+
+    }
+
+    public function changeSameAddress()
+    {
+        $this->same_address = !$this->same_address;
+
+        if (!$this->same_address) {
+            $this->form->reset(
+                'client_locationId',
+                'client_streetTypeId',
+                'client_housingTypeId',
+                'client_streetName',
+                'client_streetNumber',
+                'client_zipCode',
+                'client_block',
+                'client_blockstaircase',
+                'client_floor',
+                'client_door'
             );
         }
 
