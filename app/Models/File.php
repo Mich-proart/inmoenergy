@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class File extends Model
@@ -15,11 +16,17 @@ class File extends Model
         'name',
         'filename',
         'mime_type',
-        'folder'
+        'folder',
+        'config_id'
     ];
 
     public function fileable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function config(): BelongsTo
+    {
+        return $this->belongsTo(FileConfig::class, 'config_id');
     }
 }

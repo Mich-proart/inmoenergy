@@ -54,7 +54,8 @@
                                     @foreach ($services as $service)
                                         <div class="form-check form-check-inline">
                                             <input wire:model="form.serviceIds" class="form-check-input" type="checkbox" id=""
-                                                name="serviceIds[]" value="{{ $service->id }}">
+                                                name="serviceIds[]" wire:click="addInput({{ $service->id }})"
+                                                value="{{ $service->id }}">
                                             <label class="form-check-label"
                                                 for="inlineCheckbox1">{{ ucfirst($service->name) }}</label>
                                         </div>
@@ -601,59 +602,22 @@
                             Documentos
                         </span>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">DNI (Ambas caras): </label>
-                            <input wire:model="form.dni" accept=".pdf"
-                                class="form-control @error('form.dni') is-invalid @enderror" type="file" name="file"
-                                id="dni" required>
-                            <div wire:loading wire:target="form.dni">Subiendo archivo...</div>
-                            @error('form.dni')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                    @foreach($inputs as $key => $input)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="inputZip">{{ucfirst($input['name'])}}: </label>
+                                <input wire:model.defer="inputs.{{$key}}.file" type="file"
+                                    class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                    id="input_{{$key}}_file">
+                                @error('inputs.' . $key . '.file')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">Factura de Agua: </label>
-                            <input wire:model="form.factura_agua" accept=".pdf" class="form-control" type="file"
-                                name="file" id="factura_agua">
-                            <div wire:loading wire:target="form.factura_agua">Subiendo archivo...</div>
-                            @error('form.factura_agua')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">Factura de Gas: </label>
-                            <input wire:model="form.factura_gas" accept=".pdf" class="form-control" type="file"
-                                name="file" id="factura_gas">
-                            <div wire:loading wire:target="form.factura_gas">Subiendo archivo...</div>
-                            @error('form.factura_gas')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="inputZip">Factura de Luz: </label>
-                            <input wire:model="form.factura_luz" accept=".pdf" class="form-control" type="file"
-                                name="file" id="factura_luz">
-                            <div wire:loading wire:target="form.factura_luz">Subiendo archivo...</div>
-                            @error('form.factura_luz')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="row no-print">
                     <div class="col-12">

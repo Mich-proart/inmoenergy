@@ -6,8 +6,11 @@ use App\Domain\Enums\ClientTypeEnum;
 use App\Domain\Enums\DocumentRule;
 use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\newFormalityFields;
 use App\Models\ComponentOption;
+use App\Models\FileConfig;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Services\FormalityService;
@@ -42,6 +45,10 @@ class NewFormalityForm extends Component
 
     public $documentTypes;
 
+    public Collection $inputs;
+
+    private FileUploadigService $fileUploadigService;
+
 
     public function __construct()
     {
@@ -52,13 +59,54 @@ class NewFormalityForm extends Component
         $this->folder = uniqid() . '_' . now()->timestamp;
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
+        $this->fileUploadigService = App::make(FileUploadigService::class);
     }
 
 
     public function mount()
     {
         $this->documentTypes = $this->userService->getDocumentTypes();
+
+        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+
+        $this->fill([
+            'inputs' => collect([['' => '']]),
+        ]);
+
+        foreach ($fileConfig as $value) {
+            $this->inputs->push(['configId' => $value->id, 'serviceId' => null, 'name' => $value->name, 'file' => '']);
+        }
+
+        $this->inputs->pull(0);
+
     }
+
+    public function addInput($serviceId)
+    {
+        if ($this->inputs->contains('serviceId', $serviceId)) {
+
+            foreach ($this->inputs as $key => $value) {
+                if ($value['serviceId'] == $serviceId) {
+                    $this->inputs->pull($key);
+                }
+            }
+            $this->inputs->pull('serviceId', $serviceId);
+        } else {
+            $config = FileConfig::where('component_option_id', $serviceId)->first();
+            $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
+        }
+
+    }
+
+    protected $rules = [
+        'inputs.*.file' => 'required|mimes:pdf|max:1024',
+    ];
+
+    protected $messages = [
+        'inputs.*.file.required' => 'Selecione un archivo.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 1MB.',
+    ];
 
     public function save()
     {
@@ -84,20 +132,31 @@ class NewFormalityForm extends Component
                 $user->update(['address_id' => $clientAddres->id]);
             }
             foreach ($this->form->serviceIds as $serviceId) {
-                $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
-            }
+                $formality = $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
 
+                $object = $this->inputs->where('serviceId', $serviceId)->first();
 
-            $fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
+                $file = $object['file'];
+                if ($file) {
+                    $this->fileUploadigService
+                        ->setModel($formality)
+                        ->addFile($file)
+                        ->setConfigId($object['configId'])
+                        ->saveFile($this->folder);
 
-            foreach ($fields as $field) {
-                if ($this->form->$field) {
-                    $this->userService
-                        ->addFile($this->form->$field)
-                        ->collesionFile($this->folder, $field);
                 }
+
             }
 
+            $file_inputs = $this->inputs->where('serviceId', null);
+            foreach ($file_inputs as $file_input) {
+                $name = basename($file_input['file']->getClientOriginalName()) . '.' . now()->timestamp;
+                $this->fileUploadigService
+                    ->setModel($user)
+                    ->addFile($file_input['file'])
+                    ->setConfigId($file_input['configId'])
+                    ->saveFile($this->folder);
+            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
@@ -107,25 +166,6 @@ class NewFormalityForm extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
 
-    }
-
-    public function updateDni()
-    {
-        $this->validateOnly($this->form->dni);
-    }
-
-    public function updateFacturaAgua()
-    {
-        $this->validateOnly($this->form->factura_agua);
-    }
-
-    public function updateFacturaGas()
-    {
-        $this->validateOnly($this->form->factura_gas);
-    }
-    public function updateFacturaLuz()
-    {
-        $this->validateOnly($this->form->factura_luz);
     }
 
 
@@ -217,6 +257,7 @@ class NewFormalityForm extends Component
     private function formValidation()
     {
         $this->form->validate();
+        $this->validate();
 
         $selectedClientType = ComponentOption::where('id', $this->form->clientTypeId)->first();
         $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();

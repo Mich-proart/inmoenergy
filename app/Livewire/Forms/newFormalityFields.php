@@ -12,7 +12,6 @@ use Livewire\WithFileUploads;
 
 class newFormalityFields extends Form
 {
-    use WithFileUploads;
     public $formalityTypeId = [];
     public $serviceIds = [];
 
@@ -51,11 +50,6 @@ class newFormalityFields extends Form
     public $is_same_address = true;
     public $observation;
 
-    public $dni;
-    public $factura_agua;
-    public $factura_gas;
-    public $factura_luz;
-
     public $prove;
 
     protected $rules = [
@@ -92,10 +86,6 @@ class newFormalityFields extends Form
         'client_floor' => 'sometimes|nullable|string',
         'client_door' => 'sometimes|nullable|string',
         'observation' => 'sometimes|nullable|string|max:255',
-        'dni' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'factura_agua' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'factura_gas' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'factura_luz' => 'sometimes|nullable|mimes:pdf|max:1024',
     ];
 
     public function getCreateUserDto(): CreateUserDto
@@ -174,13 +164,7 @@ class newFormalityFields extends Form
         'housingTypeId.required' => 'Tipo de vivienda es requerido',
         'streetName.required' => 'Nombre de calle es requerido',
         'streetNumber.required' => 'N° de calle es requerido',
-        'zipCode.required' => 'Codigo postal es requerido',
-        'dni.required' => 'DNI es requerido',
-        'dni.max' => 'Tamanio maximo de DNI es 1MB',
-        'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
-        'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
-        'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB'
-
+        'zipCode.required' => 'Codigo postal es requerido'
     ];
 
     public function setDocumentTypeId(int $value)

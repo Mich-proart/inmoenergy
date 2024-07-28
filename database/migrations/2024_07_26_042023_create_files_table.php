@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('filename');
             $table->string('mime_type');
             $table->string('folder');
+            $table->foreignId('config_id')->nullable()->constrained('component_option');
             $table->timestamps();
         });
     }

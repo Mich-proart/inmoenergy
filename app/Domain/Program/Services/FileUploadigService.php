@@ -2,6 +2,8 @@
 
 namespace App\Domain\Program\Services;
 
+use App\Models\FileConfig;
+use App\Models\Formality;
 use App\Models\Program;
 use App\Models\User;
 
@@ -9,8 +11,9 @@ use App\Models\User;
 
 class FileUploadigService
 {
-    public User|Program|null $model = null;
+    public Formality|User|Program|null $model = null;
     public $file = null;
+    public int|null $configId = null;
 
 
     public function __construct()
@@ -29,8 +32,17 @@ class FileUploadigService
         return $this;
     }
 
-    public function saveFile(string $folder, string $name)
+    public function setConfigId($configId)
     {
+        $this->configId = $configId;
+        return $this;
+    }
+
+    public function saveFile(string $folder)
+    {
+        $temp = explode('.', $this->file->getClientOriginalName())[0];
+
+        $name = $temp . '_' . now()->timestamp;
         $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
         if ($this->file) {
@@ -38,7 +50,8 @@ class FileUploadigService
                 'name' => $name,
                 'filename' => $newFilename,
                 'mime_type' => $this->file->getMimeType(),
-                'folder' => $folder
+                'folder' => $folder,
+                'config_id' => $this->configId ?? null
             ]);
             $this->file->storeAs('public/' . $folder, $newFilename);
         }
