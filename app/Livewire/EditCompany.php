@@ -12,6 +12,8 @@ class EditCompany extends Component
 {
 
     public $company_name;
+
+    public $days_to_renew;
     public $company;
     public $product_name;
 
@@ -20,6 +22,7 @@ class EditCompany extends Component
     {
         $this->company = $company;
         $this->company_name = $company->name;
+        $this->days_to_renew = $company->days_to_renew;
     }
 
     public function render()
@@ -28,7 +31,17 @@ class EditCompany extends Component
     }
 
     protected $rules = [
-        'company_name' => 'required|string|min:3|max:255'
+        'company_name' => 'required|string|min:3|max:255',
+        'days_to_renew' => 'required|integer|between:1,365',
+
+    ];
+
+    protected $messages = [
+        'company_name.required' => 'Debes introducir un nombre',
+        'company_name.max' => 'El nombre no puede superar los 255 caracteres',
+        'days_to_renew.required' => 'Debes introducir un día de renovación',
+        'days_to_renew.integer' => 'El día de renovación debe ser un número',
+        'days_to_renew.between' => 'El día de renovación debe estar entre 1 y 365 días',
     ];
 
     public function update()
@@ -41,6 +54,7 @@ class EditCompany extends Component
 
             $updates = [
                 'name' => strtolower($this->company_name),
+                'days_to_renew' => $this->days_to_renew
             ];
 
             Company::firstWhere('id', $this->company->id)->update($updates);

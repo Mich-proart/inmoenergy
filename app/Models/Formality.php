@@ -6,6 +6,7 @@ use App\Casts\Money;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Formality extends Model
 {
@@ -36,6 +37,7 @@ class Formality extends Model
         'access_rate_id',
         'service_id',
         'issuer_observation',
+        'assigned_observation',
         'correspondence_address_id',
         'isSameCorrespondenceAddress',
         'product_id',
@@ -94,4 +96,9 @@ class Formality extends Model
     protected $casts = [
         'commission' => Money::class
     ];
+
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

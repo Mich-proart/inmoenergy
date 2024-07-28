@@ -29,6 +29,19 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputAddress">Dia para renovación: </label>
+                                <input wire:model="days_to_renew" type="text"
+                                    class="form-control @error('days_to_renew') is-invalid @enderror" id="inputAddress"
+                                    placeholder="" name="days_to_renew">
+                                @error('days_to_renew')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

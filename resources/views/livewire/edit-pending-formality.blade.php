@@ -101,6 +101,28 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                    <label for="">Comisión bruta: </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-currency-euro" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M4 9.42h1.063C5.4 12.323 7.317 14 10.34 14c.622 0 1.167-.068 1.659-.185v-1.3c-.484.119-1.045.17-1.659.17-2.1 0-3.455-1.198-3.775-3.264h4.017v-.928H6.497v-.936q-.002-.165.008-.329h4.078v-.927H6.618c.388-1.898 1.719-2.985 3.723-2.985.614 0 1.175.05 1.659.177V2.194A6.6 6.6 0 0 0 10.341 2c-2.928 0-4.82 1.569-5.244 4.3H4v.928h1.01v1.265H4v.928z" />
+                                            </svg>
+                                        </span>
+                                        <input wire:model="form.commission" type="text"
+                                            class="form-control @error('form.commission') is-invalid @enderror"
+                                            id="commission" name="commission">
+                                        @error('form.commission')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
 
                                     <input id="formalityId" type="text" wire:model="form.formalityId" value=""
                                         class="form-control @error('form.formalityId') is-invalid @enderror" hidden>
@@ -119,15 +141,32 @@
                                         <label class="form-check-label" for="invalidCheck2">
                                             Renovación
                                         </label>
-
+                                        @error('days_to_renew')
+                                            <div class="form-row">
+                                                <span class="text-danger">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
-                                    Guardar cambios</button>
+                            <div class="row no-print">
+                                <div class="col-12">
+                                    <div style="margin-top: 50px; margin-bottom: 25px">
+                                        <div class="">
+                                            <button type="button" wire:click="saveKo"
+                                                class="btn btn-danger float-left ">K.O.</button>
+                                            <button type="submit" class="btn btn-success float-right"><i
+                                                    class="far fa-save"></i>
+                                                Guardar cambios</button>
+                                            <button type="button" class="btn btn-secondary float-right"
+                                                style="margin-right: 10px" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                     </form>
                 </div>
             </div>
@@ -189,7 +228,7 @@
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
                             <button type="button" wire:click="editFormality(${data})" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-edit"></i> Volver a tramitar</button>
-                            <button type="button" wire:click="editFormality(${data})" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O.</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
                         `;

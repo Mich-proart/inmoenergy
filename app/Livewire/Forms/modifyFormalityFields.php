@@ -7,7 +7,7 @@ use Livewire\Form;
 
 class modifyFormalityFields extends Form
 {
-    public $issuer_observation;
+    public $assigned_observation;
 
     public $CUPS;
 
@@ -21,33 +21,33 @@ class modifyFormalityFields extends Form
     public $product_id;
 
 
-    public $commission;
+    //public $commission;
 
     public $potency;
 
 
     public function setData($formality)
     {
-        $this->issuer_observation = $formality->issuer_observation ?? '';
+        $this->assigned_observation = $formality->assigned_observation ?? '';
         $this->CUPS = $formality->CUPS ?? '';
         $this->access_rate_id = $formality->access_rate_id ?? '';
         $this->annual_consumption = $formality->annual_consumption ?? '';
         $this->canClientEdit = $formality->canClientEdit ?? false;
         $this->internal_observation = $formality->internal_observation ?? '';
         $this->product_id = $formality->product_id ?? '';
-        $this->commission = (string) $formality->commission->getAmount() ?? '';
+        //$this->commission = (string) $formality->commission->getAmount() ?? '';
         $this->potency = $formality->potency ?? '';
     }
 
     protected $rules = [
-        'issuer_observation' => 'sometimes|nullable|string',
+        'assigned_observation' => 'sometimes|nullable|string',
         'CUPS' => 'required|string|min:20|max:22',
         'access_rate_id' => 'required|integer|exists:component_option,id',
         'annual_consumption' => 'required|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'required|integer|exists:product,id',
-        'commission' => 'required|numeric|gt:0',
+        //'commission' => 'required|numeric|gt:0',
         'potency' => 'required|numeric|gt:0',
     ];
 
@@ -64,24 +64,26 @@ class modifyFormalityFields extends Form
         'product_id.required' => 'Debes seleccionar un producto',
         'product_id.integer' => 'Debes seleccionar un producto',
         'product_id.exists' => 'Debes seleccionar un proyecto existente',
+        /*
         'commission.required' => 'Debes rellenar la comision',
         'commission.integer' => 'Debes rellenar la comision',
         'commission.gt' => 'La comision debe ser mayor que 0',
         'commission.numeric' => 'La comision debe ser un valor valido',
+        */
         'potency.required' => 'Debes rellenar la potencia',
         'potency.numeric' => 'La potencia debe ser un valor valido',
         'potency.gt' => 'La potencia debe ser mayor que 0',
 
     ];
     public $rules_to_update = [
-        'issuer_observation' => 'sometimes|nullable|string',
+        'assigned_observation' => 'sometimes|nullable|string',
         'CUPS' => 'sometimes|nullable|string',
         'access_rate_id' => 'sometimes|nullable|integer|exists:component_option,id',
         'annual_consumption' => 'sometimes|nullable|integer',
         'canClientEdit' => 'sometimes|nullable|boolean',
         'internal_observation' => 'sometimes|nullable|string',
         'product_id' => 'sometimes|nullable|integer|exists:product,id',
-        'commission' => 'sometimes|nullable|integer',
+        // 'commission' => 'sometimes|nullable|integer',
         'potency' => 'sometimes|nullable|integer',
     ];
 
@@ -90,14 +92,14 @@ class modifyFormalityFields extends Form
     {
 
         return [
-            'issuer_observation' => $this->issuer_observation,
+            'assigned_observation' => $this->assigned_observation,
             'CUPS' => $this->CUPS,
             'access_rate_id' => $this->access_rate_id,
             'annual_consumption' => $this->annual_consumption,
             'canClientEdit' => $this->canClientEdit,
             'internal_observation' => $this->internal_observation,
             'product_id' => $this->product_id,
-            'commission' => $this->commission,
+            // 'commission' => $this->commission,
             'potency' => $this->potency,
         ];
     }

@@ -3,11 +3,15 @@
 namespace App\Livewire;
 
 use App\Domain\Address\Services\AddressService;
+use App\Domain\Enums\ClientTypeEnum;
+use App\Domain\Enums\DocumentRule;
+use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\FormalityService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\updateFormalityFields;
 use App\Models\Address;
+use App\Models\ComponentOption;
 use App\Models\Formality;
 use Livewire\Component;
 use Illuminate\Support\Facades\App;
@@ -28,15 +32,26 @@ class EditFormality extends Component
     public $target_provinceId;
     public $target_clientProvinceId;
 
+    public $businessClientType;
+    public $businessDocumentType;
 
+    public $documentTypes;
+
+    public $field_name = 'Nombre';
+
+    public $isBusinessPerson = false;
+
+    public $same_address;
 
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
         $this->formalityService = App::make(FormalityService::class);
         $this->addressService = App::make(AddressService::class);
-    }
 
+        $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
+        $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
+    }
 
 
     public function mount($formalityId)
@@ -46,25 +61,42 @@ class EditFormality extends Component
         $this->form->setformality($this->formality);
         $this->target_provinceId = $this->form->provinceId;
         $this->target_clientProvinceId = $this->form->client_provinceId;
+        $this->documentTypes = $this->userService->getDocumentTypes();
+
+        $this->same_address = $this->form->is_same_address;
+
+        $this->clientTypeId = $this->form->clientTypeId;
+
+        if ($this->clientTypeId == $this->businessClientType->id) {
+            $this->isBusinessPerson = true;
+            $this->field_name = 'Razon social';
+        }
+
     }
 
     public function render()
     {
 
-        $documentTypes = $this->userService->getDocumentTypes();
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
-        return view('livewire.edit-formality', compact(['streetTypes', 'housingTypes', 'formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles']));
+        return view('livewire.edit-formality', [
+            'streetTypes' => $streetTypes,
+            'housingTypes' => $housingTypes,
+            'formalitytypes' => $formalitytypes,
+            'services' => $services,
+            'clientTypes' => $clientTypes,
+            'userTitles' => $userTitles,
+        ]);
     }
 
     public function update()
     {
 
-        $this->form->validate();
+        $this->formValidation();
 
 
         DB::beginTransaction();
@@ -77,14 +109,23 @@ class EditFormality extends Component
             $address = Address::firstWhere('id', $data->address->id);
             $address->update($this->form->getaddressUpdate());
 
-            if ($data->CorrespondenceAddress !== null) {
+            $data->update($this->form->getFormalityUpdate());
+
+            $data->save();
+
+            if ($data->CorrespondenceAddress !== null && $this->form->is_same_address === false) {
                 $corresponceAddress = Address::firstWhere('id', $data->CorrespondenceAddress->id);
                 $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
             }
 
-            $data->update($this->form->getFormalityUpdate());
+            if ($data->CorrespondenceAddress == null && $this->form->is_same_address === false) {
+                $clientAddres = Address::create($this->form->getCorresponceAddressUpdate());
+                $data->update(['correspondence_address_id' => $clientAddres->id]);
+            }
 
-            $data->save();
+            if ($data->CorrespondenceAddress !== null && $this->form->is_same_address === true) {
+                $data->update(['correspondence_address_id' => null]);
+            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
@@ -121,5 +162,110 @@ class EditFormality extends Component
     {
         $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
+    }
+
+    public function formstate()
+    {
+        $current_client_type = null;
+
+
+        if ($this->form->clientTypeId !== null) {
+            $this->documentTypes = $this->userService->getDocumentTypes();
+            $current_client_type = ComponentOption::where('id', $this->form->clientTypeId)->first();
+
+            if ($current_client_type && $current_client_type->name === ClientTypeEnum::BUSINESS->value) {
+
+                $this->field_name = 'Razon social';
+                $this->isBusinessPerson = true;
+
+                $documentType = $this->userService->getDocumentTypes();
+                $documentType = $documentType->where('name', DocumentTypeEnum::CIF->value)->first();
+
+                $this->form->setDocumentTypeId($documentType->id);
+                $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
+
+
+            }
+
+            if ($current_client_type && $current_client_type->name === ClientTypeEnum::PERSON->value) {
+                $this->field_name = 'Nombre';
+                $this->isBusinessPerson = false;
+                $documentTypes = $this->userService->getDocumentTypes();
+                $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+            }
+
+        }
+    }
+
+    private function formValidation()
+    {
+        $this->form->validate();
+
+        $selectedClientType = ComponentOption::where('id', $this->form->clientTypeId)->first();
+        $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
+        if ($selectedClientType && $selectedClientType->name === ClientTypeEnum::PERSON->value) {
+
+            $documentRule = '';
+
+            if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
+                $documentRule = 'required|string|min:9|max:9';
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
+                $documentRule = DocumentRule::$DNI;
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
+                $documentRule = DocumentRule::$NIE;
+            }
+
+            $this->form->validate(
+                [
+                    'firstLastName' => 'required|string',
+                    'secondLastName' => 'required|string',
+                    'userTitleId' => 'required|integer|exists:component_option,id',
+                    'documentNumber' => $documentRule
+                ],
+                [
+
+                    'firstLastName.required' => 'El campo Primer Apellido es obligatorio',
+                    'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
+                    'userTitleId.required' => 'El campo Titulo es obligatorio',
+                    'userTitleId.exists' => 'El Titulo no es valido',
+
+                ]
+            );
+        }
+
+
+        if ($selectedClientType && $selectedClientType->name === ClientTypeEnum::BUSINESS->value) {
+            $this->form->validate(
+                [
+                    'documentNumber' => DocumentRule::$CIF
+                ],
+                [
+                    'documentNumber.required' => 'El campo Cif es obligatorio',
+                    'documentNumber.cif' => 'El Cif no es valido',
+                ],
+            );
+        }
+
+    }
+
+    public function changeSameAddress()
+    {
+        $this->same_address = !$this->same_address;
+
+        if (!$this->same_address) {
+            $this->form->reset(
+                'client_locationId',
+                'client_streetTypeId',
+                'client_housingTypeId',
+                'client_streetName',
+                'client_streetNumber',
+                'client_zipCode',
+                'client_block',
+                'client_blockstaircase',
+                'client_floor',
+                'client_door'
+            );
+        }
+
     }
 }

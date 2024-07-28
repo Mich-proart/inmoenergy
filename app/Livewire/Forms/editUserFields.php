@@ -10,6 +10,8 @@ class editUserFields extends Form
 {
     public bool $isWorker;
 
+    public bool $isActive;
+
     public $name;
     public $email;
     public $firstLastName;
@@ -18,10 +20,6 @@ class editUserFields extends Form
     public $documentNumber;
     public $phone;
     public $password;
-
-    public $clientTypeId;
-    public $userTitleId;
-    // public $IBAN;
 
     public $incentiveTypeTd;
     public $businessGroup;
@@ -32,15 +30,8 @@ class editUserFields extends Form
     public $roleId;
     public $locationId;
     public $provinceId;
-    public $streetTypeId;
-    public $housingTypeId;
-    public $streetName;
-    public $streetNumber;
     public $zipCode;
-    public $block;
-    public $blockstaircase;
-    public $floor;
-    public $door;
+
 
     public function setUser($user)
     {
@@ -52,8 +43,6 @@ class editUserFields extends Form
         $this->documentTypeId = $user->documentType->id ?? null;
         $this->documentNumber = $user->document_number;
         $this->phone = $user->phone;
-        $this->clientTypeId = $user->clientType->id ?? null;
-        $this->userTitleId = $user->title->id ?? null;
         $this->isWorker = $user->isWorker;
         // $this->IBAN = $user->IBAN;
 
@@ -70,18 +59,10 @@ class editUserFields extends Form
         if ($address) {
             $this->locationId = $address->location->id;
             $this->provinceId = $address->location->province->id;
-            $this->streetTypeId = $address->streetType->id;
-            $this->housingTypeId = $address->housingType->id;
-            $this->streetName = $address->street_name;
-            $this->streetNumber = $address->street_number;
             $this->zipCode = $address->zip_code;
-            $this->block = $address->block;
-            $this->blockstaircase = $address->block_staircase;
-            $this->floor = $address->floor;
-            $this->door = $address->door;
         }
 
-
+        $this->isActive = $user->isActive;
     }
 
     public function setPassword(string $password)
@@ -97,25 +78,14 @@ class editUserFields extends Form
         'documentTypeId' => 'required|integer|exists:component_option,id',
         'documentNumber' => 'required|string',
         'phone' => 'required|string|spanish_phone',
-        'clientTypeId' => 'required|integer|exists:component_option,id',
-        'userTitleId' => 'required|integer|exists:component_option,id',
         'password' => 'sometimes|nullable|string|min:8',
-        // 'IBAN' => 'sometimes|nullable|string',
         'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
         'userOffice' => 'sometimes|nullable|string',
         'businessGroup' => 'sometimes|nullable|string',
         'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
         'roleId' => 'required|integer|exists:roles,id',
         'locationId' => 'required|integer|exists:location,id',
-        'streetTypeId' => 'required|integer|exists:component_option,id',
-        'housingTypeId' => 'required|integer|exists:component_option,id',
-        'streetName' => 'required|string',
-        'streetNumber' => 'required|string',
         'zipCode' => 'required|string|spanish_postal_code',
-        'block' => 'sometimes|nullable|string',
-        'blockstaircase' => 'sometimes|nullable|string',
-        'floor' => 'sometimes|nullable|string',
-        'door' => 'sometimes|nullable|string',
     ];
 
     protected $messages = [
@@ -123,8 +93,6 @@ class editUserFields extends Form
         'email.email' => 'El correo electronico no es valido',
         'name.required' => 'El nombre es requerido',
         'documentTypeId.required' => 'El tipo de documento es requerido',
-        'clientTypeId.required' => 'El tipo de cliente es requerido',
-        'userTitleId.required' => 'El cargo es requerido',
         'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
     ];
 
@@ -140,13 +108,14 @@ class editUserFields extends Form
             'phone' => $this->phone,
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
-            'client_type_id' => $this->clientTypeId,
+            'client_type_id' => null,
             'adviser_assigned_id' => $this->adviserAssignedId,
             'responsible_id' => auth()->user()->id,
-            'user_title_id' => $this->userTitleId,
+            'user_title_id' => null,
             'IBAN' => null,
             'incentive_type_id' => $this->incentiveTypeTd,
             'office_id' => $this->userOffice,
+            'isActive' => $this->isActive
         ];
 
         if ($this->password != null) {
@@ -161,15 +130,7 @@ class editUserFields extends Form
     {
         return [
             'location_id' => $this->locationId,
-            'street_type_id' => $this->streetTypeId,
-            'housing_type_id' => $this->housingTypeId,
-            'street_name' => $this->streetName,
-            'street_number' => $this->streetNumber,
             'zip_code' => $this->zipCode,
-            'block' => $this->block,
-            'block_staircase' => $this->blockstaircase,
-            'floor' => $this->floor,
-            'door' => $this->door
         ];
     }
 

@@ -16,8 +16,8 @@
                             <th>N documento</th>
                             <th>Dirección</th>
                             <th>Observaciones del trámite</th>
-                            <th>Estado Trámite</th>
-                            <th>Trámite Crítico</th>
+                            <th>Estado trámite</th>
+                            <th>Trámite crítico</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -166,7 +166,7 @@
                 { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
             ], "order": [
-                [0, "desc"]
+                [1, "desc"]
             ],
         });
         $('#formality-content').on('click', '.target', function () {

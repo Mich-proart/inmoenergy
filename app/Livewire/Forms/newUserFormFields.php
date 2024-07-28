@@ -11,6 +11,7 @@ use Hash;
 class newUserFormFields extends Form
 {
     public bool $isWorker = false;
+    public bool $isActive = true;
 
     public $name;
     public $email;
@@ -21,8 +22,6 @@ class newUserFormFields extends Form
     public $phone;
     public $password;
 
-    public $clientTypeId;
-    public $userTitleId;
     // public $IBAN;
 
     public $incentiveTypeTd;
@@ -33,15 +32,9 @@ class newUserFormFields extends Form
 
     public $roleId;
     public $locationId;
-    public $streetTypeId;
-    public $housingTypeId;
-    public $streetName;
-    public $streetNumber;
     public $zipCode;
-    public $block;
-    public $blockstaircase;
-    public $floor;
-    public $door;
+
+
 
     public function setIsWorker(bool $isWorker)
     {
@@ -61,25 +54,14 @@ class newUserFormFields extends Form
         'documentTypeId' => 'required|integer|exists:component_option,id',
         'documentNumber' => 'required|string',
         'phone' => 'required|string|spanish_phone',
-        'clientTypeId' => 'required|integer|exists:component_option,id',
-        'userTitleId' => 'required|integer|exists:component_option,id',
         'password' => 'required|string|min:8',
-        // 'IBAN' => 'required|string',
         'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
         'officeId' => 'sometimes|nullable|integer|exists:office,id',
         // 'businessGroup' => 'sometimes|nullable|string',
         'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
         'roleId' => 'required|integer|exists:roles,id',
         'locationId' => 'required|integer|exists:location,id',
-        'streetTypeId' => 'required|integer|exists:component_option,id',
-        'housingTypeId' => 'required|integer|exists:component_option,id',
-        'streetName' => 'required|string',
-        'streetNumber' => 'required|string',
         'zipCode' => 'required|string|spanish_postal_code',
-        'block' => 'sometimes|nullable|string',
-        'blockstaircase' => 'sometimes|nullable|string',
-        'floor' => 'sometimes|nullable|string',
-        'door' => 'sometimes|nullable|string',
     ];
 
     protected $messages = [
@@ -87,6 +69,8 @@ class newUserFormFields extends Form
         'email.unique' => 'El correo electronico ya se encuentra registrado',
         'email.email' => 'El correo electronico no es valido',
         'email.required' => 'El correo electronico es requerido',
+        'password.string' => 'La contraseña debe ser una cadena de caracteres',
+        'phone.spanish_phone' => 'El numero de telefono no es valido',
         'password.min' => 'La contraseña debe tener al menos 8 caracteres',
         'password.required' => 'La contraseña es requerida',
         'firstLastName.required' => 'El primer apellido es requerido',
@@ -94,38 +78,11 @@ class newUserFormFields extends Form
         'documentTypeId.required' => 'El tipo de documento es requerido',
         'documentNumber.required' => 'El numero de documento es requerido',
         'phone.required' => 'El numero de telefono es requerido',
-        'clientTypeId.required' => 'El tipo de cliente es requerido',
-        'userTitleId.required' => 'El cargo es requerido',
         'incentiveTypeTd.required' => 'El tipo de incentivo es requerido',
         'roleId.required' => 'El rol es requerido',
         'locationId.required' => 'La ubicacion es requerida',
-        'streetTypeId.required' => 'El tipo de calle es requerido',
-        'housingTypeId.required' => 'El tipo de vivienda es requerido',
-        'streetName.required' => 'El nombre de la calle es requerido',
-        'streetNumber.required' => 'El numero de la calle es requerido',
         'zipCode.required' => 'El C.P. es requerido'
     ];
-
-    public function getCreateUserDto(): CreateUserDto
-    {
-        $pass = Hash::make($this->password);
-        return new CreateUserDto(
-            $this->name,
-            $this->email,
-            $pass,
-            $this->isWorker,
-            $this->firstLastName,
-            $this->secondLastName,
-            $this->documentTypeId,
-            $this->documentNumber,
-            $this->phone,
-            $this->clientTypeId,
-            $this->userTitleId,
-            null,
-            null,
-            null,
-        );
-    }
 
     public function getUserData()
     {
@@ -140,30 +97,23 @@ class newUserFormFields extends Form
             'phone' => $this->phone,
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
-            'client_type_id' => $this->clientTypeId,
+            'client_type_id' => null,
             'adviser_assigned_id' => $this->adviserAssignedId,
             'responsible_id' => auth()->user()->id,
-            'user_title_id' => $this->userTitleId,
+            'user_title_id' => null,
             'IBAN' => null,
             'incentive_type_id' => $this->incentiveTypeTd,
             'office_id' => $this->officeId,
+            'isActive' => $this->isActive
         ];
     }
 
-    public function getCreateAddressDto(): CreateAddressDto
+    public function getCreateAddressDto()
     {
-        return new CreateAddressDto(
-            $this->locationId,
-            $this->streetTypeId,
-            $this->housingTypeId,
-            $this->streetName,
-            $this->streetNumber,
-            $this->zipCode,
-            $this->block,
-            $this->blockstaircase,
-            $this->floor,
-            $this->door
-        );
+        return [
+            'location_id' => $this->locationId,
+            'zip_code' => $this->zipCode
+        ];
     }
 
     public function getRoleId()

@@ -2,8 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Domain\Enums\ClientTypeEnum;
+use App\Domain\Enums\DocumentRule;
+use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\newFormalityFields;
+use App\Models\ComponentOption;
+use App\Models\FileConfig;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Services\FormalityService;
@@ -33,6 +40,15 @@ class NewFormalityForm extends Component
     public $file_fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
 
 
+    public $businessClientType;
+    public $businessDocumentType;
+
+    public $documentTypes;
+
+    public Collection $inputs;
+
+    private FileUploadigService $fileUploadigService;
+
 
     public function __construct()
     {
@@ -41,12 +57,61 @@ class NewFormalityForm extends Component
         $this->addressService = App::make(AddressService::class);
         $this->createFormalityService = App::make(CreateFormalityService::class);
         $this->folder = uniqid() . '_' . now()->timestamp;
+        $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
+        $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
+        $this->fileUploadigService = App::make(FileUploadigService::class);
     }
+
+
+    public function mount()
+    {
+        $this->documentTypes = $this->userService->getDocumentTypes();
+
+        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+
+        $this->fill([
+            'inputs' => collect([['' => '']]),
+        ]);
+
+        foreach ($fileConfig as $value) {
+            $this->inputs->push(['configId' => $value->id, 'serviceId' => null, 'name' => $value->name, 'file' => '']);
+        }
+
+        $this->inputs->pull(0);
+
+    }
+
+    public function addInput($serviceId)
+    {
+        if ($this->inputs->contains('serviceId', $serviceId)) {
+
+            foreach ($this->inputs as $key => $value) {
+                if ($value['serviceId'] == $serviceId) {
+                    $this->inputs->pull($key);
+                }
+            }
+            $this->inputs->pull('serviceId', $serviceId);
+        } else {
+            $config = FileConfig::where('component_option_id', $serviceId)->first();
+            $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
+        }
+
+    }
+
+    protected $rules = [
+        'inputs.*.file' => 'required|mimes:pdf|max:1024',
+    ];
+
+    protected $messages = [
+        'inputs.*.file.required' => 'Selecione un archivo.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 1MB.',
+    ];
 
     public function save()
     {
 
-        $this->form->validate();
+        $this->formValidation();
 
         DB::beginTransaction();
 
@@ -67,20 +132,31 @@ class NewFormalityForm extends Component
                 $user->update(['address_id' => $clientAddres->id]);
             }
             foreach ($this->form->serviceIds as $serviceId) {
-                $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
-            }
+                $formality = $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
 
+                $object = $this->inputs->where('serviceId', $serviceId)->first();
 
-            $fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
+                $file = $object['file'];
+                if ($file) {
+                    $this->fileUploadigService
+                        ->setModel($formality)
+                        ->addFile($file)
+                        ->setConfigId($object['configId'])
+                        ->saveFile($this->folder);
 
-            foreach ($fields as $field) {
-                if ($this->form->$field) {
-                    $this->userService
-                        ->addFile($this->form->$field)
-                        ->collesionFile($this->folder, $field);
                 }
+
             }
 
+            $file_inputs = $this->inputs->where('serviceId', null);
+            foreach ($file_inputs as $file_input) {
+                $name = basename($file_input['file']->getClientOriginalName()) . '.' . now()->timestamp;
+                $this->fileUploadigService
+                    ->setModel($user)
+                    ->addFile($file_input['file'])
+                    ->setConfigId($file_input['configId'])
+                    ->saveFile($this->folder);
+            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
@@ -92,36 +168,23 @@ class NewFormalityForm extends Component
 
     }
 
-    public function updateDni()
-    {
-        $this->validateOnly($this->form->dni);
-    }
-
-    public function updateFacturaAgua()
-    {
-        $this->validateOnly($this->form->factura_agua);
-    }
-
-    public function updateFacturaGas()
-    {
-        $this->validateOnly($this->form->factura_gas);
-    }
-    public function updateFacturaLuz()
-    {
-        $this->validateOnly($this->form->factura_luz);
-    }
-
 
     public function render()
     {
-        $documentTypes = $this->userService->getDocumentTypes();
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
-        return view('livewire.new-formality-form', compact(['streetTypes', 'housingTypes', 'formalitytypes', 'services', 'documentTypes', 'clientTypes', 'userTitles']));
+        return view('livewire.new-formality-form', [
+            'streetTypes' => $streetTypes,
+            'housingTypes' => $housingTypes,
+            'formalitytypes' => $formalitytypes,
+            'services' => $services,
+            'clientTypes' => $clientTypes,
+            'userTitles' => $userTitles
+        ]);
     }
 
     #[Computed()]
@@ -142,6 +205,12 @@ class NewFormalityForm extends Component
     public function clientProvinces()
     {
         $clientProvince = $this->addressService->getProvinces();
+        $key = $clientProvince->where('name', 'Barcelona')->first();
+
+        if ($key) {
+            $this->target_provinceId = $key->id;
+        }
+
         return $clientProvince;
     }
 
@@ -151,4 +220,85 @@ class NewFormalityForm extends Component
         $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
     }
+
+    public $field_name = 'Nombre';
+
+    public function formstate()
+    {
+        $current_client_type = null;
+
+
+        if ($this->form->clientTypeId !== null) {
+            $this->documentTypes = $this->userService->getDocumentTypes();
+            $current_client_type = ComponentOption::where('id', $this->form->clientTypeId)->first();
+
+            if ($current_client_type && $current_client_type->name === ClientTypeEnum::BUSINESS->value) {
+
+                $this->field_name = 'Razon social';
+
+                $documentType = $this->userService->getDocumentTypes();
+                $documentType = $documentType->where('name', DocumentTypeEnum::CIF->value)->first();
+
+                $this->form->setDocumentTypeId($documentType->id);
+                $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
+
+
+            }
+
+            if ($current_client_type && $current_client_type->name === ClientTypeEnum::PERSON->value) {
+                $this->field_name = 'Nombre';
+                $documentTypes = $this->userService->getDocumentTypes();
+                $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+            }
+
+        }
+    }
+
+    private function formValidation()
+    {
+        $this->form->validate();
+        $this->validate();
+
+        $selectedClientType = ComponentOption::where('id', $this->form->clientTypeId)->first();
+        $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
+        if ($selectedClientType && $selectedClientType->name === ClientTypeEnum::PERSON->value) {
+
+            $documentRule = '';
+
+            if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
+                $documentRule = 'required|string|min:9|max:9';
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
+                $documentRule = DocumentRule::$DNI;
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
+                $documentRule = DocumentRule::$NIE;
+            }
+
+            $this->form->validate([
+                'firstLastName' => 'required|string',
+                'secondLastName' => 'required|string',
+                'userTitleId' => 'required|integer|exists:component_option,id',
+                'documentNumber' => $documentRule
+            ], [
+                'firstLastName.required' => 'El campo Primer Apellido es obligatorio',
+                'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
+                'userTitleId.required' => 'El campo Titulo es obligatorio',
+                'userTitleId.exists' => 'El Titulo no es valido',
+            ]);
+        }
+
+
+        if ($selectedClientType && $selectedClientType->name === ClientTypeEnum::BUSINESS->value) {
+            $this->form->validate(
+                [
+                    'documentNumber' => DocumentRule::$CIF
+                ],
+                [
+                    'documentNumber.required' => 'El campo Cif es obligatorio',
+                    'documentNumber.cif' => 'El Cif no es valido',
+                ],
+            );
+        }
+
+    }
+
 }

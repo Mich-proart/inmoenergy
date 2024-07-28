@@ -22,7 +22,7 @@ class DocumentsManager extends Component
 
     public $programs;
 
-    private $fileUploadigService;
+    private FileUploadigService $fileUploadigService;
 
     public function render()
     {
@@ -81,7 +81,7 @@ class DocumentsManager extends Component
                 $this->fileUploadigService
                     ->setModel(Program::find($input['programId']))
                     ->addFile($input['file'])
-                    ->saveFile('documents', $input['file']->getClientOriginalName());
+                    ->saveFile('documents');
             }
 
 

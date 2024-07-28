@@ -53,7 +53,9 @@ return new class extends Migration {
                 "alias" => "document_type",
                 "data" => array(
                     "DNI",
-                    "pasaporte"
+                    "pasaporte",
+                    "CIF",
+                    "NIE"
                 )
             ),
             "tipo de calle" => array(

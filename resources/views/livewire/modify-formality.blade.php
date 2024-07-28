@@ -3,9 +3,9 @@
         <section>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
-                    <textarea wire:model="form.issuer_observation" class="form-control" id="exampleFormControlTextarea1"
-                        rows="3" name="observation"></textarea>
+                    <label for="exampleFormControlTextarea1">Observaciones asesor</label>
+                    <textarea wire:model="form.assigned_observation" class="form-control"
+                        id="exampleFormControlTextarea1" rows="3" name="assigned_observation"></textarea>
                 </div>
             </div>
         </section>
@@ -100,27 +100,6 @@
                             class="form-control @error('form.annual_consumption') is-invalid @enderror" id="inputZip"
                             name="annual_consumption" required>
                         @error('form.annual_consumption')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group col-md-3">
-                    <label for="">Comisión bruta: </label>
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-currency-euro" viewBox="0 0 16 16">
-                                <path
-                                    d="M4 9.42h1.063C5.4 12.323 7.317 14 10.34 14c.622 0 1.167-.068 1.659-.185v-1.3c-.484.119-1.045.17-1.659.17-2.1 0-3.455-1.198-3.775-3.264h4.017v-.928H6.497v-.936q-.002-.165.008-.329h4.078v-.927H6.618c.388-1.898 1.719-2.985 3.723-2.985.614 0 1.175.05 1.659.177V2.194A6.6 6.6 0 0 0 10.341 2c-2.928 0-4.82 1.569-5.244 4.3H4v.928h1.01v1.265H4v.928z" />
-                            </svg>
-                        </span>
-                        <input wire:model="form.commission" type="text"
-                            class="form-control @error('form.commission') is-invalid @enderror" id="commission"
-                            name="commission" required>
-                        @error('form.commission')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

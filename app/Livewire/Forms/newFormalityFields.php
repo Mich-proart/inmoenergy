@@ -12,7 +12,6 @@ use Livewire\WithFileUploads;
 
 class newFormalityFields extends Form
 {
-    use WithFileUploads;
     public $formalityTypeId = [];
     public $serviceIds = [];
 
@@ -51,23 +50,20 @@ class newFormalityFields extends Form
     public $is_same_address = true;
     public $observation;
 
-    public $dni;
-    public $factura_agua;
-    public $factura_gas;
-    public $factura_luz;
+    public $prove;
 
     protected $rules = [
         'formalityTypeId' => 'required|exists:component_option,id',
         'serviceIds' => 'required|array|exists:component_option,id',
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
-        'firstLastName' => 'required|string',
-        'secondLastName' => 'required|string',
+        //'firstLastName' => 'required|string',
+        // 'secondLastName' => 'required|string',
         'documentTypeId' => 'required|integer|exists:component_option,id',
-        'documentNumber' => 'required|string',
+        // 'documentNumber' => 'required|string',
         'phone' => 'required|string|spanish_phone',
         'clientTypeId' => 'required|integer|exists:component_option,id',
-        'userTitleId' => 'required|integer|exists:component_option,id',
+        // 'userTitleId' => 'required|integer|exists:component_option,id',
         'IBAN' => 'required|string|iban',
         'locationId' => 'required|integer|exists:location,id',
         'streetTypeId' => 'required|integer|exists:component_option,id',
@@ -90,10 +86,6 @@ class newFormalityFields extends Form
         'client_floor' => 'sometimes|nullable|string',
         'client_door' => 'sometimes|nullable|string',
         'observation' => 'sometimes|nullable|string|max:255',
-        'dni' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'factura_agua' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'factura_gas' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'factura_luz' => 'sometimes|nullable|mimes:pdf|max:1024',
     ];
 
     public function getCreateUserDto(): CreateUserDto
@@ -172,12 +164,11 @@ class newFormalityFields extends Form
         'housingTypeId.required' => 'Tipo de vivienda es requerido',
         'streetName.required' => 'Nombre de calle es requerido',
         'streetNumber.required' => 'N° de calle es requerido',
-        'zipCode.required' => 'Codigo postal es requerido',
-        'dni.required' => 'DNI es requerido',
-        'dni.max' => 'Tamanio maximo de DNI es 1MB',
-        'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
-        'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
-        'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB'
-
+        'zipCode.required' => 'Codigo postal es requerido'
     ];
+
+    public function setDocumentTypeId(int $value)
+    {
+        $this->documentTypeId = $value;
+    }
 }

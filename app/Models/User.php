@@ -41,6 +41,7 @@ class User extends Authenticatable
         'incentive_type_id',
         'business_group',
         'office_id',
+        'isActive'
     ];
 
     /**

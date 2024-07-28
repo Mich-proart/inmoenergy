@@ -48,7 +48,7 @@ class updateFormalityFields extends Form
 
     public bool $is_same_address;
 
-    public $issuer_observation;
+    public $assigned_observation;
     public $observation;
 
     public function setformality($formality)
@@ -61,7 +61,7 @@ class updateFormalityFields extends Form
         $this->formalityTypeId[0] = $formality->type->id;
         $this->serviceIds[0] = $formality->service->id;
         $this->clientTypeId = $client->clientType->id;
-        $this->userTitleId = $client->title->id;
+        $this->userTitleId = $client->title->id ?? 0;
         $this->name = $client->name;
         $this->email = $client->email;
         $this->firstLastName = $client->first_last_name;
@@ -100,7 +100,7 @@ class updateFormalityFields extends Form
 
         }
 
-        $this->issuer_observation = $formality->issuer_observation;
+        $this->assigned_observation = $formality->assigned_observation;
         $this->observation = $formality->observation;
 
 
@@ -157,6 +157,8 @@ class updateFormalityFields extends Form
             'service_id' => $this->serviceIds[0],
             'observation' => $this->observation,
             'formality_type_id' => $this->formalityTypeId[0],
+            'assigned_observation' => $this->assigned_observation,
+            'isSameCorrespondenceAddress' => $this->is_same_address
         ];
     }
 
@@ -165,13 +167,13 @@ class updateFormalityFields extends Form
         'serviceIds' => 'required|nullable|exists:component_option,id',
         'name' => 'required|nullable|string',
         'email' => 'required|nullable|email',
-        'firstLastName' => 'required|nullable|string',
-        'secondLastName' => 'required|nullable|string',
+        // 'firstLastName' => 'required|nullable|string',
+        // 'secondLastName' => 'required|nullable|string',
         'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
-        'documentNumber' => 'required|nullable|string',
+        // 'documentNumber' => 'required|nullable|string',
         'phone' => 'required|nullable|string|spanish_phone',
         'clientTypeId' => 'required|nullable|integer|exists:component_option,id',
-        'userTitleId' => 'required|nullable|integer|exists:component_option,id',
+        // 'userTitleId' => 'required|nullable|integer|exists:component_option,id',
         'IBAN' => 'required|nullable|string|iban',
         'locationId' => 'required|nullable|exists:location,id',
         'streetTypeId' => 'required|nullable|exists:component_option,id',
@@ -188,12 +190,13 @@ class updateFormalityFields extends Form
         'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
         'client_streetName' => 'sometimes|nullable|string',
         'client_streetNumber' => 'sometimes|nullable|string',
-        'client_zipCode' => 'sometimes|nullable|string',
+        'client_zipCode' => 'sometimes|nullable|spanish_postal_code',
         'client_block' => 'sometimes|nullable|string',
         'client_blockstaircase' => 'sometimes|nullable|string',
         'client_floor' => 'sometimes|nullable|string',
         'client_door' => 'sometimes|nullable|string',
-        'observation' => 'sometimes|nullable|string|max:255'
+        'observation' => 'sometimes|nullable|string|max:255',
+        'assigned_observation' => 'sometimes|nullable|string|max:255'
     ];
 
     protected $messages = [
@@ -222,6 +225,11 @@ class updateFormalityFields extends Form
         'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
         'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
         'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB',
-
     ];
+
+    public function setDocumentTypeId(int $value)
+    {
+        $this->documentTypeId = $value;
+    }
+
 }

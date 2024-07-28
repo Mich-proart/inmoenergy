@@ -22,7 +22,25 @@
                             </div>
                             <div id="status" class="col-sm-4 invoice-col">
                                 <label for="">Estado:</label>
+                                @if (isset($formality->status))
+                                    @if ($formality->status->name == "pendiente asignación" || $formality->status->name === "asignado")
+                                        <span
+                                            class="badge rounded-pill bg-primary text-light">{{$formality->status->name}}</span>
+                                    @endif
 
+                                    @if ($formality->status->name == "K.O.")
+                                        <span
+                                            class="badge rounded-pill bg-danger text-bg-danger">{{$formality->status->name}}</span>
+                                    @endif
+                                    @if ($formality->status->name == "en curso")
+                                        <span
+                                            class="badge rounded-pill bg-warning text-dark">{{$formality->status->name}}</span>
+                                    @endif
+                                    @if ($formality->status->name == "tramitado" || $formality->status->name == "en vigor")
+                                        <span
+                                            class="badge rounded-pill bg-success text-bg-success">{{$formality->status->name}}</span>
+                                    @endif
+                                @endif
                             </div>
 
                         </div>
@@ -97,9 +115,9 @@
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <label for="inputState">Tipo Cliente: </label>
-                            <select wire:model="form.clientTypeId"
+                            <select wire:model="form.clientTypeId" wire:change="formstate"
                                 class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                name="clientTypeId">
+                                name="clientTypeId" id="clientTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($clientTypes))
                                     @foreach ($clientTypes as $clientType)
@@ -115,7 +133,8 @@
                         </div>
                         <div class="form-group col-md-1">
                             <label for="inputState">Título: </label>
-                            <select wire:model="form.userTitleId"
+                            <select wire:model="form.userTitleId" {{$isBusinessPerson ? '' : 'required'}}
+                                {{$isBusinessPerson ? 'disabled' : ''}}
                                 class="form-control @error('form.userTitleId') is-invalid @enderror" name="userTitleId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($userTitles))
@@ -132,7 +151,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="inputCity">Nombre</label>
+                            <label for="inputCity">{{$field_name}}</label>
                             <input wire:model="form.name" type="text"
                                 class="form-control @error('form.name') is-invalid @enderror" id="inputCity" name="name"
                                 required>
@@ -144,9 +163,10 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputState">Primer apellido: </label>
-                            <input wire:model="form.firstLastName" type="text"
+                            <input wire:model="form.firstLastName" type="text" {{$isBusinessPerson ? '' : 'required'}}
+                                {{$isBusinessPerson ? 'disabled' : ''}}
                                 class="form-control @error('form.firstLastName') is-invalid @enderror" id="inputCity"
-                                name="firstLastName" required>
+                                name="firstLastName" id="first-LastName">
                             @error('form.firstLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -155,8 +175,10 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
-                            <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
-                                name="secondLastName" required>
+                            <input wire:model="form.secondLastName" {{$isBusinessPerson ? 'disabled' : ''}} type="text"
+                                {{$isBusinessPerson ? '' : 'required'}}
+                                class="form-control @error('form.secondLastName') is-invalid @enderror"
+                                id="second-LastName" name="secondLastName">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -167,9 +189,9 @@
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="inputState">Tipo documento: </label>
-                            <select wire:model="form.documentTypeId"
+                            <select wire:model="form.documentTypeId" {{$isBusinessPerson ? 'disabled' : ''}}
                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
-                                name="documentTypeId" required>
+                                name="documentTypeId" required id="documentTypeId">
                                 <option value="">-- selecione --</option>
                                 @if (isset($documentTypes))
                                     @foreach ($documentTypes as $option)
@@ -397,13 +419,13 @@
 
 
                 </section>
-                <section x-data="{ buttonDisabled: false }">
+                <section>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-12" style="margin-top: 25px">
                                 <div class="form-check">
-                                    <input wire:model="form.is_same_address" class="form-check-input" type="checkbox"
-                                        value="0" id="is_same_address" x-on:click="buttonDisabled = !buttonDisabled">
+                                    <input wire:model="form.is_same_address" wire:change="changeSameAddress"
+                                        class="form-check-input" type="checkbox" value="0" id="is_same_address">
                                     <label class="form-check-label" for="invalidCheck2">
                                         La dirección de correspondencia es la misma que la dirección de suministro.
                                     </label>
@@ -412,7 +434,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div {{ $same_address ? 'hidden' : ''}}>
                         <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
 
                             <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
@@ -425,8 +447,7 @@
                                 <label for="inputZip">Tipo de calle: </label>
                                 <select wire:model="form.client_streetTypeId"
                                     class="form-control @error('form.client_streetTypeId') is-invalid @enderror"
-                                    name="client_streetTypeId" id="client_streetTypeId"
-                                    x-bind:disabled="buttonDisabled">
+                                    name="client_streetTypeId" id="client_streetTypeId" {{ $same_address ? '' : 'required'}}>
                                     <option value="">-- seleccione --</option>
                                     @if (isset($streetTypes))
                                         @foreach ($streetTypes as $streetType)
@@ -446,7 +467,7 @@
                                 <label for="inputZip">Nombre calle: </label>
                                 <input wire:model="form.client_streetName" type="text"
                                     class="form-control @error('form.client_streetName') is-invalid @enderror"
-                                    id="client_streetName" name="client_streetName" x-bind:disabled="buttonDisabled">
+                                    id="client_streetName" name="client_streetName" {{ $same_address ? '' : 'required'}}>
                                 @error('form.client_streetName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -459,8 +480,7 @@
                                 <label for="inputZip">N°: </label>
                                 <input wire:model="form.client_streetNumber" type="text"
                                     class="form-control @error('form.client_streetNumber') is-invalid @enderror"
-                                    id="client_streetNumber" name="client_streetNumber"
-                                    x-bind:disabled="buttonDisabled">
+                                    id="client_streetNumber" name="client_streetNumber" {{ $same_address ? '' : 'required'}}>
                                 @error('form.client_streetNumber')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -472,7 +492,7 @@
                                 <label for="inputZip">Bloque: </label>
                                 <input wire:model="form.client_block" type="text"
                                     class="form-control @error('form.client_block') is-invalid @enderror"
-                                    id="client_block" name="client_block" x-bind:disabled="buttonDisabled">
+                                    id="client_block" name="client_block">
                                 @error('form.client_block')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -484,8 +504,7 @@
                                 <label for="inputZip">Escalera: </label>
                                 <input wire:model="form.client_blockstaircase" type="text"
                                     class="form-control @error('form.client_blockstaircase') is-invalid @enderror"
-                                    id="client_blockstaircase" name="client_blockstaircase"
-                                    x-bind:disabled="buttonDisabled">
+                                    id="client_blockstaircase" name="client_blockstaircase">
                                 @error('form.client_blockstaircase')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -497,7 +516,7 @@
                                 <label for="inputZip">Piso: </label>
                                 <input wire:model="form.client_floor" type="text"
                                     class="form-control @error('form.client_floor') is-invalid @enderror"
-                                    id="client_floor" name="client_floor" x-bind:disabled="buttonDisabled">
+                                    id="client_floor" name="client_floor">
                                 @error('form.client_floor')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -509,7 +528,7 @@
                                 <label for="inputZip">Puerta: </label>
                                 <input wire:model="form.client_door" type="text"
                                     class="form-control @error('form.client_door') is-invalid @enderror"
-                                    id="client_door" name="client_door" x-bind:disabled="buttonDisabled">
+                                    id="client_door" name="client_door">
                                 @error('form.client_door')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -521,8 +540,7 @@
                                 <label for="inputAddress">Tipo de vivienda: </label>
                                 <select wire:model="form.client_housingTypeId"
                                     class="form-control @error('form.client_housingTypeId') is-invalid @enderror"
-                                    name="client_housingTypeId" id="client_housingTypeId"
-                                    x-bind:disabled="buttonDisabled">
+                                    name="client_housingTypeId" id="client_housingTypeId" {{ $same_address ? '' : 'required'}}>
                                     <option value="">-- selecione --</option>
                                     @if (isset($housingTypes))
                                         @foreach ($housingTypes as $housingType)
@@ -543,7 +561,7 @@
                             <div class="col-md-3">
                                 <label for="inputState">Provincia: </label>
                                 <select wire:model.live="target_clientProvinceId" class="form-control"
-                                    id="inputProvince" x-bind:disabled="buttonDisabled">
+                                    id="inputProvince" {{ $same_address ? '' : 'required'}}>
                                     <option value="">-- seleccione --</option>
                                     @foreach ($this->clientProvinces as $province)
                                         @if ($province->region->name === $province->name)
@@ -563,7 +581,7 @@
                                 <label for="inputState">Población: </label>
                                 <select wire:model="form.client_locationId"
                                     class="form-control @error('form.client_locationId') is-invalid @enderror"
-                                    id="client_locationId" name="client_locationId" x-bind:disabled="buttonDisabled">
+                                    id="client_locationId" name="client_locationId" {{ $same_address ? '' : 'required'}}>
                                     <option value="">-- seleccione --</option>
                                     @foreach ($this->clientLocations as $clientLocation)
                                         <option value="{{ $clientLocation->id }}">{{ $clientLocation->name }}</option>
@@ -580,7 +598,7 @@
                                 <label for="inputZip">Código postal: </label>
                                 <input wire:model="form.client_zipCode" type="text"
                                     class="form-control @error('form.client_zipCode') is-invalid @enderror"
-                                    id="client_zipCode" name="client_zipCode" x-bind:disabled="buttonDisabled">
+                                    id="client_zipCode" name="client_zipCode" {{ $same_address ? '' : 'required'}}>
                                 @error('form.client_zipCode')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -592,7 +610,7 @@
                 </section>
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones</label>
+                        <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
                         <textarea wire:model="form.observation" class="form-control" id="exampleFormControlTextarea1"
                             rows="3" name="observation"></textarea>
                     </div>
@@ -600,9 +618,9 @@
                 </div>
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
-                        <textarea wire:model="form.issuer_observation" class="form-control"
-                            id="exampleFormControlTextarea1" rows="3" name="observation" disabled></textarea>
+                        <label for="exampleFormControlTextarea1">Observaciones asesor</label>
+                        <textarea wire:model="form.assigned_observation" class="form-control"
+                            id="exampleFormControlTextarea1" rows="3" name="assigned_observation" disabled></textarea>
                     </div>
 
                 </div>
@@ -619,15 +637,27 @@
     </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
-    <script>
-        $(document).ready(function () {
-            function statuscode(code) {
-                return statusColor(code);
-            }
-            $('#status').html(
-                `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
-                }`
-            );
-        });
-    </script>
 </div>
+
+@script
+<script>
+    $(document).ready(function () {
+
+
+
+        $('#clientTypeId').on('change', function () {
+            const select = $('#clientTypeId').val();
+            if (select === '{{$businessClientType->id}}') {
+                setTimeout(() => {
+                    $('#documentTypeId').val('{{$businessDocumentType->id}}');
+                }, 500);
+                $('#first-LastName').val('');
+                $('#second-LastName').val('');
+                $('#userTitleId').val('');
+            } else {
+                $('#documentTypeId').val(0);
+            }
+        })
+    })
+</script>
+@endscript

@@ -36,9 +36,15 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Compañía suministro: </label>
+                            @if (isset($formality->product) && isset($formality->product->company))
+                                {{ucfirst($formality->product->company->name)}}
+                            @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
                             <label for="">Producto Compañía:</label>
+                            @if (isset($formality->product))
+                                {{ucfirst($formality->product->name)}}
+                            @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tramite crítico:</label>
@@ -297,7 +303,7 @@
             </section>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones</label>
+                    <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
                         @readonly(true)>{{$formality->observation}}</textarea>
                 </div>
