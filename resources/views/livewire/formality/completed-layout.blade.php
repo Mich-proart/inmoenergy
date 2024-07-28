@@ -51,7 +51,6 @@
             </div>
         </div>
     </div>
-
     <div>
         <div wire:ignore class="card card-primary card-outline">
             <div class="card-header">
@@ -61,17 +60,24 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-
                             <th>Fecha</th>
                             <th>Usuario asignado</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
+                            <th>Tipo documento</th>
                             <th>N documento</th>
                             <th>Dirección</th>
                             <th>Estado Tramite</th>
+                            <th>Compañía Suministro</th>
+                            <th>Producto Compañía</th>
+                            <th>Fecha finalizacion tramite</th>
+                            <th>Consumo anual</th>
+                            <th>CUPS</th>
+                            <th>Renovacion</th>
+                            <th>Fecha de activacion</th>
                             <th>Observaciones asesor</th>
-                            <th>Optiones</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
 
@@ -80,7 +86,6 @@
 
         </div>
     </div>
-
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
@@ -99,7 +104,7 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: `Tramites en curso ${new Date()}`
+                    title: `Tramites realizados - ${new Date()}`
                 }
             ],
             "processing": true,
@@ -108,8 +113,8 @@
                 "url": "{{route('api.formality.index')}}",
                 "type": "GET",
                 "data": {
-                    "issuerId": "{{Auth::id()}}",
-                    "exceptStatus": ["tramitado", "en vigor"]
+                    "assignedId": "{{Auth::id()}}",
+                    "onlyStatus": ["tramitado", "en vigor"]
                 }
             },
             "language": {
@@ -121,6 +126,7 @@
                 { data: 'type' },
                 { data: 'service' },
                 { data: 'fullName' },
+                { data: 'document_type' },
                 { data: 'documentNumber' },
                 { data: 'fullAddress' },
                 {
@@ -128,6 +134,13 @@
                         return statusColor(data);
                     }
                 },
+                { data: 'company' },
+                { data: 'product' },
+                { data: 'completion_date' },
+                { data: 'annual_consumption' },
+                { data: 'CUPS' },
+                { data: 'isRenewable' },
+                { data: 'activation_date' },
                 { data: 'assigned_observation' },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {
@@ -137,20 +150,17 @@
                 },
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-            ],
-            "order": [
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] },
+                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
+            ], "order": [
                 [0, "desc"]
             ],
         });
-
         $('#formality-content').on('click', '.target', function () {
             const row = table.row(this).data();
             console.log(row);
-            window.location.href = "{{ route('admin.formality.edit', ':id') }}".replace(':id', row.formality_id);
+            window.location.href = "{{ route('admin.formality.get', ':id') }}".replace(':id', row.formality_id);
         })
     </script>
-
 </div>

@@ -5,16 +5,15 @@ namespace App\Livewire\Formality;
 use App\Models\Formality;
 use Livewire\Component;
 
-class InProgressLayout extends Component
+class TotalInProgressLayout extends Component
 {
-    public $files;
-    public $formality_file;
-
     public function render()
     {
-        return view('livewire.formality.in-progress-layout');
+        return view('livewire.formality.total-in-progress-layout');
     }
 
+    public $files;
+    public $formality_file;
 
     public function getFiles($formality_id)
     {
@@ -34,5 +33,4 @@ class InProgressLayout extends Component
 
         $this->files = $formality->client->files;
     }
-
 }
