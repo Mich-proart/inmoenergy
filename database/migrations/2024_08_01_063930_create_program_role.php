@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Program;
+use App\Models\Section;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -82,6 +83,30 @@ return new class extends Migration {
             }
         }
 
+        $data = array(
+            'placed_in' => 5,
+            'image' => 'roles_manager.png',
+            'roles' => ['superadmin'],
+            'route' => 'admin.roles.index',
+            'name' => 'gestión de roles'
+        );
+
+        Program::where('name', 'desplegables')->update(['placed_in' => 6]);
+
+        $section = Section::where('name', 'configuración')->first();
+        if ($section) {
+            $role = Role::findByName($data['roles'][0]);
+            $program = Program::create([
+                'name' => $data['name'],
+                'section_id' => $section->id,
+                'image' => $data['image'],
+                'placed_in' => $data['placed_in'],
+                'route' => $data['route']
+            ]);
+
+            $program->roles()->attach($role->id);
+
+        }
 
     }
 
