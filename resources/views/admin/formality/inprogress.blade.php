@@ -3,7 +3,12 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Trámites en curso</h1>
+<div class="row">
+    <div class="col-md-6 image-text-container">
+        <img src="{{ asset('icons/' . 'create_formality.png') }}" alt="" class="img-thumbnail align-self-center resize">
+        <h3>Trámites en curso</h3>
+    </div>
+</div>
 @stop
 
 @section('content')
@@ -15,6 +20,7 @@
 
 @section('css')
 {{-- Add here extra stylesheets --}}
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
