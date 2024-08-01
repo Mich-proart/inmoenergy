@@ -5,7 +5,8 @@
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
-        <img src="{{ asset('icons/' . 'create_formality.png') }}" alt="" class="img-thumbnail align-self-center resize">
+        <img src="{{ asset('icons/' . 'in_progress_formality.png') }}" alt=""
+            class="img-thumbnail align-self-center resize">
         <h3>Trámites en curso</h3>
     </div>
 </div>
