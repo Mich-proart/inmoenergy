@@ -126,7 +126,7 @@ class NewFormalityForm extends Component
 
 
             if (in_array($this->fibra->id, $this->form->serviceIds)) {
-                Mail::to(['santiagocarvaja65@hotmail.com', 'santiagocarvajal103@gmail.com'])
+                Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
                     ->send(new EmailLineaTelefonica($this->form->getCreateUserDto(), $this->form->getCreateAddressDto()));
 
                 $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);
