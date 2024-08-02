@@ -3,12 +3,15 @@
 namespace App\Livewire;
 
 use App\Domain\Address\Services\AddressService;
+use App\Domain\Enums\DocumentRule;
+use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\CreateFormalityService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\newUserFormFields;
 use App\Models\Address;
 use App\Models\BusinessGroup;
+use App\Models\ComponentOption;
 use App\Models\Office;
 use App\Models\User;
 use Livewire\Component;
@@ -50,6 +53,7 @@ class NewUserForm extends Component
     public function render()
     {
         $documentTypes = $this->userService->getDocumentTypes();
+        $documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
         $advisers = User::where('isWorker', 1)->where('isActive', 1)->get();
@@ -80,6 +84,22 @@ class NewUserForm extends Component
     {
 
         $this->form->validate();
+
+
+        $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
+
+        $rule = '';
+        if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
+            $rule = 'required|string|min:9|max:9';
+        } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
+            $rule = DocumentRule::$DNI;
+        } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
+            $rule = DocumentRule::$NIE;
+        }
+
+        $this->form->validate([
+            'documentNumber' => $rule
+        ]);
 
         DB::beginTransaction();
 

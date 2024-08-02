@@ -25,11 +25,15 @@ class FormalityQueryService
             ->join('province', 'province.id', '=', 'location.province_id')
             ->leftJoin('product', 'product.id', '=', 'formality.product_id')
             ->leftJoin('company', 'company.id', '=', 'product.company_id')
+            ->leftJoin('users as responsible', 'responsible.id', '=', 'issuer.responsible_id')
+            ->leftJoin('office', 'office.id', '=', 'issuer.office_id')
+            ->leftJoin('business_group', 'business_group.id', '=', 'office.business_group_id')
             ->select(
                 'formality.id as formality_id',
                 'formality.created_at',
                 'formality.activation_date',
                 'formality.issuer_observation',
+                'formality.assigned_observation',
                 'formality.isCritical',
                 'formality.observation',
                 'formality.completion_date',
@@ -38,6 +42,7 @@ class FormalityQueryService
                 'formality.activation_date',
                 'formality.isRenewable',
                 'formality.renewal_date',
+                'formality.assignment_date',
                 'issuer.name as issuer_name',
                 'status.name as status',
                 'service.name as service',
@@ -57,7 +62,12 @@ class FormalityQueryService
                 'location.name as location',
                 'province.name as province',
                 'company.name as company',
-                'product.name as product'
+                'product.name as product',
+                'responsible.name as responsible_name',
+                'responsible.first_last_name as responsible_firstLastName',
+                'responsible.second_last_name as responsible_secondLastName',
+                'office.name as office',
+                'business_group.name as business_group'
             );
 
     }

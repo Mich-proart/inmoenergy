@@ -59,7 +59,10 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
+                            <th>Oficina usuario</th>
+                            <th>Grupo empresarial</th>
                             <th>Cliente emisor</th>
+                            <th>Fecha de asignación</th>
                             <th>Fecha</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
@@ -136,7 +139,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{route('api.formality.activation.pending')}}",
+                    "url": "{{route('api.formality.info')}}",
                     "type": "GET",
                     "data": {
                         "exceptStatus": ["tramitado", "en vigor"]
@@ -146,7 +149,10 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
+                    { data: 'office' },
+                    { data: 'business_group' },
                     { data: 'issuer' },
+                    { data: 'assignment_date' },
                     { data: 'created_at' },
                     { data: 'service' },
                     { data: 'fullName' },
@@ -181,9 +187,9 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15] },
+                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9] },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
                 ],
                 "order": [
                     [0, "desc"]
