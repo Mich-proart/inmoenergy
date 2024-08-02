@@ -33,7 +33,7 @@
                                     @foreach ($formalitytypes as $formalitytype)
                                         <div class="form-check form-check-inline">
                                             <input wire:model="form.formalityTypeId" class="form-check-input" type="radio" id=""
-                                                name="formalityTypeId" value="{{ $formalitytype->id }}">
+                                                name="formalityTypeId" value="{{ $formalitytype->id }}" required>
                                             <label class="form-check-label"
                                                 for="inlineCheckbox1">{{ ucfirst($formalitytype->name) }}</label>
                                         </div>

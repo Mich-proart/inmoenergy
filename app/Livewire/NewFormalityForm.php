@@ -8,9 +8,11 @@ use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\CreateFormalityService;
 use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\newFormalityFields;
+use App\Mail\EmailLineaTelefonica;
 use App\Models\ComponentOption;
 use App\Models\FileConfig;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Services\FormalityService;
@@ -49,6 +51,8 @@ class NewFormalityForm extends Component
 
     private FileUploadigService $fileUploadigService;
 
+    private ComponentOption $fibra;
+
 
     public function __construct()
     {
@@ -60,6 +64,7 @@ class NewFormalityForm extends Component
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
         $this->fileUploadigService = App::make(FileUploadigService::class);
+        $this->fibra = ComponentOption::where('name', 'fibra')->first();
     }
 
 
@@ -83,17 +88,19 @@ class NewFormalityForm extends Component
 
     public function addInput($serviceId)
     {
-        if ($this->inputs->contains('serviceId', $serviceId)) {
+        if ($serviceId !== $this->fibra->id) {
+            if ($this->inputs->contains('serviceId', $serviceId)) {
 
-            foreach ($this->inputs as $key => $value) {
-                if ($value['serviceId'] == $serviceId) {
-                    $this->inputs->pull($key);
+                foreach ($this->inputs as $key => $value) {
+                    if ($value['serviceId'] == $serviceId) {
+                        $this->inputs->pull($key);
+                    }
                 }
+                $this->inputs->pull('serviceId', $serviceId);
+            } else {
+                $config = FileConfig::where('component_option_id', $serviceId)->first();
+                $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
             }
-            $this->inputs->pull('serviceId', $serviceId);
-        } else {
-            $config = FileConfig::where('component_option_id', $serviceId)->first();
-            $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
         }
 
     }
@@ -117,46 +124,62 @@ class NewFormalityForm extends Component
 
         try {
 
-            $user = $this->userService->create($this->form->getCreateUserDto());
 
-            $address = $this->addressService->createAddress($this->form->getCreateAddressDto());
+            if (in_array($this->fibra->id, $this->form->serviceIds)) {
+                Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
+                    ->send(new EmailLineaTelefonica($this->form->getCreateUserDto(), $this->form->getCreateAddressDto()));
 
-            $this->createFormalityService->setClientId($user->id);
-            $this->createFormalityService->setUserIssuerId(Auth::user()->id);
-            $this->createFormalityService->setAddresId($address->id);
+                $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);
 
-            if (!$this->form->is_same_address) {
-                $clientAddres = $this->addressService->createAddress($this->form->getCreateClientAddressDto());
-                $this->createFormalityService->setCorrespondenceAddressId($clientAddres->id);
-                $this->createFormalityService->setIsSameCorrespondenceAddress(false);
-                $user->update(['address_id' => $clientAddres->id]);
             }
-            foreach ($this->form->serviceIds as $serviceId) {
-                $formality = $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
 
-                $object = $this->inputs->where('serviceId', $serviceId)->first();
 
-                $file = $object['file'];
-                if ($file) {
-                    $this->fileUploadigService
-                        ->setModel($formality)
-                        ->addFile($file)
-                        ->setConfigId($object['configId'])
-                        ->saveFile($this->folder);
+            if (count($this->form->serviceIds) > 0) {
+                $user = $this->userService->create($this->form->getCreateUserDto());
+
+                $address = $this->addressService->createAddress($this->form->getCreateAddressDto());
+
+                $this->createFormalityService->setClientId($user->id);
+                $this->createFormalityService->setUserIssuerId(Auth::user()->id);
+                $this->createFormalityService->setAddresId($address->id);
+
+                if (!$this->form->is_same_address) {
+                    $clientAddres = $this->addressService->createAddress($this->form->getCreateClientAddressDto());
+                    $this->createFormalityService->setCorrespondenceAddressId($clientAddres->id);
+                    $this->createFormalityService->setIsSameCorrespondenceAddress(false);
+                    $user->update(['address_id' => $clientAddres->id]);
+                }
+
+                foreach ($this->form->serviceIds as $serviceId) {
+
+
+                    $formality = $this->createFormalityService->execute($serviceId, $this->form->formalityTypeId[0], $this->form->observation);
+
+                    $object = $this->inputs->where('serviceId', $serviceId)->first();
+
+                    $file = $object['file'];
+                    if ($file) {
+                        $this->fileUploadigService
+                            ->setModel($formality)
+                            ->addFile($file)
+                            ->setConfigId($object['configId'])
+                            ->saveFile($this->folder);
+
+                    }
 
                 }
 
+                $file_inputs = $this->inputs->where('serviceId', null);
+                foreach ($file_inputs as $file_input) {
+                    $name = basename($file_input['file']->getClientOriginalName()) . '.' . now()->timestamp;
+                    $this->fileUploadigService
+                        ->setModel($user)
+                        ->addFile($file_input['file'])
+                        ->setConfigId($file_input['configId'])
+                        ->saveFile($this->folder);
+                }
             }
 
-            $file_inputs = $this->inputs->where('serviceId', null);
-            foreach ($file_inputs as $file_input) {
-                $name = basename($file_input['file']->getClientOriginalName()) . '.' . now()->timestamp;
-                $this->fileUploadigService
-                    ->setModel($user)
-                    ->addFile($file_input['file'])
-                    ->setConfigId($file_input['configId'])
-                    ->saveFile($this->folder);
-            }
 
             DB::commit();
             return redirect()->route('admin.formality.inprogress');
