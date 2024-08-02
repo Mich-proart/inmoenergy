@@ -18,6 +18,7 @@ Route::get('/', [HomeController::class, 'index']);
 Route::resource('/roles', RoleController::class)->names('admin.roles');
 Route::group(['prefix' => 'api'], function () {
     Route::get('/formality/pending', [FormalityController::class, 'getPending'])->name('api.formality.activation.pending');
+    Route::get('/formality/info', [FormalityController::class, 'infoFormality'])->name('api.formality.info');
     Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
     Route::get('/company', [CompanyController::class, 'index'])->name('api.company.query');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Formality;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Dtos\FormalityQuery;
 use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Formality\Services\FormalityQueryService;
 use App\Domain\Formality\Services\FormalityService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
@@ -21,7 +22,8 @@ class FormalityController extends Controller
         private UserService $userService,
         private AddressService $addressService,
         private CreateFormalityService $createFormalityService,
-        private FormalityService $formalityService
+        private FormalityService $formalityService,
+        private readonly FormalityQueryService $formalityQueryService,
     ) {
     }
     /**
@@ -104,6 +106,49 @@ class FormalityController extends Controller
                 return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson();
+    }
+
+    public function infoFormality(Request $request)
+    {
+
+        $assignedId = $request->query('assignedId');
+        $activation_date_null = $request->query('assignedId');
+        $exceptStatus = $request->query('exceptStatus');
+
+        $formality = null;
+
+        if ($assignedId && $activation_date_null) {
+            $formality = $this->formalityQueryService->getActicationDateNull($assignedId);
+        }
+
+        if (!$assignedId && !$activation_date_null) {
+            $formality = $this->formalityQueryService->getAssignedNull();
+        }
+
+        if ($exceptStatus) {
+            $query = new FormalityQuery(null, null, null, $exceptStatus);
+            $formality = $this->formalityQueryService->findByDistintStatus($query);
+        }
+
+        return datatables()->of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson();
+
     }
 
     /**
