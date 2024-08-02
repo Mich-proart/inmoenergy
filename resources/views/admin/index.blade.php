@@ -36,7 +36,7 @@
                                                         </span>
 
                                                     @endif
-                                                    <img src="{{URL::asset('public/icons/' . $program->image)}}" alt=""
+                                                    <img src="{{URL::asset('/public/icons/' . $program->image)}}" alt=""
                                                         class="img-thumbnail align-self-center">
                                                 </a>
                                             </div>
