@@ -5,7 +5,8 @@
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
-        <img src="{{ asset('icons/' . 'dashboard.png') }}" alt="" class="img-thumbnail align-self-center resize">
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'dashboard.png') }}" alt=""
+            class="img-thumbnail align-self-center resize">
         <h3>Panel de control</h3>
     </div>
 </div>
