@@ -534,7 +534,7 @@
                                 <div class="col-md-3">
                                     <label for="inputState">Provincia: </label>
                                     <select wire:model.live="target_clientProvinceId" class="form-control"
-                                        id="inputProvince" x-bind:disabled="buttonDisabled">
+                                        id="client_inputProvince" x-bind:disabled="buttonDisabled">
                                         <option value="">-- seleccione --</option>
                                         @foreach ($this->clientProvinces as $province)
                                             @if ($province->region->name === $province->name)
@@ -654,7 +654,7 @@
                 '#client_zipCode'
             ];
             const corresponced_address_field = is_same_address_field.concat([
-                '#inputProvince',
+                '#client_inputProvince',
                 '#client_block',
                 '#client_blockstaircase',
                 '#client_floor',
@@ -668,7 +668,7 @@
                 })
 
                 if (select === true) {
-                    $('#inputProvince').val(0);
+                    $('#client_inputProvince').val(0);
                     corresponced_address_field.forEach(element => $(element).val(''))
                 }
 
