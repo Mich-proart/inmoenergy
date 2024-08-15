@@ -86,8 +86,6 @@ class ModifyFormality extends Component
     }
     public function insertData()
     {
-        $this->form->validate();
-
         DB::beginTransaction();
 
         try {
