@@ -366,7 +366,7 @@ return [
                     'icon' => 'fas fa-fw fa-file',
                 ],
                 [
-                    'text' => 'Cambio de tiúlo',
+                    'text' => 'Documentos para cambio de titular',
                     'route' => 'admin.document.changeTitle',
                     'icon' => 'fas fa-fw fa-file',
                 ],
