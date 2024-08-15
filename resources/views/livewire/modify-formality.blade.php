@@ -94,7 +94,7 @@
                     <label for="">Consumo anual: </label>
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">
-                            KW
+                            kW
                         </span>
                         <input wire:model="form.annual_consumption" type="text"
                             class="form-control @error('form.annual_consumption') is-invalid @enderror" id="inputZip"
@@ -110,7 +110,7 @@
                     <label for="">Potencia: </label>
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">
-                            KW
+                            kW
                         </span>
                         <input wire:model="form.potency" type="number"
                             class="form-control @error('form.potency') is-invalid @enderror" id="inputZip"

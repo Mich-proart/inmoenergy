@@ -331,16 +331,16 @@
                         </span>
                     </div>
                     <!--
-                                                                                                                                                                                                                                <div class="form-row">
-                                                                                                                                                                                                                                    <div class="form-group col-md-4" style="margin-bottom: 25px">
-                                                                                                                                                                                                                                        <div class="form-check form-switch">
-                                                                                                                                                                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                                                                                                                                                                                                                            <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
-                                                                                                                                                                                                                                                editar este tramite</label>
+                                                                                                                                                                                                                                        <div class="form-row">
+                                                                                                                                                                                                                                            <div class="form-group col-md-4" style="margin-bottom: 25px">
+                                                                                                                                                                                                                                                <div class="form-check form-switch">
+                                                                                                                                                                                                                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+                                                                                                                                                                                                                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
+                                                                                                                                                                                                                                                        editar este tramite</label>
+                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                            </div>
                                                                                                                                                                                                                                         </div>
-                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                -->
+                                                                                                                                                                                                                                        -->
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
@@ -356,12 +356,12 @@
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="">Consumo anual: </label> @if (isset($formality->annual_consumption))
-                                <span>KW </span> {{$formality->annual_consumption}}
+                                <span>kW </span> {{$formality->annual_consumption}}
                             @endif
                         </div>
                         <div class="form-group col-md-3">
                             <label for="">Potencia: </label> @if (isset($formality->potency))
-                                <span>KW </span>{{$formality->potency}}
+                                <span>kW </span>{{$formality->potency}}
                             @endif
                         </div>
 
