@@ -37,7 +37,7 @@ return new class extends Migration {
             "trámites realizados" => array(
                 'roles' => ['superadmin', 'comercial']
             ),
-            "altas pendientes" => array(
+            "altas pendientes fecha de activación" => array(
                 'roles' => ['superadmin', 'comercial']
             ),
             "asignación de trámites" => array(

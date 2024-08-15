@@ -337,7 +337,7 @@ return [
                     'route' => 'admin.formality.completed'
                 ],
                 [
-                    'text' => 'Altas pendientes',
+                    'text' => 'Altas pendientes fecha de activación',
                     'route' => 'admin.formality.pending'
                 ],
             ]

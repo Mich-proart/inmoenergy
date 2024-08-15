@@ -28,7 +28,7 @@ return new class extends Migration {
             "trámites y tickets" => array(
                 "trámites asignados" => "admin.formality.assigned",
                 "trámites realizados" => "admin.formality.completed",
-                "altas pendientes" => "admin.formality.pending"
+                "altas pendientes fecha de activación" => "admin.formality.pending"
             ),
             "herramientas" => array(
                 "asignación de trámites" => "admin.formality.assignment",
