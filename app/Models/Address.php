@@ -17,6 +17,7 @@ class Address extends Model
         'location_id',
         'street_type_id',
         'housing_type_id',
+        'full_address',
         'street_name',
         'street_number',
         'zip_code',

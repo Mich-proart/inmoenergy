@@ -10,22 +10,21 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('client', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('first_last_name')->nullable();
             $table->string('second_last_name')->nullable();
-            $table->string('password');
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
+            $table->foreignId('client_type_id')->nullable()->constrained('component_option');
+            $table->foreignId('document_type_id')->nullable()->constrained('component_option');
             $table->string('document_number')->nullable();
-            $table->foreignId('adviser_assigned_id')->nullable()->constrained('users');
-            $table->foreignId('responsible_id')->nullable()->constrained('users');
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('IBAN')->nullable();
+            $table->foreignId('user_title_id')->nullable()->constrained('component_option');
+            $table->foreignId('address_id')->nullable()->constrained('address');
             $table->boolean('isActive')->default(1);
-            $table->boolean('isWorker')->default(0);
             $table->timestamp('disabled_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -35,6 +34,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('client');
     }
 };

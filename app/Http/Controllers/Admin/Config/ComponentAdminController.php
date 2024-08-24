@@ -52,7 +52,7 @@ class ComponentAdminController extends Controller
     }
     public function docsChange()
     {
-        $program = Program::where('name', 'documentos para realizar cambio de titular')->with('files')->first();
+        $program = Program::where('name', 'documentos para cambio de titular')->with('files')->first();
         return view('admin.document.changeTitle', ['program' => $program]);
     }
 }

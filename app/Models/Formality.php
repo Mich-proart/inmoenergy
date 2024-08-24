@@ -15,7 +15,7 @@ class Formality extends Model
     protected $table = 'formality';
 
     protected $fillable = [
-        'user_client_id',
+        'client_id',
         'user_issuer_id',
         'user_Assigned_id',
         'observation',
@@ -41,13 +41,14 @@ class Formality extends Model
         'correspondence_address_id',
         'isSameCorrespondenceAddress',
         'product_id',
+        'previous_product_id',
         'commission',
         'potency',
     ];
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_client_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function issuer(): BelongsTo
@@ -91,6 +92,10 @@ class Formality extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function previousProduct(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'previous_product_id');
     }
 
     protected $casts = [

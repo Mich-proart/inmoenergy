@@ -36,7 +36,7 @@ return new class extends Migration {
             ),
             "documentación" => array(
                 "autorización" => "admin.document.authorization",
-                "documentos para realizar cambio de titular" => "admin.document.changeTitle",
+                "documentos para cambio de titular" => "admin.document.changeTitle",
             ),
             "configuración" => array(
                 "gestión de usuarios" => "admin.users",

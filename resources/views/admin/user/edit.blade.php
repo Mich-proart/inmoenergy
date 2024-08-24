@@ -11,7 +11,7 @@
 <div>
 
     @if (isset($userId))
-        <livewire:edit-user :userId="$userId" />
+        <livewire:user.edit-user-form :userId="$userId" />
     @endif
 
 </div>

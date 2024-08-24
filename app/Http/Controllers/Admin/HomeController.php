@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+/*
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
 use App\Domain\Formality\Services\CountQueryService;
+*/
 use App\Http\Controllers\Controller;
 use App\Models\Section;
 use Illuminate\Http\Request;
@@ -14,12 +16,13 @@ class HomeController extends Controller
 {
 
     public function __construct(
-        private readonly CountQueryService $countQueryService
+        // private readonly CountQueryService $countQueryService
     ) {
     }
 
     public function index()
     {
+        /*
 
         $roleId = auth()->user()->roles()->first()->id;
         $userId = auth()->user()->id;
@@ -68,7 +71,8 @@ class HomeController extends Controller
                 }
             }
         }
-
-        return view('admin.index', ['sections' => $sections]);
+        */
+        return view('admin.index' /* , ['sections' => $sections] */);
     }
+
 }

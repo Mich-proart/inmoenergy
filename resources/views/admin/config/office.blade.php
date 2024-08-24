@@ -9,7 +9,7 @@
 @section('content')
 
 @if (isset($business))
-    <livewire:create-office-modal :business="$business">
+    <livewire:config.create-office-modal :business="$business">
 @endif
 
 

@@ -12,6 +12,7 @@
 </div>
 @stop
 @section('content')
+{{--
 <div>
     <div class="card">
         <div class="card-body">
@@ -19,41 +20,41 @@
 
             <div class="container">
                 @if (isset($sections))
-                    @foreach ($sections as $section)
-                        @if ($section->programs->count() > 0)
-                            <div class="row mr-2">
-                                <h6 class="card-subtitle mb-2 text-muted">{{ ucfirst($section->name) }}</h6>
-                                <hr>
-                                @foreach ($section->programs as $program)
-                                    <div class="col-md-2">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="d-inline-flex position-relative">
-                                                <a href="{{route($program->route)}}">
-                                                    @if ($program->count > 0)
-                                                        <span
-                                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                            {{$program->count}}
-                                                            <span class="visually-hidden">unread messages</span>
-                                                        </span>
+                @foreach ($sections as $section)
+                @if ($section->programs->count() > 0)
+                <div class="row mr-2">
+                    <h6 class="card-subtitle mb-2 text-muted">{{ ucfirst($section->name) }}</h6>
+                    <hr>
+                    @foreach ($section->programs as $program)
+                    <div class="col-md-2">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-inline-flex position-relative">
+                                <a href="{{route($program->route)}}">
+                                    @if ($program->count > 0)
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{$program->count}}
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
 
-                                                    @endif
-                                                    <img src="{{'/vendor/adminlte/dist/img/icons/' . $program->image}}" alt=""
-                                                        class="img-thumbnail align-self-center">
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                        <a href="{{route($program->route)}}">
-                                            <p class="fw-bolder text-center">{{ucfirst($program->name)}}</p>
-                                        </a>
-
-                                    </div>
-
-                                @endforeach
+                                    @endif
+                                    <img src="{{'/vendor/adminlte/dist/img/icons/' . $program->image}}" alt=""
+                                        class="img-thumbnail align-self-center">
+                                </a>
                             </div>
 
-                        @endif
+                        </div>
+                        <a href="{{route($program->route)}}">
+                            <p class="fw-bolder text-center">{{ucfirst($program->name)}}</p>
+                        </a>
+
+                    </div>
+
                     @endforeach
+                </div>
+
+                @endif
+                @endforeach
                 @endif
 
             </div>
@@ -61,6 +62,7 @@
         </div>
     </div>
 </div>
+--}}
 @stop
 
 @section('css')

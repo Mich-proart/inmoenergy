@@ -306,6 +306,7 @@ return [
         ],
 
         // Sidebar items:
+        /*
         [
             'text' => 'Trámites clientes',
             'icon' => 'fas fa-fw fa-file-invoice',
@@ -324,6 +325,7 @@ return [
                 ]
             ]
         ],
+        
         [
             'text' => 'Trámites y tickets',
             'icon' => 'fas fa-copy',
@@ -356,6 +358,7 @@ return [
                 ],
             ]
         ],
+        */
         [
             'text' => 'Documentación',
             'icon' => 'fas fa-fw fa-file',
@@ -386,11 +389,13 @@ return [
                     'route' => 'admin.clients',
                     'icon' => 'fas fa-fw fa-users-cog',
                 ],
+                /*
                 [
                     'text' => 'Gestión de roles',
                     'route' => 'admin.roles.index',
                     'icon' => 'fas fa-fw fa-users-cog',
                 ],
+                */
                 [
                     'text' => 'Gestión de comercializadoras',
                     'route' => 'admin.company.manager',
