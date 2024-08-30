@@ -3,16 +3,12 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Gestión de productos</h1>
+<h1>Trámites realizados</h1>
 @stop
 
 @section('content')
 
-<div>
-    <livewire:config.create-product />
-
-</div>
-
+@livewire('formality.completed-layout')
 
 @stop
 
@@ -26,7 +22,5 @@
 @stop
 
 @section('js')
-<script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
-
 
 @stop

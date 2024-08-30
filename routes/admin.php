@@ -6,10 +6,10 @@ use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Configuration\ComponentController;
 use App\Http\Controllers\User\UserConntroller;
 use App\Http\Controllers\Admin\User\UserAdminController;
-/*
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Formality\FormalityController;
+/*
+use App\Http\Controllers\Admin\RoleController;
 */
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
@@ -18,11 +18,13 @@ Route::get('/', [HomeController::class, 'index']);
 
 //Route::resource('/roles', RoleController::class)->names('admin.roles');
 Route::group(['prefix' => 'api'], function () {
-    /*
-    Route::get('/formality/pending', [FormalityController::class, 'getPending'])->name('api.formality.activation.pending');
-    Route::get('/formality/info', [FormalityController::class, 'infoFormality'])->name('api.formality.info');
-    Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
-    */
+    Route::get('/formality/except', [FormalityController::class, 'exceptStatus'])->name('api.formality.except');
+    Route::get('/formality/status', [FormalityController::class, 'onlyStatus'])->name('api.formality.status');
+    Route::get('/formality/pending', [FormalityController::class, 'totalPending'])->name('api.formality.activation.pending');
+    Route::get('/formality/notAssigned', [FormalityController::class, 'getAssignedNull'])->name('api.formality.notAssigned');
+    Route::get('/formality/getDistintStatus', [FormalityController::class, 'getDistintStatus'])->name('api.formality.distintStatus');
+
+
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
     Route::get('/company', [CompanyController::class, 'index'])->name('api.company.query');
     Route::get('/product', [ProductController::class, 'index'])->name('api.product.query');
@@ -31,12 +33,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/component/business', [ComponentController::class, 'business'])->name('api.component.business.query');
     Route::get('/component/offices', [ComponentController::class, 'offices'])->name('api.component.offices.query');
 });
-/*
 Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
     Route::get('/{id}/edit', [FormalityAdminController::class, 'edit'])->name('admin.formality.edit');
     Route::get('/{id}/view', [FormalityAdminController::class, 'get'])->name('admin.formality.get');
-    Route::get('/{id}/modify', [FormalityAdminController::class, 'modify'])->name('admin.formality.modify');
     Route::get('/inprogress', function () {
         return view('admin.formality.inprogress');
     })->name('admin.formality.inprogress');
@@ -46,9 +46,11 @@ Route::prefix('formality')->group(function () {
     Route::get('/assigned', function () {
         return view('admin.formality.assigned');
     })->name('admin.formality.assigned');
+    Route::get('/{id}/modify', [FormalityAdminController::class, 'modify'])->name('admin.formality.modify');
     Route::get('/completed', function () {
         return view('admin.formality.completed');
     })->name('admin.formality.completed');
+    Route::get('/{id}/completed', [FormalityAdminController::class, 'getCompleted'])->name('admin.formality.get.completed');
     Route::get('/pending', function () {
         return view('admin.formality.pending');
     })->name('admin.formality.pending');
@@ -58,10 +60,8 @@ Route::prefix('formality')->group(function () {
     Route::get('/total', function () {
         return view('admin.formality.totalInProgress');
     })->name('admin.formality.totalInProgress');
-
 });
 
-*/
 Route::prefix('users')->group(function () {
     Route::get('/', function () {
         return view('admin.user.users');

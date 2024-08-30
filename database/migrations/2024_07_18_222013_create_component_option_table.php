@@ -32,7 +32,8 @@ return new class extends Migration {
                 "data" => array(
                     "luz",
                     "agua",
-                    "gas"
+                    "gas",
+                    "fibra"
                 )
             ),
             "tipo de cliente" => array(

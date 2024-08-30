@@ -1,5 +1,4 @@
 <div>
-    <!-- Modal -->
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -52,65 +51,64 @@
         </div>
     </div>
     <div>
-        <div>
-            <div wire:ignore class="card card-primary card-outline">
-                <div class="card-header">
-                    <h3 class="card-title">{{Auth::user()->name}}</h3>
-                </div>
-                <div class="card-body table-responsive p-0">
-                    <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
-                        <thead>
-                            <tr>
-                                <th>Fecha de entrada</th>
-                                <th>Tipo</th>
-                                <th>Suministro</th>
-                                <th>Cliente final</th>
-                                <th>N documento</th>
-                                <th>Dirección</th>
-                                <th>Estado Tramite</th>
-                                <th>Trámite Crítico</th>
-                                <th>Compañía Suministro</th>
-                                <th>Producto Compañía</th>
-                                <th>Observaciones asesor</th>
-                                <th>Documentos</th>
-                            </tr>
-                        </thead>
+        <div wire:ignore class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">{{Auth::user()->name}}</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
+                    <thead>
+                        <tr>
+                            <th>Oficina usuario</th>
+                            <th>Grupo empresarial</th>
+                            <th>Cliente emisor</th>
+                            <th>Usuario asignado</th>
+                            <th>Fecha de entrada</th>
+                            <th>Fecha de asignación</th>
+                            <th>Tipo</th>
+                            <th>Suministro</th>
+                            <th>Cliente final</th>
+                            <th>N documento</th>
+                            <th>Dirección</th>
+                            <th>Estado Trámite</th>
+                            <th>Trámite Crítico</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
 
-                    </table>
-                </div>
-
+                </table>
             </div>
 
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" id="tigger_modal" data-bs-toggle="modal"
-                data-bs-target="#exampleModal" hidden>
-                Launch demo modal
-            </button>
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" id="tigger_modal" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" hidden>
+            Launch demo modal
+        </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p class="fw-bold"> ¿Quieres abrir este trámite? Al abrir iniciará su proceso de
-                                tramitación.
-                            </p>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="fw-bold"> ¿Quieres abrir este trámite? Al abrir iniciará su proceso de tramitación.
+                        </p>
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                            <button type="button" class="btn btn-primary" id="trigger_formality">Si</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" id="trigger_formality">Si</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div>
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -130,24 +128,25 @@
                 buttons: [
                     {
                         extend: 'excelHtml5',
-                        title: `Tramites asignados - ${new Date()}`
+                        title: `Consultas de tramites en curso totales - ${new Date()}`
                     }
                 ],
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{route('api.formality.except')}}",
-                    "type": "GET",
-                    "data": {
-                        "assignedId": "{{Auth::id()}}",
-                        "exceptStatus": ["tramitado", "en vigor"]
-                    }
+                    "url": "{{route('api.formality.distintStatus')}}",
+                    "type": "GET"
                 },
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
+                    { data: 'office' },
+                    { data: 'business_group' },
+                    { data: 'issuer' },
+                    { data: 'assigned' },
                     { data: 'created_at' },
+                    { data: 'assignment_date' },
                     { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
@@ -167,9 +166,6 @@
                             }
                         }
                     },
-                    { data: 'company' },
-                    { data: 'product' },
-                    { data: 'assigned_observation' },
                     {
                         data: 'formality_id', render: function (data, type, row, meta) {
                             console.log(data)
@@ -178,29 +174,34 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
-                    { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12] },
                 ],
                 "order": [
                     [0, "desc"]
                 ],
             });
 
+            let queryParams = "from=total";
             let formality_id = 0;
             $('#formality-content').on('click', '.target', function () {
                 const row = table.row(this).data();
                 formality_id = row.formality_id;
                 if (row.status == "en curso") {
-                    window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+                    let url = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id) + "?" + queryParams;
+                    window.location.href = url;
                     return;
                 }
                 $('#tigger_modal').click();
             })
 
             $('#trigger_formality').on('click', function () {
-                window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+                let url = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id) + "?" + queryParams;
+                window.location.href = url;
             })
+
+
         </script>
     </div>
 </div>

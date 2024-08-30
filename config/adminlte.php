@@ -306,7 +306,6 @@ return [
         ],
 
         // Sidebar items:
-        /*
         [
             'text' => 'Trámites clientes',
             'icon' => 'fas fa-fw fa-file-invoice',
@@ -315,6 +314,7 @@ return [
                     'text' => 'Nuevo trámite',
                     'route' => 'admin.formality.create',
                 ],
+
                 [
                     'text' => 'Trámites en curso',
                     'route' => 'admin.formality.inprogress',
@@ -325,7 +325,7 @@ return [
                 ]
             ]
         ],
-        
+
         [
             'text' => 'Trámites y tickets',
             'icon' => 'fas fa-copy',
@@ -338,10 +338,12 @@ return [
                     'text' => 'Trámites realizados',
                     'route' => 'admin.formality.completed'
                 ],
+
                 [
                     'text' => 'Altas pendientes fecha de activación',
                     'route' => 'admin.formality.pending'
                 ],
+
             ]
         ],
         [
@@ -357,8 +359,8 @@ return [
                     'route' => 'admin.formality.totalInProgress'
                 ],
             ]
+
         ],
-        */
         [
             'text' => 'Documentación',
             'icon' => 'fas fa-fw fa-file',

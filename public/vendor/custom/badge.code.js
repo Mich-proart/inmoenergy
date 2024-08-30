@@ -15,11 +15,3 @@ function statusColor(status) {
         return `<span class="badge rounded-pill bg-success text-bg-success">${status}</span>`;
     }
 }
-
-function criticalCode(isCritical) {
-    if (data == 0) {
-        return `<div><i class="fas fa-times"></i></div>`;
-    } else {
-        return `<div><i class="fas fa-check"></i></div>`;
-    }
-}

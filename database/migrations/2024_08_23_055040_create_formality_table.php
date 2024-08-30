@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('client_id')->constrained('client');
             $table->foreignId('user_issuer_id')->constrained('users');
-            $table->foreignId('user_Assigned_id')->nullable()->constrained('users');
+            $table->foreignId('user_assigned_id')->nullable()->constrained('users');
             $table->text('observation')->nullable();
             $table->text('issuer_observation')->nullable();
             $table->text('assigned_observation')->nullable();
@@ -33,13 +33,13 @@ return new class extends Migration {
             $table->decimal('potency', 10, 2)->nullable();
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('correspondence_address_id')->nullable()->constrained('address');
-            // $table->boolean('isSameCorrespondenceAddress')->default(true);
+            $table->boolean('isSameCorrespondenceAddress')->default(true);
             $table->foreignId('formality_type_id')->constrained('component_option');
             $table->foreignId('status_id')->constrained('status');
             $table->foreignId('access_rate_id')->nullable()->constrained('component_option');
             $table->foreignId('service_id')->constrained('component_option');
             $table->foreignId('product_id')->nullable()->constrained('product');
-            $table->foreignId('previous_product_id')->nullable()->constrained('product');
+            $table->foreignId('previous_company_id')->nullable()->constrained('company');
             $table->timestamps();
         });
     }

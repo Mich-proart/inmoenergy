@@ -2,6 +2,7 @@
 
 namespace App\Domain\Program\Services;
 
+use App\Models\Client;
 use App\Models\FileConfig;
 use App\Models\Formality;
 use App\Models\Program;
@@ -11,7 +12,7 @@ use App\Models\User;
 
 class FileUploadigService
 {
-    public Formality|User|Program|null $model = null;
+    public Client|Formality|User|Program|null $model = null;
     public $file = null;
     public int|null $configId = null;
 
@@ -42,7 +43,7 @@ class FileUploadigService
     {
         $temp = explode('.', $this->file->getClientOriginalName())[0];
 
-        $name = $temp . '_' . now()->timestamp;
+        $name = $temp . '_' . uniqid();
         $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
         if ($this->file) {
