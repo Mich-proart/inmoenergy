@@ -21,7 +21,8 @@ return new class extends Migration {
         $services = array(
             "luz" => "factura de luz",
             "agua" => "factura de agua",
-            "gas" => "factura de gas"
+            "gas" => "factura de gas",
+            "fibra" => "factura de fibra / línea telefónica",
         );
 
         $generals = array(

@@ -47,10 +47,10 @@ return new class extends Migration {
                 'roles' => ['superadmin']
             ),
             "autorización" => array(
-                'roles' => ['inmobiliaria']
+                'roles' => ['superadmin', 'inmobiliaria']
             ),
             "documentos para cambio de titular" => array(
-                'roles' => ['inmobiliaria']
+                'roles' => ['superadmin', 'inmobiliaria']
             ),
             "gestión de usuarios" => array(
                 'roles' => ['superadmin']

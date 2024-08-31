@@ -46,7 +46,7 @@ return new class extends Migration {
                 'image' => 'closed_formality.png',
                 'roles' => ['superadmin', 'comercial']
             ),
-            "altas pendientes" => array(
+            "altas pendientes fecha de activación" => array(
                 'placed_in' => 5,
                 'image' => 'pending_formality.png',
                 'roles' => ['superadmin', 'comercial']

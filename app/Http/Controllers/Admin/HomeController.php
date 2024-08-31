@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-/*
+
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
 use App\Domain\Formality\Services\CountQueryService;
-*/
+use App\Domain\Formality\Services\FormalityQueryService;
+
 use App\Http\Controllers\Controller;
 use App\Models\Section;
 use Illuminate\Http\Request;
@@ -16,13 +17,14 @@ class HomeController extends Controller
 {
 
     public function __construct(
-        // private readonly CountQueryService $countQueryService
+        private readonly CountQueryService $countQueryService,
+        private readonly FormalityQueryService $formalityQueryService,
     ) {
     }
 
     public function index()
     {
-        /*
+
 
         $roleId = auth()->user()->roles()->first()->id;
         $userId = auth()->user()->id;
@@ -41,38 +43,43 @@ class HomeController extends Controller
             foreach ($section->programs as $program) {
                 if ($program->name == 'trámites en curso') {
                     $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
-                    $program->count = $this->countQueryService->findByDistintStatus($query);
+                    $formality = $this->formalityQueryService->findByDistintStatus($query);
+                    $program->count = count($formality);
                 }
 
                 if ($program->name == 'trámites cerrados') {
                     $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
-                    $program->count = $this->countQueryService->findByStatus($query);
+                    $formality = $this->formalityQueryService->findByStatus($query);
+                    $program->count = count($formality);
                 }
                 if ($program->name == 'trámites asignados') {
                     $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
-                    $program->count = $this->countQueryService->findByDistintStatus($query);
+                    $formality = $this->formalityQueryService->findByDistintStatus($query);
+                    $program->count = count($formality);
                 }
 
                 if ($program->name == 'trámites realizados') {
                     $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
-                    $program->count = $this->countQueryService->findByStatus($query);
+                    $formality = $this->formalityQueryService->findByStatus($query);
+                    $program->count = count($formality);
                 }
                 //
                 if ($program->name == 'altas pendientes') {
-
-                    $program->count = $this->countQueryService->getActicationDateNull($userId);
+                    $formality = $this->formalityQueryService->totalPending();
+                    $program->count = count($formality);
                 }
                 if ($program->name == 'asignación de trámites') {
-                    $program->count = $this->countQueryService->getAssignedNull();
+                    $formality = $this->formalityQueryService->getAssignedNull();
+                    $program->count = count($formality);
                 }
                 if ($program->name == 'trámites en curso totales') {
-                    $query = new FormalityQuery(null, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
-                    $program->count = $this->countQueryService->findByDistintStatus($query);
+                    $formality = $this->formalityQueryService->getDistintStatus([FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
+                    $program->count = count($formality);
                 }
             }
         }
-        */
-        return view('admin.index' /* , ['sections' => $sections] */);
+
+        return view('admin.index', ['sections' => $sections]);
     }
 
 }

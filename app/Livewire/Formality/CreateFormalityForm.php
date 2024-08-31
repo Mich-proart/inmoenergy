@@ -25,6 +25,7 @@ use App\Domain\Formality\Services\FormalityService;
 use App\Domain\User\Services\UserService;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Services\CreateFormalityService;
+use Illuminate\Mail\Mailables\Attachment;
 
 class CreateFormalityForm extends Component
 {
@@ -90,20 +91,20 @@ class CreateFormalityForm extends Component
 
     public function addInput($serviceId)
     {
-        if ($serviceId !== $this->fibra->id) {
-            if ($this->inputs->contains('serviceId', $serviceId)) {
+        // if ($serviceId !== $this->fibra->id) {
+        if ($this->inputs->contains('serviceId', $serviceId)) {
 
-                foreach ($this->inputs as $key => $value) {
-                    if ($value['serviceId'] == $serviceId) {
-                        $this->inputs->pull($key);
-                    }
+            foreach ($this->inputs as $key => $value) {
+                if ($value['serviceId'] == $serviceId) {
+                    $this->inputs->pull($key);
                 }
-                $this->inputs->pull('serviceId', $serviceId);
-            } else {
-                $config = FileConfig::where('component_option_id', $serviceId)->first();
-                $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
             }
+            $this->inputs->pull('serviceId', $serviceId);
+        } else {
+            $config = FileConfig::where('component_option_id', $serviceId)->first();
+            $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
         }
+        // }
 
     }
 
@@ -253,6 +254,7 @@ class CreateFormalityForm extends Component
         if ($address) {
             $this->dispatch('checks', error: "Error al intentar crear el formulario con datos duplicados", title: "Datos duplicados");
         } else {
+            $this->dispatch('load');
             $this->execute();
         }
 
@@ -265,11 +267,7 @@ class CreateFormalityForm extends Component
 
 
             if (in_array($this->fibra->id, $this->form->serviceIds)) {
-                Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
-                    ->send(new EmailLineaTelefonica($this->form->getClientDto(), $this->form->getCreateAddressDto()));
-
-                $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);
-
+                $this->emailRequest();
             }
 
 
@@ -333,6 +331,26 @@ class CreateFormalityForm extends Component
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
+    }
+
+
+    private function emailRequest()
+    {
+        $attachs = array();
+        $file_inputs = $this->inputs->where('serviceId', null);
+        $object = $this->inputs->where('serviceId', $this->fibra->id)->first();
+        $file_inputs->push($object);
+
+        foreach ($file_inputs as $file_input) {
+            $target = $this->fileUploadigService
+                ->addFile($file_input['file'])
+                ->saveFile($this->folder);
+            array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
+        }
+        Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
+            ->send(new EmailLineaTelefonica($this->form->getClientDto(), $this->form->getCreateAddressDto(), $attachs));
+
+        $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);
     }
 
 

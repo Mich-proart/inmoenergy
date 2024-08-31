@@ -313,15 +313,18 @@ return [
                 [
                     'text' => 'Nuevo trámite',
                     'route' => 'admin.formality.create',
+                    'can' => 'formality.create',
                 ],
 
                 [
                     'text' => 'Trámites en curso',
                     'route' => 'admin.formality.inprogress',
+                    'can' => 'formality.inprogress.get',
                 ],
                 [
                     'text' => 'Trámites cerrados',
                     'route' => 'admin.formality.closed',
+                    'can' => 'formality.closed.get',
                 ]
             ]
         ],
@@ -332,16 +335,19 @@ return [
             'submenu' => [
                 [
                     'text' => 'Trámites asignados',
-                    'route' => 'admin.formality.assigned'
+                    'route' => 'admin.formality.assigned',
+                    'can' => 'formality.assigned.get',
                 ],
                 [
                     'text' => 'Trámites realizados',
-                    'route' => 'admin.formality.completed'
+                    'route' => 'admin.formality.completed',
+                    'can' => 'formality.completed.get',
                 ],
 
                 [
                     'text' => 'Altas pendientes fecha de activación',
-                    'route' => 'admin.formality.pending'
+                    'route' => 'admin.formality.pending',
+                    'can' => 'formality.pending.get',
                 ],
 
             ]
@@ -352,11 +358,13 @@ return [
             'submenu' => [
                 [
                     'text' => 'Asignación de trámites',
-                    'route' => 'admin.formality.assignment'
+                    'route' => 'admin.formality.assignment',
+                    'can' => 'formality.assignment.get',
                 ],
                 [
                     'text' => 'Trámites en curso totales',
-                    'route' => 'admin.formality.totalInProgress'
+                    'route' => 'admin.formality.totalInProgress',
+                    'can' => 'formality.totalInProgress.get',
                 ],
             ]
 
@@ -369,11 +377,13 @@ return [
                     'text' => 'Autorización',
                     'route' => 'admin.document.authorization',
                     'icon' => 'fas fa-fw fa-file',
+                    'can' => 'documents.authorization.get',
                 ],
                 [
                     'text' => 'Documentos para cambio de titular',
                     'route' => 'admin.document.changeTitle',
                     'icon' => 'fas fa-fw fa-file',
+                    'can' => 'documents.change.get',
                 ],
             ]
         ],
@@ -385,11 +395,13 @@ return [
                     'text' => 'Gestión de usuarios',
                     'route' => 'admin.users',
                     'icon' => 'fas fa-fw fa-users-cog',
+                    'can' => 'manage.user.get',
                 ],
                 [
                     'text' => 'Gestión de clientes',
                     'route' => 'admin.clients',
                     'icon' => 'fas fa-fw fa-users-cog',
+                    'can' => 'manage.client.get',
                 ],
                 /*
                 [
@@ -402,16 +414,19 @@ return [
                     'text' => 'Gestión de comercializadoras',
                     'route' => 'admin.company.manager',
                     'icon' => 'fas fa-fw fa-tools',
+                    'can' => 'manage.company.get',
                 ],
                 [
                     'text' => 'Gestión de productos',
                     'route' => 'admin.product.manager',
                     'icon' => 'fas fa-fw fa-tools',
+                    'can' => 'manage.product.get',
                 ],
                 [
                     'text' => 'Desplegables',
                     'route' => 'admin.config.component',
                     'icon' => 'fas fa-fw fa-tools',
+                    'can' => 'config.dropdown.get',
                 ]
             ]
         ],

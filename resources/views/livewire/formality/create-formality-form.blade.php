@@ -1,4 +1,9 @@
 <div>
+    <div class="spinner-wrapper" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @error('form.formalityTypeId')
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -672,7 +677,6 @@
                     $('#client_inputProvince').val(0);
                     corresponced_address_field.forEach(element => $(element).val(''))
                 }
-
             })
         });
     </script>
@@ -690,6 +694,8 @@
                 } else {
                     $('#documentTypeId').val(0);
                 }
+
+
             })
         })
 
@@ -706,6 +712,10 @@
                 text: e.error,
             });
         });
+
+        $wire.on('load', () => {
+            document.querySelector('.spinner-wrapper').style.display = 'block';
+        })
     </script>
     @endscript
 </div>

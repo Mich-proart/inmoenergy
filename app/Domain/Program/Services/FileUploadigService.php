@@ -47,14 +47,17 @@ class FileUploadigService
         $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
         if ($this->file) {
-            $this->model->files()->create([
-                'name' => $name,
-                'filename' => $newFilename,
-                'mime_type' => $this->file->getMimeType(),
-                'folder' => $folder,
-                'config_id' => $this->configId ?? null
-            ]);
+            if ($this->model != null) {
+                $this->model->files()->create([
+                    'name' => $name,
+                    'filename' => $newFilename,
+                    'mime_type' => $this->file->getMimeType(),
+                    'folder' => $folder,
+                    'config_id' => $this->configId ?? null
+                ]);
+            }
             $this->file->storeAs('public/' . $folder, $newFilename);
+            return $folder . '/' . $newFilename;
         }
     }
 

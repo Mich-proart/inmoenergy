@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Admin\Company\CompanyAdminController;
 use App\Http\Controllers\Admin\Config\ComponentAdminController;
+use App\Http\Controllers\Admin\Role\RoleAdminController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Configuration\ComponentController;
@@ -8,15 +9,15 @@ use App\Http\Controllers\User\UserConntroller;
 use App\Http\Controllers\Admin\User\UserAdminController;
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use App\Http\Controllers\Formality\FormalityController;
-/*
-use App\Http\Controllers\Admin\RoleController;
-*/
+
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-//Route::resource('/roles', RoleController::class)->names('admin.roles');
+
 Route::group(['prefix' => 'api'], function () {
     Route::get('/formality/except', [FormalityController::class, 'exceptStatus'])->name('api.formality.except');
     Route::get('/formality/status', [FormalityController::class, 'onlyStatus'])->name('api.formality.status');
@@ -102,4 +103,10 @@ Route::prefix('config')->group(function () {
 Route::prefix('documents')->group(function () {
     Route::get('/auth', [ComponentAdminController::class, 'docsAuth'])->name('admin.document.authorization');
     Route::get('/change', [ComponentAdminController::class, 'docsChange'])->name('admin.document.changeTitle');
+});
+
+
+Route::prefix('roles')->group(function () {
+    Route::get('/', [RoleAdminController::class, 'index'])->name('admin.roles.index');
+    Route::get('/{role}/edit', [RoleAdminController::class, 'edit'])->name('admin.roles.edit');
 });
