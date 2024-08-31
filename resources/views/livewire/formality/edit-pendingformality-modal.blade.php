@@ -55,13 +55,13 @@
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha finalización tramite</th>
+                            <th>Fecha finalización trámite</th>
                             <th>Estado trámite</th>
                             <th>Compañía Suministro</th>
                             <th>Producto Compañía</th>
                             <th>Consumo anual</th>
                             <th>CUPS</th>
-                            <th>Optiones</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
 

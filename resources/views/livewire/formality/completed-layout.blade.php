@@ -65,11 +65,11 @@
                             <th>Cliente final</th>
                             <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Estado Tramite</th>
+                            <th>Estado trámite</th>
                             <th>Compañía Suministro</th>
                             <th>CUPS</th>
-                            <th>Renovacion</th>
-                            <th>Fecha de activacion</th>
+                            <th>Renovación</th>
+                            <th>Fecha de activación</th>
                             <th>Documentos</th>
                         </tr>
                     </thead>

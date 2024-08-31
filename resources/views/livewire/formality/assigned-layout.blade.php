@@ -67,7 +67,7 @@
                                 <th>Cliente final</th>
                                 <th>N documento</th>
                                 <th>Dirección</th>
-                                <th>Estado Tramite</th>
+                                <th>Estado trámite</th>
                                 <th>Trámite Crítico</th>
                                 <th>Compañía Suministro</th>
                                 <th>Producto Compañía</th>
