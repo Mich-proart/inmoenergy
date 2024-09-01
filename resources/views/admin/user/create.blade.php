@@ -3,7 +3,19 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Nuevo usuario</h1>
+<div class="row">
+    <div class="col-md-6 image-text-container">
+        @if (isset($program))
+            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+                class="img-thumbnail align-self-center resize">
+            @if (isset($content) && $content == 'worker')
+                <h3>Nuevo usuario</h3>
+            @else
+                <h3>Nuevo cliente</h3>
+            @endif
+        @endif
+    </div>
+</div>
 @stop
 
 @section('content')
@@ -28,6 +40,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.3.2/build/css/intlTelInput.css">
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 
 @stop
 

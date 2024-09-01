@@ -41,9 +41,4 @@ class UserConntroller extends Controller
 
     }
 
-    public function create(Request $request)
-    {
-        $content = $request->query('content');
-        return view('admin.user.create', ['content' => $content]);
-    }
 }

@@ -3,7 +3,13 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Trámite</h1>
+<div class="row">
+    <div class="col-md-6 image-text-container">
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'closed_formality.png') }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>Trámite</h3>
+    </div>
+</div>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
@@ -299,6 +305,7 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')

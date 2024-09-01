@@ -38,39 +38,21 @@ Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
     Route::get('/{id}/edit', [FormalityAdminController::class, 'edit'])->name('admin.formality.edit');
     Route::get('/{id}/view', [FormalityAdminController::class, 'get'])->name('admin.formality.get');
-    Route::get('/inprogress', function () {
-        return view('admin.formality.inprogress');
-    })->name('admin.formality.inprogress');
-    Route::get('/closed', function () {
-        return view('admin.formality.closed');
-    })->name('admin.formality.closed');
-    Route::get('/assigned', function () {
-        return view('admin.formality.assigned');
-    })->name('admin.formality.assigned');
+    Route::get('/inprogress', [FormalityAdminController::class, 'getInProgress'])->name('admin.formality.inprogress');
+    Route::get('/closed', [FormalityAdminController::class, 'getClosed'])->name('admin.formality.closed');
+    Route::get('/assigned', [FormalityAdminController::class, 'getAssigned'])->name('admin.formality.assigned');
     Route::get('/{id}/modify', [FormalityAdminController::class, 'modify'])->name('admin.formality.modify');
-    Route::get('/completed', function () {
-        return view('admin.formality.completed');
-    })->name('admin.formality.completed');
-    Route::get('/{id}/completed', [FormalityAdminController::class, 'getCompleted'])->name('admin.formality.get.completed');
-    Route::get('/pending', function () {
-        return view('admin.formality.pending');
-    })->name('admin.formality.pending');
-    Route::get('/assignment', function () {
-        return view('admin.formality.assignment');
-    })->name('admin.formality.assignment');
-    Route::get('/total', function () {
-        return view('admin.formality.totalInProgress');
-    })->name('admin.formality.totalInProgress');
+    Route::get('/completed', [FormalityAdminController::class, 'getCompleted'])->name('admin.formality.completed');
+    Route::get('/{id}/completed', [FormalityAdminController::class, 'viewCompleted'])->name('admin.formality.get.completed');
+    Route::get('/pending', [FormalityAdminController::class, 'getPending'])->name('admin.formality.pending');
+    Route::get('/assignment', [FormalityAdminController::class, 'getAssignment'])->name('admin.formality.assignment');
+    Route::get('/total', [FormalityAdminController::class, 'getTotalInProgress'])->name('admin.formality.totalInProgress');
 });
 
 Route::prefix('users')->group(function () {
-    Route::get('/', function () {
-        return view('admin.user.users');
-    })->name('admin.users');
-    Route::get('/client', function () {
-        return view('admin.user.clients');
-    })->name('admin.clients');
-    Route::get('/create', [UserConntroller::class, 'create'])->name('admin.users.create');
+    Route::get('/', [UserAdminController::class, 'getManageUsers'])->name('admin.users');
+    Route::get('/client', [UserAdminController::class, 'getManageClients'])->name('admin.clients');
+    Route::get('/create', [UserAdminController::class, 'create'])->name('admin.users.create');
     Route::get('/{id}/edit/', [UserAdminController::class, 'edit'])->name('admin.users.edit');
 });
 Route::prefix('company')->group(function () {
