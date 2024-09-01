@@ -395,6 +395,7 @@
 {{-- Add here extra stylesheets --}}
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')

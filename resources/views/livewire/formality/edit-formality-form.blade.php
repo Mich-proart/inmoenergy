@@ -24,21 +24,20 @@
                                 <label for="">Estado:</label>
                                 @if (isset($formality->status))
                                     @if ($formality->status->name == "pendiente asignación" || $formality->status->name === "asignado")
-                                        <span
-                                            class="badge rounded-pill bg-primary text-light">{{$formality->status->name}}</span>
+                                        <span class="custom-badge assigned">{{$formality->status->name}}</span>
                                     @endif
 
                                     @if ($formality->status->name == "K.O.")
-                                        <span
-                                            class="badge rounded-pill bg-danger text-bg-danger">{{$formality->status->name}}</span>
+                                        <span class="custom-badge ko">{{$formality->status->name}}</span>
                                     @endif
                                     @if ($formality->status->name == "en curso")
-                                        <span
-                                            class="badge rounded-pill bg-warning text-dark">{{$formality->status->name}}</span>
+                                        <span class="custom-badge inprogress">{{$formality->status->name}}</span>
                                     @endif
-                                    @if ($formality->status->name == "tramitado" || $formality->status->name == "en vigor")
-                                        <span
-                                            class="badge rounded-pill bg-success text-bg-success">{{$formality->status->name}}</span>
+                                    @if ($formality->status->name == "tramitado")
+                                        <span class="custom-badge processed">{{$formality->status->name}}</span>
+                                    @endif
+                                    @if ($formality->status->name == "en vigor")
+                                        <span class="custom-badge operative">{{$formality->status->name}}</span>
                                     @endif
                                 @endif
                             </div>

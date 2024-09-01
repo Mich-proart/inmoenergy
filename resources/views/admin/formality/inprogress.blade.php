@@ -22,6 +22,7 @@
 @section('css')
 {{-- Add here extra stylesheets --}}
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
