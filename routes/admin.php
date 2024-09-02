@@ -2,6 +2,8 @@
 use App\Http\Controllers\Admin\Company\CompanyAdminController;
 use App\Http\Controllers\Admin\Config\ComponentAdminController;
 use App\Http\Controllers\Admin\Role\RoleAdminController;
+use App\Http\Controllers\Admin\Ticket\TicketAdminController;
+use App\Http\Controllers\Admin\Tool\ToolAdminController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Configuration\ComponentController;
@@ -47,6 +49,10 @@ Route::prefix('formality')->group(function () {
     Route::get('/pending', [FormalityAdminController::class, 'getPending'])->name('admin.formality.pending');
     Route::get('/assignment', [FormalityAdminController::class, 'getAssignment'])->name('admin.formality.assignment');
     Route::get('/total', [FormalityAdminController::class, 'getTotalInProgress'])->name('admin.formality.totalInProgress');
+    Route::get('/extract', [FormalityAdminController::class, 'getExtract'])->name('admin.formality.extract');
+    Route::get('/data', [FormalityAdminController::class, 'getData'])->name('admin.formality.data');
+    Route::get('/total/closed', [FormalityAdminController::class, 'getTotalClosed'])->name('admin.formality.total.closed');
+    Route::get('/assignment/renovation', [FormalityAdminController::class, 'getAssignmentRenovation'])->name('admin.formality.assignment.renovation');
 });
 
 Route::prefix('users')->group(function () {
@@ -91,4 +97,20 @@ Route::prefix('documents')->group(function () {
 Route::prefix('roles')->group(function () {
     Route::get('/', [RoleAdminController::class, 'index'])->name('admin.roles.index');
     Route::get('/{role}/edit', [RoleAdminController::class, 'edit'])->name('admin.roles.edit');
+});
+
+Route::prefix('tickets')->group(function () {
+    Route::get('/create', [TicketAdminController::class, 'create'])->name('admin.ticket.create');
+    Route::get('/pending', [TicketAdminController::class, 'getPending'])->name('admin.ticket.pending');
+    Route::get('/assigned', [TicketAdminController::class, 'getAssigned'])->name('admin.ticket.assigned');
+    Route::get('/assignment', [TicketAdminController::class, 'getAssignment'])->name('admin.ticket.assignment');
+    Route::get('/closed', [TicketAdminController::class, 'getClosed'])->name('');
+    Route::get('/resolved', [TicketAdminController::class, 'getResolved'])->name('admin.ticket.resolved');
+    Route::get('/total/closed', [TicketAdminController::class, 'getTotalClosed'])->name('admin.ticket.total.closed');
+    Route::get('/total/pending', [TicketAdminController::class, 'getTotalPending'])->name('admin.ticket.total.pending');
+});
+
+Route::prefix('tool')->group(function () {
+    Route::get('/statistics/client', [ToolAdminController::class, 'getStatisticsClient'])->name('admin.tool.statistics.client');
+    Route::get('/statistics/worker', [ToolAdminController::class, 'getStatisticsWorker'])->name('admin.tool.statistics.worker');
 });

@@ -10,6 +10,7 @@ use App\Domain\Formality\Services\FormalityQueryService;
 
 use App\Http\Controllers\Controller;
 use App\Models\Section;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -24,11 +25,9 @@ class HomeController extends Controller
 
     public function index()
     {
-
-
-        $roleId = auth()->user()->roles()->first()->id;
+        $role = auth()->user()->roles()->first();
+        $roleId = $role->id;
         $userId = auth()->user()->id;
-
 
         $sections = Section::with([
             'programs' => function ($query) use ($roleId) {

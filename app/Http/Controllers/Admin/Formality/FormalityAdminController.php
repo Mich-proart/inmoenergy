@@ -125,4 +125,27 @@ class FormalityAdminController extends Controller
         $program = Program::where('name', 'trámites en curso totales')->first();
         return view('admin.formality.totalInProgress', ['program' => $program]);
     }
+
+    public function getExtract()
+    {
+        $program = Program::where('name', 'extracción de trámites')->first();
+        return view('admin.formality.extract', ['program' => $program]);
+    }
+
+    public function getData()
+    {
+        $program = Program::where('name', 'datos trámites inmoenergy')->first();
+        return view('admin.formality.data', ['program' => $program]);
+    }
+
+    public function getTotalClosed()
+    {
+        $program = Program::where('name', 'trámites cerrados totales')->first();
+        return view('admin.formality.totalClosed', ['program' => $program]);
+    }
+    public function getAssignmentRenovation()
+    {
+        $program = Program::where('name', 'asignación renovaciones')->first();
+        return view('admin.formality.assignmentRenovation', ['program' => $program]);
+    }
 }
