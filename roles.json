@@ -1,0 +1,59 @@
+[
+    {
+        "name": "superadmin",
+        "permissions": [
+            "formality.create",
+            "formality.inprogress.access",
+            "formality.closed.access",
+            "ticket.create",
+            "ticket.pending.access",
+            "ticket.resolved.access",
+            "formality.assigned.access",
+            "ticket.assigned.access",
+            "formality.completed.access",
+            "formality.pending.access",
+            "document.authorization.access",
+            "document.changeTitle.access",
+            "formality.extract.access",
+            "formality.data.access",
+            "tool.statistics.worker.access",
+            "tool.statistics.client.access",
+            "formality.total.closed.access",
+            "ticket.total.closed.access",
+            "formality.assignment.access",
+            "ticket.assignment.access",
+            "formality.totalInProgress.access",
+            "ticket.total.pending.access",
+            "manage.user.access",
+            "manage.client.access",
+            "manage.role.access",
+            "manage.company.access",
+            "manage.product.access",
+            "config.dropdown.access"
+        ]
+    },
+    {
+        "name": "comercial",
+        "permissions": [
+            "formality.assigned.access",
+            "ticket.assigned.access",
+            "formality.completed.access",
+            "ticket.resolved.access.worker",
+            "formality.pending.access"
+        ]
+    },
+    {
+        "name": "inmobiliaria",
+        "permissions": [
+            "formality.create",
+            "formality.inprogress.access",
+            "formality.closed.access",
+            "ticket.create",
+            "ticket.pending.access",
+            "ticket.resolved.access",
+            "document.authorization.access",
+            "document.changeTitle.access",
+            "formality.extract.access"
+        ]
+    }
+]

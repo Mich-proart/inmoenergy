@@ -9,7 +9,7 @@
 @section('content')
 
 <div>
-    <livewire:create-business-group-modal />
+    <livewire:config.create-business-group-modal />
 </div>
 
 

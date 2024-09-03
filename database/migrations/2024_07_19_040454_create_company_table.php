@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->boolean('is_available')->default(true);
+            $table->integer('days_to_renew')->nullable();
             $table->timestamps();
         });
     }

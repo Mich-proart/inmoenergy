@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('location_id')->constrained('location');
             $table->foreignId('street_type_id')->nullable()->constrained('component_option');
             $table->foreignId('housing_type_id')->nullable()->constrained('component_option');
+            $table->string('full_address')->nullable();
             $table->string('street_name')->nullable();
             $table->string('street_number')->nullable();
             $table->string('zip_code')->nullable();

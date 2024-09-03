@@ -3,7 +3,15 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Gestión de clientes</h1>
+<div class="row">
+    <div class="col-md-6 image-text-container">
+        @if (isset($program))
+            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+                class="img-thumbnail align-self-center resize">
+            <h3>{{ucfirst($program->name)}}</h3>
+        @endif
+    </div>
+</div>
 @stop
 
 @section('content')
@@ -51,6 +59,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')
@@ -105,8 +114,12 @@
 
     $('#user-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
-        console.log(row);
-        window.location.href = "{{ route('admin.users.edit', ':id') }}".replace(':id', Number(row.user_id));
+        let url = "{{ route('admin.users.edit', ':id') }}".replace(':id', Number(row.user_id));
+        url = new URL(url);
+        let params = new URLSearchParams(url.search);
+        params.set('content', 'client');
+        url.search = params.toString();
+        window.location.href = url.toString();
     })
 
 

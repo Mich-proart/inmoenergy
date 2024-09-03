@@ -161,7 +161,7 @@ class UserService
 
         $queryBuilder = $this->UsersQueryBuilder();
         if ($isCliente == true) {
-            $queryBuilder->where('users.isWorker', '=', 0)->where('users.incentive_type_id', '!=', null);
+            $queryBuilder->where('users.isWorker', '=', 0);
         }
         if (!$isCliente) {
             $queryBuilder->where('users.isWorker', '=', 1);
@@ -183,12 +183,12 @@ class UserService
                 'address.location',
                 'address.location.province',
                 'address.location.province.region',
-                'clientType',
                 'documentType',
-                'title',
                 'adviserAssigned',
                 'responsible',
                 'incentive',
+                'office',
+                'office.businessGroup',
                 'roles'
             ])->first();
     }

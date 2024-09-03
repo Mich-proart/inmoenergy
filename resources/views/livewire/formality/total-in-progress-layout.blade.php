@@ -62,21 +62,16 @@
                             <th>Oficina usuario</th>
                             <th>Grupo empresarial</th>
                             <th>Cliente emisor</th>
+                            <th>Usuario asignado</th>
+                            <th>Fecha de entrada</th>
                             <th>Fecha de asignación</th>
-                            <th>Fecha</th>
+                            <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>Tipo documento</th>
                             <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Observaciones del trámite</th>
                             <th>Estado Trámite</th>
                             <th>Trámite Crítico</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
-                            <th>Consumo anual</th>
-                            <th>CUPS</th>
-                            <th>Observaciones asesor</th>
                             <th>Opciones</th>
                         </tr>
                     </thead>
@@ -139,11 +134,8 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{route('api.formality.info')}}",
-                    "type": "GET",
-                    "data": {
-                        "exceptStatus": ["tramitado", "en vigor"]
-                    }
+                    "url": "{{route('api.formality.distintStatus')}}",
+                    "type": "GET"
                 },
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
@@ -152,14 +144,14 @@
                     { data: 'office' },
                     { data: 'business_group' },
                     { data: 'issuer' },
-                    { data: 'assignment_date' },
+                    { data: 'assigned' },
                     { data: 'created_at' },
+                    { data: 'assignment_date' },
+                    { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
-                    { data: 'document_type' },
                     { data: 'documentNumber' },
                     { data: 'fullAddress' },
-                    { data: 'observation' },
                     {
                         data: 'status', render: function (data, type, row, meta) {
                             return statusColor(data);
@@ -167,18 +159,13 @@
                     },
                     {
                         data: 'isCritical', render: function (data, type, row, meta) {
-                            if (data == 0) {
-                                return `<div><i class="fas fa-times"></i></div>`;
+                            if (data !== 0) {
+                                return `<i class='fas fa-exclamation-circle' style='font-size:20px;color:red'></i>`;
                             } else {
-                                return `<div><i class="fas fa-check"></i></div>`
+                                return ``;
                             }
                         }
                     },
-                    { data: 'company' },
-                    { data: 'product' },
-                    { data: 'annual_consumption' },
-                    { data: 'CUPS' },
-                    { data: 'assigned_observation' },
                     {
                         data: 'formality_id', render: function (data, type, row, meta) {
                             console.log(data)
@@ -187,29 +174,31 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
+                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12] },
                 ],
                 "order": [
                     [0, "desc"]
                 ],
             });
 
-
+            let queryParams = "from=total";
             let formality_id = 0;
             $('#formality-content').on('click', '.target', function () {
                 const row = table.row(this).data();
                 formality_id = row.formality_id;
                 if (row.status == "en curso") {
-                    window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+                    let url = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id) + "?" + queryParams;
+                    window.location.href = url;
                     return;
                 }
                 $('#tigger_modal').click();
             })
 
             $('#trigger_formality').on('click', function () {
-                window.location.href = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id);
+                let url = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id) + "?" + queryParams;
+                window.location.href = url;
             })
 
 

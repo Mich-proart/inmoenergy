@@ -19,7 +19,7 @@
 @section('content')
 <div>
 
-    <livewire:new-formality-form />
+    <livewire:formality.create-formality-form />
 
 
 
@@ -31,6 +31,7 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'spinner.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')
@@ -41,5 +42,5 @@
 {{-- File Pond Image Preview Cdn --}}
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @stop

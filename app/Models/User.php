@@ -31,16 +31,12 @@ class User extends Authenticatable
         'document_number',
         'document_type_id',
         'phone',
-        'client_type_id',
         'address_id',
         'adviser_assigned_id',
         'responsible_id',
-        'user_title_id',
-        'IBAN',
-        'address_id',
         'incentive_type_id',
-        'business_group',
         'office_id',
+        'disabled_at',
         'isActive'
     ];
 
@@ -77,19 +73,9 @@ class User extends Authenticatable
     }
 
 
-    public function clientType(): BelongsTo
-    {
-        return $this->belongsTo(ComponentOption::class, 'client_type_id');
-    }
-
     public function documentType(): BelongsTo
     {
         return $this->belongsTo(ComponentOption::class, 'document_type_id');
-    }
-
-    public function title(): BelongsTo
-    {
-        return $this->belongsTo(ComponentOption::class, 'user_title_id');
     }
     public function address(): BelongsTo
     {
@@ -117,5 +103,11 @@ class User extends Authenticatable
     public function incentive(): BelongsTo
     {
         return $this->belongsTo(ComponentOption::class, 'incentive_type_id');
+    }
+
+
+    public function office(): BelongsTo
+    {
+        return $this->belongsTo(Office::class, 'office_id');
     }
 }

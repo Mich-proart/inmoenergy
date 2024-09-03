@@ -11,6 +11,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Attachment;
 
 class EmailLineaTelefonica extends Mailable
 {
@@ -25,11 +26,14 @@ class EmailLineaTelefonica extends Mailable
     public $user;
     public $address;
 
-    public function __construct($user, $address)
+    public $attchs;
+
+    public function __construct($user, $address, $attchs)
     {
         $this->user = $user;
         $this->address = $address;
-        $this->streetType = ComponentOption::where('id', $this->address->streetTypeId)->first();
+        $this->attchs = $attchs;
+        $this->streetType = ComponentOption::where('id', $this->address['street_type_id'])->first();
     }
 
     /**
@@ -43,7 +47,7 @@ Solicitud de Fibra / línea telefónica “ & [TIPO CALLE] & “ “ & [NOMBRE C
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Solicitud de Fibra / línea telefónica' . ' ' . $this->streetType->name . ' ' . $this->address->streetName . ' ' . $this->address->streetNumber . ' ' . $this->address->block . ' ' . $this->address->door
+            subject: 'Solicitud de Fibra / línea telefónica' . ' ' . $this->streetType->name . ' ' . $this->address['street_name'] . ' ' . $this->address['street_number'] . ' ' . $this->address['block'] . ' ' . $this->address['door']
         );
     }
 
@@ -64,6 +68,9 @@ Solicitud de Fibra / línea telefónica “ & [TIPO CALLE] & “ “ & [NOMBRE C
      */
     public function attachments(): array
     {
+        if ($this->attchs) {
+            return $this->attchs;
+        }
         return [];
     }
 }

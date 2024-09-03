@@ -61,20 +61,18 @@
                     <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                         <thead>
                             <tr>
-                                <th>Fecha</th>
-                                <th>Usuario asignado</th>
+                                <th>Fecha de entrada</th>
                                 <th>Tipo</th>
                                 <th>Suministro</th>
-                                <th>Ciente final</th>
-                                <th>Tipo documento</th>
+                                <th>Cliente final</th>
                                 <th>N documento</th>
                                 <th>Dirección</th>
-                                <th>Estado Tramite</th>
+                                <th>Estado trámite</th>
                                 <th>Trámite Crítico</th>
-                                <th>Observaciones del trámite</th>
                                 <th>Compañía Suministro</th>
                                 <th>Producto Compañía</th>
-                                <th>Opciones</th>
+                                <th>Observaciones asesor</th>
+                                <th>Documentos</th>
                             </tr>
                         </thead>
 
@@ -138,7 +136,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{route('api.formality.index')}}",
+                    "url": "{{route('api.formality.except')}}",
                     "type": "GET",
                     "data": {
                         "assignedId": "{{Auth::id()}}",
@@ -150,11 +148,9 @@
                 },
                 "columns": [
                     { data: 'created_at' },
-                    { data: 'assigned' },
                     { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
-                    { data: 'document_type' },
                     { data: 'documentNumber' },
                     { data: 'fullAddress' },
                     {
@@ -164,16 +160,16 @@
                     },
                     {
                         data: 'isCritical', render: function (data, type, row, meta) {
-                            if (data == 0) {
-                                return `<div><i class="fas fa-times"></i></div>`;
+                            if (data !== 0) {
+                                return `<i class='fas fa-exclamation-circle' style='font-size:20px;color:red'></i>`;
                             } else {
-                                return `<div><i class="fas fa-check"></i></div>`
+                                return ``;
                             }
                         }
                     },
-                    { data: 'observation' },
                     { data: 'company' },
                     { data: 'product' },
+                    { data: 'assigned_observation' },
                     {
                         data: 'formality_id', render: function (data, type, row, meta) {
                             console.log(data)
@@ -182,15 +178,9 @@
                     },
                 ],
                 "columnDefs": [
-                    {
-                        "render": function (data, type, row) {
-                            return `<span class="badge rounded-pill bg-info text-dark">${data}</span>`;
-                        },
-                        "targets": 8
-                    },
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 11, 12] },
-                    { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 11, 12] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 11] },
+                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
+                    { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9] },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
                 ],
                 "order": [
                     [0, "desc"]

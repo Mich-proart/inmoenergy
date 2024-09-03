@@ -8,7 +8,7 @@
 
 @section('content')
 
-<livewire:edit-company :company="$company">
+<livewire:config.edit-company :company="$company">
     <div>
         <div class="card card-primary card-outline">
             <div class="card-header">

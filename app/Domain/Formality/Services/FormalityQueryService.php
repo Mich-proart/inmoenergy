@@ -2,6 +2,7 @@
 
 namespace App\Domain\Formality\Services;
 
+use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
 use DB;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -16,9 +17,8 @@ class FormalityQueryService
             ->join('component_option as type', 'type.id', '=', 'formality.formality_type_id')
             ->join('component_option as service', 'service.id', '=', 'formality.service_id')
             ->leftJoin('users as userAssigned', 'userAssigned.id', '=', 'formality.user_assigned_id')
-            ->join('users as client', 'client.id', '=', 'formality.user_client_id')
+            ->join('client as client', 'client.id', '=', 'formality.client_id')
             ->join('users as issuer', 'issuer.id', '=', 'formality.user_issuer_id')
-            ->join('component_option as document_type', 'document_type.id', '=', 'client.document_type_id')
             ->join('address', 'address.id', '=', 'formality.address_id')
             ->join('component_option as street_type', 'street_type.id', '=', 'address.street_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
@@ -56,7 +56,6 @@ class FormalityQueryService
                 'userAssigned.first_last_name as assigned_firstLastName',
                 'userAssigned.second_last_name as assigned_secondLastName',
                 'client.document_number as documentNumber',
-                'document_type.name as document_type',
                 'address.*',
                 'street_type.name as street_type',
                 'location.name as location',
@@ -106,6 +105,49 @@ class FormalityQueryService
             $queryBuilder->whereNull('formality.activation_date');
         }
 
+        return $queryBuilder->get();
+    }
+
+    public function findByStatus(FormalityQuery $formalityQuery)
+    {
+        $queryBuilder = $this->formalityQuery();
+
+        if ($formalityQuery->statusArray && is_array($formalityQuery->statusArray) && count($formalityQuery->statusArray) > 0) {
+            $queryBuilder->WhereIn('status.name', $formalityQuery->statusArray);
+        }
+
+        if ($formalityQuery->issuerId) {
+            $queryBuilder->where('issuer.id', $formalityQuery->issuerId);
+        }
+
+        if ($formalityQuery->assignedId) {
+            $queryBuilder->where('userAssigned.id', $formalityQuery->assignedId);
+        }
+
+        if ($formalityQuery->activationDateNull || $formalityQuery->activationDateNull === true) {
+            $queryBuilder->whereNull('formality.activation_date');
+        }
+
+        return $queryBuilder->get();
+    }
+
+
+    public function totalPending()
+    {
+
+        $queryBuilder = $this->formalityQuery();
+
+        $queryBuilder->WhereIn('status.name', [FormalityStatusEnum::TRAMITADO->value]);
+
+        $queryBuilder->whereNull('formality.activation_date');
+
+        return $queryBuilder->get();
+    }
+
+    public function getDistintStatus($array)
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereNotIn('status.name', $array);
         return $queryBuilder->get();
     }
 

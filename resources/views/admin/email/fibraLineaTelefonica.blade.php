@@ -436,21 +436,21 @@
                                                                     style="padding:0;Margin:0;padding-top:5px;padding-bottom:10px">
                                                                     <p
                                                                         style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
-                                                                        El cliente {{$user->name}} {{' '}}
-                                                                        {{$user->firstLastName}} {{' '}}
-                                                                        {{$user->secondLastName}} {{' '}} ha
+                                                                        El cliente {{$user['name']}} {{' '}}
+                                                                        {{$user['first_last_name']}} {{' '}}
+                                                                        {{$user['second_last_name']}} {{' '}} ha
                                                                         solicitado ser contactado para recibir
                                                                         información sobre la contratación de Fibra y/o
                                                                         línea/s telefónica/s en la dirección:
                                                                         {{$streetType->name}} {{' '}}
-                                                                        {{$address->streetName}} {{' '}}
-                                                                        {{$address->streetNumber}} {{' '}}
-                                                                        {{$address->block}} {{' '}}
-                                                                        {{$address->door}} {{' '}}
-                                                                        {{$address->floor}} {{' '}}
-                                                                        {{$address->blockStaircase}} “. Por
-                                                                        favor, contactar a: {{$user->phone}} {{' o '}}
-                                                                        {{$user->email}} {{' .'}}
+                                                                        {{$address['street_name']}} {{' '}}
+                                                                        {{$address['street_number']}} {{' '}}
+                                                                        {{$address['block']}} {{' '}}
+                                                                        {{$address['door']}} {{' '}}
+                                                                        {{$address['floor']}} {{' '}}
+                                                                        {{$address['block_staircase']}} “. Por
+                                                                        favor, contactar a: {{$user['phone']}} {{' o '}}
+                                                                        {{$user['email']}} {{' .'}}
                                                                     </p>
 
                                                                     <p

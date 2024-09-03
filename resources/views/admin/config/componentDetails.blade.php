@@ -8,7 +8,7 @@
 
 @section('content')
 
-<livewire:edit-component-options :component="$component">
+<livewire:config.edit-component-options :component="$component">
 
 
     @stop

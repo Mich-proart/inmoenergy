@@ -62,16 +62,17 @@
                     <thead>
                         <tr>
 
-                            <th>Fecha</th>
+                            <th>Fecha de entrada</th>
                             <th>Usuario asignado</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Estado Tramite</th>
+                            <th>Estado trámite</th>
+                            <th>Compañía suministro</th>
                             <th>Observaciones asesor</th>
-                            <th>Optiones</th>
+                            <th>Documentos</th>
                         </tr>
                     </thead>
 
@@ -105,7 +106,7 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.index')}}",
+                "url": "{{route('api.formality.except')}}",
                 "type": "GET",
                 "data": {
                     "issuerId": "{{Auth::id()}}",
@@ -128,6 +129,7 @@
                         return statusColor(data);
                     }
                 },
+                { data: 'company' },
                 { data: 'assigned_observation' },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {

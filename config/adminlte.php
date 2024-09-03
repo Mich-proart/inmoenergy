@@ -313,47 +313,66 @@ return [
                 [
                     'text' => 'Nuevo trámite',
                     'route' => 'admin.formality.create',
+                    'can' => 'formality.create',
                 ],
                 [
                     'text' => 'Trámites en curso',
                     'route' => 'admin.formality.inprogress',
+                    'can' => 'formality.inprogress.access',
                 ],
                 [
                     'text' => 'Trámites cerrados',
                     'route' => 'admin.formality.closed',
+                    'can' => 'formality.closed.access',
+                ],
+                [
+                    'text' => 'Nuevo ticket',
+                    'route' => 'admin.ticket.create',
+                    'can' => 'ticket.create',
+                ],
+                [
+                    'text' => 'Tickets pendientes',
+                    'route' => 'admin.ticket.pending',
+                    'can' => 'ticket.pending.access',
+                ],
+                [
+                    'text' => 'Tickets resueltos',
+                    'route' => 'admin.ticket.resolved',
+                    'can' => 'ticket.resolved.access',
                 ]
             ]
         ],
+
         [
             'text' => 'Trámites y tickets',
             'icon' => 'fas fa-copy',
             'submenu' => [
                 [
                     'text' => 'Trámites asignados',
-                    'route' => 'admin.formality.assigned'
+                    'route' => 'admin.formality.assigned',
+                    'can' => 'formality.assigned.access',
+                ],
+                [
+                    'text' => 'Tickets asignados',
+                    'route' => 'admin.ticket.assigned',
+                    'can' => 'ticket.assigned.access',
                 ],
                 [
                     'text' => 'Trámites realizados',
-                    'route' => 'admin.formality.completed'
+                    'route' => 'admin.formality.completed',
+                    'can' => 'formality.completed.access',
                 ],
                 [
-                    'text' => 'Altas pendientes',
-                    'route' => 'admin.formality.pending'
-                ],
-            ]
-        ],
-        [
-            'text' => 'Herramientas',
-            'icon' => 'nav-icon fas fa-th',
-            'submenu' => [
-                [
-                    'text' => 'Asignación de trámites',
-                    'route' => 'admin.formality.assignment'
+                    'text' => 'Tickets resueltos',
+                    'route' => 'admin.ticket.resolved',
+                    'can' => 'ticket.resolved.access.worker',
                 ],
                 [
-                    'text' => 'Consultas totales',
-                    'route' => 'admin.formality.totalInProgress'
+                    'text' => 'Altas pendientes fecha de activación',
+                    'route' => 'admin.formality.pending',
+                    'can' => 'formality.pending.access',
                 ],
+
             ]
         ],
         [
@@ -364,13 +383,72 @@ return [
                     'text' => 'Autorización',
                     'route' => 'admin.document.authorization',
                     'icon' => 'fas fa-fw fa-file',
+                    'can' => 'document.authorization.access',
                 ],
                 [
-                    'text' => 'Cambio de tiúlo',
+                    'text' => 'Documentos para cambio de titular',
                     'route' => 'admin.document.changeTitle',
                     'icon' => 'fas fa-fw fa-file',
+                    'can' => 'document.changeTitle.access',
                 ],
             ]
+        ],
+        [
+            'text' => 'Herramientas de trabajo',
+            'icon' => 'nav-icon fas fa-th',
+            'submenu' => [
+                [
+                    'text' => 'Extracción de trámites',
+                    'route' => 'admin.formality.extract',
+                    'can' => 'formality.extract.access',
+                ],
+                [
+                    'text' => 'Datos trámites inmoenergy',
+                    'route' => 'admin.formality.data',
+                    'can' => 'formality.data.access',
+                ],
+                [
+                    'text' => 'Estadísticas por trabajador',
+                    'route' => 'admin.tool.statistics.worker',
+                    'can' => 'tool.statistics.worker.access',
+                ],
+                [
+                    'text' => 'Estadísticas por cliente',
+                    'route' => 'admin.tool.statistics.client',
+                    'can' => 'tool.statistics.client.access',
+                ],
+                [
+                    'text' => 'Trámites cerrados totales',
+                    'route' => 'admin.formality.total.closed',
+                    'can' => 'formality.total.closed.access',
+                ],
+                [
+                    'text' => 'Tickets cerrados totales',
+                    'route' => 'admin.ticket.total.closed',
+                    'can' => 'ticket.total.closed.access',
+                ],
+                [
+                    'text' => 'Asignación de trámites',
+                    'route' => 'admin.formality.assignment',
+                    'can' => 'formality.assignment.access',
+                ],
+                [
+                    'text' => 'Asignación de tickets',
+                    'route' => 'admin.ticket.assignment',
+                    'can' => 'ticket.assignment.access',
+                ],
+                [
+                    'text' => 'Trámites en curso totales',
+                    'route' => 'admin.formality.totalInProgress',
+                    'can' => 'formality.totalInProgress.access',
+                ],
+                [
+                    'text' => 'Tickets pendientes totales',
+                    'route' => 'admin.ticket.total.pending',
+                    'can' => 'ticket.total.pending.access',
+                ],
+            ]
+
         ],
         [
             'text' => 'Configuración',
@@ -380,31 +458,37 @@ return [
                     'text' => 'Gestión de usuarios',
                     'route' => 'admin.users',
                     'icon' => 'fas fa-fw fa-users-cog',
+                    'can' => 'manage.user.access',
                 ],
                 [
                     'text' => 'Gestión de clientes',
                     'route' => 'admin.clients',
                     'icon' => 'fas fa-fw fa-users-cog',
+                    'can' => 'manage.client.access',
                 ],
                 [
                     'text' => 'Gestión de roles',
                     'route' => 'admin.roles.index',
                     'icon' => 'fas fa-fw fa-users-cog',
+                    'can' => 'manage.role.access',
                 ],
                 [
                     'text' => 'Gestión de comercializadoras',
                     'route' => 'admin.company.manager',
                     'icon' => 'fas fa-fw fa-tools',
+                    'can' => 'manage.company.access',
                 ],
                 [
                     'text' => 'Gestión de productos',
                     'route' => 'admin.product.manager',
                     'icon' => 'fas fa-fw fa-tools',
+                    'can' => 'manage.product.access',
                 ],
                 [
                     'text' => 'Desplegables',
                     'route' => 'admin.config.component',
                     'icon' => 'fas fa-fw fa-tools',
+                    'can' => 'config.dropdown.access',
                 ]
             ]
         ],

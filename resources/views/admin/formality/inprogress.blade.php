@@ -5,9 +5,11 @@
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
-        <img src="{{ '/vendor/adminlte/dist/img/icons/' . 'in_progress_formality.png' }}" alt=""
-            class="img-thumbnail align-self-center resize">
-        <h3>Trámites en curso</h3>
+        @if (isset($program))
+            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+                class="img-thumbnail align-self-center resize">
+            <h3>{{ucfirst($program->name)}}</h3>
+        @endif
     </div>
 </div>
 @stop
@@ -22,6 +24,7 @@
 @section('css')
 {{-- Add here extra stylesheets --}}
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
         });
 
+        /*
         $mainValues = [
             "trámites clientes",
             "trámites y tickets",
@@ -28,6 +29,7 @@ return new class extends Migration {
                 'name' => $case
             ]);
         }
+            */
     }
 
     /**

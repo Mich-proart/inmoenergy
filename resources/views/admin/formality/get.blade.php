@@ -3,7 +3,13 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Trámite</h1>
+<div class="row">
+    <div class="col-md-6 image-text-container">
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'closed_formality.png') }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>Trámite</h3>
+    </div>
+</div>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @stop
 
@@ -22,11 +28,12 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
-                                {{$formality->assigned->name}}
+                                {{$formality->assigned->name}} {{ " " . $formality->assigned->last_name}}
+                                {{ " " . $formality->assigned->second_last_name}}
                             @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Fecha:</label> {{$formality->created_at}}
+                            <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
                         </div>
@@ -54,21 +61,11 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tipo de trámite: </label> {{ucfirst($formality->type->name)}}
                         </div>
-                        @if (isset($formality->completion_date))
-                            <div class="col-sm-4 invoice-col">
-                                <label for="">Fecha de finalización: </label> {{$formality->completion_date}}
-                            </div>
-                        @endif
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for="">Suministro tramitado: </label> {{ucfirst($formality->service->name)}}
                         </div>
-                        @if (isset($formality->assignment_date))
-                            <div class="col-sm-4 invoice-col">
-                                <label for="">Fecha de asignación: </label> {{$formality->assignment_date}}
-                            </div>
-                        @endif
                     </div>
                 </div>
             </section>
@@ -196,23 +193,6 @@
                 </div>
             </section>
             <section x-data="{ buttonDisabled: false }">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-12" style="margin-top: 25px">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                    value="{{$formality->isSameCorrespondenceAddress}}" id="is_same_address"
-                                    name="is_same_address" x-on:click="buttonDisabled = !buttonDisabled"
-                                    @checked(old('is_same_address', $formality->isSameCorrespondenceAddress))
-                                    @disabled(true)>
-                                <label class="form-check-label" for="invalidCheck2">
-                                    La dirección de correspondencia es la misma que la dirección de suministro.
-                                </label>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div>
                     <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
                         <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
@@ -308,66 +288,12 @@
             </section>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
+                    <label for="exampleFormControlTextarea1">Observaciones del asesor</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
-                        @readonly(true)>{{$formality->observation}}</textarea>
+                        @readonly(true)>{{$formality->assigned_observation}}</textarea>
                 </div>
 
             </div>
-            <div style="margin-top: 50px; margin-bottom: 25px">
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
-                        @readonly(true)>{{$formality->issuer_observation}}</textarea>
-                </div>
-
-            </div>
-            @if ($formality->completion_date !== null)
-
-                <section>
-                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
-                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
-                            Datos de trámite
-                        </span>
-                    </div>
-                    <!--
-                                                                                                                                                                                                                                <div class="form-row">
-                                                                                                                                                                                                                                    <div class="form-group col-md-4" style="margin-bottom: 25px">
-                                                                                                                                                                                                                                        <div class="form-check form-switch">
-                                                                                                                                                                                                                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                                                                                                                                                                                                                                            <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
-                                                                                                                                                                                                                                                editar este tramite</label>
-                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                -->
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
-                                {{$formality->accessRate->name}}
-                            @endif
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="">CUPS: </label> @if (isset($formality->CUPS))
-                                {{$formality->CUPS}}
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="">Consumo anual: </label> @if (isset($formality->annual_consumption))
-                                <span>KW </span> {{$formality->annual_consumption}}
-                            @endif
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="">Potencia: </label> @if (isset($formality->potency))
-                                <span>KW </span>{{$formality->potency}}
-                            @endif
-                        </div>
-
-                    </div>
-                </section>
-            @endif
         </div>
     </div>
 
@@ -378,6 +304,8 @@
 {{-- Add here extra stylesheets --}}
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')

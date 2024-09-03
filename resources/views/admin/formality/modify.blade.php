@@ -23,29 +23,30 @@
                 <div class="form-group">
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
-                            <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
-                                {{$formality->assigned->name}}
+                            <label for=""> Cliente emisor trámite: </label> @if (isset($formality->issuer))
+                                {{$formality->issuer->name . ' ' . $formality->issuer->first_last_name . ' ' . $formality->issuer->second_last_name}}
                             @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Fecha:</label> {{$formality->created_at}}
+                            <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
                         </div>
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
-                            <label for=""> Compañía suministro: </label>
-                            @if (isset($formality->product) && isset($formality->product->company))
-                                {{ucfirst($formality->product->company->name)}}
+                            <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
+                                {{$formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name}}
                             @endif
                         </div>
-                        <div class="col-sm-4 invoice-col">
-                            <label for="">Producto Compañía:</label>
-                            @if (isset($formality->product))
-                                {{ucfirst($formality->product->name)}}
-                            @endif
-                        </div>
+                        @if (isset($from) && $from == 'total')
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha de asignación:</label> @if (isset($formality->assignment_date))
+                                    {{$formality->assignment_date}}
+                                @endif
+                            </div>
+                        @endif
+
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tramite crítico:</label>
                             <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isCritical)) onclick="return false;">
@@ -59,10 +60,22 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tipo de trámite: </label> {{ucfirst($formality->type->name)}}
                         </div>
+                        <div class="col-sm-4 invoice-col">
+                            <label for=""> Compañía suministro: </label>
+                            @if (isset($formality->product) && isset($formality->product->company))
+                                {{ucfirst($formality->product->company->name)}}
+                            @endif
+                        </div>
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for="">Suministro tramitado: </label> {{ucfirst($formality->service->name)}}
+                        </div>
+                        <div class="col-sm-4 invoice-col">
+                            <label for="">Producto Compañía:</label>
+                            @if (isset($formality->product))
+                                {{ucfirst($formality->product->name)}}
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -309,9 +322,12 @@
                 </div>
 
             </div>
-
-            @if (isset($formality))
-                @livewire('modify-formality', ['formality' => $formality, 'prevStatus' => $prevStatus])
+            @if (isset($formality) && isset($from) && $from == 'total')
+                @livewire('formality.modify-formality-form', ['formality' => $formality, 'prevStatus' => $prevStatus, 'from' => $from])
+            @else
+                @if (isset($formality))
+                    @livewire('formality.modify-formality-form', ['formality' => $formality, 'prevStatus' => $prevStatus, 'from' => null])
+                @endif
             @endif
 
         </div>
@@ -324,12 +340,14 @@
 {{-- Add here extra stylesheets --}}
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
 <script src="/vendor/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 <script>
     $(document).ready(function () {

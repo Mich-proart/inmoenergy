@@ -28,8 +28,9 @@ class CreateFormalityService
 
     public function execute(int $serviceId, int $formalitytypeId, ?string $observation)
     {
+
         return Formality::create([
-            'user_client_id' => $this->client_id,
+            'client_id' => $this->client_id,
             'user_issuer_id' => $this->user_issuer_id,
             'service_id' => $serviceId,
             'observation' => $observation,

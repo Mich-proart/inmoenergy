@@ -1,25 +1,33 @@
 <?php
-
 use App\Http\Controllers\Admin\Company\CompanyAdminController;
 use App\Http\Controllers\Admin\Config\ComponentAdminController;
-use App\Http\Controllers\Admin\Formality\FormalityAdminController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\User\UserAdminController;
+use App\Http\Controllers\Admin\Role\RoleAdminController;
+use App\Http\Controllers\Admin\Ticket\TicketAdminController;
+use App\Http\Controllers\Admin\Tool\ToolAdminController;
+use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Configuration\ComponentController;
-use App\Http\Controllers\Formality\FormalityController;
-use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\User\UserConntroller;
+use App\Http\Controllers\Admin\User\UserAdminController;
+use App\Http\Controllers\Admin\Formality\FormalityAdminController;
+use App\Http\Controllers\Formality\FormalityController;
+
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::resource('/roles', RoleController::class)->names('admin.roles');
+
 Route::group(['prefix' => 'api'], function () {
-    Route::get('/formality/pending', [FormalityController::class, 'getPending'])->name('api.formality.activation.pending');
-    Route::get('/formality/info', [FormalityController::class, 'infoFormality'])->name('api.formality.info');
-    Route::resource('/formality', FormalityController::class)->names('api.formality')->except(['create']);
+    Route::get('/formality/except', [FormalityController::class, 'exceptStatus'])->name('api.formality.except');
+    Route::get('/formality/status', [FormalityController::class, 'onlyStatus'])->name('api.formality.status');
+    Route::get('/formality/pending', [FormalityController::class, 'totalPending'])->name('api.formality.activation.pending');
+    Route::get('/formality/notAssigned', [FormalityController::class, 'getAssignedNull'])->name('api.formality.notAssigned');
+    Route::get('/formality/getDistintStatus', [FormalityController::class, 'getDistintStatus'])->name('api.formality.distintStatus');
+
+
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
     Route::get('/company', [CompanyController::class, 'index'])->name('api.company.query');
     Route::get('/product', [ProductController::class, 'index'])->name('api.product.query');
@@ -28,44 +36,29 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/component/business', [ComponentController::class, 'business'])->name('api.component.business.query');
     Route::get('/component/offices', [ComponentController::class, 'offices'])->name('api.component.offices.query');
 });
-
 Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
     Route::get('/{id}/edit', [FormalityAdminController::class, 'edit'])->name('admin.formality.edit');
     Route::get('/{id}/view', [FormalityAdminController::class, 'get'])->name('admin.formality.get');
+    Route::get('/inprogress', [FormalityAdminController::class, 'getInProgress'])->name('admin.formality.inprogress');
+    Route::get('/closed', [FormalityAdminController::class, 'getClosed'])->name('admin.formality.closed');
+    Route::get('/assigned', [FormalityAdminController::class, 'getAssigned'])->name('admin.formality.assigned');
     Route::get('/{id}/modify', [FormalityAdminController::class, 'modify'])->name('admin.formality.modify');
-    Route::get('/inprogress', function () {
-        return view('admin.formality.inprogress');
-    })->name('admin.formality.inprogress');
-    Route::get('/closed', function () {
-        return view('admin.formality.closed');
-    })->name('admin.formality.closed');
-    Route::get('/assigned', function () {
-        return view('admin.formality.assigned');
-    })->name('admin.formality.assigned');
-    Route::get('/completed', function () {
-        return view('admin.formality.completed');
-    })->name('admin.formality.completed');
-    Route::get('/pending', function () {
-        return view('admin.formality.pending');
-    })->name('admin.formality.pending');
-    Route::get('/assignment', function () {
-        return view('admin.formality.assignment');
-    })->name('admin.formality.assignment');
-    Route::get('/total', function () {
-        return view('admin.formality.totalInProgress');
-    })->name('admin.formality.totalInProgress');
-
+    Route::get('/completed', [FormalityAdminController::class, 'getCompleted'])->name('admin.formality.completed');
+    Route::get('/{id}/completed', [FormalityAdminController::class, 'viewCompleted'])->name('admin.formality.get.completed');
+    Route::get('/pending', [FormalityAdminController::class, 'getPending'])->name('admin.formality.pending');
+    Route::get('/assignment', [FormalityAdminController::class, 'getAssignment'])->name('admin.formality.assignment');
+    Route::get('/total', [FormalityAdminController::class, 'getTotalInProgress'])->name('admin.formality.totalInProgress');
+    Route::get('/extract', [FormalityAdminController::class, 'getExtract'])->name('admin.formality.extract');
+    Route::get('/data', [FormalityAdminController::class, 'getData'])->name('admin.formality.data');
+    Route::get('/total/closed', [FormalityAdminController::class, 'getTotalClosed'])->name('admin.formality.total.closed');
+    Route::get('/assignment/renovation', [FormalityAdminController::class, 'getAssignmentRenovation'])->name('admin.formality.assignment.renovation');
 });
 
 Route::prefix('users')->group(function () {
-    Route::get('/', function () {
-        return view('admin.user.users');
-    })->name('admin.users');
-    Route::get('/client', function () {
-        return view('admin.user.clients');
-    })->name('admin.clients');
-    Route::get('/create', [UserConntroller::class, 'create'])->name('admin.users.create');
+    Route::get('/', [UserAdminController::class, 'getManageUsers'])->name('admin.users');
+    Route::get('/client', [UserAdminController::class, 'getManageClients'])->name('admin.clients');
+    Route::get('/create', [UserAdminController::class, 'create'])->name('admin.users.create');
     Route::get('/{id}/edit/', [UserAdminController::class, 'edit'])->name('admin.users.edit');
 });
 Route::prefix('company')->group(function () {
@@ -78,7 +71,7 @@ Route::prefix('product')->group(function () {
     Route::get('/', function () {
         return view('admin.product.manager');
     })->name('admin.product.manager');
-    // Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
+    Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
 });
 Route::prefix('config')->group(function () {
     Route::prefix('component')->group(function () {
@@ -98,4 +91,26 @@ Route::prefix('config')->group(function () {
 Route::prefix('documents')->group(function () {
     Route::get('/auth', [ComponentAdminController::class, 'docsAuth'])->name('admin.document.authorization');
     Route::get('/change', [ComponentAdminController::class, 'docsChange'])->name('admin.document.changeTitle');
+});
+
+
+Route::prefix('roles')->group(function () {
+    Route::get('/', [RoleAdminController::class, 'index'])->name('admin.roles.index');
+    Route::get('/{role}/edit', [RoleAdminController::class, 'edit'])->name('admin.roles.edit');
+});
+
+Route::prefix('tickets')->group(function () {
+    Route::get('/create', [TicketAdminController::class, 'create'])->name('admin.ticket.create');
+    Route::get('/pending', [TicketAdminController::class, 'getPending'])->name('admin.ticket.pending');
+    Route::get('/assigned', [TicketAdminController::class, 'getAssigned'])->name('admin.ticket.assigned');
+    Route::get('/assignment', [TicketAdminController::class, 'getAssignment'])->name('admin.ticket.assignment');
+    Route::get('/closed', [TicketAdminController::class, 'getClosed'])->name('');
+    Route::get('/resolved', [TicketAdminController::class, 'getResolved'])->name('admin.ticket.resolved');
+    Route::get('/total/closed', [TicketAdminController::class, 'getTotalClosed'])->name('admin.ticket.total.closed');
+    Route::get('/total/pending', [TicketAdminController::class, 'getTotalPending'])->name('admin.ticket.total.pending');
+});
+
+Route::prefix('tool')->group(function () {
+    Route::get('/statistics/client', [ToolAdminController::class, 'getStatisticsClient'])->name('admin.tool.statistics.client');
+    Route::get('/statistics/worker', [ToolAdminController::class, 'getStatisticsWorker'])->name('admin.tool.statistics.worker');
 });

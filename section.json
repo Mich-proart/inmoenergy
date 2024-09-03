@@ -1,0 +1,298 @@
+[
+    {
+        "name": "trámites clientes",
+        "programs": [
+            {
+                "name": "nuevo trámite",
+                "image": "create_formality.png",
+                "route": "admin.formality.create",
+                "description": null,
+                "placed_in": "1",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "formality.create"
+            },
+            {
+                "name": "trámites en curso",
+                "image": "in_progress_formality.png",
+                "route": "admin.formality.inprogress",
+                "description": null,
+                "placed_in": "2",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "formality.inprogress.access"
+            },
+            {
+                "name": "trámites cerrados",
+                "image": "closed_formality.png",
+                "route": "admin.formality.closed",
+                "description": null,
+                "placed_in": "3",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "formality.closed.access"
+            },
+            {
+                "name": "nuevo ticket",
+                "image": "create_ticket.png",
+                "route": "admin.ticket.create",
+                "description": null,
+                "placed_in": "4",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "ticket.create"
+                
+            },
+            {
+                "name": "tickets pendientes",
+                "image": "pending_ticket.png",
+                "route": "admin.ticket.pending",
+                "description": null,
+                "placed_in": "5",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "ticket.pending.access"
+            },
+            {
+                "name": "tickets resueltos",
+                "image": "solved_ticket.png",
+                "route": "admin.ticket.resolved",
+                "description": null,
+                "placed_in": "6",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "ticket.resolved.access"
+            }
+        ]
+    },
+    {
+        "name": "trámites y tickets asignados",
+        "programs": [
+            {
+                "name": "trámites asignados",
+                "image": "asigned_formality.png",
+                "route": "admin.formality.assigned",
+                "description": null,
+                "placed_in": "1",
+                "roles": ["superadmin", "comercial"],
+                "permission": "formality.assigned.access"
+            },
+            {
+                "name": "tickets asignados",
+                "image": "asigned_ticket.png",
+                "route": "admin.ticket.assigned",
+                "description": null,
+                "placed_in": "2",
+                "roles": ["superadmin", "comercial"],
+                "permission": "ticket.assigned.access"
+            },
+            {
+                "name": "trámites realizados",
+                "image": "closed_formality.png",
+                "route": "admin.formality.completed",
+                "description": null,
+                "placed_in": "3",
+                "roles": ["superadmin", "comercial"],
+                "permission": "formality.completed.access"
+            },
+            {
+                "name": "tickets resueltos",
+                "image": "solved_ticket.png",
+                "route": "admin.ticket.resolved",
+                "description": null,
+                "placed_in": "4",
+                "roles": ["comercial"],
+                "permission": "ticket.resolved.access.worker"
+            },
+            {
+                "name": "altas pendientes fecha activación",
+                "image": "pending_formality.png",
+                "route": "admin.formality.pending",
+                "description": null,
+                "placed_in": "5",
+                "roles": ["superadmin", "comercial"],
+                "permission": "formality.pending.access"
+            }
+        ]
+    },
+    {
+        "name": "documentación",
+        "programs": [
+            {
+                "name": "autorización",
+                "image": "authentication_docs.png",
+                "route": "admin.document.authorization",
+                "description": null,
+                "placed_in": "1",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "document.authorization.access"
+            },
+            {
+                "name": "documentos para cambio de titular",
+                "image": "change_owner_docs.png",
+                "route": "admin.document.changeTitle",
+                "description": null,
+                "placed_in": "2",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "document.changeTitle.access"
+            }
+        ]
+    },
+    {
+        "name": "herramientas de trabajo",
+        "programs": [
+            {
+                "name": "extracción de trámites",
+                "image": "extract_formality.png",
+                "route": "admin.formality.extract",
+                "description": null,
+                "placed_in": "1",
+                "roles": ["superadmin", "inmobiliaria"],
+                "permission": "formality.extract.access"
+            },
+            {
+                "name": "datos trámites inmoenergy",
+                "image": "extract_formality.png",
+                "route": "admin.formality.data",
+                "description": null,
+                "placed_in": "2",
+                "roles": ["superadmin"],
+                "permission": "formality.data.access"
+            },
+            {
+                "name": "estadísticas por trabajador",
+                "image": "worcker_stadictic.png",
+                "route": "admin.tool.statistics.worker",
+                "description": null,
+                "placed_in": "3",
+                "roles": ["superadmin"],
+                "permission": "tool.statistics.worker.access"
+            },
+            {
+                "name": "estadísticas por cliente",
+                "image": "client_stadictic.png",
+                "route": "admin.tool.statistics.client",
+                "description": null,
+                "placed_in": "4",
+                "roles": ["superadmin"],
+                "permission": "tool.statistics.client.access"
+            },
+            {
+                "name": "trámites cerrados totales",
+                "image": "total_closed_formality.png",
+                "route": "admin.formality.total.closed",
+                "description": null,
+                "placed_in": "5",
+                "roles": ["superadmin"],
+                "permission": "formality.total.closed.access"
+            },
+            {
+                "name": "tickets cerrados totales",
+                "image": "total_closed_ticket.png",
+                "route": "admin.ticket.total.closed",
+                "description": null,
+                "placed_in": "6",
+                "roles": ["superadmin"],
+                "permission": "ticket.total.closed.access"
+            },
+            {
+                "name": "asignación de trámite",
+                "image": "formality_assignment.png",
+                "route": "admin.formality.assignment",
+                "description": null,
+                "placed_in": "6",
+                "roles": ["superadmin"],
+                "permission": "formality.assignment.access"
+            },
+            {
+                "name": "asignación de tickets",
+                "image": "ticket_assigment.png",
+                "route": "admin.ticket.assignment",
+                "description": null,
+                "placed_in": "8",
+                "roles": ["superadmin"],
+                "permission": "ticket.assignment.access"
+            },
+            {
+                "name": "asignación renovaciones",
+                "image": "renovation_assignment.png",
+                "route": "admin.formality.assignment.renovation",
+                "description": null,
+                "placed_in": "9",
+                "roles": ["superadmin"],
+                "permission": "ticket.total.pending.access"
+            },
+            {
+                "name": "trámites en curso totales",
+                "image": "total_inprogrss_formality.png",
+                "route": "admin.formality.totalInProgress",
+                "description": null,
+                "placed_in": "10",
+                "roles": ["superadmin"],
+                "permission": "formality.totalInProgress.access"
+            },
+            {
+                "name": "tickets pendientes totales",
+                "image": "pending_ticket.png",
+                "route": "admin.ticket.total.pending",
+                "description": null,
+                "placed_in": "11",
+                "roles": ["superadmin"],
+                "permission": "ticket.total.pending.access"
+            }
+        ]
+    },
+    {
+        "name": "configuración",
+        "programs": [
+            {
+                "name": "gestión de usuarios",
+                "image": "users_manager.png",
+                "route": "admin.users",
+                "description": null,
+                "placed_in": "1",
+                "roles": ["superadmin"],
+                "permission": "manage.user.access"
+            },
+            {
+                "name": "gestión de clientes",
+                "image": "client_manager.png",
+                "route": "admin.clients",
+                "description": null,
+                "placed_in": "2",
+                "roles": ["superadmin"],
+                "permission": "manage.client.access"
+            },
+            {
+                "name": "gestión de roles",
+                "image": "roles_manager.png",
+                "route": "admin.roles.index",
+                "description": null,
+                "placed_in": "3",
+                "roles": ["superadmin"],
+                "permission": "manage.role.access"
+            },
+            {
+                "name": "gestión de comercializadoras",
+                "image": "company_manager.png",
+                "route": "admin.company.manager",
+                "description": null,
+                "placed_in": "4",
+                "roles": ["superadmin"],
+                "permission": "manage.company.access"
+            },
+            {
+                "name": "gestión de productos",
+                "image": "product_manager.png",
+                "route": "admin.product.manager",
+                "description": null,
+                "placed_in": "5",
+                "roles": ["superadmin"],
+                "permission": "manage.product.access"
+            },
+            {
+                "name": "desplegables",
+                "image": "dropdowns.png",
+                "route": "admin.config.component",
+                "description": null,
+                "placed_in": "6",
+                "roles": ["superadmin"],
+                "permission": "config.dropdown.access"
+            }
+        ]
+    }
+]

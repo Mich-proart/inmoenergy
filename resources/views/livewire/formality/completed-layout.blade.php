@@ -60,24 +60,17 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Usuario asignado</th>
-                            <th>Tipo</th>
+                            <th>Fecha de entrada</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>Tipo documento</th>
                             <th>N documento</th>
                             <th>Dirección</th>
-                            <th>Estado Tramite</th>
+                            <th>Estado trámite</th>
                             <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
-                            <th>Fecha finalizacion tramite</th>
-                            <th>Consumo anual</th>
                             <th>CUPS</th>
-                            <th>Renovacion</th>
-                            <th>Fecha de activacion</th>
-                            <th>Observaciones asesor</th>
-                            <th>Opciones</th>
+                            <th>Renovación</th>
+                            <th>Fecha de activación</th>
+                            <th>Documentos</th>
                         </tr>
                     </thead>
 
@@ -110,7 +103,7 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.index')}}",
+                "url": "{{route('api.formality.status')}}",
                 "type": "GET",
                 "data": {
                     "assignedId": "{{Auth::id()}}",
@@ -122,11 +115,8 @@
             },
             "columns": [
                 { data: 'created_at' },
-                { data: 'assigned' },
-                { data: 'type' },
                 { data: 'service' },
                 { data: 'fullName' },
-                { data: 'document_type' },
                 { data: 'documentNumber' },
                 { data: 'fullAddress' },
                 {
@@ -135,13 +125,27 @@
                     }
                 },
                 { data: 'company' },
-                { data: 'product' },
-                { data: 'completion_date' },
-                { data: 'annual_consumption' },
                 { data: 'CUPS' },
-                { data: 'isRenewable' },
-                { data: 'activation_date' },
-                { data: 'assigned_observation' },
+                {
+                    data: 'isRenewable', render: function (data, type, row, meta) {
+                        if (data === 1) {
+                            return `<i class="fa fa-check-square" style="font-size:20px;color:green"></i>`;
+                        }
+                        return ``;
+                    }
+                },
+                {
+                    data: 'activation_date', render: function (data, type, row, meta) {
+                        if (data) {
+                            const date = new Date(data);
+                            const formattedDate = date.toISOString().split('T')[0];
+                            console.log(formattedDate)
+                            return formattedDate;
+                        } else {
+                            return '';
+                        }
+                    }
+                },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {
                         console.log(data)
@@ -150,9 +154,9 @@
                 },
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9, 10] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
             ], "order": [
                 [0, "desc"]
             ],
@@ -160,7 +164,7 @@
         $('#formality-content').on('click', '.target', function () {
             const row = table.row(this).data();
             console.log(row);
-            window.location.href = "{{ route('admin.formality.get', ':id') }}".replace(':id', row.formality_id);
+            window.location.href = "{{ route('admin.formality.get.completed', ':id') }}".replace(':id', row.formality_id);
         })
     </script>
 </div>
