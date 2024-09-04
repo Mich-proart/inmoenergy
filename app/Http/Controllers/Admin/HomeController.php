@@ -41,24 +41,24 @@ class HomeController extends Controller
         foreach ($sections as $section) {
             foreach ($section->programs as $program) {
                 if ($program->name == 'trámites en curso') {
-                    $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
+                    $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
                     $formality = $this->formalityQueryService->findByDistintStatus($query);
                     $program->count = count($formality);
                 }
 
                 if ($program->name == 'trámites cerrados') {
-                    $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
+                    $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
                     $formality = $this->formalityQueryService->findByStatus($query);
                     $program->count = count($formality);
                 }
                 if ($program->name == 'trámites asignados') {
-                    $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
+                    $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
                     $formality = $this->formalityQueryService->findByDistintStatus($query);
                     $program->count = count($formality);
                 }
 
                 if ($program->name == 'trámites realizados') {
-                    $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_CURSO->value]);
+                    $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
                     $formality = $this->formalityQueryService->findByStatus($query);
                     $program->count = count($formality);
                 }
