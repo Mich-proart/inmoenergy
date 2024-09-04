@@ -63,11 +63,11 @@ class HomeController extends Controller
                     $program->count = count($formality);
                 }
                 //
-                if ($program->name == 'altas pendientes fecha de activación') {
+                if ($program->name == 'altas pendientes fecha activación') {
                     $formality = $this->formalityQueryService->totalPending();
                     $program->count = count($formality);
                 }
-                if ($program->name == 'asignación de trámites') {
+                if ($program->name == 'asignación de trámite') {
                     $formality = $this->formalityQueryService->getAssignedNull();
                     $program->count = count($formality);
                 }
