@@ -29,6 +29,17 @@ class EditPendingformalityModal extends Component
     {
         $this->form->validate();
 
+        if ($this->form->commission == null || $this->form->commission == '' || $this->form->commission == 0) {
+            $this->dispatch('checks', error: "Por favor, rellene la comision correctamente", title: "Valor no valido");
+        } else {
+            $this->executeSave();
+        }
+
+
+    }
+
+    private function executeSave()
+    {
         DB::beginTransaction();
 
         try {

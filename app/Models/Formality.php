@@ -106,4 +106,15 @@ class Formality extends Model
     {
         return $this->morphMany(File::class, 'fileable');
     }
+
+    public function potency_Spanish()
+    {
+        if ($this->potency) {
+            $result = number_format($this->potency, 4, ',', '.');
+            $result = rtrim($result, '0');
+            $result = rtrim($result, ',');
+
+            return $result;
+        }
+    }
 }

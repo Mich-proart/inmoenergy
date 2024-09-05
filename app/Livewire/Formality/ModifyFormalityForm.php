@@ -76,8 +76,8 @@ class ModifyFormalityForm extends Component
             $this->form->validate([
                 'CUPS' => 'required|string|min:20|max:22',
                 'access_rate_id' => 'required|integer|exists:component_option,id',
-                'annual_consumption' => 'required|numeric|gt:0',
-                'potency' => 'required|numeric|gt:0',
+                'annual_consumption' => 'required|integer|gt:0',
+                'potency' => 'required|string',
             ], [
                 'CUPS.required' => 'Debes rellenar el CUPS',
                 'CUPS.string' => 'Debes rellenar el CUPS',
@@ -90,7 +90,6 @@ class ModifyFormalityForm extends Component
                 'annual_consumption.numeric' => 'Debes rellenar el consumo anual valido',
                 'annual_consumption.gt' => 'Consumo anual debe ser mayor que 0',
                 'potency.required' => 'Debes rellenar la potencia',
-                'potency.numeric' => 'Debes rellenar la potencia',
                 'potency.gt' => 'Debes rellenar la potencia',
             ]);
         }
@@ -108,6 +107,21 @@ class ModifyFormalityForm extends Component
             );
         }
 
+        if ($this->formality->service->name !== ServiceEnum::AGUA->value) {
+            if ($this->form->potency == null || $this->form->potency == '' || $this->form->potency == 0) {
+                $this->dispatch('checks', error: "Por favor, rellene la potencia correctamente", title: "Valor no valido");
+            } else {
+                $this->executeUpdate();
+            }
+
+        } else {
+            $this->executeUpdate();
+        }
+
+    }
+
+    private function executeUpdate()
+    {
         DB::beginTransaction();
 
         try {
@@ -137,6 +151,7 @@ class ModifyFormalityForm extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
     }
+
     public function insertData()
     {
 

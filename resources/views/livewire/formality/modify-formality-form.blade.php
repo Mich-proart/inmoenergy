@@ -139,8 +139,8 @@
                                 kW
                             </span>
                             <input wire:model="form.annual_consumption" type="text"
-                                class="form-control @error('form.annual_consumption') is-invalid @enderror" id="inputZip"
-                                name="annual_consumption" required>
+                                class="form-control @error('form.annual_consumption') is-invalid @enderror"
+                                id="annual_consumption" name="annual_consumption" required>
                             @error('form.annual_consumption')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -155,8 +155,8 @@
                                 kW
                             </span>
                             <input wire:model="form.potency" type="text"
-                                class="form-control @error('form.potency') is-invalid @enderror" id="inputZip"
-                                name="potency" required>
+                                class="form-control @error('form.potency') is-invalid @enderror" id="potency" name="potency"
+                                required>
                             @error('form.potency')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -194,6 +194,31 @@
     <script src="/vendor/jquery/jquery.min.js"></script>
     @script
     <script>
+
+        $(document).ready(function () {
+            $("#potency").on("input", function () {
+                let val = $(this).val();
+
+                let fmt = val.toString().split(",");
+
+                fmt[0] = fmt[0].replace(/\./g, "");
+                fmt[0] = fmt[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+                let result = fmt.join(",");
+
+                $(this).val(result);
+            });
+            $("#potency").keypress(function (event) {
+                if ((event.which < 48 || event.which > 57) && event.which !== 44) {
+                    event.preventDefault();
+                }
+            });
+            $("#annual_consumption").keypress(function (event) {
+                if ((event.which < 48 || event.which > 57) && event.which !== 46) {
+                    event.preventDefault();
+                }
+            });
+        });
 
         $wire.on('checks', (e) => {
             console.log(e);

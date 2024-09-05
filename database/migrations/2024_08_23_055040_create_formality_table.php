@@ -29,8 +29,8 @@ return new class extends Migration {
             $table->string('CUPS')->nullable();
             $table->text('internal_observation')->nullable();
             $table->integer('annual_consumption')->nullable();
-            $table->decimal('commission', 10, 2)->nullable();
-            $table->decimal('potency', 10, 2)->nullable();
+            $table->decimal('commission', 10, 4)->nullable();
+            $table->decimal('potency', 10, 4)->nullable();
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('correspondence_address_id')->nullable()->constrained('address');
             $table->boolean('isSameCorrespondenceAddress')->default(true);

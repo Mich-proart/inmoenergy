@@ -244,4 +244,37 @@
             $(`#editFormality${row.formality_id}`).click();
         })
     </script>
+    @script
+    <script>
+
+        $(document).ready(function () {
+            $("#commission").on("input", function () {
+                let val = $(this).val();
+
+                let fmt = val.toString().split(",");
+
+                fmt[0] = fmt[0].replace(/\./g, "");
+                fmt[0] = fmt[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+                let result = fmt.join(",");
+
+                $(this).val(result);
+            });
+            $("#commission").keypress(function (event) {
+                if ((event.which < 48 || event.which > 57) && event.which !== 44) {
+                    event.preventDefault();
+                }
+            });
+        });
+        $wire.on('checks', (e) => {
+            console.log(e);
+            Swal.fire({
+                confirmButtonColor: '#004a99',
+                icon: "error",
+                title: e.title,
+                text: e.error,
+            });
+        });
+    </script>
+    @endscript
 </div>

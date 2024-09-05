@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms\Formality;
 
+use App\Exceptions\CustomException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -19,7 +20,7 @@ class FormalityPendingEdit extends Form
         'formalityId' => 'required|exists:formality,id',
         'activation_date' => 'required|date',
         'isRenewable' => 'nullable|boolean',
-        'commission' => 'required|numeric|gt:0'
+        'commission' => 'required|string'
         //'renewal_date' => 'nullable|date',
     ];
 
@@ -42,10 +43,37 @@ class FormalityPendingEdit extends Form
     public function getDataToUpdate()
     {
 
+        $commission = null;
+        if ($this->commission != 0 || $this->commission != null || $this->commission != '') {
+            $commission = $this->number_format_english($this->commission);
+        }
+
         return [
             'activation_date' => $this->activation_date,
             'isRenewable' => $this->isRenewable,
-            'commission' => $this->commission,
+            'commission' => $commission,
         ];
+    }
+
+    private function number_format_english($number)
+    {
+        $number = preg_replace('/[^0-9,]/', '', $number);
+        $number = str_replace(',', '.', $number);
+
+
+        if (!preg_match('/^[0-9]+(\.[0-9]+)?$/', $number)) {
+            throw new CustomException('Invalid number format');
+        }
+
+        return floatval($number);
+    }
+    private function number_format_spanish($number)
+    {
+        $result = number_format($number, 4, ',', '.');
+        $result = rtrim($result, '0');
+        $result = rtrim($result, ',');
+
+        return $result;
+
     }
 }
