@@ -83,7 +83,8 @@ class User extends Authenticatable
     }
     public function adminlte_image()
     {
-        return 'https://picsum.photos/300/300';
+        // return 'https://picsum.photos/300/300';
+        return 'vendor/adminlte/dist/img/user-default-blue.png';
     }
 
     public function adminlte_desc()
