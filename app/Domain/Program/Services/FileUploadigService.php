@@ -3,10 +3,12 @@
 namespace App\Domain\Program\Services;
 
 use App\Models\Client;
+use App\Models\File;
 use App\Models\FileConfig;
 use App\Models\Formality;
 use App\Models\Program;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -61,5 +63,39 @@ class FileUploadigService
         }
     }
 
+    public function force_replace(File $file_reference)
+    {
+        if ($this->file) {
+
+            if ($this->deleteFile($file_reference->folder, $file_reference->filename)) {
+                $temp = explode('.', $this->file->getClientOriginalName())[0];
+
+                $name = $temp . '_' . uniqid();
+                $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
+
+                $file_reference->update([
+                    'name' => $name,
+                    'filename' => $newFilename,
+                    'mime_type' => $this->file->getMimeType(),
+                    'config_id' => $this->configId ?? null
+                ]);
+
+                $this->file->storeAs('public/' . $file_reference->folder, $newFilename);
+                return $file_reference->folder . '/' . $newFilename;
+            }
+        }
+
+
+    }
+
+
+    private function deleteFile($folder, $filename): bool
+    {
+        if (is_dir(storage_path('app/public/' . $folder))) {
+            return unlink(storage_path('app/public/' . $folder . '/' . $filename));
+        } else {
+            return false;
+        }
+    }
 
 }

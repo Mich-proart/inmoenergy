@@ -94,7 +94,8 @@
                                     @foreach ($services as $service)
                                         <div class="form-check form-check-inline">
                                             <input wire:model="form.serviceIds" class="form-check-input" type="radio" id=""
-                                                name="serviceIds[]" value="{{ $service->id }}">
+                                                name="serviceIds[]" wire:click="addInput({{ $service->id }})"
+                                                value="{{ $service->id }}">
                                             <label class="form-check-label"
                                                 for="inlineCheckbox1">{{ ucfirst($service->name) }}</label>
                                         </div>
@@ -623,6 +624,123 @@
                     </div>
 
                 </div>
+                <section>
+                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                            Documentos
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <table class="table table-sm table-secondary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Concepto</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col text-center">Descargar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($files)
+                                    @foreach ($files as $file)
+                                        <tr class="table-light">
+                                            <td>{{ ucfirst($file->config->name) }}</td>
+                                            <td>{{ $file->filename }}</td>
+                                            <td class="text-center">
+                                                <a href="{{route('admin.documents.download', $file->id)}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                                                        <path
+                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                @if ($formality_file)
+                                    @foreach ($formality_file as $file)
+                                        <tr class="table-light">
+                                            <td>{{ ucfirst($file->config->name) }}</td>
+                                            <td>{{ $file->filename }}</td>
+                                            <td class="text-center">
+                                                <a href="{{route('admin.documents.download', $file->id)}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                                                        <path
+                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <section x-data="{ buttonDisabled: true, }">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12" style="margin-top: 25px">
+                                        <div class="form-check">
+                                            <div class="form-check form-switch">
+                                                <input wire:model="form.new_files" class="form-check-input"
+                                                    type="checkbox" role="switch"
+                                                    x-on:click="buttonDisabled = !buttonDisabled"
+                                                    id="flexSwitchCheckDefault">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Editar
+                                                    archivos existentes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                @if ($service_file)
+                                    @foreach($service_file as $key => $file)
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="inputZip">{{ucfirst($file['name'])}}: </label>
+                                                <input wire:model.defer="service_file.{{$key}}.file" type="file"
+                                                    class="form-control @error('service_file.' . $key . '.file') is-invalid @enderror"
+                                                    id="input_{{$key}}_file">
+                                                @error('service_file.' . $key . '.file')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                                <div wire:loading wire:target="service_file.{{$key}}.file">Subiendo archivo...
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <section x-show="!buttonDisabled">
+                                @if ($inputs)
+                                    @foreach($inputs as $key => $input)
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="inputZip">{{ucfirst($input['name'])}}: </label>
+                                                <input wire:model.defer="inputs.{{$key}}.file" type="file"
+                                                    class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                                    id="input_{{$key}}_file">
+                                                @error('inputs.' . $key . '.file')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                                <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...</div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </section>
+                        </section>
+                    </div>
+                </section>
                 <div class="row no-print">
                     <div class="col-12">
                         <div style="margin-top: 50px; margin-bottom: 25px">

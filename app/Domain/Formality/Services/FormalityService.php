@@ -94,4 +94,15 @@ class FormalityService
                 ]
             )->first();
     }
+
+    public function getFileById(int $id)
+    {
+        return Formality::where('id', $id)->with(
+            'files',
+            'files.config',
+            'client',
+            'client.files',
+            'client.files.config'
+        )->first();
+    }
 }
