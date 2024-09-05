@@ -2,7 +2,11 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityUpdate;
+use App\Models\File;
+use App\Models\FileConfig;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Enums\ClientTypeEnum;
@@ -17,9 +21,11 @@ use App\Models\Formality;
 use Illuminate\Support\Facades\App;
 use DB;
 use Livewire\Attributes\Computed;
+use Livewire\WithFileUploads;
 
 class EditFormalityForm extends Component
 {
+    use WithFileUploads;
 
     protected $formalityService;
     protected $addressService;
@@ -44,12 +50,23 @@ class EditFormalityForm extends Component
 
     public $same_address;
 
+    public $files;
+    public $formality_file;
+
+    public Collection $inputs;
+
+    public Collection $service_file;
+
+    private $fileSet;
+
+    private FileUploadigService $fileUploadigService;
+
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
         $this->formalityService = App::make(FormalityService::class);
         $this->addressService = App::make(AddressService::class);
-
+        $this->fileUploadigService = App::make(FileUploadigService::class);
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
     }
@@ -73,7 +90,57 @@ class EditFormalityForm extends Component
             $this->field_name = 'Razon social';
         }
 
+        $this->fileSet = $this->formalityService->getFileById($formalityId);
+
+        if ($this->fileSet) {
+            $this->formality_file = $this->fileSet->files;
+            $this->files = $this->fileSet->client->files;
+            $this->mountFilesInput();
+            $this->addInput($this->formality->service_id);
+        }
+
     }
+
+    public function mountFilesInput()
+    {
+        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+
+        $this->fill([
+            'inputs' => collect([['' => '']]),
+            'service_file' => collect([['', '']]),
+        ]);
+
+        foreach ($fileConfig as $value) {
+            $this->inputs->push(['configId' => $value->id, 'serviceId' => null, 'name' => $value->name, 'file' => '']);
+        }
+
+        $this->inputs->pull(0);
+        $this->service_file->pull(0);
+    }
+
+    public function addInput($serviceId)
+    {
+
+        foreach ($this->service_file as $key => $value) {
+            $this->service_file->pull($key);
+
+        }
+        $config = FileConfig::where('component_option_id', $serviceId)->first();
+        $this->service_file->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
+
+    }
+
+    protected $rules = [
+        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:1024',
+        'service_file.*.file' => 'sometimes|nullable|mimes:pdf|max:1024',
+    ];
+
+    protected $messages = [
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 1MB.',
+        'service_file.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'service_file.*.file.max' => 'El archivo debe ser menor a 1MB.',
+    ];
 
     public function update()
     {
@@ -98,6 +165,33 @@ class EditFormalityForm extends Component
             if ($data->CorrespondenceAddress !== null) {
                 $corresponceAddress = Address::firstWhere('id', $data->CorrespondenceAddress->id);
                 $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
+            }
+
+            $object = $this->service_file->where('serviceId', $this->form->serviceIds[0])->first();
+            if ($object['file'] != null) {
+
+                $file = $object['file'];
+                if ($file) {
+                    $this->fileUploadigService
+                        ->addFile($file)
+                        ->setConfigId($object['configId'])
+                        ->force_replace($data->with('files')->first()->files->first());
+
+                }
+            }
+
+            $files_client = $this->inputs->where('serviceId', null);
+            $stored_client_client = $data->client()->with('files')->first()->files;
+            foreach ($files_client as $key => $value) {
+                if ($value['file'] != null) {
+                    $target_file = $stored_client_client->where('config_id', $value['configId'])->first();
+                    if ($target_file) {
+                        $this->fileUploadigService
+                            ->addFile($value['file'])
+                            ->setConfigId($value['configId'])
+                            ->force_replace($target_file);
+                    }
+                }
             }
 
             DB::commit();
@@ -219,6 +313,18 @@ class EditFormalityForm extends Component
             );
         }
 
+        if ($this->formality->service_id !== $this->form->serviceIds[0]) {
+
+            $this->validate(
+                [
+                    'service_file.*.file' => 'required',
+                ],
+                [
+                    'service_file.*.file.required' => 'El campo Archivo es obligatorio',
+                ]
+            );
+        }
+
     }
 
     public function changeSameAddress()
@@ -248,6 +354,7 @@ class EditFormalityForm extends Component
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
         $services = $this->formalityService->getServices();
+        $services = $services->where('name', '!=', 'fibra');
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         return view('livewire.formality.edit-formality-form', [

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms\Formality;
 
+use App\Exceptions\CustomException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -36,7 +37,7 @@ class FormalityModify extends Form
         $this->canClientEdit = $formality->canClientEdit ?? false;
         $this->internal_observation = $formality->internal_observation ?? '';
         $this->product_id = $formality->product_id ?? null;
-        $this->potency = $formality->potency ?? null;
+        $this->potency = $formality->potency ? $this->number_format_spanish($formality->potency) : null;
         $this->previous_company_id = $formality->previous_company_id ?? null;
         $this->user_assigned_id = $formality->user_assigned_id ?? null;
     }
@@ -69,6 +70,7 @@ class FormalityModify extends Form
 
         $access_rate_id = null;
         $user_assigned_id = null;
+        $potency = null;
 
         if ($this->access_rate_id != 0 || $this->access_rate_id != null || $this->access_rate_id != '') {
             $access_rate_id = $this->access_rate_id;
@@ -76,6 +78,10 @@ class FormalityModify extends Form
 
         if ($this->user_assigned_id != 0 || $this->user_assigned_id != null || $this->user_assigned_id != '') {
             $user_assigned_id = $this->user_assigned_id;
+        }
+
+        if ($this->potency != 0 || $this->potency != null || $this->potency != '') {
+            $potency = $this->number_format_english($this->potency);
         }
 
         return [
@@ -86,9 +92,31 @@ class FormalityModify extends Form
             'canClientEdit' => $this->canClientEdit,
             'internal_observation' => $this->internal_observation,
             'product_id' => (int) $this->product_id ?? null,
-            'potency' => (float) $this->potency ?? null,
+            'potency' => $potency, // (float) $this->potency ?? null,
             'previous_company_id' => (int) $this->previous_company_id ?? null,
             'user_assigned_id' => $user_assigned_id
         ];
+    }
+
+    private function number_format_english($number)
+    {
+        $number = preg_replace('/[^0-9,]/', '', $number);
+        $number = str_replace(',', '.', $number);
+
+
+        if (!preg_match('/^[0-9]+(\.[0-9]+)?$/', $number)) {
+            throw new CustomException('Invalid number format');
+        }
+
+        return floatval($number);
+    }
+    private function number_format_spanish($number)
+    {
+        $result = number_format($number, 4, ',', '.');
+        $result = rtrim($result, '0');
+        $result = rtrim($result, ',');
+
+        return $result;
+
     }
 }

@@ -355,7 +355,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label for="">Potencia: </label> @if (isset($formality->potency))
-                            <span>kW </span>{{$formality->potency}}
+                            <span>kW </span>{{$formality->potency_Spanish()}}
                         @endif
                     </div>
 
