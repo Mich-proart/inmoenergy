@@ -295,6 +295,7 @@ class EditFormalityForm extends Component
                     'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
                     'userTitleId.required' => 'El campo Titulo es obligatorio',
                     'userTitleId.exists' => 'El Titulo no es valido',
+                    'documentNumber.required' => 'El campo Documento es obligatorio',
 
                 ]
             );
