@@ -155,6 +155,7 @@ class ModifyFormalityForm extends Component
     public function insertData()
     {
 
+        /*
         $this->form->validate([
             'product_id' => 'required|integer|exists:product,id',
             'previous_company_id' => 'required|integer|exists:company,id',
@@ -166,6 +167,7 @@ class ModifyFormalityForm extends Component
             'product_id.required' => 'Debes seleccionar un producto',
             'previous_company_id.required' => 'Debes seleccionar una empresa',
         ]);
+        */
 
         $data = Formality::firstWhere('id', $this->formality->id);
 
