@@ -446,9 +446,9 @@
                                                                         {{$address['street_name']}} {{' '}}
                                                                         {{$address['street_number']}} {{' '}}
                                                                         {{$address['block']}} {{' '}}
-                                                                        {{$address['door']}} {{' '}}
+                                                                        {{$address['block_staircase']}} {{' '}}
                                                                         {{$address['floor']}} {{' '}}
-                                                                        {{$address['block_staircase']}} “. Por
+                                                                        {{$address['door']}} {{' '}}. “Por
                                                                         favor, contactar a: {{$user['phone']}} {{' o '}}
                                                                         {{$user['email']}} {{' .'}}
                                                                     </p>

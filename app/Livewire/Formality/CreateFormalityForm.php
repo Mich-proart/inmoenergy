@@ -347,7 +347,8 @@ class CreateFormalityForm extends Component
                 ->saveFile($this->folder);
             array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
         }
-        Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
+        //Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
+        Mail::to(['santiagocarvaja65@hotmail.com'])
             ->send(new EmailLineaTelefonica($this->form->getClientDto(), $this->form->getCreateAddressDto(), $attachs));
 
         $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);

@@ -28,14 +28,14 @@
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="">Compañía suministro: </label>
-                    <select wire:model.live="companyId"
-                        class="form-control @error('form.company_id') is-invalid @enderror" name="company_id" required>
+                    <select wire:model.live="companyId" wire:model="companyId"
+                        class="form-control @error('companyId') is-invalid @enderror" name="company_id" required>
                         <option value="0">-- seleccione --</option>
                         @foreach ($this->companies as $company)
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
                         @endforeach
                     </select>
-                    @error('form.company_id')
+                    @error('companyId')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

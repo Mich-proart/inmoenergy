@@ -55,6 +55,16 @@ class ModifyFormalityForm extends Component
         return User::where('isWorker', true)->where('isActive', 1)->get();
     }
 
+    protected $rules = [
+        'companyId' => 'required|integer|exists:company,id',
+    ];
+
+    protected $messages = [
+        'companyId.required' => 'Debes seleccionar una empresa',
+        'companyId.integer' => 'Debes seleccionar una empresa',
+        'companyId.exists' => 'Debes seleccionar una empresa existente',
+    ];
+
     public function mount($formality, $prevStatus, $from)
     {
         $this->formality = $formality;
@@ -70,7 +80,10 @@ class ModifyFormalityForm extends Component
 
     public function update()
     {
+        $this->validate();
         $this->form->validate();
+        dd($this->companyId);
+        dd($this->form->getDataToUpdate());
 
         if ($this->formality->service->name !== ServiceEnum::AGUA->value) {
             $this->form->validate([
