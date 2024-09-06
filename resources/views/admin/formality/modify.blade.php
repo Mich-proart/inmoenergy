@@ -49,7 +49,10 @@
 
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tramite crítico:</label>
-                            <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isCritical)) onclick="return false;">
+                            @if ($formality->isCritical != "0")
+                                <i class='fas fa-exclamation-circle' style='font-size:20px;color:red'></i>
+                            @endif
+
                         </div>
                     </div>
                 </div>
