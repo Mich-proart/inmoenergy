@@ -30,7 +30,7 @@
                     <label for="">Compañía suministro: </label>
                     <select wire:model.live="companyId" wire:model="companyId"
                         class="form-control @error('companyId') is-invalid @enderror" name="company_id" required>
-                        <option value="0">-- seleccione --</option>
+                        <option value="">-- seleccione --</option>
                         @foreach ($this->companies as $company)
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
                         @endforeach
@@ -46,7 +46,7 @@
                     <label for="">Producto compañía: </label>
                     <select wire:model="form.product_id"
                         class="form-control @error('form.product_id') is-invalid @enderror" name="product_id" required>
-                        <option value="0">-- seleccione --</option>
+                        <option value="">-- seleccione --</option>
                         @foreach ($this->products as $product)
                             <option value="{{ $product->id }}">{{ $product->name }}</option>
                         @endforeach
@@ -63,7 +63,7 @@
                         <select wire:model="form.access_rate_id"
                             class="form-control @error('form.access_rate_id') is-invalid @enderror" id="inputLocation"
                             name="access_rate_id" required>
-                            <option value="0">-- seleccione --</option>
+                            <option value="">-- seleccione --</option>
                             @if (isset($accessRate))
                                 @foreach ($accessRate as $rate)
                                     <option value="{{ $rate->id }}">{{ $rate->name }}</option>
@@ -97,7 +97,7 @@
                     <select wire:model="form.previous_company_id"
                         class="form-control @error('form.previous_company_id') is-invalid @enderror"
                         name="previous_company_id" required>
-                        <option value="0">-- seleccione --</option>
+                        <option value="">-- seleccione --</option>
                         @foreach ($this->companies as $company)
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
                         @endforeach
@@ -114,7 +114,7 @@
                         <select wire:model="form.user_assigned_id"
                             class="form-control @error('form.user_assigned_id') is-invalid @enderror" id="inputLocation"
                             name="user_assigned_id" required>
-                            <option value="0">-- seleccione --</option>
+                            <option value="">-- seleccione --</option>
                             @if ($this->workers->count() > 0)
                                 @foreach ($this->workers as $worker)
                                     <option value="{{ $worker->id }}">
@@ -196,8 +196,9 @@
     <script>
 
         $(document).ready(function () {
-            $("#potency").on("input", function () {
-                let val = $(this).val();
+
+            function formatNumber(input) {
+                let val = input.val();
 
                 let fmt = val.toString().split(",");
 
@@ -206,7 +207,14 @@
 
                 let result = fmt.join(",");
 
-                $(this).val(result);
+                input.val(result);
+            }
+
+            $("#potency").on("input", function () {
+                formatNumber($(this));
+            });
+            $("#annual_consumption").on("input", function () {
+                formatNumber($(this));
             });
             $("#potency").keypress(function (event) {
                 if ((event.which < 48 || event.which > 57) && event.which !== 44) {
@@ -215,6 +223,9 @@
             });
             $("#annual_consumption").keypress(function (event) {
                 if ((event.which < 48 || event.which > 57) && event.which !== 46) {
+                    event.preventDefault();
+                }
+                if (event.which === 46) {
                     event.preventDefault();
                 }
             });

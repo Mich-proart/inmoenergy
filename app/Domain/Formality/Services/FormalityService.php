@@ -105,4 +105,37 @@ class FormalityService
             'client.files.config'
         )->first();
     }
+
+    public function getAll()
+    {
+        return Formality::with(
+            [
+                'client',
+                'client.clientType',
+                'client.documentType',
+                'client.title',
+                'issuer',
+                'assigned',
+                'address',
+                'address.streetType',
+                'address.housingType',
+                'address.location',
+                'address.location.province',
+                'address.location.province.region',
+                'CorrespondenceAddress',
+                'CorrespondenceAddress.streetType',
+                'CorrespondenceAddress.housingType',
+                'CorrespondenceAddress.location',
+                'CorrespondenceAddress.location.province',
+                'CorrespondenceAddress.location.province.region',
+                'type',
+                'status',
+                'service',
+                'accessRate',
+                'product',
+                'product.company',
+                'previousCompany'
+            ]
+        )->get();
+    }
 }

@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
-use App\Domain\Formality\Services\CountQueryService;
 use App\Domain\Formality\Services\FormalityQueryService;
 
 use App\Http\Controllers\Controller;
 use App\Models\Section;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -18,7 +16,6 @@ class HomeController extends Controller
 {
 
     public function __construct(
-        private readonly CountQueryService $countQueryService,
         private readonly FormalityQueryService $formalityQueryService,
     ) {
     }

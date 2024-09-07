@@ -10,6 +10,7 @@ use App\Models\Formality;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Response;
 
 class FormalityAdminController extends Controller
 {
@@ -147,5 +148,108 @@ class FormalityAdminController extends Controller
     {
         $program = Program::where('name', 'asignación renovaciones')->first();
         return view('admin.formality.assignmentRenovation', ['program' => $program]);
+    }
+
+    public function exportCSV()
+    {
+        $filename = 'extraccion_tramites.csv';
+
+        $headers = [
+            'Content-Encoding' => 'utf-8',
+            'Content-type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $handle = fopen('php://output', 'w');
+        fputcsv($handle, [
+            'código trámite',
+            'cliente emisor tramite',
+            'fecha y hora entrada tramite',
+            'usuario asignado',
+            'fecha y hora asignación',
+            'tipo tramite',
+            'suministro',
+            'tipo cliente',
+            'cliente final',
+            'email cliente final',
+            'tratamiento cliente final',
+            'tipo de documento cliente final',
+            'numero documento cliente final',
+            'teléfono cliente final',
+            'iban cliente final',
+            'tipo de calle cliente final',
+            'nombre calle cliente final',
+            'número calle cliente final',
+            'bloque cliente final',
+            'escalera bloque final',
+            'piso cliente final',
+            'puerta cliente final',
+            'código postal cliente final',
+            'población cliente final',
+            'provincia cliente final',
+            'tipo de calle correspondencia cliente final',
+            'nombre calle correspondencia cliente final',
+            'número calle correspondencia cliente final',
+            'bloque cliente correspondencia final',
+            'escalera bloque correspondencia final',
+            'piso cliente correspondencia final',
+            'puerta cliente correspondencia final',
+            'código postal correspondencia cliente final',
+            'población correspondencia cliente final',
+            'provincia correspondencia cliente final',
+        ]);
+
+        $formalities = $this->formalityService->getAll();
+
+        foreach ($formalities as $formality) {
+            fputcsv($handle, [
+                $formality->id,
+                $formality->issuer->name . '' . $formality->issuer->first_last_name . ' ' . $formality->issuer->second_last_name,
+                $formality->created_at,
+                $formality->assigned ? $formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name : '',
+                $formality->assignment_date,
+                $formality->type->name,
+                $formality->service->name,
+                $formality->client->clientType->name,
+                $formality->client->name . ' ' . $formality->client->first_last_name . ' ' . $formality->client->second_last_name,
+                $formality->client->email,
+                $formality->client->clientType->name,
+                $formality->client->documentType->name,
+                $formality->client->document_number,
+                $formality->client->phone,
+                $formality->client->iban,
+                $formality->address->streetType->name,
+                $formality->address->street_name,
+                $formality->address->street_number,
+                $formality->address->block,
+                $formality->address->floor,
+                $formality->address->door,
+                $formality->address->zip_code,
+                $formality->address->location->name,
+                $formality->address->location->province->name,
+                $formality->CorrespondenceAddress->streetType->name,
+                $formality->CorrespondenceAddress->street_name,
+                $formality->CorrespondenceAddress->street_number,
+                $formality->CorrespondenceAddress->block,
+                $formality->CorrespondenceAddress->floor,
+                $formality->CorrespondenceAddress->door,
+                $formality->CorrespondenceAddress->zip_code,
+                $formality->CorrespondenceAddress->location->name,
+                $formality->CorrespondenceAddress->location->province->name,
+
+            ]);
+        }
+
+        fclose($handle);
+
+        return Response::make('', 200, $headers);
+    }
+
+    public function exportExcel()
+    {
+
     }
 }

@@ -252,7 +252,7 @@ class CreateFormalityForm extends Component
             ->first();
 
         if ($address) {
-            $this->dispatch('checks', error: "Error al intentar crear el formulario con datos duplicados", title: "Datos duplicados");
+            $this->dispatch('checks', error: "Error al intentar crear el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
         } else {
             $this->dispatch('load');
             $this->execute();

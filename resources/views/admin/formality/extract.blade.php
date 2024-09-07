@@ -16,7 +16,10 @@
 
 @section('content')
 <div>
+    <a href="{{ route('admin.formality.exportCSV') }}">
+        <button type="button">Export CSV</button>
 
+    </a>
 
 </div>
 @stop
