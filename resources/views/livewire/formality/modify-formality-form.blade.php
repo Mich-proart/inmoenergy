@@ -29,7 +29,8 @@
                 <div class="form-group col-md-3">
                     <label for="">Compañía suministro: </label>
                     <select wire:model.live="companyId" wire:model="companyId"
-                        class="form-control @error('companyId') is-invalid @enderror" name="company_id" required>
+                        class="form-control @error('companyId') is-invalid @enderror" name="company_id" id="company_id"
+                        required>
                         <option value="">-- seleccione --</option>
                         @foreach ($this->companies as $company)
                             <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -45,7 +46,8 @@
                 <div class="form-group col-md-3">
                     <label for="">Producto compañía: </label>
                     <select wire:model="form.product_id"
-                        class="form-control @error('form.product_id') is-invalid @enderror" name="product_id" required>
+                        class="form-control @error('form.product_id') is-invalid @enderror" name="product_id"
+                        id="product_id" required>
                         <option value="">-- seleccione --</option>
                         @foreach ($this->products as $product)
                             <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -167,9 +169,6 @@
                 @endif
             </div>
         </section>
-        @if (isset($from) && $from == 'total')
-            <div>total editer</div>
-        @endif
         <div style="margin-top: 50px; margin-bottom: 25px">
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Observaciones internas</label>
@@ -196,6 +195,13 @@
     <script>
 
         $(document).ready(function () {
+
+            $("#company_id").on("change", function () {
+                setTimeout(function () {
+                    $("#product_id").val("");
+                }, 200);
+
+            });
 
             function formatNumber(input) {
                 let val = input.val();

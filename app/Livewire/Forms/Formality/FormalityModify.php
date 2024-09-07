@@ -73,6 +73,9 @@ class FormalityModify extends Form
         $potency = null;
         $annual_consumption = null;
 
+        $product_id = null;
+        $previous_company_id = null;
+
         if ($this->access_rate_id != 0 && $this->access_rate_id != null && $this->access_rate_id != '') {
             $access_rate_id = $this->access_rate_id;
         }
@@ -89,6 +92,16 @@ class FormalityModify extends Form
             $annual_consumption = intval($this->annual_consumption);
         }
 
+        if ($this->product_id != 0 && $this->product_id != null && $this->product_id != '') {
+            $product_id = $this->product_id;
+        }
+
+        if ($this->previous_company_id != 0 && $this->previous_company_id != null && $this->previous_company_id != '') {
+            $previous_company_id = $this->previous_company_id;
+        }
+
+
+
         return [
             'assigned_observation' => $this->assigned_observation,
             'CUPS' => $this->CUPS ?? null,
@@ -96,9 +109,9 @@ class FormalityModify extends Form
             'annual_consumption' => $annual_consumption,
             'canClientEdit' => $this->canClientEdit,
             'internal_observation' => $this->internal_observation,
-            'product_id' => $this->product_id ?? null,
+            'product_id' => $product_id,
             'potency' => $potency,
-            'previous_company_id' => $this->previous_company_id ?? null,
+            'previous_company_id' => $previous_company_id,
             'user_assigned_id' => $user_assigned_id
         ];
     }

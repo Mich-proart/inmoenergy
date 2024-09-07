@@ -714,7 +714,7 @@
         });
 
         $wire.on('load', () => {
-            document.querySelector('.spinner-wrapper').style.display = 'block';
+            // document.querySelector('.spinner-wrapper').style.display = 'block';
         })
     </script>
     @endscript

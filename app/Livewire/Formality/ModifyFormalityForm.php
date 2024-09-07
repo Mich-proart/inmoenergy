@@ -134,7 +134,6 @@ class ModifyFormalityForm extends Component
     private function executeUpdate()
     {
         DB::beginTransaction();
-
         try {
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::TRAMITADO->value);
             $updates = array_merge(
