@@ -118,7 +118,7 @@ class FormalityAdminController extends Controller
     }
     public function getAssignment()
     {
-        $program = Program::where('name', 'asignación de trámites')->first();
+        $program = Program::where('name', 'asignación de trámite')->first();
         return view('admin.formality.assignment', ['program' => $program]);
     }
     public function getTotalInProgress()

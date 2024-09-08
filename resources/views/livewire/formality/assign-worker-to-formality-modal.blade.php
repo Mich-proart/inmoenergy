@@ -121,7 +121,7 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.notAssigned')}}",
+                "url": "{{route('api.formality.assignment')}}",
                 "type": "GET"
             },
             "language": {

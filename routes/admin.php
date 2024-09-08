@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Admin\Company\CompanyAdminController;
 use App\Http\Controllers\Admin\Config\ComponentAdminController;
+use App\Http\Controllers\Admin\Formality\FormalityApiController;
 use App\Http\Controllers\Admin\Role\RoleAdminController;
 use App\Http\Controllers\Admin\Ticket\TicketAdminController;
 use App\Http\Controllers\Admin\Tool\ToolAdminController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\Configuration\ComponentController;
 use App\Http\Controllers\User\UserConntroller;
 use App\Http\Controllers\Admin\User\UserAdminController;
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
-use App\Http\Controllers\Formality\FormalityController;
 
 
 
@@ -21,11 +21,13 @@ Route::get('/', [HomeController::class, 'index']);
 
 
 Route::group(['prefix' => 'api'], function () {
-    Route::get('/formality/except', [FormalityController::class, 'exceptStatus'])->name('api.formality.except');
-    Route::get('/formality/status', [FormalityController::class, 'onlyStatus'])->name('api.formality.status');
-    Route::get('/formality/pending', [FormalityController::class, 'totalPending'])->name('api.formality.activation.pending');
-    Route::get('/formality/notAssigned', [FormalityController::class, 'getAssignedNull'])->name('api.formality.notAssigned');
-    Route::get('/formality/getDistintStatus', [FormalityController::class, 'getDistintStatus'])->name('api.formality.distintStatus');
+    Route::get('/formality/inprogress', [FormalityApiController::class, 'getInProgress'])->name('api.formality.inprogress');
+    Route::get('/formality/closed', [FormalityApiController::class, 'getClosed'])->name('api.formality.closed');
+    Route::get('/formality/assigned', [FormalityApiController::class, 'getAssigned'])->name('api.formality.assigned');
+    Route::get('/formality/completed', [FormalityApiController::class, 'getCompleted'])->name('api.formality.completed');
+    Route::get('/formality/pending', [FormalityApiController::class, 'getPending'])->name('api.formality.pending');
+    Route::get('/formality/assignment', [FormalityApiController::class, 'getAssignment'])->name('api.formality.assignment');
+    Route::get('/formality/total/inprogress', [FormalityApiController::class, 'getTotalInprogress'])->name('api.formality.totalInprogress');
 
 
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');

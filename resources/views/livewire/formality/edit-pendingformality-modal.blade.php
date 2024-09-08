@@ -196,7 +196,7 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.activation.pending')}}",
+                "url": "{{route('api.formality.pending')}}",
                 "type": "GET",
             },
             "language": {

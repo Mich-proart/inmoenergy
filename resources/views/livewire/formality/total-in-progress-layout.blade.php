@@ -150,7 +150,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{route('api.formality.distintStatus')}}",
+                    "url": "{{route('api.formality.totalInprogress')}}",
                     "type": "GET"
                 },
                 "language": {

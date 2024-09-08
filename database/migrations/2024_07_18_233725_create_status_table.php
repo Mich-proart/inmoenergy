@@ -20,6 +20,8 @@ return new class extends Migration {
             "asignado",
             "en curso",
             "tramitado",
+            "finalizado",
+            "baja",
             "en vigor",
             "K.O."
         ];

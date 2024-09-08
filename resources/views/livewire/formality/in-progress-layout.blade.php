@@ -122,12 +122,8 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.except')}}",
+                "url": "{{route('api.formality.inprogress')}}",
                 "type": "GET",
-                "data": {
-                    "issuerId": "{{Auth::id()}}",
-                    "exceptStatus": ["tramitado", "en vigor"]
-                }
             },
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"

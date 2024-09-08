@@ -85,59 +85,13 @@ class FormalityQueryService
         return $queryBuilder->get();
     }
 
-    public function findByDistintStatus(FormalityQuery $formalityQuery)
-    {
-        $queryBuilder = $this->formalityQuery();
-
-        if ($formalityQuery->statusArray && is_array($formalityQuery->statusArray) && count($formalityQuery->statusArray) > 0) {
-            $queryBuilder->WhereNotIn('status.name', $formalityQuery->statusArray);
-        }
-
-        if ($formalityQuery->issuerId) {
-            $queryBuilder->where('issuer.id', $formalityQuery->issuerId);
-        }
-
-        if ($formalityQuery->assignedId) {
-            $queryBuilder->where('userAssigned.id', $formalityQuery->assignedId);
-        }
-
-        if ($formalityQuery->activationDateNull || $formalityQuery->activationDateNull === true) {
-            $queryBuilder->whereNull('formality.activation_date');
-        }
-
-        return $queryBuilder->get();
-    }
-
-    public function findByStatus(FormalityQuery $formalityQuery)
-    {
-        $queryBuilder = $this->formalityQuery();
-
-        if ($formalityQuery->statusArray && is_array($formalityQuery->statusArray) && count($formalityQuery->statusArray) > 0) {
-            $queryBuilder->WhereIn('status.name', $formalityQuery->statusArray);
-        }
-
-        if ($formalityQuery->issuerId) {
-            $queryBuilder->where('issuer.id', $formalityQuery->issuerId);
-        }
-
-        if ($formalityQuery->assignedId) {
-            $queryBuilder->where('userAssigned.id', $formalityQuery->assignedId);
-        }
-
-        if ($formalityQuery->activationDateNull || $formalityQuery->activationDateNull === true) {
-            $queryBuilder->whereNull('formality.activation_date');
-        }
-
-        return $queryBuilder->get();
-    }
-
 
     public function totalPending()
     {
 
         $queryBuilder = $this->formalityQuery();
 
-        $queryBuilder->WhereIn('status.name', [FormalityStatusEnum::TRAMITADO->value]);
+        $queryBuilder->WhereIn('status.name', [FormalityStatusEnum::FINALIZADO->value]);
 
         $queryBuilder->whereNull('formality.activation_date');
 
@@ -151,4 +105,54 @@ class FormalityQueryService
         return $queryBuilder->get();
     }
 
+    private $mainStatusFilter = [
+        FormalityStatusEnum::TRAMITADO->value,
+        FormalityStatusEnum::EN_VIGOR->value,
+        FormalityStatusEnum::BAJA->value,
+        FormalityStatusEnum::FINALIZADO->value
+    ];
+
+    public function getInProgress(int $issuerId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('issuer.id', $issuerId);
+        $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+    public function getClosed(int $issuerId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('issuer.id', $issuerId);
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+    public function getAssigned(int $assignedId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+    public function getCompleted(int $assignedId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+
+    public function getTotalInProgress()
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
+        return $queryBuilder->get();
+    }
 }

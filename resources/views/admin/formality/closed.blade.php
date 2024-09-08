@@ -84,12 +84,8 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{route('api.formality.status')}}",
+            "url": "{{route('api.formality.closed')}}",
             "type": "GET",
-            "data": {
-                "issuerId": "{{Auth::id()}}",
-                "onlyStatus": ["tramitado", "en vigor"]
-            }
         },
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
