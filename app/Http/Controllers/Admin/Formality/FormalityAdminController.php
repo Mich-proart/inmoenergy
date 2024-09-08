@@ -113,7 +113,7 @@ class FormalityAdminController extends Controller
     }
     public function getPending()
     {
-        $program = Program::where('name', 'altas pendientes fecha de activación')->first();
+        $program = Program::where('name', 'altas pendientes fecha activación')->first();
         return view('admin.formality.pending', ['program' => $program]);
     }
     public function getAssignment()
