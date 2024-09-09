@@ -144,7 +144,6 @@ class EditFormalityForm extends Component
 
     public function update()
     {
-
         $this->formValidation();
 
 
@@ -314,8 +313,8 @@ class EditFormalityForm extends Component
             );
         }
 
-        if ($this->formality->service_id !== $this->form->serviceIds[0]) {
-
+        $inputServiceid = intval($this->form->serviceIds[0]);
+        if ($this->formality->service_id !== $inputServiceid) {
             $this->validate(
                 [
                     'service_file.*.file' => 'required',
@@ -325,7 +324,6 @@ class EditFormalityForm extends Component
                 ]
             );
         }
-
     }
 
     public function changeSameAddress()

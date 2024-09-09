@@ -7,6 +7,10 @@ function statusColor(status) {
         return `<span class="custom-badge ko">${status}</span>`;
     }
 
+    if (status === "baja") {
+        return `<span class="custom-badge down">${status}</span>`;
+    }
+
     if (status === "en curso") {
         return `<span class="custom-badge inprogress">${status}</span>`;
     }
