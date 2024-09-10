@@ -162,7 +162,7 @@ class FormalityAdminController extends Controller
 
     public function exportCSV()
     {
-        $filename = 'extraccion_tramites.csv';
+        $filename = 'datos_trámites_inmoenergy.csv';
 
         $headers = [
             'Content-Encoding' => 'utf-8',
@@ -210,6 +210,24 @@ class FormalityAdminController extends Controller
             'código postal correspondencia cliente final',
             'población correspondencia cliente final',
             'provincia correspondencia cliente final',
+            'observaciones del tramite',
+            'fecha finalización tramite',
+            'estado tramite',
+            'observaciones del tramitador',
+            'tramite critico',
+            'compañía suministro',
+            'tarifa acceso',
+            'producto compañía',
+            'consumo anual',
+            'cups',
+            'observaciones internas',
+            'compañía suministro anterior',
+            'tipo de vivienda',
+            'potencia',
+            'comisión bruta',
+            'renovación',
+            'fecha activación',
+            'fecha renovación',
         ]);
 
         $formalities = $this->formalityService->getAll();
@@ -217,7 +235,7 @@ class FormalityAdminController extends Controller
         foreach ($formalities as $formality) {
             fputcsv($handle, [
                 $formality->id,
-                $formality->issuer->name . '' . $formality->issuer->first_last_name . ' ' . $formality->issuer->second_last_name,
+                $formality->issuer->name . ' ' . $formality->issuer->first_last_name . ' ' . $formality->issuer->second_last_name,
                 $formality->created_at,
                 $formality->assigned ? $formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name : '',
                 $formality->assignment_date,
@@ -230,11 +248,12 @@ class FormalityAdminController extends Controller
                 $formality->client->documentType->name,
                 $formality->client->document_number,
                 $formality->client->phone,
-                $formality->client->iban,
+                $formality->iban,
                 $formality->address->streetType->name,
                 $formality->address->street_name,
                 $formality->address->street_number,
                 $formality->address->block,
+                $formality->address->block_staircase,
                 $formality->address->floor,
                 $formality->address->door,
                 $formality->address->zip_code,
@@ -244,12 +263,30 @@ class FormalityAdminController extends Controller
                 $formality->CorrespondenceAddress->street_name,
                 $formality->CorrespondenceAddress->street_number,
                 $formality->CorrespondenceAddress->block,
+                $formality->CorrespondenceAddress->block_staircase,
                 $formality->CorrespondenceAddress->floor,
                 $formality->CorrespondenceAddress->door,
                 $formality->CorrespondenceAddress->zip_code,
                 $formality->CorrespondenceAddress->location->name,
                 $formality->CorrespondenceAddress->location->province->name,
-
+                $formality->observation,
+                $formality->completion_date,
+                $formality->status->name,
+                $formality->issuer_observation,
+                $formality->isCritical,
+                $formality->service->company ? $formality->service->company->name : '',
+                $formality->accessRate ? $formality->accessRate->name : '',
+                $formality->product ? $formality->product->name : '',
+                $formality->annual_consumption,
+                $formality->CUPS,
+                $formality->internal_observation,
+                $formality->previous_company ? $formality->previous_company->name : '',
+                $formality->address->housingType ? $formality->address->housingType->name : '',
+                $formality->potency,
+                $formality->commission ? $formality->commission->formatTo('es_ES') : $formality->commission,
+                $formality->isRenewable,
+                $formality->activation_date,
+                $formality->renewal_date,
             ]);
         }
 

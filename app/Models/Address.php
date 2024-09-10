@@ -42,4 +42,11 @@ class Address extends Model
     {
         return $this->belongsTo(ComponentOption::class, 'housing_type_id');
     }
+
+    public function fullAddress()
+    {
+        $streetType = $this->streetType ? $this->streetType->name : '';
+
+        return $streetType . ' ' . $this->street_name . ' ' . $this->street_number . ' ' . $this->block . ' ' . $this->block_staircase . ' ' . $this->floor . ' ' . $this->door;
+    }
 }

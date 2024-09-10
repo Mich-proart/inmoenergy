@@ -10,7 +10,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-sm table-secondary">
+                    <table class="table table-sm">
                         <thead>
                             <tr>
                                 <th scope="col">Concepto</th>
