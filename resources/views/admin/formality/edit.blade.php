@@ -20,8 +20,8 @@
 @section('content')
 <div>
 
-    @if (isset($formalityId))
-        <livewire:formality.edit-formality-form :formalityId="$formalityId" />
+    @if (isset($formality))
+        <livewire:formality.edit-formality-form :formality="$formality" />
     @endif
 
 </div>

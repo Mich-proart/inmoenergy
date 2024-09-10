@@ -72,10 +72,10 @@ class EditFormalityForm extends Component
     }
 
 
-    public function mount($formalityId)
+    public function mount($formality)
     {
-        $this->formalityId = $formalityId;
-        $this->formality = $this->formalityService->getById($formalityId);
+        $this->formality = $formality;
+        $this->formalityId = $formality->id;
         $this->form->setformality($this->formality);
         $this->target_provinceId = $this->form->provinceId;
         $this->target_clientProvinceId = $this->form->client_provinceId;
@@ -90,7 +90,7 @@ class EditFormalityForm extends Component
             $this->field_name = 'Razon social';
         }
 
-        $this->fileSet = $this->formalityService->getFileById($formalityId);
+        $this->fileSet = $this->formalityService->getFileById($this->formalityId);
 
         if ($this->fileSet) {
             $this->formality_file = $this->fileSet->files;

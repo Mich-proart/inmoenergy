@@ -28,21 +28,29 @@ class FormalityAdminController extends Controller
     {
         $program = Program::where('name', 'trámites en curso')->first();
         $formality = $this->formalityService->getById($id);
+
+        if (!$formality) {
+            return view('admin.error.notFound');
+        }
+
         if ($formality && $formality->canClientEdit == 0) {
             return redirect()->route('admin.formality.get', ['id' => $id]);
         }
 
-        return view('admin.formality.edit', ['formalityId' => $id, 'program' => $program]);
+        return view('admin.formality.edit', ['formality' => $formality, 'program' => $program]);
     }
     public function get(int $id)
     {
         $formality = $this->formalityService->getById($id);
-        $client = $formality->client;
-        $address = $formality->address;
-        $CorrespondenceAddress = $formality->CorrespondenceAddress;
-
-        if ($formality)
+        if ($formality) {
+            $client = $formality->client;
+            $address = $formality->address;
+            $CorrespondenceAddress = $formality->CorrespondenceAddress;
             return view('admin.formality.get', ['formality' => $formality, 'client' => $client, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress]);
+        } else {
+            return view('admin.error.notFound');
+        }
+
 
     }
     public function viewCompleted(int $id)
@@ -80,6 +88,8 @@ class FormalityAdminController extends Controller
 
                 DB::commit();
                 return view('admin.formality.modify', ['formality' => $formality, 'client' => $client, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress, 'prevStatus' => $prevStatus, 'from' => $from]);
+            } else {
+                return view('admin.error.notFound');
             }
 
 
