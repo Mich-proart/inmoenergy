@@ -35,6 +35,8 @@ class EditUserForm extends Component
 
     public $isActive;
 
+    public $user;
+
 
     public function __construct()
     {
@@ -50,16 +52,16 @@ class EditUserForm extends Component
         $this->form->setPassword(Str::password(20, true, true, true, false));
     }
 
-    public function mount($userId)
+    public function mount($user)
     {
-        $user = $this->userService->getById($userId);
+        $this->user = $user;
 
-        $this->form->setUser($user);
+        $this->form->setUser($this->user);
         $this->target_provinceId = $this->form->provinceId;
         $this->target_regionId = $this->form->regionId;
         $this->business_target = $user->office->businessGroup->id ?? null;
-        $this->userId = $userId;
-        $this->isActive = $user->isActive;
+        $this->userId = $this->user->id;
+        $this->isActive = $this->user->isActive;
     }
 
     #[Computed()]
@@ -129,7 +131,22 @@ class EditUserForm extends Component
             );
         }
 
+        if (!$this->user->isActive && $this->form->isActive) {
+            if ($this->form->password == null || $this->form->password == '') {
+                $this->dispatch('msg', error: "Por favor, proporcione una contraseña de acceso", title: "Activación de usuario");
+            } else {
+                $this->exucuteSave();
+            }
+        } else {
+            $this->exucuteSave();
+        }
 
+
+    }
+
+
+    public function exucuteSave()
+    {
         DB::beginTransaction();
 
         try {
@@ -161,7 +178,6 @@ class EditUserForm extends Component
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
-
     }
 
     #[Computed()]

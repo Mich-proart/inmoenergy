@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\Formality\FormalityAdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('admin.dashboard');
 
 
 Route::group(['prefix' => 'api'], function () {

@@ -145,6 +145,11 @@ class UserEdit extends Form
             $data['password'] = $pass;
         }
 
+        if (!$this->isActive) {
+            $pass = hash::make('notActive');
+            $data['password'] = $pass;
+        }
+
         return $data;
     }
 

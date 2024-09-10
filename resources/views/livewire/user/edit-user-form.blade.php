@@ -116,7 +116,7 @@
                         </div>
                         <div class=" form-group col-md-3">
                             <label for="inputAddress2">Nueva Contraseña: </label>
-                            <input wire:model="form.password" type="text"
+                            <input wire:model="form.password" type="password"
                                 class="form-control @error('form.password') is-invalid @enderror" id="inputAddress2"
                                 placeholder="" name="password">
                             @error('form.password')
@@ -167,7 +167,8 @@
                         <!-- region -->
                         <div class="col-md-3">
                             <label for="inputState">Comunidad autónoma: </label>
-                            <select wire:model.live="target_regionId" class="form-control" id="inputRegion">
+                            <select wire:model.live="target_regionId" class="form-control" id="target_region_id"
+                                required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -177,7 +178,8 @@
                         <!-- province -->
                         <div class="col-md-3">
                             <label for="inputState">Provincia: </label>
-                            <select wire:model.live="target_provinceId" class="form-control" id="inputProvince">
+                            <select wire:model.live="target_provinceId" class="form-control" id="target_province_id"
+                                required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->provinces as $province)
                                     @if ($province->region->name === $province->name)
@@ -194,8 +196,8 @@
                         <div class="col-md-3">
                             <label for="inputState">Población: </label>
                             <select wire:model="form.locationId"
-                                class="form-control @error('form.locationId') is-invalid @enderror" id="inputLocation"
-                                name="locationId">
+                                class="form-control @error('form.locationId') is-invalid @enderror"
+                                id="tartet_location_id" name="locationId" required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->locations as $location)
                                     <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -353,5 +355,40 @@
         </div>
     </div>
     <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    @script
+    <script>
+        $(document).ready(function () {
+            const target_region = ["#target_province_id", "#tartet_location_id"];
+            const target_province = ["#tartet_location_id"];
 
+
+            $("#target_region_id").on("change", function () {
+                target_region.forEach((element) => {
+                    setTimeout(function () {
+                        $(element).val("").trigger("change");
+                    }, 200);
+
+                })
+            });
+
+            $("#target_province_id").on("change", function () {
+                target_province.forEach((element) => {
+                    setTimeout(function () {
+                        $(element).val("").trigger("change");
+                    }, 200);
+                })
+
+            });
+        })
+        $wire.on('msg', (e) => {
+            console.log(e);
+            Swal.fire({
+                confirmButtonColor: '#004a99',
+                icon: "warning",
+                title: e.title,
+                text: e.error,
+            });
+        });
+    </script>
+    @endscript
 </div>
