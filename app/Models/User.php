@@ -37,7 +37,8 @@ class User extends Authenticatable
         'incentive_type_id',
         'office_id',
         'disabled_at',
-        'isActive'
+        'isActive',
+        'responsible_name'
     ];
 
     /**

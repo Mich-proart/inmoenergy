@@ -35,7 +35,8 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
-                            <input wire:model="form.secondLastName" type="text" class="form-control" id="inputZip"
+                            <input wire:model="form.secondLastName" type="text"
+                                class="form-control @error('form.secondLastName') is-invalid @enderror" id=" inputZip"
                                 name="secondLastName">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
@@ -267,7 +268,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none;">
                                 <label for="inputCity">Oficina usuario</label>
                                 <select wire:model="form.officeId"
                                     class="form-control @error('form.officeId') is-invalid @enderror" name="officeId"
@@ -282,6 +283,17 @@
 
                                 </select>
                                 @error('form.officeId')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputCity">Oficina usuario</label>
+                                <input wire:model="form.officeName" type="text"
+                                    class="form-control @error('form.officeName') is-invalid @enderror" id="officeName"
+                                    name="officeName">
+                                @error('form.officeName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -309,7 +321,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none">
                                 <label for="inputState">Nombre responsable: </label>
                                 <select wire:model="form.responsibleId"
                                     class="form-control @error('form.responsibleId') is-invalid @enderror"
@@ -324,6 +336,17 @@
                                     @endif
                                 </select>
                                 @error('form.responsibleId')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Nombre responsable: </label>
+                                <input wire:model="form.responsibleName" type="text"
+                                    class="form-control @error('form.responsibleName') is-invalid @enderror"
+                                    id="responsibleName" name="responsibleName">
+                                @error('form.responsibleName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

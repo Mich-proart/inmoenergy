@@ -71,7 +71,6 @@ class CreateUserForm extends Component
 
     public function save()
     {
-
         $this->form->validate();
 
 
@@ -92,13 +91,17 @@ class CreateUserForm extends Component
 
         if (!$this->form->isWorker) {
             $this->form->validate([
-                'officeId' => 'required|integer|exists:office,id',
-                'responsibleId' => 'required|integer|exists:users,id',
+                // 'officeId' => 'required|integer|exists:office,id',
+                //'responsibleId' => 'required|integer|exists:users,id',
+                'officeName' => 'required|string',
+                'responsibleName' => 'required|string',
                 'adviserAssignedId' => 'required|integer|exists:users,id',
                 'incentiveTypeTd' => 'required|integer|exists:component_option,id',
             ], [
-                'officeId.required' => 'El campo Oficina es obligatorio',
-                'responsibleId.required' => 'El campo Responsable es obligatorio',
+                // 'officeId.required' => 'El campo Oficina es obligatorio',
+                // 'responsibleId.required' => 'El campo Responsable es obligatorio',
+                'officeName.required' => 'El campo Oficina es obligatorio',
+                'responsibleName.required' => 'El campo Responsable es obligatorio',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
             ]);
@@ -108,7 +111,17 @@ class CreateUserForm extends Component
         DB::beginTransaction();
 
         try {
-            $user = User::create($this->form->getUserData());
+
+            $updates = array_merge($this->form->getUserData());
+            if (!$this->form->isWorker) {
+                $office = Office::createOrFirst([
+                    'name' => strtolower($this->form->officeName),
+                    'business_group_id' => $this->business_target,
+                ]);
+                $updates['office_id'] = $office->id;
+            }
+
+            $user = User::create($updates);
 
             $role = Role::firstWhere('id', $this->form->getRoleId());
 

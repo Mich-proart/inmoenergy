@@ -278,7 +278,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none">
                                 <label for="inputCity">Oficina usuario</label>
                                 <select wire:model="form.officeId"
                                     class="form-control @error('form.officeId') is-invalid @enderror" name="officeId"
@@ -293,6 +293,17 @@
 
                                 </select>
                                 @error('form.officeId')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputCity">Oficina usuario</label>
+                                <input wire:model="form.officeName" type="text"
+                                    class="form-control @error('form.officeName') is-invalid @enderror" id="officeName"
+                                    name="officeName">
+                                @error('form.officeName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -320,7 +331,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none">
                                 <label for="inputState">Nombre responsable: </label>
                                 <select wire:model="form.responsibleId"
                                     class="form-control @error('form.responsibleId') is-invalid @enderror"
@@ -340,9 +351,25 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Nombre responsable: </label>
+                                <input wire:model="form.responsibleName" type="text"
+                                    class="form-control @error('form.responsibleName') is-invalid @enderror"
+                                    id="responsibleName" name="responsibleName">
+                                @error('form.responsibleName')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
                     </section>
                 @endif
+                {{--
+                @if($errors->any())
+                {{ implode('', $errors->all('<div>:message</div>')) }}
+                @endif
+                --}}
                 <div class="row no-print">
                     <div class="col-12">
                         <div style="margin-top: 50px; margin-bottom: 25px">
@@ -384,7 +411,7 @@
             console.log(e);
             Swal.fire({
                 confirmButtonColor: '#004a99',
-                icon: "warning",
+                icon: e.type,
                 title: e.title,
                 text: e.error,
             });

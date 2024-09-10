@@ -107,13 +107,17 @@ class EditUserForm extends Component
 
         if (!$this->form->isWorker) {
             $this->form->validate([
-                'officeId' => 'required|integer|exists:office,id',
-                'responsibleId' => 'required|integer|exists:users,id',
+                // 'officeId' => 'required|integer|exists:office,id',
+                // 'responsibleId' => 'required|integer|exists:users,id',
+                'officeName' => 'required|string',
+                'responsibleName' => 'required|string',
                 'adviserAssignedId' => 'required|integer|exists:users,id',
                 'incentiveTypeTd' => 'required|integer|exists:component_option,id',
             ], [
-                'officeId.required' => 'El campo Oficina es obligatorio',
-                'responsibleId.required' => 'El campo Responsable es obligatorio',
+                //'officeId.required' => 'El campo Oficina es obligatorio',
+                //'responsibleId.required' => 'El campo Responsable es obligatorio',
+                'officeName.required' => 'El campo Oficina es obligatorio',
+                'responsibleName.required' => 'El campo Responsable es obligatorio',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
             ]);
@@ -131,9 +135,11 @@ class EditUserForm extends Component
             );
         }
 
-        if (!$this->user->isActive && $this->form->isActive) {
+        if (!$this->form->isWorker && ($this->business_target == null || $this->business_target == '' || $this->business_target == 0)) {
+            $this->dispatch('msg', error: "Por favor, Seleccione un grupo empresarial", title: "Dato incompleto", type: "error");
+        } elseif (!$this->user->isActive && $this->form->isActive) {
             if ($this->form->password == null || $this->form->password == '') {
-                $this->dispatch('msg', error: "Por favor, proporcione una contraseña de acceso", title: "Activación de usuario");
+                $this->dispatch('msg', error: "Por favor, proporcione una contraseña de acceso", title: "Activación de usuario", type: "warning");
             } else {
                 $this->exucuteSave();
             }
@@ -150,6 +156,13 @@ class EditUserForm extends Component
         DB::beginTransaction();
 
         try {
+
+            if (!$this->form->isWorker && $this->user->office != null && $this->form->officeName != null) {
+                $this->user->office()->update([
+                    'name' => strtolower($this->form->officeName),
+                    'business_group_id' => $this->business_target
+                ]);
+            }
 
             $data = User::where('id', $this->userId)->with('address')->first();
             $data->update($this->form->getclientUpdate());
