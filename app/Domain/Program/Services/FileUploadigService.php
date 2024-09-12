@@ -45,7 +45,7 @@ class FileUploadigService
     {
         $temp = explode('.', $this->file->getClientOriginalName())[0];
 
-        $name = $temp . '_' . uniqid();
+        $name = $temp . '_' . uniqid() . uniqid();
         $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
         if ($this->file) {
@@ -70,7 +70,7 @@ class FileUploadigService
             if ($this->deleteFile($file_reference->folder, $file_reference->filename)) {
                 $temp = explode('.', $this->file->getClientOriginalName())[0];
 
-                $name = $temp . '_' . uniqid();
+                $name = $temp . '_' . uniqid() . uniqid();
                 $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
                 $file_reference->update([

@@ -170,11 +170,12 @@ class EditFormalityForm extends Component
             if ($object['file'] != null) {
 
                 $file = $object['file'];
+                $stored_file = $data->with('files')->first()->files->first();
                 if ($file) {
                     $this->fileUploadigService
                         ->addFile($file)
                         ->setConfigId($object['configId'])
-                        ->force_replace($data->with('files')->first()->files->first());
+                        ->force_replace($stored_file);
 
                 }
             }
