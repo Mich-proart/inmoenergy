@@ -45,6 +45,10 @@ return new class extends Migration {
                     'description' => $program['description']
                 ]);
 
+                $permmission = Permission::where('name', $program['permission'])->first();
+                if ($permmission) {
+                    $created->syncPermissions($permmission);
+                }
                 $program_list[] = $created;
 
                 $roles_list = [];

@@ -3,6 +3,7 @@ use App\Http\Controllers\Admin\Company\CompanyAdminController;
 use App\Http\Controllers\Admin\Config\ComponentAdminController;
 use App\Http\Controllers\Admin\Formality\FormalityApiController;
 use App\Http\Controllers\Admin\Role\RoleAdminController;
+use App\Http\Controllers\Admin\Role\RoleApiController;
 use App\Http\Controllers\Admin\Ticket\TicketAdminController;
 use App\Http\Controllers\Admin\Tool\ToolAdminController;
 use App\Http\Controllers\Product\ProductController;
@@ -37,6 +38,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/component/options', [ComponentController::class, 'options'])->name('api.component.options.query');
     Route::get('/component/business', [ComponentController::class, 'business'])->name('api.component.business.query');
     Route::get('/component/offices', [ComponentController::class, 'offices'])->name('api.component.offices.query');
+
+    Route::get('/role', [RoleApiController::class, 'getRoles'])->name('api.role.query');
+
 });
 Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
@@ -100,7 +104,7 @@ Route::prefix('documents')->group(function () {
 
 Route::prefix('roles')->group(function () {
     Route::get('/', [RoleAdminController::class, 'index'])->name('admin.roles.index');
-    Route::get('/{role}/edit', [RoleAdminController::class, 'edit'])->name('admin.roles.edit');
+    Route::get('/{id}/edit', [RoleAdminController::class, 'edit'])->name('admin.roles.edit');
 });
 
 Route::prefix('tickets')->group(function () {
