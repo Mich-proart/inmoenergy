@@ -15,20 +15,12 @@ return new class extends Migration {
             $table->string('name');
         });
 
-        $mainValues = [
-            "pendiente asignación",
-            "asignado",
-            "en curso",
-            "tramitado",
-            "finalizado",
-            "baja",
-            "en vigor",
-            "K.O."
-        ];
 
-        foreach ($mainValues as $case) {
-            DB::table('status')->insert([
-                'name' => $case
+        $set = File::json(base_path('app_components.json'));
+
+        foreach ($set['status'] as $value) {
+            DB::table(table: 'status')->insert([
+                'name' => $value
             ]);
         }
     }

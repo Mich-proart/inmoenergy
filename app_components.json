@@ -1,0 +1,142 @@
+{
+    "status": [
+        "pendiente asignación",
+        "asignado",
+        "en curso",
+        "tramitado",
+        "finalizado",
+        "baja",
+        "en vigor",
+        "K.O.",
+        "pendiente de cliente",
+        "pendiente validación",
+        "resuelto"
+    ],
+    "components": {
+        "program": "desplegables",
+        "items": [
+            {
+                "value": "tipo de trámite",
+                "alias": "formality_type",
+                "items": [
+                    "alta nueva",
+                    "cambio de titular"
+                ]
+            },
+            {
+                "value": "suministro",
+                "alias": "service",
+                "items": [
+                    "luz",
+                    "agua",
+                    "gas",
+                    "fibra"
+                ]
+            },
+            {
+                "value": "tipo de cliente",
+                "alias": "client_type",
+                "items": [
+                    "persona física",
+                    "persona jurídica"
+                ]
+            },
+            {
+                "value": "título de cliente",
+                "alias": "user_title",
+                "items": [
+                    "Sr.",
+                    "Sra."
+                ]
+            },
+            {
+                "value": "tipo de documento cliente",
+                "alias": "document_type",
+                "items": [
+                    "DNI",
+                    "pasaporte",
+                    "CIF",
+                    "NIE"
+                ]
+            },
+            {
+                "value": "tipo de calle",
+                "alias": "street_type",
+                "items": [
+                    "avenida",
+                    "calle",
+                    "pasaje",
+                    "paseo",
+                    "rambla",
+                    "camino",
+                    "carretera",
+                    "gran vía",
+                    "plaza",
+                    "ronda",
+                    "urbanización"
+                ]
+            },
+            {
+                "value": "tarifa de acceso",
+                "alias": "access_rate",
+                "items": [
+                    "2.0",
+                    "3.0",
+                    "RL1",
+                    "RL2",
+                    "RL3"
+                ]
+            },
+            {
+                "value": "tipo de vivienda",
+                "alias": "housing_type",
+                "items": [
+                    "vivienda",
+                    "local"
+                ]
+            },
+            {
+                "value": "tipo de incetivo",
+                "alias": "incentive_type",
+                "items": [
+                    "consultas",
+                    "facturar"
+                ]
+            },
+            {
+                "value": "tipo de ticket",
+                "alias": "ticket_type",
+                "items": [
+                    "incidencia",
+                    "solicitud"
+                ]
+            },
+            {
+                "value": "motivo de baja",
+                "alias": "reason_cancellation",
+                "items": [
+                    "cambio de comercializadora",
+                    "fin de suministro",
+                    "cambio de nombre"
+                ]
+            }
+        ]
+    },
+    "service": [
+        {
+            "value": "luz",
+            "items": [
+                "2.0",
+                "3.0"
+            ]
+        },
+        {
+            "value": "gas",
+            "items": [
+                "RL1",
+                "RL2",
+                "RL3"
+            ]
+        }
+    ]
+}

@@ -44,6 +44,9 @@ class Formality extends Model
         'previous_company_id',
         'commission',
         'potency',
+        'cancellation_observation',
+        'isRenovated',
+        'reason_cancellation_id'
     ];
 
     public function client(): BelongsTo
@@ -96,6 +99,11 @@ class Formality extends Model
     public function previousCompany(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'previous_company_id');
+    }
+
+    public function reasonCancellation(): BelongsTo
+    {
+        return $this->belongsTo(ComponentOption::class, 'reason_cancellation_id');
     }
 
     protected $casts = [

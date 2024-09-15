@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Component;
+use App\Models\ComponentOption;
+use App\Models\Program;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +22,7 @@ return new class extends Migration {
             $table->string('description')->nullable();
         });
 
+        /*
         $data = array(
             "tipo de trámite" => array(
                 "alias" => "formality_type",
@@ -127,6 +131,36 @@ return new class extends Migration {
             $option = DB::table('component_option')->where('name', $component)->first();
             foreach ($values as $name) {
                 DB::table('component_option')->where('name', $name)->update(['option_id' => $option->id]);
+            }
+        }
+        */
+
+        $set = File::json(base_path('app_components.json'));
+
+        $components = $set['components'];
+
+        $program = Program::where('name', $components['program'])->first();
+
+        foreach ($components['items'] as $item) {
+            $component = Component::create([
+                'name' => $item['value'],
+                'alias' => $item['alias'],
+                'program_id' => $program->id
+            ]);
+
+            foreach ($item['items'] as $name) {
+                DB::table('component_option')->insert([
+                    'name' => $name,
+                    'component_id' => $component->id
+                ]);
+            }
+        }
+
+        $service = $set['service'];
+        foreach ($service as $item) {
+            $option = ComponentOption::where('name', $item['value'])->first();
+            foreach ($item['items'] as $name) {
+                ComponentOption::where('name', $name)->update(['option_id' => $option->id]);
             }
         }
 
