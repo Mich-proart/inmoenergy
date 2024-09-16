@@ -40,7 +40,7 @@ return new class extends Migration {
             $table->foreignId('status_id')->constrained('status');
             $table->foreignId('access_rate_id')->nullable()->constrained('component_option');
             $table->foreignId('service_id')->constrained('component_option');
-            $table->foreignId('reason_cancellation_id')->constrained('component_option');
+            $table->foreignId('reason_cancellation_id')->nullable()->constrained('component_option');
             $table->foreignId('product_id')->nullable()->constrained('product');
             $table->foreignId('previous_company_id')->nullable()->constrained('company');
             $table->timestamps();

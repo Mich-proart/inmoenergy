@@ -29,6 +29,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/formality/pending', [FormalityApiController::class, 'getPending'])->name('api.formality.pending');
     Route::get('/formality/assignment', [FormalityApiController::class, 'getAssignment'])->name('api.formality.assignment');
     Route::get('/formality/total/inprogress', [FormalityApiController::class, 'getTotalInprogress'])->name('api.formality.totalInprogress');
+    Route::get('/formality/total/closed', [FormalityApiController::class, 'getTotalClosed'])->name('api.formality.totalClosed');
 
 
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');

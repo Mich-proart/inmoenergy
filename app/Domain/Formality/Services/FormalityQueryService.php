@@ -155,4 +155,13 @@ class FormalityQueryService
         $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
         return $queryBuilder->get();
     }
+
+    public function getTotalClosed()
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
 }
