@@ -34,7 +34,7 @@ class TicketApiController extends Controller
     public function getResolved()
     {
         $userId = auth()->user()->id;
-        $ticket = $this->ticketQueryService->getPending($userId);
+        $ticket = $this->ticketQueryService->getResolved($userId);
 
         return DataTables::of($ticket)
             ->setRowAttr(['align' => 'center'])
