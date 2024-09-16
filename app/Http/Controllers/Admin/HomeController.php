@@ -7,6 +7,7 @@ use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
 use App\Domain\Formality\Services\FormalityQueryService;
 
+use App\Domain\Ticket\Services\TicketQueryService;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class HomeController extends Controller
 
     public function __construct(
         private readonly FormalityQueryService $formalityQueryService,
+        private readonly TicketQueryService $ticketQueryService
     ) {
     }
 
@@ -67,6 +69,14 @@ class HomeController extends Controller
                 if ($program->name == 'trámites en curso totales') {
                     $formality = $this->formalityQueryService->getTotalInProgress();
                     $program->count = count($formality);
+                }
+                if ($program->name == 'tickets pendientes') {
+                    $ticket = $this->ticketQueryService->getPending($userId);
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'tickets resueltos') {
+                    $ticket = $this->ticketQueryService->getResolved($userId);
+                    $program->count = count($ticket);
                 }
             }
         }

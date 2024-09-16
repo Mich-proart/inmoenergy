@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Formality\FormalityApiController;
 use App\Http\Controllers\Admin\Role\RoleAdminController;
 use App\Http\Controllers\Admin\Role\RoleApiController;
 use App\Http\Controllers\Admin\Ticket\TicketAdminController;
+use App\Http\Controllers\Admin\Ticket\TicketApiController;
 use App\Http\Controllers\Admin\Tool\ToolAdminController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Company\CompanyController;
@@ -30,6 +31,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/formality/assignment', [FormalityApiController::class, 'getAssignment'])->name('api.formality.assignment');
     Route::get('/formality/total/inprogress', [FormalityApiController::class, 'getTotalInprogress'])->name('api.formality.totalInprogress');
     Route::get('/formality/total/closed', [FormalityApiController::class, 'getTotalClosed'])->name('api.formality.totalClosed');
+
+
+    Route::get('/ticket/pending', [TicketApiController::class, 'getPending'])->name('api.ticket.pending');
+    Route::get('/ticket/resolved', [TicketApiController::class, 'getResolved'])->name('api.ticket.resolved');
 
 
     Route::get('/user', [UserConntroller::class, 'index'])->name('api.user.query');
