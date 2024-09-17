@@ -42,6 +42,8 @@ class TicketQueryService
             ->join('status', 'status.id', '=', 'ticket.status_id')
             ->join('formality', 'formality.id', '=', 'ticket.formality_id')
             ->join('users as issuer_formality', 'issuer_formality.id', '=', 'formality.user_issuer_id')
+            ->leftJoin('office', 'office.id', '=', 'issuer_formality.office_id')
+            ->leftJoin('business_group', 'business_group.id', '=', 'office.business_group_id')
             ->join('client as client', 'client.id', '=', 'formality.client_id')
             ->join('users as issuer', 'issuer.id', '=', 'ticket.user_issuer_id')
             ->leftJoin('users as userAssigned', 'userAssigned.id', '=', 'ticket.user_assigned_id')
@@ -69,6 +71,9 @@ class TicketQueryService
                 'issuer_formality.name as issuer_formality_name',
                 'issuer_formality.first_last_name as issuer_formality_firstLastName',
                 'issuer_formality.second_last_name as issuer_formality_secondLastName',
+                'office.name as office',
+                'business_group.name as business_group',
+                'issuer_formality.responsible_name as issuer_formality_responsible_name'
             );
     }
 
@@ -97,7 +102,7 @@ class TicketQueryService
         return $queryBuilder->get();
     }
 
-    public function getTotalPending(int $issuerId)
+    public function getTotalPending()
     {
         $queryBuilder = $this->ticketQueryTotalPending();
         $queryBuilder->WhereNotIn('status.name', [TicketStatusEnum::RESUELTO->value]);

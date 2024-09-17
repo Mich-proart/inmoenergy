@@ -26,6 +26,10 @@
                 <table id="ticket-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
+                            <th>Nombre responsable</th>
+                            <th>Oficina usuario</th>
+                            <th>Grupo empresarial</th>
+                            <th>Cliente emisor trámite</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
@@ -34,6 +38,7 @@
                             <th>Tipo</th>
                             <th>Título ticket</th>
                             <th>Estado</th>
+                            <th>Usuario asignado ticket</th>
                         </tr>
                     </thead>
 
@@ -81,13 +86,17 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{route('api.ticket.assigned')}}",
+            "url": "{{route('api.ticket.total.pending')}}",
             "type": "GET",
         },
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
+            { data: 'issuer_formality_responsible_name' },
+            { data: 'office' },
+            { data: 'business_group' },
+            { data: 'issuer_formality' },
             { data: 'service' },
             { data: 'fullName' },
             { data: 'fullAddress' },
@@ -100,11 +109,12 @@
                     return statusColor(data);
                 }
             },
+            { data: 'assigned' },
 
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5] }
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
         ],
         "order": [
             [0, "desc"]
