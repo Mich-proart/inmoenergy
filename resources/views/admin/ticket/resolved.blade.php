@@ -76,7 +76,7 @@
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: `Ticket pendientes - ${new Date()}`
+                title: `Ticket resueltos - ${new Date()}`
             }
         ],
         "processing": true,
