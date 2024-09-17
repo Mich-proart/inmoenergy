@@ -23,6 +23,7 @@ class Ticket extends Model
         'resolution_date',
         'isResolved',
         'resolution_comment',
+        'assignment_date'
     ];
 
     public function issuer(): BelongsTo

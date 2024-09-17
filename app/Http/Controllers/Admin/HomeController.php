@@ -82,6 +82,14 @@ class HomeController extends Controller
                     $ticket = $this->ticketQueryService->getAssigned($userId);
                     $program->count = count($ticket);
                 }
+                if ($program->name == 'tickets pendientes totales') {
+                    $ticket = $this->ticketQueryService->getTotalPending();
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'asignación de tickets') {
+                    $ticket = $this->ticketQueryService->getAssignment();
+                    $program->count = count($ticket);
+                }
             }
         }
 

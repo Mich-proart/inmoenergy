@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('ticket_title');
             $table->text('ticket_description');
             $table->timestamp('resolution_date')->nullable();
+            $table->timestamp('assignment_date')->nullable();
             $table->boolean('isResolved')->default(false);
             $table->text('resolution_comment')->nullable();
             $table->timestamps();

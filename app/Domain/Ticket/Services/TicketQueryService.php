@@ -108,4 +108,10 @@ class TicketQueryService
         $queryBuilder->WhereNotIn('status.name', [TicketStatusEnum::RESUELTO->value]);
         return $queryBuilder->get();
     }
+    public function getAssignment()
+    {
+        $queryBuilder = $this->ticketQueryTotalPending();
+        $queryBuilder->whereNull('userAssigned.id');
+        return $queryBuilder->get();
+    }
 }
