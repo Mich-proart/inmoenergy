@@ -126,6 +126,7 @@ Route::prefix('tickets')->group(function () {
     Route::get('/resolved', [TicketAdminController::class, 'getResolved'])->name('admin.ticket.resolved');
     Route::get('/total/closed', [TicketAdminController::class, 'getTotalClosed'])->name('admin.ticket.total.closed');
     Route::get('/total/pending', [TicketAdminController::class, 'getTotalPending'])->name('admin.ticket.total.pending');
+    Route::get('/{id}/view', [TicketAdminController::class, 'getView'])->name('admin.ticket.view');
 });
 
 Route::prefix('tool')->group(function () {

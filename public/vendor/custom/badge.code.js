@@ -15,8 +15,11 @@ function statusColor(status) {
         return `<span class="custom-badge inprogress">${status}</span>`;
     }
 
-    if (status === "tramitado" || status === "finalizado") {
+    if (status === "tramitado" || status === "resuelto") {
         return `<span class="custom-badge processed">${status}</span>`;
+    }
+    if (status === "finalizado") {
+        return `<span class="custom-badge down">${status}</span>`;
     }
     if (status === "en vigor") {
         return `<span class="custom-badge operative">${status}</span>`;

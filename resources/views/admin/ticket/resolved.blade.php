@@ -106,12 +106,11 @@
             [3, "desc"]
         ],
     });
-    /*
     $('#ticket-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
         console.log(row);
-        window.location.href = "{{-- {{ route('admin.formality.get', ':id') }} --}}".replace(':id', row.formality_id);
+        window.location.href = "{{ route('admin.ticket.view', ':id') }}".replace(':id', row.ticket_id);
     })
-    */
+
 </script>
 @stop
