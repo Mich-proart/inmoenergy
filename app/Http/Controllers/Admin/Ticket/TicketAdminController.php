@@ -42,6 +42,11 @@ class TicketAdminController extends Controller
         $program = Program::where('name', 'tickets resueltos')->first();
         return view('admin.ticket.resolved', ['program' => $program]);
     }
+    public function getResolvedWorker()
+    {
+        $program = Program::where('name', 'tickets resueltos')->first();
+        return view('admin.ticket.resolvedWorker', ['program' => $program]);
+    }
     public function getTotalClosed()
     {
         $program = Program::where('name', 'tickets cerrados totales')->first();

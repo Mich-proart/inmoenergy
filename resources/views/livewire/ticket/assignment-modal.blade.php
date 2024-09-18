@@ -11,7 +11,6 @@
                             <th>Nombre responsable</th>
                             <th>Oficina usuario</th>
                             <th>Grupo empresarial</th>
-                            <th>Cliente emisor trámite</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
@@ -126,7 +125,6 @@
                 { data: 'issuer_formality_responsible_name' },
                 { data: 'office' },
                 { data: 'business_group' },
-                { data: 'issuer_formality' },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'fullAddress' },
@@ -152,9 +150,9 @@
 
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
             ], "order": [
                 [7, "desc"]
             ],

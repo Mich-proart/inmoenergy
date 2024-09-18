@@ -92,6 +92,14 @@ class TicketQueryService
         return $queryBuilder->get();
     }
 
+    public function getResolvedWorker(int $assignedId)
+    {
+        $queryBuilder = $this->ticketQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->WhereIn('status.name', [TicketStatusEnum::RESUELTO->value]);
+        return $queryBuilder->get();
+    }
+
     public function getAssigned(int $assignedId)
     {
 
