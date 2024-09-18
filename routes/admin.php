@@ -69,6 +69,7 @@ Route::prefix('formality')->group(function () {
     Route::get('/total/closed', [FormalityAdminController::class, 'getTotalClosed'])->name('admin.formality.total.closed');
     Route::get('/assignment/renovation', [FormalityAdminController::class, 'getAssignmentRenovation'])->name('admin.formality.assignment.renovation');
     Route::get('/export/csv', [FormalityAdminController::class, 'exportCSV'])->name('admin.formality.exportCSV');
+    Route::get('/export/issuer/csv', [FormalityAdminController::class, 'exportByIssuerCSV'])->name('admin.formality.issuer.exportCSV');
     Route::get('/export/excel', [FormalityAdminController::class, 'exportExcel'])->name('admin.formality.exportExcel');
 });
 

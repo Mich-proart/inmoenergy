@@ -32,6 +32,7 @@
                             <th>Fecha emisión ticket</th>
                             <th>Tipo</th>
                             <th>Título ticket</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
 
@@ -94,14 +95,19 @@
             { data: 'created_at' },
             { data: 'type' },
             { data: 'ticket_title' },
+            {
+                data: 'status', render: function (data, type, row, meta) {
+                    return statusColor(data);
+                }
+            },
 
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5] }
+            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6] },
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6] }
         ],
         "order": [
-            [0, "desc"]
+            [3, "desc"]
         ],
     });
     /*

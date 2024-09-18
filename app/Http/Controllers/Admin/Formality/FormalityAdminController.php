@@ -230,65 +230,157 @@ class FormalityAdminController extends Controller
             'fecha renovación',
         ]);
 
-        $formalities = $this->formalityService->getAll();
+        $query = $this->formalityService->getQueryWithAll();
 
-        foreach ($formalities as $formality) {
-            fputcsv($handle, [
-                $formality->id,
-                $formality->issuer->name . ' ' . $formality->issuer->first_last_name . ' ' . $formality->issuer->second_last_name,
-                $formality->created_at,
-                $formality->assigned ? $formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name : '',
-                $formality->assignment_date,
-                $formality->type->name,
-                $formality->service->name,
-                $formality->client->clientType->name,
-                $formality->client->name . ' ' . $formality->client->first_last_name . ' ' . $formality->client->second_last_name,
-                $formality->client->email,
-                $formality->client->clientType->name,
-                $formality->client->documentType->name,
-                $formality->client->document_number,
-                $formality->client->phone,
-                $formality->iban,
-                $formality->address->streetType->name,
-                $formality->address->street_name,
-                $formality->address->street_number,
-                $formality->address->block,
-                $formality->address->block_staircase,
-                $formality->address->floor,
-                $formality->address->door,
-                $formality->address->zip_code,
-                $formality->address->location->name,
-                $formality->address->location->province->name,
-                $formality->CorrespondenceAddress->streetType->name,
-                $formality->CorrespondenceAddress->street_name,
-                $formality->CorrespondenceAddress->street_number,
-                $formality->CorrespondenceAddress->block,
-                $formality->CorrespondenceAddress->block_staircase,
-                $formality->CorrespondenceAddress->floor,
-                $formality->CorrespondenceAddress->door,
-                $formality->CorrespondenceAddress->zip_code,
-                $formality->CorrespondenceAddress->location->name,
-                $formality->CorrespondenceAddress->location->province->name,
-                $formality->observation,
-                $formality->completion_date,
-                $formality->status->name,
-                $formality->issuer_observation,
-                $formality->isCritical,
-                $formality->service->company ? $formality->service->company->name : '',
-                $formality->accessRate ? $formality->accessRate->name : '',
-                $formality->product ? $formality->product->name : '',
-                $formality->annual_consumption,
-                $formality->CUPS,
-                $formality->internal_observation,
-                $formality->previous_company ? $formality->previous_company->name : '',
-                $formality->address->housingType ? $formality->address->housingType->name : '',
-                $formality->potency,
-                $formality->commission ? $formality->commission->formatTo('es_ES') : $formality->commission,
-                $formality->isRenewable,
-                $formality->activation_date,
-                $formality->renewal_date,
-            ]);
-        }
+        $query->chunk(25, function ($formalities) use ($handle) {
+            foreach ($formalities as $formality) {
+                $data = [
+                    isset($formality->id) ? $formality->id : '',
+                    isset($formality->issuer) ? $formality->issuer->name . ' ' . $formality->issuer->first_last_name . ' ' . $formality->issuer->second_last_name : '',
+                    isset($formality->created_at) ? $formality->created_at : '',
+                    isset($formality->assigned) ? $formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name : '',
+                    isset($formality->assignment_date) ? $formality->assignment_date : '',
+                    isset($formality->type) ? $formality->type->name : '',
+                    isset($formality->service) ? $formality->service->name : '',
+                    isset($formality->client->clientType) ? $formality->client->clientType->name : '',
+                    isset($formality->client) ? $formality->client->name . ' ' . $formality->client->first_last_name . ' ' . $formality->client->second_last_name : '',
+                    isset($formality->client) ? $formality->client->email : '',
+                    isset($formality->client->clientType) ? $formality->client->clientType->name : '',
+                    isset($formality->client->documentType) ? $formality->client->documentType->name : '',
+                    isset($formality->client) ? $formality->client->document_number : '',
+                    isset($formality->client) ? $formality->client->phone : '',
+                    isset($formality) ? $formality->iban : '',
+                    isset($formality->address->streetType) ? $formality->address->streetType->name : '',
+                    isset($formality->address) ? $formality->address->street_name : '',
+                    isset($formality->address) ? $formality->address->street_number : '',
+                    isset($formality->address) ? $formality->address->block : '',
+                    isset($formality->address) ? $formality->address->block_staircase : '',
+                    isset($formality->address) ? $formality->address->floor : '',
+                    isset($formality->address) ? $formality->address->door : '',
+                    isset($formality->address) ? $formality->address->zip_code : '',
+                    isset($formality->address->location) ? $formality->address->location->name : '',
+                    isset($formality->address->location->province) ? $formality->address->location->province->name : '',
+                    isset($formality->CorrespondenceAddress->streetType) ? $formality->CorrespondenceAddress->streetType->name : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->street_name : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->street_number : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->block : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->block_staircase : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->floor : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->door : '',
+                    isset($formality->CorrespondenceAddress) ? $formality->CorrespondenceAddress->zip_code : '',
+                    isset($formality->CorrespondenceAddress->location) ? $formality->CorrespondenceAddress->location->name : '',
+                    isset($formality->CorrespondenceAddress->location->province) ? $formality->CorrespondenceAddress->location->province->name : '',
+                    isset($formality) ? $formality->observation : '',
+                    isset($formality) ? $formality->completion_date : '',
+                    isset($formality->status) ? $formality->status->name : '',
+                    isset($formality) ? $formality->issuer_observation : '',
+                    isset($formality) ? $formality->isCritical : '',
+                    isset($formality->product->company) ? $formality->product->company->name : '',
+                    isset($formality->accessRate) ? $formality->accessRate->name : '',
+                    isset($formality->product) ? $formality->product->name : '',
+                    isset($formality) ? $formality->annual_consumption : '',
+                    isset($formality) ? $formality->CUPS : '',
+                    isset($formality) ? $formality->internal_observation : '',
+                    isset($formality->previous_company) ? $formality->previous_company->name : '',
+                    isset($formality->address->housingType) ? $formality->address->housingType->name : '',
+                    isset($formality) ? $formality->potency : '',
+                    isset($formality->commission) ? $formality->commission->formatTo('es_ES') : $formality->commission,
+                    isset($formality) ? $formality->isRenewable : '',
+                    isset($formality) ? $formality->activation_date : '',
+                    isset($formality) ? $formality->renewal_date : '',
+                ];
+
+                fputcsv($handle, $data);
+            }
+        });
+
+        fclose($handle);
+
+        return Response::make('', 200, $headers);
+    }
+    public function exportByIssuerCSV()
+    {
+        $filename = 'extracción_trámites.csv';
+
+        $userId = auth()->user()->id;
+
+        $headers = [
+            'Content-Encoding' => 'utf-8',
+            'Content-type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $handle = fopen('php://output', 'w');
+        fputcsv($handle, [
+            'fecha y hora entrada tramite',
+            'tipo tramite',
+            'suministro',
+            'tipo cliente',
+            'cliente final',
+            'email cliente final',
+            'tratamiento cliente final',
+            'tipo de documento cliente final',
+            'numero documento cliente final',
+            'teléfono cliente final',
+            'iban cliente final',
+            'tipo de calle cliente final',
+            'nombre calle cliente final',
+            'número calle cliente final',
+            'bloque cliente final',
+            'escalera bloque final',
+            'piso cliente final',
+            'puerta cliente final',
+            'código postal cliente final',
+            'población cliente final',
+            'provincia cliente final',
+            'observaciones del tramite',
+            'estado tramite',
+            'observaciones del tramitador',
+            'compañía suministro',
+        ]);
+
+        $query = $this->formalityService->getQueryWithAll();
+
+        $query->whereHas('issuer', function ($query) use ($userId) {
+            $query->where('id', $userId);
+        });
+
+        $query->chunk(25, function ($formalities) use ($handle) {
+            foreach ($formalities as $formality) {
+                $data = [
+                    isset($formality->created_at) ? $formality->created_at : '',
+                    isset($formality->type) ? $formality->type->name : '',
+                    isset($formality->service) ? $formality->service->name : '',
+                    isset($formality->client->clientType) ? $formality->client->clientType->name : '',
+                    isset($formality->client) ? $formality->client->name . ' ' . $formality->client->first_last_name . ' ' . $formality->client->second_last_name : '',
+                    isset($formality->client) ? $formality->client->email : '',
+                    isset($formality->client->clientType) ? $formality->client->clientType->name : '',
+                    isset($formality->client->documentType) ? $formality->client->documentType->name : '',
+                    isset($formality->client) ? $formality->client->document_number : '',
+                    isset($formality->client) ? $formality->client->phone : '',
+                    isset($formality) ? $formality->iban : '',
+                    isset($formality->address->streetType) ? $formality->address->streetType->name : '',
+                    isset($formality->address) ? $formality->address->street_name : '',
+                    isset($formality->address) ? $formality->address->street_number : '',
+                    isset($formality->address) ? $formality->address->block : '',
+                    isset($formality->address) ? $formality->address->block_staircase : '',
+                    isset($formality->address) ? $formality->address->floor : '',
+                    isset($formality->address) ? $formality->address->door : '',
+                    isset($formality->address) ? $formality->address->zip_code : '',
+                    isset($formality->address->location) ? $formality->address->location->name : '',
+                    isset($formality->address->location->province) ? $formality->address->location->province->name : '',
+                    isset($formality) ? $formality->observation : '',
+                    isset($formality->status) ? $formality->status->name : '',
+                    isset($formality) ? $formality->issuer_observation : '',
+                    isset($formality->product->company) ? $formality->product->company->name : '',
+                ];
+
+                fputcsv($handle, $data);
+            }
+        });
 
         fclose($handle);
 

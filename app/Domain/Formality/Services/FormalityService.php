@@ -106,7 +106,48 @@ class FormalityService
         )->first();
     }
 
-    public function getAll()
+    public function getAllByIssuerId(int $issuerId = null)
+    {
+        $query = Formality::with(
+            [
+                'client',
+                'client.clientType',
+                'client.documentType',
+                'client.title',
+                'issuer',
+                'assigned',
+                'address',
+                'address.streetType',
+                'address.housingType',
+                'address.location',
+                'address.location.province',
+                'address.location.province.region',
+                'CorrespondenceAddress',
+                'CorrespondenceAddress.streetType',
+                'CorrespondenceAddress.housingType',
+                'CorrespondenceAddress.location',
+                'CorrespondenceAddress.location.province',
+                'CorrespondenceAddress.location.province.region',
+                'type',
+                'status',
+                'service',
+                'accessRate',
+                'product',
+                'product.company',
+                'previousCompany'
+            ]
+        );
+
+        if (!$issuerId) {
+            return $query->get();
+        } else {
+            return $query->whereHas('client', function ($query) use ($issuerId) {
+                $query->where('id', $issuerId);
+            });
+        }
+
+    }
+    public function getQueryWithAll()
     {
         return Formality::with(
             [
@@ -136,6 +177,7 @@ class FormalityService
                 'product.company',
                 'previousCompany'
             ]
-        )->get();
+        );
+
     }
 }
