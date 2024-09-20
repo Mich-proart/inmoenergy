@@ -122,7 +122,11 @@
                         <label for="inputState">Número documento: </label> {{$client->document_number}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Teléfono: </label> {{$client->phone}}
+                        <label for="inputAddress">Teléfono: </label>
+                        @isset($client->country)
+                            +{{$client->country->phone_code}}
+                        @endisset
+                        {{$client->phone}}
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputZip">Email: </label> {{$client->email}}
@@ -191,7 +195,7 @@
                                 {{ucfirst($address->location->province->name)}}
                             @else
                                 {{ $address->location->province->region->name }}, {{ $address->location->province->name }}
-                            @endif 
+                            @endif
                         @endif
                     </div>
                     <!-- location -->
@@ -297,7 +301,7 @@
                                 @else
                                     {{ $CorrespondenceAddress->location->province->region->name }},
                                     {{ $CorrespondenceAddress->location->province->name }}
-                                @endif 
+                                @endif
                             @endif
                         </div>
 

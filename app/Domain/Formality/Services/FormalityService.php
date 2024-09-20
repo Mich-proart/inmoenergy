@@ -67,6 +67,7 @@ class FormalityService
             ->with(
                 [
                     'client',
+                    'client.country',
                     'client.clientType',
                     'client.documentType',
                     'client.title',
