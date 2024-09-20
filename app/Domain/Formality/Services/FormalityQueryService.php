@@ -87,7 +87,7 @@ class FormalityQueryService
 
         $queryBuilder = $this->formalityQuery();
 
-        $queryBuilder->WhereIn('status.name', [FormalityStatusEnum::FINALIZADO->value]);
+        $queryBuilder->WhereIn('status.name', [FormalityStatusEnum::TRAMITADO->value]);
 
         $queryBuilder->whereNull('formality.activation_date');
 
