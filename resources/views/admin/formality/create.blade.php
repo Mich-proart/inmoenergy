@@ -32,6 +32,12 @@
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'spinner.css') }}" rel="stylesheet" />
+<style>
+    .dropdown-menu {
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+</style>
 @stop
 
 @section('js')

@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->foreignId('user_title_id')->nullable()->constrained('component_option');
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->boolean('isActive')->default(1);
+            $table->foreignId('country_id')->nullable()->constrained('country');
             $table->timestamp('disabled_at')->nullable();
             $table->timestamps();
         });

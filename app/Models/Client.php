@@ -26,7 +26,8 @@ class Client extends Model
         'user_title_id',
         'address_id',
         'isActive',
-        'disabled_at'
+        'disabled_at',
+        'country_id'
     ];
 
 
@@ -52,6 +53,11 @@ class Client extends Model
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 
 }

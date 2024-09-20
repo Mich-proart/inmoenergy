@@ -4,6 +4,7 @@ namespace App\Livewire\Formality;
 
 use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityUpdate;
+use App\Models\Country;
 use App\Models\File;
 use App\Models\FileConfig;
 use Illuminate\Support\Collection;
@@ -61,6 +62,8 @@ class EditFormalityForm extends Component
 
     private FileUploadigService $fileUploadigService;
 
+    public Country $selected_country;
+
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
@@ -99,6 +102,16 @@ class EditFormalityForm extends Component
             $this->addInput($this->formality->service_id);
         }
 
+        $this->changeCountry($formality->client->country_id);
+
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     public function mountFilesInput()
@@ -151,8 +164,10 @@ class EditFormalityForm extends Component
 
         try {
 
+            $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
+
             $data = Formality::firstWhere('id', $this->formalityId);
-            $data->client()->update($this->form->getclientUpdate());
+            $data->client()->update($updates);
 
             $address = Address::firstWhere('id', $data->address->id);
             $address->update($this->form->getaddressUpdate());
@@ -357,6 +372,7 @@ class EditFormalityForm extends Component
         $services = $services->where('name', '!=', 'fibra');
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
+        $countries = Country::all();
         return view('livewire.formality.edit-formality-form', [
             'streetTypes' => $streetTypes,
             'housingTypes' => $housingTypes,
@@ -364,6 +380,7 @@ class EditFormalityForm extends Component
             'services' => $services,
             'clientTypes' => $clientTypes,
             'userTitles' => $userTitles,
+            'countries' => $countries
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire\Formality;
 use App\Livewire\Forms\Formality\FormalityCreate;
 use App\Models\Address;
 use App\Models\Client;
+use App\Models\Country;
 use Livewire\Component;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +59,8 @@ class CreateFormalityForm extends Component
 
     protected $createFormalityService;
 
+    public Country $selected_country;
+
     public function __construct()
     {
         $this->createFormalityService = App::make(CreateFormalityService::class);
@@ -87,6 +90,20 @@ class CreateFormalityForm extends Component
 
         $this->inputs->pull(0);
 
+        $country = Country::firstWhere('name', 'spain');
+
+        if ($country) {
+            $this->selected_country = $country;
+        }
+
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     public function addInput($serviceId)
@@ -272,7 +289,8 @@ class CreateFormalityForm extends Component
 
 
             if (count($this->form->serviceIds) > 0) {
-                $client = Client::create($this->form->getClientDto());
+                $newDate = array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
+                $client = Client::create($newDate);
                 $address = Address::create($this->form->getCreateAddressDto());
 
                 $this->createFormalityService->setClientId($client->id);
@@ -363,13 +381,15 @@ class CreateFormalityForm extends Component
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
+        $countries = Country::all();
         return view('livewire.formality.create-formality-form', [
             'streetTypes' => $streetTypes,
             'housingTypes' => $housingTypes,
             'formalitytypes' => $formalitytypes,
             'services' => $services,
             'clientTypes' => $clientTypes,
-            'userTitles' => $userTitles
+            'userTitles' => $userTitles,
+            'countries' => $countries
         ]);
     }
 }
