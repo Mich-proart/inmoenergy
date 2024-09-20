@@ -80,7 +80,8 @@
                             <div class="input-group mb-3">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://flagsapi.com/{{$selected_country->iso2}}/flat/16.png"></button>
+                                    <img
+                                        src="https://flagsapi.com/{{$selected_country->iso2}}/flat/16.png">+{{$selected_country->phone_code}}</button>
                                 <ul class="dropdown-menu">
                                     @isset($countries)
                                         @foreach ($countries as $country)
