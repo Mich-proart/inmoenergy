@@ -449,7 +449,8 @@
                                                                         {{$address['block_staircase']}} {{' '}}
                                                                         {{$address['floor']}} {{' '}}
                                                                         {{$address['door']}} {{' '}}. “Por
-                                                                        favor, contactar a: {{$user['phone']}} {{' o '}}
+                                                                        favor, contactar a: +{{$user['phone_code']}}
+                                                                        {{$user['phone']}} {{' o '}}
                                                                         {{$user['email']}} {{' .'}}
                                                                     </p>
 

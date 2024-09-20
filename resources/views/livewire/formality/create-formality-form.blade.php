@@ -226,8 +226,8 @@
                     <div class=" form-group">
                         <label for="inputAddress2">Cuenta Bancaria: </label>
                         <input wire:model="form.IBAN" type="text"
-                            class="form-control @error('form.IBAN') is-invalid @enderror" id="inputAddress2"
-                            placeholder="" name="IBAN" required>
+                            class="form-control @error('form.IBAN') is-invalid @enderror" id="IBAN" placeholder=""
+                            name="IBAN" required>
                         @error('form.IBAN')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
