@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use App\Livewire\Forms\User\UserEdit;
 use App\Models\BusinessGroup;
+use App\Models\Country;
 use App\Models\Office;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
@@ -37,6 +38,8 @@ class EditUserForm extends Component
 
     public $user;
 
+    public Country $selected_country;
+
 
     public function __construct()
     {
@@ -62,6 +65,16 @@ class EditUserForm extends Component
         $this->business_target = $user->office->businessGroup->id ?? null;
         $this->userId = $this->user->id;
         $this->isActive = $this->user->isActive;
+
+        $this->changeCountry($user->country_id);
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     #[Computed()]
@@ -156,7 +169,10 @@ class EditUserForm extends Component
         DB::beginTransaction();
 
         try {
-
+            $updates = array_merge(
+                ['country_id' => $this->selected_country->id],
+                $this->form->getclientUpdate()
+            );
             if (!$this->form->isWorker && $this->user->office != null && $this->form->officeName != null) {
                 $this->user->office()->update([
                     'name' => strtolower($this->form->officeName),
@@ -165,7 +181,7 @@ class EditUserForm extends Component
             }
 
             $data = User::where('id', $this->userId)->with('address')->first();
-            $data->update($this->form->getclientUpdate());
+            $data->update($updates);
 
             DB::table('model_has_roles')->where('model_id', $data->id)->delete();
 
@@ -214,11 +230,13 @@ class EditUserForm extends Component
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
         $advisers = User::where('isWorker', 1)->get();
+        $countries = Country::all();
         return view('livewire.user.edit-user-form', compact([
             'documentTypes',
             'roles',
             'incentiveTypes',
             'advisers',
+            'countries'
         ]));
     }
 

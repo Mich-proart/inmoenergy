@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Livewire\Forms\User\UserCreate;
+use App\Models\Country;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Enums\DocumentRule;
@@ -28,6 +29,8 @@ class CreateUserForm extends Component
 
     public $business_target;
 
+    public Country $selected_country;
+
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
@@ -39,6 +42,20 @@ class CreateUserForm extends Component
     public function mount(bool $isWorker = false)
     {
         $this->form->setIsWorker($isWorker);
+
+        $country = Country::firstWhere('name', 'spain');
+
+        if ($country) {
+            $this->selected_country = $country;
+        }
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     public function generatePassword()
@@ -113,6 +130,7 @@ class CreateUserForm extends Component
         try {
 
             $updates = array_merge($this->form->getUserData());
+            $updates['country_id'] = $this->selected_country->id;
             if (!$this->form->isWorker) {
                 $office = Office::createOrFirst([
                     'name' => strtolower($this->form->officeName),
@@ -166,11 +184,13 @@ class CreateUserForm extends Component
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
         $advisers = User::where('isWorker', 1)->where('isActive', 1)->get();
+        $countries = Country::all();
         return view('livewire.user.create-user-form', compact([
             'documentTypes',
             'roles',
             'incentiveTypes',
-            'advisers'
+            'advisers',
+            'countries'
         ]));
     }
 }

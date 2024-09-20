@@ -77,14 +77,31 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Teléfono: </label>
-                            <input wire:model="form.phone" type="text"
-                                class="form-control @error('form.phone') is-invalid @enderror" id="phone" placeholder=""
-                                name="phone">
-                            @error('form.phone')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <div class="input-group mb-3">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://flagsapi.com/{{$selected_country->iso2}}/flat/16.png"></button>
+                                <ul class="dropdown-menu">
+                                    @isset($countries)
+                                        @foreach ($countries as $country)
+                                            <li wire:click="changeCountry({{$country->id}})"><a class="dropdown-item" href="#">
+                                                    <img src="https://flagsapi.com/{{$country->iso2}}/flat/16.png">
+                                                    {{$country->name_spanish}}
+                                                    +{{$country->phone_code}}
+                                                </a></li>
+                                        @endforeach
+                                    @endisset
+                                </ul>
+                                <input wire:model="form.phone" type="text"
+                                    class="form-control @error('form.phone') is-invalid @enderror" id="phone"
+                                    placeholder="" name="phone">
+                                @error('form.phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Email: </label>
@@ -177,7 +194,7 @@
                                     @else
                                         <option value="{{ $province->id }}">{{ $province->region->name }}, {{ $province->name }}
                                         </option>
-                                    @endif 
+                                    @endif
 
                                 @endforeach
                             </select>
@@ -396,4 +413,5 @@
         */
     });
 </script>
+
 @endscript

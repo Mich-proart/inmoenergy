@@ -38,7 +38,8 @@ class User extends Authenticatable
         'office_id',
         'disabled_at',
         'isActive',
-        'responsible_name'
+        'responsible_name',
+        'country_id'
     ];
 
     /**
@@ -111,5 +112,10 @@ class User extends Authenticatable
     public function office(): BelongsTo
     {
         return $this->belongsTo(Office::class, 'office_id');
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

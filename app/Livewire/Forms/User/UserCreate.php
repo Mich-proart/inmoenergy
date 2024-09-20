@@ -36,8 +36,6 @@ class UserCreate extends Form
     public $zipCode;
     public $full_address;
 
-
-
     public function setIsWorker(bool $isWorker)
     {
         $this->isWorker = $isWorker;

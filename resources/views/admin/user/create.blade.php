@@ -41,7 +41,12 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.3.2/build/css/intlTelInput.css">
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
-
+<style>
+    .dropdown-menu {
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+</style>
 @stop
 
 @section('js')
