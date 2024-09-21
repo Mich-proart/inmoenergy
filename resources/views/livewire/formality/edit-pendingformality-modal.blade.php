@@ -88,10 +88,22 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputState">Fecha de activación: </label>
-                                    <input wire:model="form.activation_date" type="date"
+                                    <input wire:model="form.activation_date" wire:change="setContractCompletionDate()"
+                                        type="date"
                                         class="form-control @error('form.activation_date') is-invalid @enderror"
                                         id="inputCity" name="activation_date">
                                     @error('form.activation_date')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputState">Fecha de finalización: </label>
+                                    <input wire:model="form.contract_completion_date" type="date"
+                                        class="form-control @error('form.contract_completion_date') is-invalid @enderror"
+                                        id="inputCity" name="contract_completion_date">
+                                    @error('form.contract_completion_date')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

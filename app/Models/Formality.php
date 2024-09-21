@@ -26,6 +26,7 @@ class Formality extends Model
         'completion_date',
         'renewal_date',
         'activation_date',
+        'contract_completion_date',
         'is_active',
         'CUPS',
         'internal_observation',

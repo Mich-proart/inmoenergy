@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->timestamp('assignment_date')->nullable();
             $table->timestamp('completion_date')->nullable();
             $table->timestamp('renewal_date')->nullable();
+            $table->timestamp('contract_completion_date')->nullable();
             $table->timestamp('activation_date')->nullable();
             $table->boolean('is_active')->default(true);
             $table->string('CUPS')->nullable();
