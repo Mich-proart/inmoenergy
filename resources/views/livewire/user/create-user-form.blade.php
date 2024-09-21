@@ -412,6 +412,16 @@
             console.log(event.target.value)
         });
         */
+
+        $('#phone').keypress(function (event) {
+            if ((event.which < 48 || event.which > 57) && event.which !== 46) {
+                event.preventDefault();
+            }
+            if (event.which === 46) {
+                event.preventDefault();
+            }
+        });
+
     });
 </script>
 
