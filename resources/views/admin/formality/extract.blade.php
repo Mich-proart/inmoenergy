@@ -32,7 +32,7 @@
                             <tr>
                                 <td>{{ucfirst($program->name)}}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('admin.formality.issuer.exportCSV') }}">
+                                    <a href="">
                                         <button class="btn btn-success btn-sm" type="button">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-filetype-csv" viewBox="0 0 16 16">

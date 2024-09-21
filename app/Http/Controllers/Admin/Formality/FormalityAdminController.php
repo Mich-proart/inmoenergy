@@ -173,6 +173,7 @@ class FormalityAdminController extends Controller
 
     public function exportCSV()
     {
+        /*
         $filename = 'datos_trámites_inmoenergy.csv';
 
         $headers = [
@@ -303,14 +304,17 @@ class FormalityAdminController extends Controller
 
                 fputcsv($handle, $data);
             }
+                
         });
 
         fclose($handle);
 
         return Response::make('', 200, $headers);
+        */
     }
     public function exportByIssuerCSV()
     {
+        /*
         $filename = 'extracción_trámites.csv';
 
         $userId = auth()->user()->id;
@@ -396,6 +400,7 @@ class FormalityAdminController extends Controller
         fclose($handle);
 
         return Response::make('', 200, $headers);
+        */
     }
 
     public function exportExcel()
