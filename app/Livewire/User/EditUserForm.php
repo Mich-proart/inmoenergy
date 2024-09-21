@@ -66,7 +66,13 @@ class EditUserForm extends Component
         $this->userId = $this->user->id;
         $this->isActive = $this->user->isActive;
 
-        $this->changeCountry($user->country_id);
+        if ($user->country_id) {
+            $this->changeCountry($user->country_id);
+        } else {
+            $country = Country::firstWhere('name', 'spain');
+            $this->selected_country = $country;
+        }
+
     }
 
     public function changeCountry($id)

@@ -132,10 +132,17 @@ class CreateUserForm extends Component
             $updates = array_merge($this->form->getUserData());
             $updates['country_id'] = $this->selected_country->id;
             if (!$this->form->isWorker) {
-                $office = Office::createOrFirst([
+                $office = Office::firstWhere([
                     'name' => strtolower($this->form->officeName),
                     'business_group_id' => $this->business_target,
                 ]);
+
+                if (!$office) {
+                    $office = Office::create([
+                        'name' => strtolower($this->form->officeName),
+                        'business_group_id' => $this->business_target,
+                    ]);
+                }
                 $updates['office_id'] = $office->id;
             }
 

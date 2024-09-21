@@ -5,8 +5,10 @@ namespace App\Livewire\Ticket;
 use App\Domain\Enums\TicketStatusEnum;
 use App\Domain\Ticket\Services\TicketService;
 use App\Models\Formality;
+use App\Models\Office;
 use App\Models\Status;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
@@ -30,6 +32,8 @@ class CreateTicketForm extends Component
     public $formalityId;
     public Status $defaultStatus;
 
+    public $issuer;
+
     protected $ticketService;
 
     public function __construct()
@@ -51,6 +55,11 @@ class CreateTicketForm extends Component
         'description.string' => 'Valor invalido',
         'description.min' => 'Debe ser al menos de 8 caracteres',
     ];
+
+    public function mount()
+    {
+        $this->issuer = User::with(['office'])->firstWhere('id', Auth::user()->id);
+    }
 
 
     #[Computed()]
@@ -134,6 +143,12 @@ class CreateTicketForm extends Component
                     $query->where('street_name', 'like', '%' . $this->search_street . '%');
                 });
             }
+
+            $query->whereHas('issuer', function ($query) {
+                $query->whereHas('office', function ($query) {
+                    $query->where('id', $this->issuer->office_id);
+                });
+            });
 
             $formalities = $query->with(['service', 'address.streetType'])->paginate(10);
         }
