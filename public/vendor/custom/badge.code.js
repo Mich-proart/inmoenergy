@@ -11,17 +11,17 @@ function statusColor(status) {
         return `<span class="custom-badge down">${status}</span>`;
     }
 
-    if (status === "en curso") {
+    if (status === "en curso" || status === "pendiente de cliente") {
         return `<span class="custom-badge inprogress">${status}</span>`;
     }
 
-    if (status === "tramitado" || status === "resuelto") {
+    if (status === "tramitado" || status === "pendiente validación") {
         return `<span class="custom-badge processed">${status}</span>`;
     }
     if (status === "finalizado") {
         return `<span class="custom-badge down">${status}</span>`;
     }
-    if (status === "en vigor") {
+    if (status === "en vigor" || status === "resuelto") {
         return `<span class="custom-badge operative">${status}</span>`;
     }
 }
