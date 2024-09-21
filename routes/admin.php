@@ -81,26 +81,17 @@ Route::prefix('users')->group(function () {
     Route::get('/{id}/edit/', [UserAdminController::class, 'edit'])->name('admin.users.edit');
 });
 Route::prefix('company')->group(function () {
-    Route::get('/', function () {
-        return view('admin.company.manager');
-    })->name('admin.company.manager');
+    Route::get('/', [CompanyAdminController::class, 'index'])->name('admin.company.manager');
     Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
 });
 Route::prefix('product')->group(function () {
-    Route::get('/', function () {
-        return view('admin.product.manager');
-    })->name('admin.product.manager');
-    Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
+    Route::get('/', [CompanyAdminController::class, 'getProducts'])->name('admin.product.manager');
 });
 Route::prefix('config')->group(function () {
     Route::prefix('component')->group(function () {
-        Route::get('/', function () {
-            return view('admin.config.component');
-        })->name('admin.config.component');
+        Route::get('/', [ComponentAdminController::class, 'index'])->name('admin.config.component');
         Route::get('/{id}/details', [ComponentAdminController::class, 'details'])->name('admin.component.details');
-        Route::get('/business', function () {
-            return view('admin.config.businessGroup');
-        })->name('admin.config.businessGroup');
+        Route::get('/business', [ComponentAdminController::class, 'getBusinnesGroup'])->name('admin.config.businessGroup');
         Route::get('/{id}/offices', [ComponentAdminController::class, 'buinessDetails'])->name('admin.config.offices');
         Route::get('/documents', [ComponentAdminController::class, 'docsManager'])->name('admin.config.documents');
         Route::get('/documents/{id}/download', [ComponentAdminController::class, 'donwload'])->name('admin.documents.download');

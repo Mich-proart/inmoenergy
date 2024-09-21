@@ -12,6 +12,8 @@ class UserAdminController extends Controller
 
     public function __construct(private readonly UserService $userService)
     {
+        $this->middleware('can:manage.user.access')->only('getManageUsers', 'create', 'edit');
+        $this->middleware('can:manage.client.access')->only('getManageClients', 'create', 'edit');
     }
 
     public function edit(int $id, Request $request)

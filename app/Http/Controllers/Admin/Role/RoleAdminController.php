@@ -9,6 +9,12 @@ use Spatie\Permission\Models\Role;
 
 class RoleAdminController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:manage.role.access');
+    }
+
     public function index()
     {
         $program = Program::where('name', 'gestión de roles')->first();
