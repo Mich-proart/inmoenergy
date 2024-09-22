@@ -19,16 +19,16 @@ class FormalityAdminController extends Controller
         private readonly FormalityService $formalityService
     ) {
         $this->middleware('can:formality.create')->only('create');
-        $this->middleware('can:formality.inprogress.access')->only('getInProgress');
-        $this->middleware('can:formality.closed.access')->only('getClosed');
-        $this->middleware('can:formality.assigned.access')->only('getAssigned');
-        $this->middleware('can:formality.completed.access')->only('getCompleted');
+        $this->middleware('can:formality.inprogress.access')->only('getInProgress', 'edit', 'get');
+        $this->middleware('can:formality.closed.access')->only('getClosed', 'get');
+        $this->middleware('can:formality.assigned.access')->only('getAssigned', 'modify');
+        $this->middleware('can:formality.completed.access')->only('getCompleted', 'viewCompleted');
         $this->middleware('can:formality.pending.access')->only('getPending');
         $this->middleware('can:formality.extract.access')->only('getExtract');
         $this->middleware('can:formality.data.access')->only('getData');
         $this->middleware('can:formality.total.closed.access')->only('getTotalClosed');
         $this->middleware('can:formality.assignment.access')->only('getAssignment');
-        $this->middleware('can:formality.totalInProgress.access')->only('getTotalInProgress');
+        $this->middleware('can:formality.totalInProgress.access')->only('getTotalInProgress', 'modify');
     }
     public function create()
     {
