@@ -70,6 +70,10 @@ class HomeController extends Controller
                     $formality = $this->formalityQueryService->getTotalInProgress();
                     $program->count = count($formality);
                 }
+                if ($program->name == 'trámites cerrados totales') {
+                    $formality = $this->formalityQueryService->getTotalClosed();
+                    $program->count = count($formality);
+                }
                 if ($program->name == 'tickets pendientes') {
                     $ticket = $this->ticketQueryService->getPending($userId);
                     $program->count = count($ticket);

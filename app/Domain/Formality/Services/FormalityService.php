@@ -29,6 +29,11 @@ class FormalityService
         $component = $this->getComponent('service');
         return ComponentOption::whereBelongsTo($component)->get();
     }
+    public function getReasonCancellation()
+    {
+        $component = $this->getComponent('reason_cancellation');
+        return ComponentOption::whereBelongsTo($component)->get();
+    }
 
     public function getServiceByName(string|null $name = null)
     {
@@ -91,7 +96,8 @@ class FormalityService
                     'accessRate',
                     'product',
                     'product.company',
-                    'previousCompany'
+                    'previousCompany',
+                    'reasonCancellation'
                 ]
             )->first();
     }

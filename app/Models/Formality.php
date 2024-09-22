@@ -126,4 +126,9 @@ class Formality extends Model
             return $result;
         }
     }
+
+    public function getCommision()
+    {
+        return (string) $this->commission->getAmount();
+    }
 }

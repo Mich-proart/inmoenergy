@@ -39,7 +39,7 @@
                                 {{$formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name}}
                             @endif
                         </div>
-                        @if (isset($from) && $from == 'total')
+                        @if (isset($from) && ($from == 'total' || $from == 'totalclosed'))
                             <div class="col-sm-4 invoice-col">
                                 <label for="">Fecha de asignación:</label> @if (isset($formality->assignment_date))
                                     {{$formality->assignment_date}}
@@ -80,6 +80,11 @@
                                 {{ucfirst($formality->product->name)}}
                             @endif
                         </div>
+                        @if (isset($from) && $from == 'totalclosed')
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha de finalización: </label> {{$formality->completion_date}}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
@@ -321,6 +326,53 @@
                     </div>
                 </div>
             </section>
+            @if (isset($from) && $from == 'totalclosed')
+                <section>
+                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                            Datos de trámite
+                        </span>
+                    </div>
+                    <div class="form-row">
+                        @if ($formality->service->name !== 'agua')
+                            <div class="form-group col-md-3">
+                                <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
+                                    {{$formality->accessRate->name}}
+                                @endif
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">CUPS: </label> @if (isset($formality->CUPS))
+                                    {{$formality->CUPS}}
+                                @endif
+                            </div>
+                        @endif
+                        <div class="form-group col-md-4">
+                            <label for="">Compañía suministro anterior: </label> @if (isset($formality->previousCompany))
+                                {{' ' . ucfirst($formality->previousCompany->name)}}
+                            @endif
+                        </div>
+                    </div>
+                    @if ($formality->service->name !== 'agua')
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="">Potencia: </label> @if (isset($formality->potency))
+                                    <span>kW </span>{{$formality->potency_Spanish()}}
+                                @endif
+                            </div>
+
+                        </div>
+                    @endif
+                </section>
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="issuer_observation"
+                            @readonly(true)>{{$formality->issuer_observation}}</textarea>
+                    </div>
+
+                </div>
+            @endif
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
@@ -331,6 +383,8 @@
             </div>
             @if (isset($formality) && isset($from) && $from == 'total')
                 @livewire('formality.modify-formality-form', ['formality' => $formality, 'prevStatus' => $prevStatus, 'from' => $from])
+            @elseif (isset($formality) && isset($from) && $from == 'totalclosed')
+                @livewire('formality.modify-total-closed', ['formality' => $formality])
             @else
                 @if (isset($formality))
                     @livewire('formality.modify-formality-form', ['formality' => $formality, 'prevStatus' => $prevStatus, 'from' => null])

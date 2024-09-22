@@ -111,6 +111,23 @@ class FormalityAdminController extends Controller
         }
 
     }
+    public function modifyTotalClosed(Request $request, $id)
+    {
+        $from = $request->input('from');
+
+        $formality = $this->formalityService->getById($id);
+
+        if ($formality) {
+
+            $client = $formality->client;
+            $address = $formality->address;
+            $CorrespondenceAddress = $formality->CorrespondenceAddress;
+
+            return view('admin.formality.modify', ['formality' => $formality, 'client' => $client, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress, 'from' => $from]);
+        } else {
+            return view('admin.error.notFound');
+        }
+    }
 
     public function getInProgress()
     {

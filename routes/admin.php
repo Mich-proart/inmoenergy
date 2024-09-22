@@ -60,6 +60,7 @@ Route::prefix('formality')->group(function () {
     Route::get('/closed', [FormalityAdminController::class, 'getClosed'])->name('admin.formality.closed');
     Route::get('/assigned', [FormalityAdminController::class, 'getAssigned'])->name('admin.formality.assigned');
     Route::get('/{id}/modify', [FormalityAdminController::class, 'modify'])->name('admin.formality.modify');
+    Route::get('/{id}/total/closed/modify', [FormalityAdminController::class, 'modifyTotalClosed'])->name('admin.formality.total.closed.modify');
     Route::get('/completed', [FormalityAdminController::class, 'getCompleted'])->name('admin.formality.completed');
     Route::get('/{id}/completed', [FormalityAdminController::class, 'viewCompleted'])->name('admin.formality.get.completed');
     Route::get('/pending', [FormalityAdminController::class, 'getPending'])->name('admin.formality.pending');

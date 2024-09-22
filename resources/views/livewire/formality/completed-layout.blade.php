@@ -140,10 +140,7 @@
                 { data: 'CUPS' },
                 {
                     data: 'isRenewable', render: function (data, type, row, meta) {
-                        if (data === 1) {
-                            return `<i class="fa fa-check-square" style="font-size:20px;color:green"></i>`;
-                        }
-                        return ``;
+                        return isRenewableCode(data);
                     }
                 },
                 {
