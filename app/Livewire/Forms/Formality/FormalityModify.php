@@ -71,35 +71,56 @@ class FormalityModify extends Form
         $access_rate_id = null;
         $user_assigned_id = null;
         $potency = null;
+        $annual_consumption = null;
 
-        if ($this->access_rate_id != 0 || $this->access_rate_id != null || $this->access_rate_id != '') {
+        $product_id = null;
+        $previous_company_id = null;
+
+        if ($this->access_rate_id != 0 && $this->access_rate_id != null && $this->access_rate_id != '') {
             $access_rate_id = $this->access_rate_id;
         }
 
-        if ($this->user_assigned_id != 0 || $this->user_assigned_id != null || $this->user_assigned_id != '') {
+        if ($this->user_assigned_id != 0 && $this->user_assigned_id != null && $this->user_assigned_id != '') {
             $user_assigned_id = $this->user_assigned_id;
         }
 
-        if ($this->potency != 0 || $this->potency != null || $this->potency != '') {
+        if ($this->potency != 0 && $this->potency != null && $this->potency != "") {
             $potency = $this->number_format_english($this->potency);
         }
+
+        if ($this->annual_consumption != 0 && $this->annual_consumption != null && $this->annual_consumption != '') {
+            $annual_consumption = intval($this->annual_consumption);
+        }
+
+        if ($this->product_id != 0 && $this->product_id != null && $this->product_id != '') {
+            $product_id = $this->product_id;
+        }
+
+        if ($this->previous_company_id != 0 && $this->previous_company_id != null && $this->previous_company_id != '') {
+            $previous_company_id = $this->previous_company_id;
+        }
+
+
 
         return [
             'assigned_observation' => $this->assigned_observation,
             'CUPS' => $this->CUPS ?? null,
             'access_rate_id' => $access_rate_id,
-            'annual_consumption' => (int) $this->annual_consumption ?? null,
+            'annual_consumption' => $annual_consumption,
             'canClientEdit' => $this->canClientEdit,
             'internal_observation' => $this->internal_observation,
-            'product_id' => (int) $this->product_id ?? null,
-            'potency' => $potency, // (float) $this->potency ?? null,
-            'previous_company_id' => (int) $this->previous_company_id ?? null,
+            'product_id' => $product_id,
+            'potency' => $potency,
+            'previous_company_id' => $previous_company_id,
             'user_assigned_id' => $user_assigned_id
         ];
     }
 
     private function number_format_english($number)
     {
+        if ($number == "") {
+            return null;
+        }
         $number = preg_replace('/[^0-9,]/', '', $number);
         $number = str_replace(',', '.', $number);
 

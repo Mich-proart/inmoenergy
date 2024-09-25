@@ -10,7 +10,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-sm table-secondary">
+                    <table class="table table-sm">
                         <thead>
                             <tr>
                                 <th scope="col">Concepto</th>
@@ -150,7 +150,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{route('api.formality.distintStatus')}}",
+                    "url": "{{route('api.formality.totalInprogress')}}",
                     "type": "GET"
                 },
                 "language": {

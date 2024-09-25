@@ -13,12 +13,14 @@ class FormalityPendingEdit extends Form
     public bool $isRenewable = true;
 
     public $commission;
+    public $contract_completion_date;
 
     // public $renewal_date;
 
     protected $rules = [
         'formalityId' => 'required|exists:formality,id',
         'activation_date' => 'required|date',
+        'contract_completion_date' => 'required|date',
         'isRenewable' => 'nullable|boolean',
         'commission' => 'required|string'
         //'renewal_date' => 'nullable|date',
@@ -29,6 +31,8 @@ class FormalityPendingEdit extends Form
         'formalityId.exists' => 'Debes seleccionar un tramite existente',
         'activation_date.required' => 'Debes seleccionar una fecha de activación',
         'activation_date.date' => 'Debes seleccionar una fecha de activación valida',
+        'contract_completion_date.required' => 'Debes seleccionar una fecha',
+        'contract_completion_date.date' => 'Debes seleccionar una fecha valida',
         'commission.required' => 'Debes rellenar la comision',
         'commission.integer' => 'Debes rellenar la comision',
         'commission.gt' => 'La comision debe ser mayor que 0',
@@ -52,6 +56,7 @@ class FormalityPendingEdit extends Form
             'activation_date' => $this->activation_date,
             'isRenewable' => $this->isRenewable,
             'commission' => $commission,
+            'contract_completion_date' => $this->contract_completion_date
         ];
     }
 

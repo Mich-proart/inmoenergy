@@ -8,7 +8,10 @@
                 "route": "admin.formality.create",
                 "description": null,
                 "placed_in": "1",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "formality.create"
             },
             {
@@ -17,7 +20,10 @@
                 "route": "admin.formality.inprogress",
                 "description": null,
                 "placed_in": "2",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "formality.inprogress.access"
             },
             {
@@ -26,7 +32,10 @@
                 "route": "admin.formality.closed",
                 "description": null,
                 "placed_in": "3",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "formality.closed.access"
             },
             {
@@ -35,9 +44,11 @@
                 "route": "admin.ticket.create",
                 "description": null,
                 "placed_in": "4",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "ticket.create"
-                
             },
             {
                 "name": "tickets pendientes",
@@ -45,7 +56,10 @@
                 "route": "admin.ticket.pending",
                 "description": null,
                 "placed_in": "5",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "ticket.pending.access"
             },
             {
@@ -54,7 +68,10 @@
                 "route": "admin.ticket.resolved",
                 "description": null,
                 "placed_in": "6",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "ticket.resolved.access"
             }
         ]
@@ -68,7 +85,10 @@
                 "route": "admin.formality.assigned",
                 "description": null,
                 "placed_in": "1",
-                "roles": ["superadmin", "comercial"],
+                "roles": [
+                    "superadmin",
+                    "comercial"
+                ],
                 "permission": "formality.assigned.access"
             },
             {
@@ -77,7 +97,10 @@
                 "route": "admin.ticket.assigned",
                 "description": null,
                 "placed_in": "2",
-                "roles": ["superadmin", "comercial"],
+                "roles": [
+                    "superadmin",
+                    "comercial"
+                ],
                 "permission": "ticket.assigned.access"
             },
             {
@@ -86,16 +109,21 @@
                 "route": "admin.formality.completed",
                 "description": null,
                 "placed_in": "3",
-                "roles": ["superadmin", "comercial"],
+                "roles": [
+                    "superadmin",
+                    "comercial"
+                ],
                 "permission": "formality.completed.access"
             },
             {
                 "name": "tickets resueltos",
                 "image": "solved_ticket.png",
-                "route": "admin.ticket.resolved",
+                "route": "admin.ticket.resolved.worker",
                 "description": null,
                 "placed_in": "4",
-                "roles": ["comercial"],
+                "roles": [
+                    "comercial"
+                ],
                 "permission": "ticket.resolved.access.worker"
             },
             {
@@ -104,7 +132,10 @@
                 "route": "admin.formality.pending",
                 "description": null,
                 "placed_in": "5",
-                "roles": ["superadmin", "comercial"],
+                "roles": [
+                    "superadmin",
+                    "comercial"
+                ],
                 "permission": "formality.pending.access"
             }
         ]
@@ -118,7 +149,10 @@
                 "route": "admin.document.authorization",
                 "description": null,
                 "placed_in": "1",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "document.authorization.access"
             },
             {
@@ -127,7 +161,10 @@
                 "route": "admin.document.changeTitle",
                 "description": null,
                 "placed_in": "2",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "document.changeTitle.access"
             }
         ]
@@ -141,7 +178,10 @@
                 "route": "admin.formality.extract",
                 "description": null,
                 "placed_in": "1",
-                "roles": ["superadmin", "inmobiliaria"],
+                "roles": [
+                    "superadmin",
+                    "inmobiliaria"
+                ],
                 "permission": "formality.extract.access"
             },
             {
@@ -150,7 +190,9 @@
                 "route": "admin.formality.data",
                 "description": null,
                 "placed_in": "2",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "formality.data.access"
             },
             {
@@ -159,7 +201,9 @@
                 "route": "admin.tool.statistics.worker",
                 "description": null,
                 "placed_in": "3",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "tool.statistics.worker.access"
             },
             {
@@ -168,7 +212,9 @@
                 "route": "admin.tool.statistics.client",
                 "description": null,
                 "placed_in": "4",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "tool.statistics.client.access"
             },
             {
@@ -177,7 +223,9 @@
                 "route": "admin.formality.total.closed",
                 "description": null,
                 "placed_in": "5",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "formality.total.closed.access"
             },
             {
@@ -186,7 +234,9 @@
                 "route": "admin.ticket.total.closed",
                 "description": null,
                 "placed_in": "6",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "ticket.total.closed.access"
             },
             {
@@ -195,7 +245,9 @@
                 "route": "admin.formality.assignment",
                 "description": null,
                 "placed_in": "6",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "formality.assignment.access"
             },
             {
@@ -204,7 +256,9 @@
                 "route": "admin.ticket.assignment",
                 "description": null,
                 "placed_in": "8",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "ticket.assignment.access"
             },
             {
@@ -213,7 +267,9 @@
                 "route": "admin.formality.assignment.renovation",
                 "description": null,
                 "placed_in": "9",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "ticket.total.pending.access"
             },
             {
@@ -222,7 +278,9 @@
                 "route": "admin.formality.totalInProgress",
                 "description": null,
                 "placed_in": "10",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "formality.totalInProgress.access"
             },
             {
@@ -231,7 +289,9 @@
                 "route": "admin.ticket.total.pending",
                 "description": null,
                 "placed_in": "11",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "ticket.total.pending.access"
             }
         ]
@@ -245,7 +305,9 @@
                 "route": "admin.users",
                 "description": null,
                 "placed_in": "1",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "manage.user.access"
             },
             {
@@ -254,7 +316,9 @@
                 "route": "admin.clients",
                 "description": null,
                 "placed_in": "2",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "manage.client.access"
             },
             {
@@ -263,7 +327,9 @@
                 "route": "admin.roles.index",
                 "description": null,
                 "placed_in": "3",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "manage.role.access"
             },
             {
@@ -272,7 +338,9 @@
                 "route": "admin.company.manager",
                 "description": null,
                 "placed_in": "4",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "manage.company.access"
             },
             {
@@ -281,7 +349,9 @@
                 "route": "admin.product.manager",
                 "description": null,
                 "placed_in": "5",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "manage.product.access"
             },
             {
@@ -290,7 +360,9 @@
                 "route": "admin.config.component",
                 "description": null,
                 "placed_in": "6",
-                "roles": ["superadmin"],
+                "roles": [
+                    "superadmin"
+                ],
                 "permission": "config.dropdown.access"
             }
         ]

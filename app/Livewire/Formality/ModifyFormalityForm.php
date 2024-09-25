@@ -55,6 +55,16 @@ class ModifyFormalityForm extends Component
         return User::where('isWorker', true)->where('isActive', 1)->get();
     }
 
+    protected $rules = [
+        'companyId' => 'required|integer|exists:company,id',
+    ];
+
+    protected $messages = [
+        'companyId.required' => 'Debes seleccionar una empresa',
+        'companyId.integer' => 'Debes seleccionar una empresa',
+        'companyId.exists' => 'Debes seleccionar una empresa existente',
+    ];
+
     public function mount($formality, $prevStatus, $from)
     {
         $this->formality = $formality;
@@ -70,6 +80,7 @@ class ModifyFormalityForm extends Component
 
     public function update()
     {
+        $this->validate();
         $this->form->validate();
 
         if ($this->formality->service->name !== ServiceEnum::AGUA->value) {
@@ -123,7 +134,6 @@ class ModifyFormalityForm extends Component
     private function executeUpdate()
     {
         DB::beginTransaction();
-
         try {
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::TRAMITADO->value);
             $updates = array_merge(
@@ -155,40 +165,11 @@ class ModifyFormalityForm extends Component
     public function insertData()
     {
 
-        $this->form->validate([
-            'product_id' => 'required|integer|exists:product,id',
-            'previous_company_id' => 'required|integer|exists:company,id',
-        ], [
-            'product_id.integer' => 'Debes seleccionar un producto',
-            'product_id.exists' => 'Debes seleccionar un producto existente',
-            'previous_company_id.integer' => 'Debes seleccionar una empresa',
-            'previous_company_id.exists' => 'Debes seleccionar una empresa existente',
-            'product_id.required' => 'Debes seleccionar un producto',
-            'previous_company_id.required' => 'Debes seleccionar una empresa',
-        ]);
-
         $data = Formality::firstWhere('id', $this->formality->id);
-
-        if ($data->user_assigned_id && ($this->form->user_assigned_id == null || $this->form->user_assigned_id == 0 || $this->form->user_assigned_id == '')) {
-            $this->form->validate(
-                [
-                    'user_assigned_id' => 'required|integer|exists:users,id',
-                ],
-                [
-                    'user_assigned_id.required' => 'Debes seleccionar un usuario',
-                    'user_assigned_id.integer' => 'Debes seleccionar un usuario',
-                    'user_assigned_id.exists' => 'Debes seleccionar un usuario existente',
-                ]
-            );
-        }
-
         DB::beginTransaction();
         try {
             $updates = array_merge(
                 $this->form->getDataToUpdate(),
-                [
-                    'completion_date' => now()
-                ]
             );
 
 

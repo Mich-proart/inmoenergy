@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('document_number')->nullable();
             $table->foreignId('adviser_assigned_id')->nullable()->constrained('users');
             $table->foreignId('responsible_id')->nullable()->constrained('users');
+            $table->string('responsible_name')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('isActive')->default(1);
             $table->boolean('isWorker')->default(0);

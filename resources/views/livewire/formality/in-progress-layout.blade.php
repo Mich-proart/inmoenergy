@@ -11,7 +11,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-sm table-secondary">
+                    <table class="table table-sm">
                         <thead>
                             <tr>
                                 <th scope="col">Concepto</th>
@@ -122,12 +122,8 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.except')}}",
+                "url": "{{route('api.formality.inprogress')}}",
                 "type": "GET",
-                "data": {
-                    "issuerId": "{{Auth::id()}}",
-                    "exceptStatus": ["tramitado", "en vigor"]
-                }
             },
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"

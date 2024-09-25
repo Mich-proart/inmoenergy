@@ -331,41 +331,46 @@
                     </span>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
-                            {{$formality->accessRate->name}}
-                        @endif
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="">CUPS: </label> @if (isset($formality->CUPS))
-                            {{$formality->CUPS}}
-                        @endif
-                    </div>
+                    @if ($formality->service->name !== 'agua')
+                        <div class="form-group col-md-3">
+                            <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
+                                {{$formality->accessRate->name}}
+                            @endif
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="">CUPS: </label> @if (isset($formality->CUPS))
+                                {{$formality->CUPS}}
+                            @endif
+                        </div>
+                    @endif
                     <div class="form-group col-md-4">
                         <label for="">Compañía suministro anterior: </label> @if (isset($formality->previousCompany))
                             {{' ' . ucfirst($formality->previousCompany->name)}}
                         @endif
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="">Consumo anual: </label> @if (isset($formality->annual_consumption))
-                            <span>kW </span> {{$formality->annual_consumption}}
-                        @endif
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="">Potencia: </label> @if (isset($formality->potency))
-                            <span>kW </span>{{$formality->potency_Spanish()}}
-                        @endif
-                    </div>
+                @if ($formality->service->name !== 'agua')
 
-                </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="">Consumo anual: </label> @if (isset($formality->annual_consumption))
+                                <span>kW </span> {{$formality->annual_consumption}}
+                            @endif
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="">Potencia: </label> @if (isset($formality->potency))
+                                <span>kW </span>{{$formality->potency_Spanish()}}
+                            @endif
+                        </div>
+
+                    </div>
+                @endif
             </section>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
+                    <label for="exampleFormControlTextarea1">Observaciones del asesor</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
-                        @readonly(true)>{{$formality->observation}}</textarea>
+                        @readonly(true)>{{$formality->assigned_observation}}</textarea>
                 </div>
 
             </div>

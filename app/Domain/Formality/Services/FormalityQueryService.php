@@ -25,7 +25,6 @@ class FormalityQueryService
             ->join('province', 'province.id', '=', 'location.province_id')
             ->leftJoin('product', 'product.id', '=', 'formality.product_id')
             ->leftJoin('company', 'company.id', '=', 'product.company_id')
-            ->leftJoin('users as responsible', 'responsible.id', '=', 'issuer.responsible_id')
             ->leftJoin('office', 'office.id', '=', 'issuer.office_id')
             ->leftJoin('business_group', 'business_group.id', '=', 'office.business_group_id')
             ->select(
@@ -62,9 +61,6 @@ class FormalityQueryService
                 'province.name as province',
                 'company.name as company',
                 'product.name as product',
-                'responsible.name as responsible_name',
-                'responsible.first_last_name as responsible_firstLastName',
-                'responsible.second_last_name as responsible_secondLastName',
                 'office.name as office',
                 'business_group.name as business_group'
             );
@@ -82,52 +78,6 @@ class FormalityQueryService
     {
         $queryBuilder = $this->formalityQuery();
         $queryBuilder->whereNull('userAssigned.id');
-        return $queryBuilder->get();
-    }
-
-    public function findByDistintStatus(FormalityQuery $formalityQuery)
-    {
-        $queryBuilder = $this->formalityQuery();
-
-        if ($formalityQuery->statusArray && is_array($formalityQuery->statusArray) && count($formalityQuery->statusArray) > 0) {
-            $queryBuilder->WhereNotIn('status.name', $formalityQuery->statusArray);
-        }
-
-        if ($formalityQuery->issuerId) {
-            $queryBuilder->where('issuer.id', $formalityQuery->issuerId);
-        }
-
-        if ($formalityQuery->assignedId) {
-            $queryBuilder->where('userAssigned.id', $formalityQuery->assignedId);
-        }
-
-        if ($formalityQuery->activationDateNull || $formalityQuery->activationDateNull === true) {
-            $queryBuilder->whereNull('formality.activation_date');
-        }
-
-        return $queryBuilder->get();
-    }
-
-    public function findByStatus(FormalityQuery $formalityQuery)
-    {
-        $queryBuilder = $this->formalityQuery();
-
-        if ($formalityQuery->statusArray && is_array($formalityQuery->statusArray) && count($formalityQuery->statusArray) > 0) {
-            $queryBuilder->WhereIn('status.name', $formalityQuery->statusArray);
-        }
-
-        if ($formalityQuery->issuerId) {
-            $queryBuilder->where('issuer.id', $formalityQuery->issuerId);
-        }
-
-        if ($formalityQuery->assignedId) {
-            $queryBuilder->where('userAssigned.id', $formalityQuery->assignedId);
-        }
-
-        if ($formalityQuery->activationDateNull || $formalityQuery->activationDateNull === true) {
-            $queryBuilder->whereNull('formality.activation_date');
-        }
-
         return $queryBuilder->get();
     }
 
@@ -151,4 +101,63 @@ class FormalityQueryService
         return $queryBuilder->get();
     }
 
+    private $mainStatusFilter = [
+        FormalityStatusEnum::TRAMITADO->value,
+        FormalityStatusEnum::EN_VIGOR->value,
+        FormalityStatusEnum::BAJA->value,
+        FormalityStatusEnum::FINALIZADO->value
+    ];
+
+    public function getInProgress(int $issuerId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('issuer.id', $issuerId);
+        $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+    public function getClosed(int $issuerId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('issuer.id', $issuerId);
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+    public function getAssigned(int $assignedId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+    public function getCompleted(int $assignedId)
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->where('userAssigned.id', $assignedId);
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
+
+    public function getTotalInProgress()
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
+        return $queryBuilder->get();
+    }
+
+    public function getTotalClosed()
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+
+        return $queryBuilder->get();
+    }
 }

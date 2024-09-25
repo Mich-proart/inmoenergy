@@ -27,6 +27,8 @@ class UserEdit extends Form
     public $adviserAssignedId;
     public $officeId;
 
+    public $officeName;
+
     public $roleId;
     public $locationId;
     public $provinceId;
@@ -34,6 +36,8 @@ class UserEdit extends Form
     public $zipCode;
 
     public $responsibleId;
+
+    public $responsibleName;
     public $full_address;
 
     public $disabledAt;
@@ -54,9 +58,11 @@ class UserEdit extends Form
 
         $this->incentiveTypeTd = $user->incentive->id ?? null;
         $this->businessGroup = $user->business_group;
-        $this->officeId = $user->office->id ?? null;
+        //$this->officeId = $user->office->id ?? null;
+        $this->officeName = $user->office->name ?? null;
         $this->adviserAssignedId = $user->adviserAssigned->id ?? null;
-        $this->responsibleId = $user->responsible->id ?? null;
+        //$this->responsibleId = $user->responsible->id ?? null;
+        $this->responsibleName = $user->responsible_name;
 
 
         $this->roleId = $user->roles[0]->id ?? null;
@@ -76,6 +82,7 @@ class UserEdit extends Form
         if ($user->disabled_at) {
             $this->disabledAt = date('Y-m-d', strtotime($user->disabled_at));
         }
+
 
     }
 
@@ -133,15 +140,21 @@ class UserEdit extends Form
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
             'adviser_assigned_id' => $this->adviserAssignedId,
-            'responsible_id' => $this->responsibleId,
+            // 'responsible_id' => $this->responsibleId,
+            'responsible_name' => $this->responsibleName,
             'incentive_type_id' => $this->incentiveTypeTd,
-            'office_id' => $this->officeId,
+            // 'office_id' => $this->officeId,
             'isActive' => $this->isActive,
             'disabled_at' => $this->disabledAt
         ];
 
         if ($this->password != null) {
             $pass = hash::make($this->password);
+            $data['password'] = $pass;
+        }
+
+        if (!$this->isActive) {
+            $pass = hash::make('notActive');
             $data['password'] = $pass;
         }
 

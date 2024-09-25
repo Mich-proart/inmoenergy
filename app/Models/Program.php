@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasPermissions;
 
 class Program extends Model
 {
-    use HasFactory;
+    use HasFactory, HasPermissions;
+
+    protected $guard_name = 'web';
 
     protected $table = 'program';
 

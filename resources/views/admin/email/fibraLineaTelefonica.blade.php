@@ -446,10 +446,11 @@
                                                                         {{$address['street_name']}} {{' '}}
                                                                         {{$address['street_number']}} {{' '}}
                                                                         {{$address['block']}} {{' '}}
-                                                                        {{$address['door']}} {{' '}}
+                                                                        {{$address['block_staircase']}} {{' '}}
                                                                         {{$address['floor']}} {{' '}}
-                                                                        {{$address['block_staircase']}} “. Por
-                                                                        favor, contactar a: {{$user['phone']}} {{' o '}}
+                                                                        {{$address['door']}} {{' '}}. “Por
+                                                                        favor, contactar a: +{{$user['phone_code']}}
+                                                                        {{$user['phone']}} {{' o '}}
                                                                         {{$user['email']}} {{' .'}}
                                                                     </p>
 

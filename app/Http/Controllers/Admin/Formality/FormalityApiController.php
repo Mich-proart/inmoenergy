@@ -1,34 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Formality;
+namespace App\Http\Controllers\Admin\Formality;
 
-use App\Domain\Enums\FormalityStatusEnum;
-use App\Domain\Formality\Dtos\FormalityQuery;
-use App\Domain\Formality\Services\FormalityQueryService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Domain\Formality\Services\FormalityQueryService;
 use Yajra\DataTables\Facades\DataTables;
 
-class FormalityController extends Controller
+class FormalityApiController extends Controller
 {
-
-    public function __construct(
-        private readonly FormalityQueryService $formalityQueryService,
-    ) {
+    public function __construct(private readonly FormalityQueryService $formalityQueryService)
+    {
     }
 
-    public function exceptStatus(Request $request)
+
+    public function getInProgress()
     {
-        $issuerId = $request->query('issuerId');
-        $assignedId = $request->query('assignedId');
-        $exceptStatus = $request->query('exceptStatus');
-
-        $formality = null;
-
-        if ($exceptStatus) {
-            $query = new FormalityQuery($issuerId, $assignedId, null, $exceptStatus);
-            $formality = $this->formalityQueryService->findByDistintStatus($query);
-        }
+        $userId = auth()->user()->id;
+        $formality = $this->formalityQueryService->getInProgress($userId);
 
         return DataTables::of($formality)
             ->setRowAttr(['align' => 'center'])
@@ -49,19 +38,10 @@ class FormalityController extends Controller
             })
             ->toJson(true);
     }
-    public function onlyStatus(Request $request)
+    public function getClosed()
     {
-        $issuerId = $request->query('issuerId');
-        $assignedId = $request->query('assignedId');
-        $onlyStatus = $request->query('onlyStatus');
-
-        $formality = null;
-
-
-        if ($onlyStatus) {
-            $query = new FormalityQuery($issuerId, $assignedId, null, $onlyStatus);
-            $formality = $this->formalityQueryService->findByStatus($query);
-        }
+        $userId = auth()->user()->id;
+        $formality = $this->formalityQueryService->getClosed($userId);
 
         return DataTables::of($formality)
             ->setRowAttr(['align' => 'center'])
@@ -82,8 +62,55 @@ class FormalityController extends Controller
             })
             ->toJson(true);
     }
+    public function getAssigned()
+    {
+        $userId = auth()->user()->id;
+        $formality = $this->formalityQueryService->getAssigned($userId);
 
-    public function totalPending()
+        return DataTables::of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson(true);
+    }
+    public function getCompleted()
+    {
+        $userId = auth()->user()->id;
+        $formality = $this->formalityQueryService->getCompleted($userId);
+
+        return DataTables::of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson(true);
+    }
+    public function getPending()
     {
         $formality = $this->formalityQueryService->totalPending();
 
@@ -106,8 +133,7 @@ class FormalityController extends Controller
             })
             ->toJson(true);
     }
-
-    public function getAssignedNull()
+    public function getAssignment()
     {
         $formality = $this->formalityQueryService->getAssignedNull();
 
@@ -130,9 +156,9 @@ class FormalityController extends Controller
             })
             ->toJson(true);
     }
-    public function getDistintStatus()
+    public function getTotalInprogress()
     {
-        $formality = $this->formalityQueryService->getDistintStatus([FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
+        $formality = $this->formalityQueryService->getTotalInProgress();
 
         return DataTables::of($formality)
             ->setRowAttr(['align' => 'center'])
@@ -154,4 +180,27 @@ class FormalityController extends Controller
             ->toJson(true);
     }
 
+    public function getTotalClosed()
+    {
+        $formality = $this->formalityQueryService->getTotalClosed();
+
+        return DataTables::of($formality)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($formality) {
+                return $formality->formality_id;
+            })
+            ->addColumn('fullName', function ($formality) {
+                return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
+            })
+            ->addColumn('assigned', function ($formality) {
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+            })
+            ->addColumn('issuer', function ($formality) {
+                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+            })
+            ->addColumn('fullAddress', function ($formality) {
+                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+            })
+            ->toJson(true);
+    }
 }

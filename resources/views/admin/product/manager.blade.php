@@ -3,7 +3,15 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Gestión de productos</h1>
+<div class="row">
+    <div class="col-md-6 image-text-container">
+        @if (isset($program))
+            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+                class="img-thumbnail align-self-center resize">
+            <h3>{{ucfirst($program->name)}}</h3>
+        @endif
+    </div>
+</div>
 @stop
 
 @section('content')

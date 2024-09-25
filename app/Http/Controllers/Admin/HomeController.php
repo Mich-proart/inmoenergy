@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Dtos\FormalityQuery;
-use App\Domain\Formality\Services\CountQueryService;
 use App\Domain\Formality\Services\FormalityQueryService;
 
+use App\Domain\Ticket\Services\TicketQueryService;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -18,8 +17,8 @@ class HomeController extends Controller
 {
 
     public function __construct(
-        private readonly CountQueryService $countQueryService,
         private readonly FormalityQueryService $formalityQueryService,
+        private readonly TicketQueryService $ticketQueryService
     ) {
     }
 
@@ -41,25 +40,21 @@ class HomeController extends Controller
         foreach ($sections as $section) {
             foreach ($section->programs as $program) {
                 if ($program->name == 'trámites en curso') {
-                    $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
-                    $formality = $this->formalityQueryService->findByDistintStatus($query);
+                    $formality = $this->formalityQueryService->getInProgress($userId);
                     $program->count = count($formality);
                 }
 
                 if ($program->name == 'trámites cerrados') {
-                    $query = new FormalityQuery($userId, null, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
-                    $formality = $this->formalityQueryService->findByStatus($query);
+                    $formality = $this->formalityQueryService->getClosed($userId);
                     $program->count = count($formality);
                 }
                 if ($program->name == 'trámites asignados') {
-                    $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
-                    $formality = $this->formalityQueryService->findByDistintStatus($query);
+                    $formality = $this->formalityQueryService->getAssigned($userId);
                     $program->count = count($formality);
                 }
 
                 if ($program->name == 'trámites realizados') {
-                    $query = new FormalityQuery(null, $userId, null, [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
-                    $formality = $this->formalityQueryService->findByStatus($query);
+                    $formality = $this->formalityQueryService->getCompleted($userId);
                     $program->count = count($formality);
                 }
                 //
@@ -72,8 +67,37 @@ class HomeController extends Controller
                     $program->count = count($formality);
                 }
                 if ($program->name == 'trámites en curso totales') {
-                    $formality = $this->formalityQueryService->getDistintStatus([FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
+                    $formality = $this->formalityQueryService->getTotalInProgress();
                     $program->count = count($formality);
+                }
+                if ($program->name == 'trámites cerrados totales') {
+                    $formality = $this->formalityQueryService->getTotalClosed();
+                    $program->count = count($formality);
+                }
+                if ($program->name == 'tickets pendientes') {
+                    $ticket = $this->ticketQueryService->getPending($userId);
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'tickets resueltos') {
+                    $ticket = '';
+                    if ($section->name == "trámites y tickets asignados") {
+                        $ticket = $this->ticketQueryService->getResolvedWorker($userId);
+                    } else {
+                        $ticket = $this->ticketQueryService->getResolved($userId);
+                    }
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'tickets asignados') {
+                    $ticket = $this->ticketQueryService->getAssigned($userId);
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'tickets pendientes totales') {
+                    $ticket = $this->ticketQueryService->getTotalPending();
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'asignación de tickets') {
+                    $ticket = $this->ticketQueryService->getAssignment();
+                    $program->count = count($ticket);
                 }
             }
         }

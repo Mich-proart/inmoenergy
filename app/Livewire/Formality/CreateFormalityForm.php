@@ -5,6 +5,8 @@ namespace App\Livewire\Formality;
 use App\Livewire\Forms\Formality\FormalityCreate;
 use App\Models\Address;
 use App\Models\Client;
+use App\Models\Country;
+use App\Models\Formality;
 use Livewire\Component;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Auth;
@@ -58,13 +60,14 @@ class CreateFormalityForm extends Component
 
     protected $createFormalityService;
 
+    public Country $selected_country;
+
     public function __construct()
     {
         $this->createFormalityService = App::make(CreateFormalityService::class);
         $this->userService = App::make(UserService::class);
         $this->formalityService = App::make(FormalityService::class);
         $this->addressService = App::make(AddressService::class);
-        $this->folder = uniqid() . '_' . now()->timestamp;
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
         $this->fileUploadigService = App::make(FileUploadigService::class);
@@ -87,6 +90,20 @@ class CreateFormalityForm extends Component
 
         $this->inputs->pull(0);
 
+        $country = Country::firstWhere('name', 'spain');
+
+        if ($country) {
+            $this->selected_country = $country;
+        }
+
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     public function addInput($serviceId)
@@ -237,22 +254,8 @@ class CreateFormalityForm extends Component
 
         $this->formValidation();
 
-
-
-        $address = Address::where('location_id', $this->form->locationId)
-            ->where('street_type_id', $this->form->streetTypeId)
-            ->where('housing_type_id', $this->form->housingTypeId)
-            ->where('street_name', $this->form->streetName)
-            ->where('street_number', $this->form->streetNumber)
-            ->where('zip_code', $this->form->zipCode)
-            ->where('block', $this->form->block)
-            ->where('block_staircase', $this->form->blockstaircase)
-            ->where('floor', $this->form->floor)
-            ->where('door', $this->form->door)
-            ->first();
-
-        if ($address) {
-            $this->dispatch('checks', error: "Error al intentar crear el formulario con datos duplicados", title: "Datos duplicados");
+        if ($this->isDuplicated()) {
+            $this->dispatch('checks', error: "Error al intentar crear el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
         } else {
             $this->dispatch('load');
             $this->execute();
@@ -264,7 +267,7 @@ class CreateFormalityForm extends Component
     {
         DB::beginTransaction();
         try {
-
+            $this->folder = $this->getFolderName();
 
             if (in_array($this->fibra->id, $this->form->serviceIds)) {
                 $this->emailRequest();
@@ -272,7 +275,8 @@ class CreateFormalityForm extends Component
 
 
             if (count($this->form->serviceIds) > 0) {
-                $client = Client::create($this->form->getClientDto());
+                $newdata = array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
+                $client = Client::create($newdata);
                 $address = Address::create($this->form->getCreateAddressDto());
 
                 $this->createFormalityService->setClientId($client->id);
@@ -314,7 +318,6 @@ class CreateFormalityForm extends Component
 
                 $file_inputs = $this->inputs->where('serviceId', null);
                 foreach ($file_inputs as $file_input) {
-                    $name = basename($file_input['file']->getClientOriginalName()) . '.' . now()->timestamp;
                     $this->fileUploadigService
                         ->setModel($client)
                         ->addFile($file_input['file'])
@@ -333,6 +336,33 @@ class CreateFormalityForm extends Component
         }
     }
 
+    public function isDuplicated(): bool
+    {
+        $address = Address::where('location_id', $this->form->locationId)
+            ->where('street_type_id', $this->form->streetTypeId)
+            ->where('housing_type_id', $this->form->housingTypeId)
+            ->where('street_name', $this->form->streetName)
+            ->where('street_number', $this->form->streetNumber)
+            ->where('zip_code', $this->form->zipCode)
+            ->where('block', $this->form->block)
+            ->where('block_staircase', $this->form->blockstaircase)
+            ->where('floor', $this->form->floor)
+            ->where('door', $this->form->door)
+            ->first();
+
+
+        if ($address) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function getFolderName(): string
+    {
+        return $this->form->name . ucfirst($this->form->firstLastName) . '_' . $this->form->documentNumber . '_' . date('Y-m-d');
+    }
+
 
     private function emailRequest()
     {
@@ -347,8 +377,9 @@ class CreateFormalityForm extends Component
                 ->saveFile($this->folder);
             array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
         }
+        $newdata = array_merge(['phone_code' => $this->selected_country->phone_code], $this->form->getClientDto());
         Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
-            ->send(new EmailLineaTelefonica($this->form->getClientDto(), $this->form->getCreateAddressDto(), $attachs));
+            ->send(new EmailLineaTelefonica($newdata, $this->form->getCreateAddressDto(), $attachs));
 
         $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);
     }
@@ -363,13 +394,15 @@ class CreateFormalityForm extends Component
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
+        $countries = Country::all();
         return view('livewire.formality.create-formality-form', [
             'streetTypes' => $streetTypes,
             'housingTypes' => $housingTypes,
             'formalitytypes' => $formalitytypes,
             'services' => $services,
             'clientTypes' => $clientTypes,
-            'userTitles' => $userTitles
+            'userTitles' => $userTitles,
+            'countries' => $countries
         ]);
     }
 }

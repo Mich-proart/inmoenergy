@@ -166,13 +166,9 @@ class FormalityUpdate extends Form
         'serviceIds' => 'required|nullable|exists:component_option,id',
         'name' => 'required|nullable|string',
         'email' => 'required|nullable|email',
-        // 'firstLastName' => 'required|nullable|string',
-        // 'secondLastName' => 'required|nullable|string',
         'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
-        // 'documentNumber' => 'required|nullable|string',
         'phone' => 'required|nullable|string|spanish_phone',
         'clientTypeId' => 'required|nullable|integer|exists:component_option,id',
-        // 'userTitleId' => 'required|nullable|integer|exists:component_option,id',
         'IBAN' => 'required|nullable|string|iban',
         'locationId' => 'required|nullable|exists:location,id',
         'streetTypeId' => 'required|nullable|exists:component_option,id',
@@ -224,6 +220,13 @@ class FormalityUpdate extends Form
         'factura_agua.max' => 'Tamanio maximo de Factura de Agua es 1MB',
         'factura_gas.max' => 'Tamanio maximo de Factura de Gas es 1MB',
         'factura_luz.max' => 'Tamanio maximo de Factura de Luz es 1MB',
+        'client_locationId.integer' => 'Locacion no es valido',
+        'client_streetTypeId.integer' => 'Tipo de calle no es valido',
+        'client_housingTypeId.integer' => 'Tipo de vivienda no es valido',
+        'client_zipCode.spanish_postal_code' => 'Codigo postal no es valido',
+        'client_zipCode.required' => 'Codigo postal es requerido',
+        'observation.max' => 'Tamanio maximo de observacion es 255',
+        'assigned_observation.max' => 'Tamanio maximo de observacion asignada es 255',
     ];
 
     public function setDocumentTypeId(int $value)

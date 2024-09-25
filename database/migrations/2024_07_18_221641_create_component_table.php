@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->boolean('is_available')->default(true);
             $table->string('description')->nullable();
         });
-
+        /*
         $maimValues = array(
             "desplegables" => array(
                 "tipo de trámite" => "formality_type",
@@ -44,6 +44,7 @@ return new class extends Migration {
                 ]);
             }
         }
+            */
     }
 
     /**

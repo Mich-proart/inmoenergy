@@ -4,6 +4,7 @@ namespace App\Livewire\Formality;
 
 use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityUpdate;
+use App\Models\Country;
 use App\Models\File;
 use App\Models\FileConfig;
 use Illuminate\Support\Collection;
@@ -61,6 +62,8 @@ class EditFormalityForm extends Component
 
     private FileUploadigService $fileUploadigService;
 
+    public Country $selected_country;
+
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
@@ -72,10 +75,10 @@ class EditFormalityForm extends Component
     }
 
 
-    public function mount($formalityId)
+    public function mount($formality)
     {
-        $this->formalityId = $formalityId;
-        $this->formality = $this->formalityService->getById($formalityId);
+        $this->formality = $formality;
+        $this->formalityId = $formality->id;
         $this->form->setformality($this->formality);
         $this->target_provinceId = $this->form->provinceId;
         $this->target_clientProvinceId = $this->form->client_provinceId;
@@ -90,7 +93,7 @@ class EditFormalityForm extends Component
             $this->field_name = 'Razon social';
         }
 
-        $this->fileSet = $this->formalityService->getFileById($formalityId);
+        $this->fileSet = $this->formalityService->getFileById($this->formalityId);
 
         if ($this->fileSet) {
             $this->formality_file = $this->fileSet->files;
@@ -99,6 +102,16 @@ class EditFormalityForm extends Component
             $this->addInput($this->formality->service_id);
         }
 
+        $this->changeCountry($formality->client->country_id);
+
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     public function mountFilesInput()
@@ -144,16 +157,27 @@ class EditFormalityForm extends Component
 
     public function update()
     {
-
         $this->formValidation();
 
+        if ($this->isDuplicated()) {
+            $this->dispatch('checks', error: "Error al intentar editar el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
+        } else {
+            $this->executeUpdate();
+        }
 
+
+    }
+
+    private function executeUpdate()
+    {
         DB::beginTransaction();
 
         try {
 
+            $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
+
             $data = Formality::firstWhere('id', $this->formalityId);
-            $data->client()->update($this->form->getclientUpdate());
+            $data->client()->update($updates);
 
             $address = Address::firstWhere('id', $data->address->id);
             $address->update($this->form->getaddressUpdate());
@@ -171,11 +195,12 @@ class EditFormalityForm extends Component
             if ($object['file'] != null) {
 
                 $file = $object['file'];
+                $stored_file = $data->with('files')->first()->files->first();
                 if ($file) {
                     $this->fileUploadigService
                         ->addFile($file)
                         ->setConfigId($object['configId'])
-                        ->force_replace($data->with('files')->first()->files->first());
+                        ->force_replace($stored_file);
 
                 }
             }
@@ -295,6 +320,7 @@ class EditFormalityForm extends Component
                     'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
                     'userTitleId.required' => 'El campo Titulo es obligatorio',
                     'userTitleId.exists' => 'El Titulo no es valido',
+                    'documentNumber.required' => 'El campo Documento es obligatorio',
 
                 ]
             );
@@ -313,8 +339,8 @@ class EditFormalityForm extends Component
             );
         }
 
-        if ($this->formality->service_id !== $this->form->serviceIds[0]) {
-
+        $inputServiceid = intval($this->form->serviceIds[0]);
+        if ($this->formality->service_id !== $inputServiceid) {
             $this->validate(
                 [
                     'service_file.*.file' => 'required',
@@ -323,6 +349,23 @@ class EditFormalityForm extends Component
                     'service_file.*.file.required' => 'El campo Archivo es obligatorio',
                 ]
             );
+        }
+    }
+
+    public function isDuplicated(): bool
+    {
+        $Formality = Formality::whereHas('client', function ($query) {
+            $query->where('id', $this->formality->client->id);
+        })->whereHas('service', function ($query) {
+            $query->where('id', $this->form->serviceIds[0]);
+        })->whereHas('address', function ($query) {
+            $query->where('id', $this->formality->address->id);
+        })->where('id', '!=', $this->formality->id);
+
+        if ($Formality->exists()) {
+            return true;
+        } else {
+            return false;
         }
 
     }
@@ -357,6 +400,7 @@ class EditFormalityForm extends Component
         $services = $services->where('name', '!=', 'fibra');
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
+        $countries = Country::all();
         return view('livewire.formality.edit-formality-form', [
             'streetTypes' => $streetTypes,
             'housingTypes' => $housingTypes,
@@ -364,6 +408,7 @@ class EditFormalityForm extends Component
             'services' => $services,
             'clientTypes' => $clientTypes,
             'userTitles' => $userTitles,
+            'countries' => $countries
         ]);
     }
 }

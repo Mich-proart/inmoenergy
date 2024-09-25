@@ -20,8 +20,8 @@
 @section('content')
 <div>
 
-    @if (isset($formalityId))
-        <livewire:formality.edit-formality-form :formalityId="$formalityId" />
+    @if (isset($formality))
+        <livewire:formality.edit-formality-form :formality="$formality" />
     @endif
 
 </div>
@@ -33,9 +33,17 @@
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<style>
+    .dropdown-menu {
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+</style>
 @stop
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @stop

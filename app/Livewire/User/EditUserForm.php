@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use App\Livewire\Forms\User\UserEdit;
 use App\Models\BusinessGroup;
+use App\Models\Country;
 use App\Models\Office;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
@@ -35,6 +36,10 @@ class EditUserForm extends Component
 
     public $isActive;
 
+    public $user;
+
+    public Country $selected_country;
+
 
     public function __construct()
     {
@@ -50,16 +55,32 @@ class EditUserForm extends Component
         $this->form->setPassword(Str::password(20, true, true, true, false));
     }
 
-    public function mount($userId)
+    public function mount($user)
     {
-        $user = $this->userService->getById($userId);
+        $this->user = $user;
 
-        $this->form->setUser($user);
+        $this->form->setUser($this->user);
         $this->target_provinceId = $this->form->provinceId;
         $this->target_regionId = $this->form->regionId;
         $this->business_target = $user->office->businessGroup->id ?? null;
-        $this->userId = $userId;
-        $this->isActive = $user->isActive;
+        $this->userId = $this->user->id;
+        $this->isActive = $this->user->isActive;
+
+        if ($user->country_id) {
+            $this->changeCountry($user->country_id);
+        } else {
+            $country = Country::firstWhere('name', 'spain');
+            $this->selected_country = $country;
+        }
+
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     #[Computed()]
@@ -105,13 +126,17 @@ class EditUserForm extends Component
 
         if (!$this->form->isWorker) {
             $this->form->validate([
-                'officeId' => 'required|integer|exists:office,id',
-                'responsibleId' => 'required|integer|exists:users,id',
+                // 'officeId' => 'required|integer|exists:office,id',
+                // 'responsibleId' => 'required|integer|exists:users,id',
+                'officeName' => 'required|string',
+                'responsibleName' => 'required|string',
                 'adviserAssignedId' => 'required|integer|exists:users,id',
                 'incentiveTypeTd' => 'required|integer|exists:component_option,id',
             ], [
-                'officeId.required' => 'El campo Oficina es obligatorio',
-                'responsibleId.required' => 'El campo Responsable es obligatorio',
+                //'officeId.required' => 'El campo Oficina es obligatorio',
+                //'responsibleId.required' => 'El campo Responsable es obligatorio',
+                'officeName.required' => 'El campo Oficina es obligatorio',
+                'responsibleName.required' => 'El campo Responsable es obligatorio',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
             ]);
@@ -129,13 +154,40 @@ class EditUserForm extends Component
             );
         }
 
+        if (!$this->form->isWorker && ($this->business_target == null || $this->business_target == '' || $this->business_target == 0)) {
+            $this->dispatch('msg', error: "Por favor, Seleccione un grupo empresarial", title: "Dato incompleto", type: "error");
+        } elseif (!$this->user->isActive && $this->form->isActive) {
+            if ($this->form->password == null || $this->form->password == '') {
+                $this->dispatch('msg', error: "Por favor, proporcione una contraseña de acceso", title: "Activación de usuario", type: "warning");
+            } else {
+                $this->exucuteSave();
+            }
+        } else {
+            $this->exucuteSave();
+        }
 
+
+    }
+
+
+    public function exucuteSave()
+    {
         DB::beginTransaction();
 
         try {
+            $updates = array_merge(
+                ['country_id' => $this->selected_country->id],
+                $this->form->getclientUpdate()
+            );
+            if (!$this->form->isWorker && $this->user->office != null && $this->form->officeName != null) {
+                $this->user->office()->update([
+                    'name' => strtolower($this->form->officeName),
+                    'business_group_id' => $this->business_target
+                ]);
+            }
 
             $data = User::where('id', $this->userId)->with('address')->first();
-            $data->update($this->form->getclientUpdate());
+            $data->update($updates);
 
             DB::table('model_has_roles')->where('model_id', $data->id)->delete();
 
@@ -161,7 +213,6 @@ class EditUserForm extends Component
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
-
     }
 
     #[Computed()]
@@ -185,11 +236,13 @@ class EditUserForm extends Component
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
         $advisers = User::where('isWorker', 1)->get();
+        $countries = Country::all();
         return view('livewire.user.edit-user-form', compact([
             'documentTypes',
             'roles',
             'incentiveTypes',
             'advisers',
+            'countries'
         ]));
     }
 

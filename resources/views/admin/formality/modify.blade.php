@@ -39,7 +39,7 @@
                                 {{$formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name}}
                             @endif
                         </div>
-                        @if (isset($from) && $from == 'total')
+                        @if (isset($from) && ($from == 'total' || $from == 'totalclosed'))
                             <div class="col-sm-4 invoice-col">
                                 <label for="">Fecha de asignación:</label> @if (isset($formality->assignment_date))
                                     {{$formality->assignment_date}}
@@ -49,7 +49,10 @@
 
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tramite crítico:</label>
-                            <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isCritical)) onclick="return false;">
+                            @if ($formality->isCritical != "0")
+                                <i class='fas fa-exclamation-circle' style='font-size:20px;color:red'></i>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -77,6 +80,11 @@
                                 {{ucfirst($formality->product->name)}}
                             @endif
                         </div>
+                        @if (isset($from) && $from == 'totalclosed')
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha de finalización: </label> {{$formality->completion_date}}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
@@ -119,7 +127,11 @@
                         <label for="inputState">Número documento: </label> {{$client->document_number}}
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="inputAddress">Teléfono: </label> {{$client->phone}}
+                        <label for="inputAddress">Teléfono: </label>
+                        @isset($client->country)
+                            +{{$client->country->phone_code}}
+                        @endisset
+                        {{$client->phone}}
                     </div>
                     <div class="form-group col-md-3">
                         <label for="inputZip">Email: </label> {{$client->email}}
@@ -188,7 +200,7 @@
                                 {{ucfirst($address->location->province->name)}}
                             @else
                                 {{ $address->location->province->region->name }}, {{ $address->location->province->name }}
-                            @endif 
+                            @endif
                         @endif
                     </div>
                     <!-- location -->
@@ -294,7 +306,7 @@
                                 @else
                                     {{ $CorrespondenceAddress->location->province->region->name }},
                                     {{ $CorrespondenceAddress->location->province->name }}
-                                @endif 
+                                @endif
                             @endif
                         </div>
 
@@ -314,6 +326,53 @@
                     </div>
                 </div>
             </section>
+            @if (isset($from) && $from == 'totalclosed')
+                <section>
+                    <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                            Datos de trámite
+                        </span>
+                    </div>
+                    <div class="form-row">
+                        @if ($formality->service->name !== 'agua')
+                            <div class="form-group col-md-3">
+                                <label for="">Tarifa acceso: </label> @if (isset($formality->accessRate))
+                                    {{$formality->accessRate->name}}
+                                @endif
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">CUPS: </label> @if (isset($formality->CUPS))
+                                    {{$formality->CUPS}}
+                                @endif
+                            </div>
+                        @endif
+                        <div class="form-group col-md-4">
+                            <label for="">Compañía suministro anterior: </label> @if (isset($formality->previousCompany))
+                                {{' ' . ucfirst($formality->previousCompany->name)}}
+                            @endif
+                        </div>
+                    </div>
+                    @if ($formality->service->name !== 'agua')
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="">Potencia: </label> @if (isset($formality->potency))
+                                    <span>kW </span>{{$formality->potency_Spanish()}}
+                                @endif
+                            </div>
+
+                        </div>
+                    @endif
+                </section>
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="issuer_observation"
+                            @readonly(true)>{{$formality->issuer_observation}}</textarea>
+                    </div>
+
+                </div>
+            @endif
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
@@ -324,6 +383,8 @@
             </div>
             @if (isset($formality) && isset($from) && $from == 'total')
                 @livewire('formality.modify-formality-form', ['formality' => $formality, 'prevStatus' => $prevStatus, 'from' => $from])
+            @elseif (isset($formality) && isset($from) && $from == 'totalclosed')
+                @livewire('formality.modify-total-closed', ['formality' => $formality])
             @else
                 @if (isset($formality))
                     @livewire('formality.modify-formality-form', ['formality' => $formality, 'prevStatus' => $prevStatus, 'from' => null])
@@ -341,6 +402,7 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 
 @section('js')

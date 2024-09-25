@@ -36,7 +36,7 @@ class EmailLineaTelefonica extends Mailable
         $this->streetType = ComponentOption::where('id', $this->address['street_type_id'])->first();
     }
 
-    /**
+    /**sla
      * Get the message envelope.
      */
 
@@ -47,7 +47,7 @@ Solicitud de Fibra / línea telefónica “ & [TIPO CALLE] & “ “ & [NOMBRE C
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Solicitud de Fibra / línea telefónica' . ' ' . $this->streetType->name . ' ' . $this->address['street_name'] . ' ' . $this->address['street_number'] . ' ' . $this->address['block'] . ' ' . $this->address['door']
+            subject: 'Solicitud de Fibra / línea telefónica' . ' ' . $this->streetType->name . ' ' . $this->address['street_name'] . ' ' . $this->address['street_number'] . ' ' . $this->address['block'] . ' ' . $this->address['block_staircase'] . ' ' . $this->address['floor'] . ' ' . $this->address['door']
         );
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('office_id')->nullable()->constrained('office');
             $table->foreignId('document_type_id')->nullable()->constrained('component_option');
             $table->foreignId('address_id')->nullable()->constrained('address');
+            $table->foreignId('country_id')->nullable()->constrained('country');
         });
     }
 

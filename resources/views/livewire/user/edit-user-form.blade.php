@@ -75,14 +75,32 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputAddress">Teléfono: </label>
-                            <input wire:model="form.phone" type="text"
-                                class="form-control @error('form.phone') is-invalid @enderror" id="inputAddress"
-                                placeholder="" name="phone">
-                            @error('form.phone')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            <div class="input-group mb-3">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img
+                                        src="https://flagsapi.com/{{$selected_country->iso2}}/flat/16.png">+{{$selected_country->phone_code}}</button>
+                                <ul class="dropdown-menu">
+                                    @isset($countries)
+                                        @foreach ($countries as $country)
+                                            <li wire:click="changeCountry({{$country->id}})"><a class="dropdown-item" href="#">
+                                                    <img src="https://flagsapi.com/{{$country->iso2}}/flat/16.png">
+                                                    {{$country->name_spanish}}
+                                                    +{{$country->phone_code}}
+                                                </a></li>
+                                        @endforeach
+                                    @endisset
+                                </ul>
+                                <input wire:model="form.phone" type="text"
+                                    class="form-control @error('form.phone') is-invalid @enderror" id="phone"
+                                    placeholder="" name="phone">
+                                @error('form.phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputZip">Email: </label>
@@ -116,7 +134,7 @@
                         </div>
                         <div class=" form-group col-md-3">
                             <label for="inputAddress2">Nueva Contraseña: </label>
-                            <input wire:model="form.password" type="text"
+                            <input wire:model="form.password" type="password"
                                 class="form-control @error('form.password') is-invalid @enderror" id="inputAddress2"
                                 placeholder="" name="password">
                             @error('form.password')
@@ -167,7 +185,8 @@
                         <!-- region -->
                         <div class="col-md-3">
                             <label for="inputState">Comunidad autónoma: </label>
-                            <select wire:model.live="target_regionId" class="form-control" id="inputRegion">
+                            <select wire:model.live="target_regionId" class="form-control" id="target_region_id"
+                                required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -177,7 +196,8 @@
                         <!-- province -->
                         <div class="col-md-3">
                             <label for="inputState">Provincia: </label>
-                            <select wire:model.live="target_provinceId" class="form-control" id="inputProvince">
+                            <select wire:model.live="target_provinceId" class="form-control" id="target_province_id"
+                                required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->provinces as $province)
                                     @if ($province->region->name === $province->name)
@@ -185,7 +205,7 @@
                                     @else
                                         <option value="{{ $province->id }}">{{ $province->region->name }}, {{ $province->name }}
                                         </option>
-                                    @endif 
+                                    @endif
 
                                 @endforeach
                             </select>
@@ -194,8 +214,8 @@
                         <div class="col-md-3">
                             <label for="inputState">Población: </label>
                             <select wire:model="form.locationId"
-                                class="form-control @error('form.locationId') is-invalid @enderror" id="inputLocation"
-                                name="locationId">
+                                class="form-control @error('form.locationId') is-invalid @enderror"
+                                id="tartet_location_id" name="locationId" required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->locations as $location)
                                     <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -276,7 +296,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none">
                                 <label for="inputCity">Oficina usuario</label>
                                 <select wire:model="form.officeId"
                                     class="form-control @error('form.officeId') is-invalid @enderror" name="officeId"
@@ -291,6 +311,17 @@
 
                                 </select>
                                 @error('form.officeId')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputCity">Oficina usuario</label>
+                                <input wire:model="form.officeName" type="text"
+                                    class="form-control @error('form.officeName') is-invalid @enderror" id="officeName"
+                                    name="officeName">
+                                @error('form.officeName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -318,7 +349,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none">
                                 <label for="inputState">Nombre responsable: </label>
                                 <select wire:model="form.responsibleId"
                                     class="form-control @error('form.responsibleId') is-invalid @enderror"
@@ -338,9 +369,25 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputState">Nombre responsable: </label>
+                                <input wire:model="form.responsibleName" type="text"
+                                    class="form-control @error('form.responsibleName') is-invalid @enderror"
+                                    id="responsibleName" name="responsibleName">
+                                @error('form.responsibleName')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
                     </section>
                 @endif
+                {{--
+                @if($errors->any())
+                {{ implode('', $errors->all('<div>:message</div>')) }}
+                @endif
+                --}}
                 <div class="row no-print">
                     <div class="col-12">
                         <div style="margin-top: 50px; margin-bottom: 25px">
@@ -353,5 +400,50 @@
         </div>
     </div>
     <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
+    @script
+    <script>
+        $(document).ready(function () {
+            const target_region = ["#target_province_id", "#tartet_location_id"];
+            const target_province = ["#tartet_location_id"];
 
+
+            $("#target_region_id").on("change", function () {
+                target_region.forEach((element) => {
+                    setTimeout(function () {
+                        $(element).val("").trigger("change");
+                    }, 200);
+
+                })
+            });
+
+            $("#target_province_id").on("change", function () {
+                target_province.forEach((element) => {
+                    setTimeout(function () {
+                        $(element).val("").trigger("change");
+                    }, 200);
+                })
+
+            });
+
+            $('#phone').keypress(function (event) {
+                if ((event.which < 48 || event.which > 57) && event.which !== 46) {
+                    event.preventDefault();
+                }
+                if (event.which === 46) {
+                    event.preventDefault();
+                }
+            });
+
+        })
+        $wire.on('msg', (e) => {
+            console.log(e);
+            Swal.fire({
+                confirmButtonColor: '#004a99',
+                icon: e.type,
+                title: e.title,
+                text: e.error,
+            });
+        });
+    </script>
+    @endscript
 </div>

@@ -45,6 +45,10 @@ return new class extends Migration {
                     'description' => $program['description']
                 ]);
 
+                $permmission = Permission::where('name', $program['permission'])->first();
+                if ($permmission) {
+                    $created->syncPermissions($permmission);
+                }
                 $program_list[] = $created;
 
                 $roles_list = [];
@@ -56,48 +60,6 @@ return new class extends Migration {
 
             $data_section->programs()->saveMany($program_list);
         }
-
-        /*
-                $maimValues = array(
-                    "trámites clientes" => array(
-                        "nuevo trámite" => "admin.formality.create",
-                        "trámites en curso" => "admin.formality.inprogress",
-                        "trámites cerrados" => "admin.formality.closed"
-                    ),
-                    "trámites y tickets" => array(
-                        "trámites asignados" => "admin.formality.assigned",
-                        "trámites realizados" => "admin.formality.completed",
-                        "altas pendientes fecha de activación" => "admin.formality.pending"
-                    ),
-                    "herramientas" => array(
-                        "asignación de trámites" => "admin.formality.assignment",
-                        "consultas totales" => "admin.formality.totalInProgress"
-                    ),
-                    "documentación" => array(
-                        "autorización" => "admin.document.authorization",
-                        "documentos para cambio de titular" => "admin.document.changeTitle",
-                    ),
-                    "configuración" => array(
-                        "gestión de usuarios" => "admin.users",
-                        "gestión de clientes" => "admin.clients",
-                        "gestión de comercializadoras" => "admin.company.manager",
-                        "gestión de productos" => "admin.product.manager",
-                        "desplegables" => "admin.dropdowns",
-                    )
-                );
-
-                foreach ($maimValues as $section => $values) {
-                    foreach ($values as $name => $route) {
-                        $data_section = DB::table('section')->where('name', $section)->first();
-                        DB::table('program')->insert([
-                            'name' => $name,
-                            'section_id' => $data_section->id,
-                            'route' => $route
-                        ]);
-                    }
-                }
-                    */
-
     }
 
     /**

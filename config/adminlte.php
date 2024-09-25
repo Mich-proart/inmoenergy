@@ -364,7 +364,7 @@ return [
                 ],
                 [
                     'text' => 'Tickets resueltos',
-                    'route' => 'admin.ticket.resolved',
+                    'route' => 'admin.ticket.resolved.worker',
                     'can' => 'ticket.resolved.access.worker',
                 ],
                 [

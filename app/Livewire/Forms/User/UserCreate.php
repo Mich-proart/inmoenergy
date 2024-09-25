@@ -25,16 +25,16 @@ class UserCreate extends Form
     public $incentiveTypeTd;
     public $businessGroup;
     public $officeId;
+    public $officeName;
     public $adviserAssignedId;
     public $responsibleId;
+    public $responsibleName;
 
 
     public $roleId;
     public $locationId;
     public $zipCode;
     public $full_address;
-
-
 
     public function setIsWorker(bool $isWorker)
     {
@@ -102,9 +102,10 @@ class UserCreate extends Form
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
             'adviser_assigned_id' => $this->adviserAssignedId,
-            'responsible_id' => $this->responsibleId,
+            // 'responsible_id' => $this->responsibleId,
+            'responsible_name' => strtolower($this->responsibleName),
             'incentive_type_id' => $this->incentiveTypeTd,
-            'office_id' => $this->officeId,
+            //'office_id' => $this->officeId,
             'isActive' => $this->isActive
         ];
     }

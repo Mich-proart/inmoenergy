@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Livewire\Forms\User\UserCreate;
+use App\Models\Country;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Enums\DocumentRule;
@@ -28,6 +29,8 @@ class CreateUserForm extends Component
 
     public $business_target;
 
+    public Country $selected_country;
+
     public function __construct()
     {
         $this->userService = App::make(UserService::class);
@@ -39,6 +42,20 @@ class CreateUserForm extends Component
     public function mount(bool $isWorker = false)
     {
         $this->form->setIsWorker($isWorker);
+
+        $country = Country::firstWhere('name', 'spain');
+
+        if ($country) {
+            $this->selected_country = $country;
+        }
+    }
+
+    public function changeCountry($id)
+    {
+        $country = Country::firstWhere('id', $id);
+        if ($country) {
+            $this->selected_country = $country;
+        }
     }
 
     public function generatePassword()
@@ -71,7 +88,6 @@ class CreateUserForm extends Component
 
     public function save()
     {
-
         $this->form->validate();
 
 
@@ -92,13 +108,17 @@ class CreateUserForm extends Component
 
         if (!$this->form->isWorker) {
             $this->form->validate([
-                'officeId' => 'required|integer|exists:office,id',
-                'responsibleId' => 'required|integer|exists:users,id',
+                // 'officeId' => 'required|integer|exists:office,id',
+                //'responsibleId' => 'required|integer|exists:users,id',
+                'officeName' => 'required|string',
+                'responsibleName' => 'required|string',
                 'adviserAssignedId' => 'required|integer|exists:users,id',
                 'incentiveTypeTd' => 'required|integer|exists:component_option,id',
             ], [
-                'officeId.required' => 'El campo Oficina es obligatorio',
-                'responsibleId.required' => 'El campo Responsable es obligatorio',
+                // 'officeId.required' => 'El campo Oficina es obligatorio',
+                // 'responsibleId.required' => 'El campo Responsable es obligatorio',
+                'officeName.required' => 'El campo Oficina es obligatorio',
+                'responsibleName.required' => 'El campo Responsable es obligatorio',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
             ]);
@@ -108,7 +128,25 @@ class CreateUserForm extends Component
         DB::beginTransaction();
 
         try {
-            $user = User::create($this->form->getUserData());
+
+            $updates = array_merge($this->form->getUserData());
+            $updates['country_id'] = $this->selected_country->id;
+            if (!$this->form->isWorker) {
+                $office = Office::firstWhere([
+                    'name' => strtolower($this->form->officeName),
+                    'business_group_id' => $this->business_target,
+                ]);
+
+                if (!$office) {
+                    $office = Office::create([
+                        'name' => strtolower($this->form->officeName),
+                        'business_group_id' => $this->business_target,
+                    ]);
+                }
+                $updates['office_id'] = $office->id;
+            }
+
+            $user = User::create($updates);
 
             $role = Role::firstWhere('id', $this->form->getRoleId());
 
@@ -153,11 +191,13 @@ class CreateUserForm extends Component
         $roles = $this->userService->getRoles();
         $incentiveTypes = $this->userService->getIncentiveTypes();
         $advisers = User::where('isWorker', 1)->where('isActive', 1)->get();
+        $countries = Country::all();
         return view('livewire.user.create-user-form', compact([
             'documentTypes',
             'roles',
             'incentiveTypes',
-            'advisers'
+            'advisers',
+            'countries'
         ]));
     }
 }

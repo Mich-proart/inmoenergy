@@ -38,6 +38,12 @@ class EditPendingformalityModal extends Component
 
     }
 
+    public function setContractCompletionDate()
+    {
+        $date = $this->form->activation_date;
+        $this->form->contract_completion_date = date('Y-m-d', strtotime($date . ' +1 year'));
+    }
+
     private function executeSave()
     {
         DB::beginTransaction();
