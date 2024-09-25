@@ -159,7 +159,17 @@ class EditFormalityForm extends Component
     {
         $this->formValidation();
 
+        if ($this->isDuplicated()) {
+            $this->dispatch('checks', error: "Error al intentar editar el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
+        } else {
+            $this->executeUpdate();
+        }
 
+
+    }
+
+    private function executeUpdate()
+    {
         DB::beginTransaction();
 
         try {
@@ -340,6 +350,24 @@ class EditFormalityForm extends Component
                 ]
             );
         }
+    }
+
+    public function isDuplicated(): bool
+    {
+        $Formality = Formality::whereHas('client', function ($query) {
+            $query->where('id', $this->formality->client->id);
+        })->whereHas('service', function ($query) {
+            $query->where('id', $this->form->serviceIds[0]);
+        })->whereHas('address', function ($query) {
+            $query->where('id', $this->formality->address->id);
+        })->where('id', '!=', $this->formality->id);
+
+        if ($Formality->exists()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public function changeSameAddress()

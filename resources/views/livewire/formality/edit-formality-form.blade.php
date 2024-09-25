@@ -793,6 +793,16 @@
                 $('#documentTypeId').val(0);
             }
         })
-    })
+    });
+
+    $wire.on('checks', (e) => {
+        console.log(e);
+        Swal.fire({
+            confirmButtonColor: '#004a99',
+            icon: "error",
+            title: e.title,
+            text: e.error,
+        });
+    });
 </script>
 @endscript

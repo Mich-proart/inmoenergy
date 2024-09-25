@@ -6,6 +6,7 @@ use App\Livewire\Forms\Formality\FormalityCreate;
 use App\Models\Address;
 use App\Models\Client;
 use App\Models\Country;
+use App\Models\Formality;
 use Livewire\Component;
 use App\Exceptions\CustomException;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +68,6 @@ class CreateFormalityForm extends Component
         $this->userService = App::make(UserService::class);
         $this->formalityService = App::make(FormalityService::class);
         $this->addressService = App::make(AddressService::class);
-        $this->folder = uniqid() . '_' . now()->timestamp;
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
         $this->fileUploadigService = App::make(FileUploadigService::class);
@@ -254,21 +254,7 @@ class CreateFormalityForm extends Component
 
         $this->formValidation();
 
-
-
-        $address = Address::where('location_id', $this->form->locationId)
-            ->where('street_type_id', $this->form->streetTypeId)
-            ->where('housing_type_id', $this->form->housingTypeId)
-            ->where('street_name', $this->form->streetName)
-            ->where('street_number', $this->form->streetNumber)
-            ->where('zip_code', $this->form->zipCode)
-            ->where('block', $this->form->block)
-            ->where('block_staircase', $this->form->blockstaircase)
-            ->where('floor', $this->form->floor)
-            ->where('door', $this->form->door)
-            ->first();
-
-        if ($address) {
+        if ($this->isDuplicated()) {
             $this->dispatch('checks', error: "Error al intentar crear el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
         } else {
             $this->dispatch('load');
@@ -281,7 +267,7 @@ class CreateFormalityForm extends Component
     {
         DB::beginTransaction();
         try {
-
+            $this->folder = $this->getFolderName();
 
             if (in_array($this->fibra->id, $this->form->serviceIds)) {
                 $this->emailRequest();
@@ -332,7 +318,6 @@ class CreateFormalityForm extends Component
 
                 $file_inputs = $this->inputs->where('serviceId', null);
                 foreach ($file_inputs as $file_input) {
-                    $name = basename($file_input['file']->getClientOriginalName()) . '.' . now()->timestamp;
                     $this->fileUploadigService
                         ->setModel($client)
                         ->addFile($file_input['file'])
@@ -349,6 +334,33 @@ class CreateFormalityForm extends Component
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
+    }
+
+    public function isDuplicated(): bool
+    {
+        $address = Address::where('location_id', $this->form->locationId)
+            ->where('street_type_id', $this->form->streetTypeId)
+            ->where('housing_type_id', $this->form->housingTypeId)
+            ->where('street_name', $this->form->streetName)
+            ->where('street_number', $this->form->streetNumber)
+            ->where('zip_code', $this->form->zipCode)
+            ->where('block', $this->form->block)
+            ->where('block_staircase', $this->form->blockstaircase)
+            ->where('floor', $this->form->floor)
+            ->where('door', $this->form->door)
+            ->first();
+
+
+        if ($address) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function getFolderName(): string
+    {
+        return $this->form->name . ucfirst($this->form->firstLastName) . '_' . $this->form->documentNumber . '_' . date('Y-m-d');
     }
 
 

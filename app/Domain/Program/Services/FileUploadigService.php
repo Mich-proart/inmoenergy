@@ -43,9 +43,9 @@ class FileUploadigService
 
     public function saveFile(string $folder)
     {
-        $temp = explode('.', $this->file->getClientOriginalName())[0];
+        //$temp = explode('.', $this->file->getClientOriginalName())[0];
 
-        $name = $temp . '_' . uniqid() . uniqid();
+        $name = uniqid() . uniqid(); //$temp . '_' . uniqid() . uniqid();
         $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
         if ($this->file) {
@@ -68,9 +68,9 @@ class FileUploadigService
         if ($this->file) {
 
             if ($this->deleteFile($file_reference->folder, $file_reference->filename)) {
-                $temp = explode('.', $this->file->getClientOriginalName())[0];
+                // $temp = explode('.', $this->file->getClientOriginalName())[0];
 
-                $name = $temp . '_' . uniqid() . uniqid();
+                $name = uniqid() . uniqid(); // $temp . '_' . uniqid() . uniqid();
                 $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
 
                 $file_reference->update([
