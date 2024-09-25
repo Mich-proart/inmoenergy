@@ -275,8 +275,8 @@ class CreateFormalityForm extends Component
 
 
             if (count($this->form->serviceIds) > 0) {
-                $newDate = array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
-                $client = Client::create($newDate);
+                $newdata = array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
+                $client = Client::create($newdata);
                 $address = Address::create($this->form->getCreateAddressDto());
 
                 $this->createFormalityService->setClientId($client->id);
