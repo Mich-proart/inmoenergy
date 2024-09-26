@@ -97,4 +97,10 @@ class FileUploadigService
         }
     }
 
+
+    public function addExistingFile($file_reference)
+    {
+        $this->model->files()->attach($file_reference);
+    }
+
 }

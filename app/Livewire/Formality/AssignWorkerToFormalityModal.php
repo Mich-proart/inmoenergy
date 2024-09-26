@@ -22,6 +22,9 @@ class AssignWorkerToFormalityModal extends Component
 
     protected $formalityService;
 
+    public $files;
+
+
     public function __construct()
     {
         $this->formalityService = App::make(FormalityService::class);
@@ -78,6 +81,20 @@ class AssignWorkerToFormalityModal extends Component
 
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
+        }
+    }
+
+    public function getFiles($formality_id)
+    {
+
+        $formality = Formality::where('id', $formality_id)->with(
+            'files',
+            'files.config'
+        )->first();
+
+        if ($formality) {
+            $this->files = $formality->files;
+
         }
     }
 

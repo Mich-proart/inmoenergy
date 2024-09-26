@@ -19,10 +19,26 @@ class EditPendingformalityModal extends Component
 
     public $days_to_renew;
 
+    public $files;
+
     public function __construct()
     {
         $this->formalityService = App::make(FormalityService::class);
     }
+    public function getFiles($formality_id)
+    {
+
+        $formality = Formality::where('id', $formality_id)->with(
+            'files',
+            'files.config'
+        )->first();
+
+        if ($formality) {
+            $this->files = $formality->files;
+
+        }
+    }
+
     public FormalityPendingEdit $form;
 
     public function save()

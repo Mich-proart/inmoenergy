@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->morphs('fileable');
+            //$table->morphs('fileable');
             $table->string('name');
             $table->string('filename');
             $table->string('mime_type');

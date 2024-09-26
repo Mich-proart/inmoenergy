@@ -409,7 +409,7 @@
                             <label for="inputState">Población: </label>
                             <select wire:model="form.locationId"
                                 class="form-control @error('form.locationId') is-invalid @enderror" id="inputLocation"
-                                name="locationId">
+                                name="locationId" required>
                                 <option value="">-- seleccione --</option>
                                 @foreach ($this->locations as $location)
                                     <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -438,21 +438,7 @@
 
                 </section>
                 <section>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12" style="margin-top: 25px">
-                                <div class="form-check">
-                                    <input wire:model="form.is_same_address" wire:change="changeSameAddress"
-                                        class="form-check-input" type="checkbox" value="0" id="is_same_address">
-                                    <label class="form-check-label" for="invalidCheck2">
-                                        La dirección de correspondencia es la misma que la dirección de suministro.
-                                    </label>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div {{ $same_address ? 'hidden' : ''}}>
+                    <div>
                         <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
 
                             <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
@@ -579,7 +565,7 @@
                             <div class="col-md-3">
                                 <label for="inputState">Provincia: </label>
                                 <select wire:model.live="target_clientProvinceId" class="form-control"
-                                    id="inputProvince" {{ $same_address ? '' : 'required'}}>
+                                    id="client_inputProvince" {{ $same_address ? '' : 'required'}}>
                                     <option value="">-- seleccione --</option>
                                     @foreach ($this->clientProvinces as $province)
                                         @if ($province->region->name === $province->name)
@@ -649,55 +635,7 @@
                         </span>
                     </div>
                     <div class="form-group">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Concepto</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col text-center">Descargar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($files)
-                                    @foreach ($files as $file)
-                                        <tr class="table-light">
-                                            <td>{{ ucfirst($file->config->name) }}</td>
-                                            <td>{{ $file->filename }}</td>
-                                            <td class="text-center">
-                                                <a href="{{route('admin.documents.download', $file->id)}}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                                                        <path
-                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                @if ($formality_file)
-                                    @foreach ($formality_file as $file)
-                                        <tr class="table-light">
-                                            <td>{{ ucfirst($file->config->name) }}</td>
-                                            <td>{{ $file->filename }}</td>
-                                            <td class="text-center">
-                                                <a href="{{route('admin.documents.download', $file->id)}}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                                                        <path
-                                                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                        <x-view.files-items :files="$files" />
                         <section x-data="{ buttonDisabled: true, }">
                             <div class="form-group">
                                 <div class="row">
@@ -793,6 +731,20 @@
                 $('#documentTypeId').val(0);
             }
         })
+
+        $("#client_inputProvince").on("change", function () {
+            setTimeout(function () {
+                $("#client_locationId").val("");
+            }, 200);
+
+        });
+        $("#inputProvince").on("change", function () {
+            setTimeout(function () {
+                $("#inputLocation").val("");
+            }, 200);
+
+        });
+
     });
 
     $wire.on('checks', (e) => {

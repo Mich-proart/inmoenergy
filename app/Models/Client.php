@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Client extends Model
 {
@@ -50,9 +51,9 @@ class Client extends Model
         return $this->belongsTo(Address::class, 'address_id');
     }
 
-    public function files(): MorphMany
+    public function files(): MorphToMany
     {
-        return $this->morphMany(File::class, 'fileable');
+        return $this->morphToMany(File::class, 'fileable');
     }
 
     public function country(): BelongsTo

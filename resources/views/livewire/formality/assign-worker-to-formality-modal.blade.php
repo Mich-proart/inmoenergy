@@ -1,5 +1,26 @@
 <div>
     <div>
+        <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Archivos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <x-view.files-items :files="$files" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
         <div class="card card-primary card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
@@ -17,6 +38,7 @@
                             <th>N documento</th>
                             <th>Dirección</th>
                             <th>Observaciones del trámite</th>
+                            <th>Documentos</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -137,6 +159,12 @@
                 { data: 'documentNumber' },
                 { data: 'fullAddress' },
                 { data: 'observation' },
+                {
+                    data: 'formality_id', render: function (data, type, row, meta) {
+                        console.log(data)
+                        return `<button type="button" wire:click="getFiles(${data})" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"> <i class="far fa-file"></i></button>`
+                    }
+                },
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
