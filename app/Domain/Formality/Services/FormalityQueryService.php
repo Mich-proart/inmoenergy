@@ -21,6 +21,7 @@ class FormalityQueryService
             ->join('users as issuer', 'issuer.id', '=', 'formality.user_issuer_id')
             ->join('address', 'address.id', '=', 'formality.address_id')
             ->join('component_option as street_type', 'street_type.id', '=', 'address.street_type_id')
+            ->join('component_option as housing_type', 'housing_type.id', '=', 'address.housing_type_id')
             ->join('location', 'location.id', '=', 'address.location_id')
             ->join('province', 'province.id', '=', 'location.province_id')
             ->leftJoin('product', 'product.id', '=', 'formality.product_id')
@@ -42,6 +43,7 @@ class FormalityQueryService
                 'formality.isRenewable',
                 'formality.renewal_date',
                 'formality.assignment_date',
+                'formality.potency',
                 'issuer.name as issuer_name',
                 'status.name as status',
                 'service.name as service',
@@ -57,6 +59,7 @@ class FormalityQueryService
                 'client.document_number as documentNumber',
                 'address.*',
                 'street_type.name as street_type',
+                'housing_type.name as housing_type',
                 'location.name as location',
                 'province.name as province',
                 'company.name as company',
@@ -159,5 +162,18 @@ class FormalityQueryService
         $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
 
         return $queryBuilder->get();
+    }
+
+    public function getRenewable()
+    {
+
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder
+            ->where('isRenewable', true)
+            ->where('isRenovated', false)
+            ->whereNotNull('renewal_date')
+            ->where('renewal_date', '<=', date('Y-m-d'));
+        return $queryBuilder->get();
+
     }
 }
