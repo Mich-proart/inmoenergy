@@ -120,7 +120,7 @@ class ModifyTotalClosed extends Component
         if ($this->cancellation->create_new_one) {
 
             $this->cancellation->validate([
-                'assignedId' => 'required|integer|exists:user,id',
+                'assignedId' => 'required|integer|exists:users,id',
             ], [
                 'assignedId.required' => 'Debes seleccionar un trabajador',
                 'assignedId.integer' => 'Debes seleccionar un trabajador',
@@ -129,7 +129,7 @@ class ModifyTotalClosed extends Component
         }
 
         DB::beginTransaction();
-
+        dd($this->cancellation->assignedId);
         try {
 
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::BAJA->value);
@@ -156,6 +156,11 @@ class ModifyTotalClosed extends Component
     {
         $this->cancellation->reset();
         $this->cancellation->setData($this->formality);
+    }
+    public function resetCreateNew()
+    {
+        $this->cancellation->reset(['assignedId', 'isCritical']);
+
     }
 
 

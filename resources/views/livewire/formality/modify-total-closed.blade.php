@@ -250,7 +250,7 @@
                                                 @foreach ($this->workers as $worker)
                                                     <option value="{{ $worker->id }}">
                                                         {{ ucfirst($worker->name) . ' ' . ucfirst($worker->first_last_name) . '
-                                                                                                                                                                                                                                                                    ' . ucfirst($worker->second_last_name) }}
+                                                                                                                                                                                                                                                                                                                                                            ' . ucfirst($worker->second_last_name) }}
                                                     </option>
                                                 @endforeach
                                             @endif
@@ -277,7 +277,7 @@
                                 </div>
                             </section>
                         </section>
-
+                        <button wire:click="resetCreateNew" id="reset" hidden></button>
                         <div class="row no-print">
                             <div class="col-12">
                                 <div style="margin-top: 50px; margin-bottom: 25px">
@@ -354,6 +354,13 @@
                     $("#create_new_one").click();
                 }
             });
+
+            $("#create_new_one").click(function () {
+                if (!$(this).is(":checked")) {
+                    $("#reset").click();
+                }
+            });
+
         });
 
         $wire.on('checks', (e) => {
