@@ -158,8 +158,16 @@
                 { data: 'fullAddress' },
                 { data: 'company' },
                 { data: 'product' },
-                { data: 'annual_consumption' },
-                { data: 'potency' },
+                {
+                    data: 'annual_consumption', render: function (data, type, row, meta) {
+                        return formatEnglishToSpanishannual_consumption(data);
+                    }
+                },
+                {
+                    data: 'potency', render: function (data, type, row, meta) {
+                        return formatEnglishToSpanishPotency(data);
+                    }
+                },
                 { data: 'housing_type' },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {
@@ -178,7 +186,7 @@
             ],
             "columnDefs": [
                 { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
             ], "order": [
                 [1, "desc"]

@@ -127,11 +127,7 @@
                     },
                     {
                         data: 'isCritical', render: function (data, type, row, meta) {
-                            if (data !== 0) {
-                                return `<i class='fas fa-exclamation-circle' style='font-size:20px;color:red'></i>`;
-                            } else {
-                                return ``;
-                            }
+                            return criticalCode(data);
                         }
                     },
                     {

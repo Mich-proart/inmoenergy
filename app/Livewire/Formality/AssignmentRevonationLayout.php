@@ -23,6 +23,7 @@ class AssignmentRevonationLayout extends Component
 
     public bool $isCritical;
     public $user_assigned_id;
+    protected $formalityService;
 
     public function __construct()
     {

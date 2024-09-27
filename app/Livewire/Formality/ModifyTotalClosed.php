@@ -2,20 +2,27 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Services\FormalityService;
+use App\Livewire\Forms\Formality\FormalityCancel;
 use App\Livewire\Forms\Formality\FormalityModifyTotalClosed;
 use Illuminate\Support\Facades\App;
 use Livewire\Component;
 use App\Exceptions\CustomException;
 use DB;
 use App\Domain\Enums\ServiceEnum;
+use App\Models\User;
+use Livewire\Attributes\Computed;
 
 class ModifyTotalClosed extends Component
 {
     public FormalityModifyTotalClosed $form;
+    public FormalityCancel $cancellation;
     public $formality;
 
     protected $formalityService;
+
+
 
 
     public function __construct()
@@ -27,6 +34,14 @@ class ModifyTotalClosed extends Component
     {
         $this->formality = $formality;
         $this->form->setData($this->formality);
+        $this->cancellation->setData($this->formality);
+    }
+
+    #[Computed()]
+
+    public function workers()
+    {
+        return User::where('isWorker', true)->where('isActive', 1)->get();
     }
 
     public function setContractCompletionDate()
@@ -97,6 +112,52 @@ class ModifyTotalClosed extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
     }
+
+    public function cancelFormality()
+    {
+        $this->cancellation->validate();
+
+        if ($this->cancellation->create_new_one) {
+
+            $this->cancellation->validate([
+                'assignedId' => 'required|integer|exists:user,id',
+            ], [
+                'assignedId.required' => 'Debes seleccionar un trabajador',
+                'assignedId.integer' => 'Debes seleccionar un trabajador',
+                'assignedId.exists' => 'Debes seleccionar un trabajador existente',
+            ]);
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::BAJA->value);
+            $updates = array_merge(
+                $this->cancellation->getDataUpdate(),
+                [
+                    'status_id' => $status->id
+                ]
+            );
+
+            if ($this->formality) {
+                $this->formality->update($updates);
+            }
+            DB::commit();
+            return redirect()->route('admin.formality.total.closed');
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+    }
+
+    public function resetCancellation()
+    {
+        $this->cancellation->reset();
+        $this->cancellation->setData($this->formality);
+    }
+
 
     public function render()
     {

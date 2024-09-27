@@ -42,3 +42,44 @@ function isRenewableCode(data) {
         `;
     }
 }
+
+function criticalCode(isCritical) {
+    if (isCritical !== 0) {
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+</svg>`;
+    } else {
+        return ``;
+    }
+}
+
+function formatEnglishToSpanishPotency(number) {
+
+    if (number === null) {
+        return `kW 0,00`;
+    }
+    
+    let numberStr = number.toString();
+    
+    // Replace the decimal point with a comma
+    numberStr = numberStr.replace('.', ',');
+    
+    // Remove trailing zeros after the comma
+    numberStr = numberStr.replace(/,?0+$/, '');
+  
+    //return trimmedNumber;
+    return `kW ${numberStr}`;
+}
+
+function formatEnglishToSpanishannual_consumption(number) {
+
+    if (number === null) {
+        return `kW 0`;
+    }
+    
+    let numberStr = number.toString();
+  
+    //return trimmedNumber;
+    return `kW ${numberStr}`;
+}
