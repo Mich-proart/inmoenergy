@@ -6,6 +6,7 @@ use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Services\FormalityService;
 use App\Livewire\Forms\Formality\FormalityCancel;
 use App\Livewire\Forms\Formality\FormalityModifyTotalClosed;
+use App\Models\ComponentOption;
 use Illuminate\Support\Facades\App;
 use Livewire\Component;
 use App\Exceptions\CustomException;
@@ -113,6 +114,30 @@ class ModifyTotalClosed extends Component
         }
     }
 
+    public function attempCancel()
+    {
+        $this->cancellation->validate();
+
+        if ($this->cancellation->create_new_one) {
+
+            $this->cancellation->validate([
+                'assignedId' => 'required|integer|exists:users,id',
+            ], [
+                'assignedId.required' => 'Debes seleccionar un trabajador',
+                'assignedId.integer' => 'Debes seleccionar un trabajador',
+                'assignedId.exists' => 'Debes seleccionar un trabajador existente',
+            ]);
+        }
+
+        $this->cancellation->reason_cancellation = ComponentOption::firstWhere('id', $this->cancellation->reason_cancellation_id);
+        $this->dispatch('confirmation', target: 'cancel-confirmation');
+    }
+
+    public function attemptClose()
+    {
+        $this->dispatch('confirmation', target: 'closing-confirmation');
+    }
+
     public function cancelFormality()
     {
         $this->cancellation->validate();
@@ -129,7 +154,7 @@ class ModifyTotalClosed extends Component
         }
 
         DB::beginTransaction();
-        dd($this->cancellation->assignedId);
+
         try {
 
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::BAJA->value);

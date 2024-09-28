@@ -14,6 +14,8 @@ class FormalityCancel extends Form
     public $assignedId;
     public $create_new_one = 0;
 
+    public $reason_cancellation;
+
     protected $rules = [
         'reason_cancellation_id' => 'required|exists:component_option,id',
         'cancellation_observation' => 'sometimes|nullable|string',
