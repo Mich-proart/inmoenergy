@@ -36,6 +36,7 @@
                             <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
+                            <x-badge.status :status="$formality->status" />
                         </div>
                     </div>
                     <div class="row invoice-info">
@@ -317,13 +318,7 @@
 <script src="/vendor/custom/badge.code.js"></script>
 <script>
     $(document).ready(function () {
-        function statuscode(code) {
-            return statusColor(code);
-        }
-        $('#status').html(
-            `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
-            }`
-        );
+
     });
 </script>
 @stop

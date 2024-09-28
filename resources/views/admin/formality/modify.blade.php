@@ -31,6 +31,7 @@
                             <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
+                            <x-badge.status :status="$formality->status" />
                         </div>
                     </div>
                     <div class="row invoice-info">
@@ -418,13 +419,15 @@
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 <script>
     $(document).ready(function () {
+        /*
         function statuscode(code) {
             return statusColor(code);
         }
         $('#status').html(
-            `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
-            }`
+            `<label for="">Estado:</label> ${statuscode("{{-- {{$formality->status->name}} --}}")
+    }`
         );
+        */
     });
 </script>
 @stop
