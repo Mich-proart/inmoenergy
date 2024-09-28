@@ -61,4 +61,10 @@ class Client extends Model
         return $this->belongsTo(Country::class, 'country_id');
     }
 
+    public function telephone()
+    {
+        $code = $this->country ? '+' . $this->country->phone_code : '';
+        return $code . ' ' . $this->phone;
+    }
+
 }

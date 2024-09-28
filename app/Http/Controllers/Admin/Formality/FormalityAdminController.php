@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Formality;
 
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Services\FormalityService;
+use App\Domain\Formality\Services\FormatFormalityService;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Models\Formality;
@@ -168,13 +169,22 @@ class FormalityAdminController extends Controller
     public function getExtract()
     {
         $program = Program::where('name', 'extracción de trámites')->first();
-        return view('admin.formality.extract', ['program' => $program]);
+
+        $query = $this->formalityService->getQueryWithAll();
+        $userId = auth()->user()->id;
+        $query->whereHas('issuer', function ($query) use ($userId) {
+            $query->where('id', $userId);
+        });
+        $count = $query->count();
+
+        return view('admin.formality.extract', ['program' => $program, 'count' => $count]);
     }
 
     public function getData()
     {
         $program = Program::where('name', 'datos trámites inmoenergy')->first();
-        return view('admin.formality.data', ['program' => $program]);
+        $count = $this->formalityService->getQueryWithAll()->count();
+        return view('admin.formality.data', ['program' => $program, 'count' => $count]);
     }
 
     public function getTotalClosed()
@@ -419,6 +429,36 @@ class FormalityAdminController extends Controller
         return Response::make('', 200, $headers);
         */
     }
+
+    public function fetch()
+    {
+        $data = $this->formalityService->getQueryWithAll()->get();
+
+        $count = $this->formalityService->getQueryWithAll()->count();
+
+        $collection = FormatFormalityService::toArrayAll($data);
+
+        return Response::json(['formality' => $collection, 'count' => $count], 200);
+    }
+    public function fetchByIssuer()
+    {
+        $userId = auth()->user()->id;
+        $query = $this->formalityService->getQueryWithAll();
+
+        $query->whereHas('issuer', function ($query) use ($userId) {
+            $query->where('id', $userId);
+        });
+
+
+        $data = $query->get();
+        $count = $query->count();
+
+        $collection = FormatFormalityService::toArrayByIssuer($data);
+
+        return Response::json(['formality' => $collection, 'count' => $count], 200);
+    }
+
+
 
     public function exportExcel()
     {
