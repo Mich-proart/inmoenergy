@@ -180,7 +180,15 @@
         <div class="row no-print">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    @if (isset($this->from) && $this->from === 'total')
+                        <a href="{{ route('admin.formality.totalInProgress') }}">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </a>
+                    @else
+                        <a href="{{ route('admin.formality.assigned') }}">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </a>
+                    @endif
                     <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
                         Finalizar trámite</button>
                     <button wire:click="insertData" type="button" class="btn btn-primary float-right"

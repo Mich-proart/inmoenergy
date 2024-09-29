@@ -723,6 +723,19 @@
 
 
             })
+
+            $("#client_inputProvince").on("change", function () {
+                setTimeout(function () {
+                    $("#client_locationId").val("");
+                }, 200);
+
+            });
+            $("#inputProvince").on("change", function () {
+                setTimeout(function () {
+                    $("#inputLocation").val("");
+                }, 200);
+
+            });
         })
 
     </script>

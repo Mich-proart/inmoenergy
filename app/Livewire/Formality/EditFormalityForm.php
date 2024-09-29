@@ -96,8 +96,7 @@ class EditFormalityForm extends Component
         $this->fileSet = $this->formalityService->getFileById($this->formalityId);
 
         if ($this->fileSet) {
-            $this->formality_file = $this->fileSet->files;
-            $this->files = $this->fileSet->client->files;
+            $this->files = $this->fileSet->files;
             $this->mountFilesInput();
             $this->addInput($this->formality->service_id);
         }

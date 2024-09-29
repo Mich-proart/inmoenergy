@@ -20,13 +20,25 @@ class File extends Model
         'config_id'
     ];
 
+    /*
     public function fileable(): MorphTo
     {
         return $this->morphTo();
     }
+        */
 
     public function config(): BelongsTo
     {
         return $this->belongsTo(FileConfig::class, 'config_id');
+    }
+
+    public function formalities()
+    {
+        return $this->morphedByMany(Formality::class, 'fileable');
+    }
+
+    public function clients()
+    {
+        return $this->morphedByMany(Client::class, 'fileable');
     }
 }

@@ -154,7 +154,12 @@ class ModifyFormalityForm extends Component
             $data->update($updates);
 
             DB::commit();
-            return redirect()->route('admin.formality.completed');
+
+            if ($this->from == 'total') {
+                return redirect()->route('admin.formality.totalInProgress');
+            } else {
+                return redirect()->route('admin.formality.completed');
+            }
         } catch (\Throwable $th) {
 
             DB::rollBack();
@@ -182,7 +187,11 @@ class ModifyFormalityForm extends Component
 
 
             DB::commit();
-            return redirect()->route('admin.formality.completed');
+            if ($this->from == 'total') {
+                return redirect()->route('admin.formality.totalInProgress');
+            } else {
+                return redirect()->route('admin.formality.assigned');
+            }
         } catch (\Throwable $th) {
 
             DB::rollBack();

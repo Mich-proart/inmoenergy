@@ -31,6 +31,7 @@
                             <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
+                            <x-badge.status :status="$formality->status" />
                         </div>
                     </div>
                     <div class="row invoice-info">
@@ -50,7 +51,12 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tramite crítico:</label>
                             @if ($formality->isCritical != "0")
-                                <i class='fas fa-exclamation-circle' style='font-size:20px;color:red'></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                    class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path
+                                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                </svg>
                             @endif
 
                         </div>
@@ -413,13 +419,15 @@
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 <script>
     $(document).ready(function () {
+        /*
         function statuscode(code) {
             return statusColor(code);
         }
         $('#status').html(
-            `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
-            }`
+            `<label for="">Estado:</label> ${statuscode("{{-- {{$formality->status->name}} --}}")
+    }`
         );
+        */
     });
 </script>
 @stop

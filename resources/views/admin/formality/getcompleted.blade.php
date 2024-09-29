@@ -28,6 +28,7 @@
                             <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
+                            <x-badge.status :status="$formality->status" />
                         </div>
                     </div>
                     <div class="row invoice-info">
@@ -37,13 +38,11 @@
                             @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Renovación:</label>
-                            <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isRenewable)) onclick="return false;">
+                            <x-badge.renewable-label :isRenewable="$formality->isRenewable" />
                         </div>
 
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Tramite crítico:</label>
-                            <input type="checkbox" name="isCritical" id="" @checked(old('isCritical', $formality->isCritical)) onclick="return false;">
+                            <x-badge.critical-label :isCritical="$formality->isCritical" />
                         </div>
                     </div>
                 </div>
@@ -200,7 +199,7 @@
                                 {{ucfirst($address->location->province->name)}}
                             @else
                                 {{ $address->location->province->region->name }}, {{ $address->location->province->name }}
-                            @endif  @endif
+                            @endif @endif
                     </div>
                     <!-- location -->
                     <div class="col-md-3">
@@ -305,7 +304,7 @@
                                 @else
                                     {{ $CorrespondenceAddress->location->province->region->name }},
                                     {{ $CorrespondenceAddress->location->province->name }}
-                                @endif  @endif
+                                @endif @endif
                         </div>
 
                         <!-- client location -->
@@ -401,20 +400,26 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     $(document).ready(function () {
+        /*
         function statuscode(code) {
             return statusColor(code);
         }
         $('#status').html(
-            `<label for="">Estado:</label> ${statuscode("{{$formality->status->name}}")
+            `<label for="">Estado:</label> ${statuscode("{{-- {{$formality->status->name}} --}}")
             }`
         );
+        */
     });
 </script>
 @stop

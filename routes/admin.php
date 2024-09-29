@@ -29,6 +29,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/formality/completed', [FormalityApiController::class, 'getCompleted'])->name('api.formality.completed');
     Route::get('/formality/pending', [FormalityApiController::class, 'getPending'])->name('api.formality.pending');
     Route::get('/formality/assignment', [FormalityApiController::class, 'getAssignment'])->name('api.formality.assignment');
+    Route::get('/formality/assignment/renovation', [FormalityApiController::class, 'getRenewable'])->name('api.formality.assignment.renovation');
     Route::get('/formality/total/inprogress', [FormalityApiController::class, 'getTotalInprogress'])->name('api.formality.totalInprogress');
     Route::get('/formality/total/closed', [FormalityApiController::class, 'getTotalClosed'])->name('api.formality.totalClosed');
 
@@ -73,6 +74,8 @@ Route::prefix('formality')->group(function () {
     Route::get('/export/csv', [FormalityAdminController::class, 'exportCSV'])->name('admin.formality.exportCSV');
     Route::get('/export/issuer/csv', [FormalityAdminController::class, 'exportByIssuerCSV'])->name('admin.formality.issuer.exportCSV');
     Route::get('/export/excel', [FormalityAdminController::class, 'exportExcel'])->name('admin.formality.exportExcel');
+    Route::get('/fetch', [FormalityAdminController::class, 'fetch'])->name('admin.formality.fetch');
+    Route::get('/fetch/issuer', [FormalityAdminController::class, 'fetchByIssuer'])->name('admin.formality.fetch.issuer');
 });
 
 Route::prefix('users')->group(function () {

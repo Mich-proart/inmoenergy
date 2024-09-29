@@ -66,6 +66,10 @@ class HomeController extends Controller
                     $formality = $this->formalityQueryService->getAssignedNull();
                     $program->count = count($formality);
                 }
+                if ($program->name == 'asignación renovaciones') {
+                    $formality = $this->formalityQueryService->getRenewable();
+                    $program->count = count($formality);
+                }
                 if ($program->name == 'trámites en curso totales') {
                     $formality = $this->formalityQueryService->getTotalInProgress();
                     $program->count = count($formality);

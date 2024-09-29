@@ -162,6 +162,7 @@ class FormalityService
                 'client.clientType',
                 'client.documentType',
                 'client.title',
+                'client.country',
                 'issuer',
                 'assigned',
                 'address',

@@ -13,24 +13,18 @@ class AssignedLayout extends Component
     }
 
     public $files;
-    public $formality_file;
 
     public function getFiles($formality_id)
     {
 
         $formality = Formality::where('id', $formality_id)->with(
             'files',
-            'files.config',
-            'client',
-            'client.files',
-            'client.files.config'
+            'files.config'
         )->first();
 
         if ($formality) {
-            $this->formality_file = $formality->files;
+            $this->files = $formality->files;
 
         }
-
-        $this->files = $formality->client->files;
     }
 }

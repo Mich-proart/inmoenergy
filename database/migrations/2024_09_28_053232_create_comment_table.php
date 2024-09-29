@@ -10,14 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('comment', function (Blueprint $table) {
             $table->id();
-            //$table->morphs('fileable');
-            $table->string('name');
-            $table->string('filename');
-            $table->string('mime_type');
-            $table->string('folder');
-            $table->foreignId('config_id')->nullable()->constrained('component_option');
+            $table->foreignId('user_id')->constrained('users');
+            $table->morphs('commentable');
+            $table->boolean('is_available')->default(true);
+            $table->text('body');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('comment');
     }
 };

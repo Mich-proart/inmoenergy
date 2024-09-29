@@ -134,17 +134,269 @@
         <div class="row no-print">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{{ route('admin.formality.total.closed') }}">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </a>
                     <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
                         Finalizar trámite</button>
                     <button wire:click="insertData" type="button" class="btn btn-primary float-right"
                         style="margin-right: 10px"><i class="far fa-save"></i>
                         Guardar datos</button>
+                    @empty($formality->reasonCancellation)
+                        <button type="button" class="btn btn-danger float-right" style="margin-right: 10px"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="cancel_formality_btn"> <svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                            </svg>
+                            Baja contrato
+                        </button>
+                    @endempty
                 </div>
             </div>
         </div>
     </form>
+    <div>
+        <!-- Button trigger modal -->
+
+
+        <!-- Modal -->
+        <div wire:ignore.self class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Baja de contrato</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputState">Fecha de finalización: </label>
+                                <input wire:model="cancellation.contract_completion_date" type="date"
+                                    class="form-control @error('cancellation.contract_completion_date') is-invalid @enderror"
+                                    id="inputCity" name="contract_completion_date">
+                                @error('cancellation.contract_completion_date')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputState">Motivo de baja: </label>
+                                <select wire:model="cancellation.reason_cancellation_id"
+                                    class="form-control @error('cancellation.reason_cancellation_id') is-invalid @enderror"" id="
+                                    inputProvince">
+                                    <option value="">-- seleccione --</option>
+                                    @isset ($reasonCancellation)
+                                        @foreach ($reasonCancellation as $option)
+                                            <option value="{{ $option->id }}">
+                                                {{ ucfirst($option->name) }}
+                                            </option>
+                                        @endforeach
+                                    @endisset
+                                </select>
+                                @error('cancellation.reason_cancellation_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div style="margin-top: 30px; margin-bottom: 10px">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Observaciones de baja</label>
+                                        <textarea wire:model="cancellation.cancellation_observation"
+                                            class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                            name="cancellation_observation"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <section x-data="{ newOne: true, }">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <div class="form-check">
+                                        <input wire:model="cancellation.create_new_one" class="form-check-input"
+                                            type="checkbox" value="0" id="create_new_one" x-on:click="newOne = !newOne">
+                                        <label class="form-check-label" for="invalidCheck2">
+                                            Dar de alta nuevo trámite para este sumistro
+                                        </label>
+                                        @error('days_to_renew')
+                                            <div class="form-row">
+                                                <span class="text-danger">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <section x-show="!newOne">
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Asignar usuario: </label>
+                                        <select wire:model="cancellation.assignedId"
+                                            class="form-control @error('cancellation.assignedId') is-invalid @enderror"
+                                            id="assignedId" required>
+                                            <option value="">-- seleccione --</option>
+                                            @if ($this->workers->count() > 0)
+                                                @foreach ($this->workers as $worker)
+                                                    <option value="{{ $worker->id }}">
+                                                        {{ ucfirst($worker->name) . ' ' . ucfirst($worker->first_last_name) . '
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ' . ucfirst($worker->second_last_name) }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        @error('cancellation.assignedId')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <div class="form-check">
+                                            <input wire:model="cancellation.isCritical" class="form-check-input"
+                                                type="checkbox" value="0" id="isCritical">
+                                            <label class="form-check-label" for="invalidCheck2">
+                                                Trámite Crítico
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </section>
+                        <button wire:click="resetCreateNew" id="reset" hidden></button>
+                        <div class="row no-print">
+                            <div class="col-12">
+                                <div style="margin-top: 50px; margin-bottom: 25px">
+                                    <div class="">
+                                        <button wire:click="attemptClose" type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button wire:click="attempCancel" type="button"
+                                            class="btn btn-success float-right"><i class="far fa-save"></i>
+                                            Dar de baja</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden
+                id="cancellation_confirmation">
+                confirmation cancel
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Seguro que quieres dar de
+                                baja el contrato?</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <label for="inputZip">Suministro: </label>
+                                    {{ucfirst($formality->service->name)}}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputState">Fecha de finalización: </label>
+                                    @empty(!$cancellation->contract_completion_date)
+                                        {{$cancellation->contract_completion_date}}
+                                    @endempty
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputState">Motivo baja: </label>
+                                    @empty(!$cancellation->reason_cancellation)
+                                        {{ucfirst($cancellation->reason_cancellation->name)}}
+                                    @endempty
+                                </div>
+                            </div>
+                            @if ($cancellation->create_new_one)
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Trámite: </label>
+                                        {{ucfirst('nuevo trámite')}}
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Trámite Crítico: </label>
+                                        @if ($cancellation->isCritical)
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                <path
+                                                    d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                            </svg>
+                                        @endif
+                                    </div>
+
+                                </div>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"
+                                class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <button wire:click="cancelFormality" type="button" class="btn btn-primary">Si</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#closingConfirmation"
+                hidden id="closing_confirmation">
+                cancel
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="closingConfirmation" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="closingConfirmationLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="closingConfirmationLabel">¿Seguro que quieres cancelar la
+                                baja?</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row no-print">
+                                <div class="col-12">
+                                    <div style="margin-top: 50px; margin-bottom: 25px">
+                                        <button wire:click="resetCancellation" id="cancel_formality_close_down_btn"
+                                            type="button" class="btn btn-primary float-right" style="margin-right: 10px"
+                                            data-bs-dismiss="modal">Si</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"
+                                            class="btn btn-secondary float-right" data-bs-dismiss="modal"
+                                            style="margin-right: 10px">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     @script
     <script>
 
@@ -193,6 +445,19 @@
                     event.preventDefault();
                 }
             });
+
+            $("#cancel_formality_close_btn, #cancel_formality_close_down_btn").click(function () {
+                if ($("#create_new_one").is(":checked")) {
+                    $("#create_new_one").click();
+                }
+            });
+
+            $("#create_new_one").click(function () {
+                if (!$(this).is(":checked")) {
+                    $("#reset").click();
+                }
+            });
+
         });
 
         $wire.on('checks', (e) => {
@@ -204,6 +469,22 @@
                 text: e.error,
             });
         });
+
+        $wire.on('confirmation', (e) => {
+            console.log('confirmation')
+            if (e.target === 'cancel-confirmation') {
+                $('#cancellation_confirmation').click();
+            } else if (e.target === 'closing-confirmation') {
+                $('#closing_confirmation').click();
+            } else {
+
+            }
+        });
     </script>
     @endscript
+    <style>
+        .swal2-container {
+            z-index: 100000;
+        }
+    </style>
 </div>

@@ -1,4 +1,25 @@
 <div>
+    <div>
+        <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Archivos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <x-view.files-items :files="$files" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div wire:ignore.self class="modal fade" id="koModal" tabindex="-1" aria-labelledby="koModalLabel"
         aria-hidden="true">
@@ -62,6 +83,7 @@
                             <th>Consumo anual</th>
                             <th>CUPS</th>
                             <th>Opciones</th>
+                            <th>Documentos</th>
                         </tr>
                     </thead>
 
@@ -239,7 +261,13 @@
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
                         `;
                     }
-                }
+                },
+                {
+                    data: 'formality_id', render: function (data, type, row, meta) {
+                        console.log(data)
+                        return `<button type="button" wire:click="getFiles(${data})" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"> <i class="far fa-file"></i></button>`
+                    }
+                },
             ],
             "columnDefs": [
 

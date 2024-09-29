@@ -29,15 +29,16 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Oficina usuario</th>
-                            <th>Grupo empresarial</th>
-                            <th>Cliente emisor</th>
-                            <th>Fecha de entrada</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>N documento</th>
+                            <th>CUPS</th>
                             <th>Dirección</th>
-                            <th>Observaciones del trámite</th>
+                            <th>Compañía Suministro</th>
+                            <th>Producto Compañía</th>
+                            <th>Consumo anual</th>
+                            <th>Potencia</th>
+                            <th>Tipo de vivienda</th>
                             <th>Documentos</th>
                             <th hidden>Optiones</th>
                         </tr>
@@ -57,7 +58,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="editRenovationModalLabel">Asignación de usuario
+                        <h1 class="modal-title fs-5" id="editRenovationModalLabel">Renovación
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -137,28 +138,37 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: `Asignación de trámites - ${new Date()}`
+                    title: `Asignación renovaciones - ${new Date()}`
                 }
             ],
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.assignment')}}",
+                "url": "{{route('api.formality.assignment.renovation')}}",
                 "type": "GET"
             },
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'office' },
-                { data: 'business_group' },
-                { data: 'issuer' },
-                { data: 'created_at' },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'documentNumber' },
+                { data: 'CUPS' },
                 { data: 'fullAddress' },
-                { data: 'observation' },
+                { data: 'company' },
+                { data: 'product' },
+                {
+                    data: 'annual_consumption', render: function (data, type, row, meta) {
+                        return formatEnglishToSpanishannual_consumption(data);
+                    }
+                },
+                {
+                    data: 'potency', render: function (data, type, row, meta) {
+                        return formatEnglishToSpanishPotency(data);
+                    }
+                },
+                { data: 'housing_type' },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {
                         console.log(data)
@@ -175,9 +185,9 @@
                 }
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
             ], "order": [
                 [1, "desc"]
             ],

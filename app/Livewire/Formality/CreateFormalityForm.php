@@ -96,6 +96,14 @@ class CreateFormalityForm extends Component
             $this->selected_country = $country;
         }
 
+        $clientProvince = $this->addressService->getProvinces();
+        $key = $clientProvince->where('name', 'Barcelona')->first();
+
+        if ($key) {
+            $this->target_provinceId = $key->id;
+        }
+
+
     }
 
     public function changeCountry($id)
@@ -153,11 +161,7 @@ class CreateFormalityForm extends Component
     public function clientProvinces()
     {
         $clientProvince = $this->addressService->getProvinces();
-        $key = $clientProvince->where('name', 'Barcelona')->first();
 
-        if ($key) {
-            $this->target_provinceId = $key->id;
-        }
 
         return $clientProvince;
     }
@@ -297,6 +301,16 @@ class CreateFormalityForm extends Component
                 $this->createFormalityService->setCorrespondenceAddressId($clientAddres->id);
                 $client->update(['address_id' => $clientAddres->id]);
 
+
+                $file_inputs = $this->inputs->where('serviceId', null);
+                foreach ($file_inputs as $file_input) {
+                    $this->fileUploadigService
+                        ->setModel($client)
+                        ->addFile($file_input['file'])
+                        ->setConfigId($file_input['configId'])
+                        ->saveFile($this->folder);
+                }
+
                 foreach ($this->form->serviceIds as $serviceId) {
 
 
@@ -312,18 +326,12 @@ class CreateFormalityForm extends Component
                             ->setConfigId($object['configId'])
                             ->saveFile($this->folder);
 
+                        $this->fileUploadigService->addExistingFile($client->files);
                     }
 
                 }
 
-                $file_inputs = $this->inputs->where('serviceId', null);
-                foreach ($file_inputs as $file_input) {
-                    $this->fileUploadigService
-                        ->setModel($client)
-                        ->addFile($file_input['file'])
-                        ->setConfigId($file_input['configId'])
-                        ->saveFile($this->folder);
-                }
+
             }
 
 
