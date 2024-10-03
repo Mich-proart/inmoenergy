@@ -25,6 +25,18 @@ class TicketAdminController extends Controller
         $program = Program::where('name', 'tickets pendientes')->first();
         return view('admin.ticket.pending', ['program' => $program]);
     }
+    public function edit(int $id)
+    {
+        $program = Program::where('name', 'tickets pendientes')->first();
+
+        $ticket = $this->ticketService->getById($id);
+
+        if (!$ticket) {
+            return view('admin.error.notFound');
+        }
+
+        return view('admin.ticket.edit', ['program' => $program, 'ticket' => $ticket]);
+    }
 
     public function getAssigned()
     {

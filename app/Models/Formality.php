@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\Money;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -131,5 +132,10 @@ class Formality extends Model
     public function getCommision()
     {
         return (string) $this->commission->getAmount();
+    }
+
+    public function getCreateAtFormatted()
+    {
+        return $this->created_at->format('Y-m-d H:i:s');
     }
 }

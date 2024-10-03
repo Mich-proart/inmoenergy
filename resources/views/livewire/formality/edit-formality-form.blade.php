@@ -3,7 +3,7 @@
         <div class="mt-3 mr-3">
             <div class="col-12 ">
                 <h4>
-                    <small class="float-right"><button class="btn btn-primary btn-sm">Nuevo ticket</button></small>
+                    @livewire('ticket.get-ticket-modal', ['formality' => $formality])
                 </h4>
             </div>
         </div>

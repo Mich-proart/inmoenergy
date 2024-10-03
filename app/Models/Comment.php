@@ -21,13 +21,12 @@ class Comment extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function commentable(): MorphTo
+    public function tickets()
     {
-        return $this->morphTo();
+        return $this->morphedByMany(Ticket::class, 'commentable');
     }
-
 
 }

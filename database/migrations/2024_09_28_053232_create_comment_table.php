@@ -13,10 +13,14 @@ return new class extends Migration {
         Schema::create('comment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->morphs('commentable');
             $table->boolean('is_available')->default(true);
             $table->text('body');
             $table->timestamps();
+        });
+
+        Schema::create('commentables', function (Blueprint $table) {
+            $table->foreignId('comment_id')->constrained('comment');
+            $table->morphs('commentable');
         });
     }
 
