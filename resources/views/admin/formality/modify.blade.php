@@ -14,7 +14,7 @@
         <div class="mt-3 mr-3">
             <div class="col-12 ">
                 <h4>
-                    <small class="float-right"><button class="btn btn-primary btn-sm">Nuevo ticket</button></small>
+                    @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.modify', 'from' => 'admin.dashboard', 'checkStatus' => true])
                 </h4>
             </div>
         </div>
@@ -413,6 +413,7 @@
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

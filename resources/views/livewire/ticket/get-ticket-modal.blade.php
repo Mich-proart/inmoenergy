@@ -40,7 +40,8 @@
                         <tbody>
                             @isset ($tickets)
                                 @foreach ($tickets as $item)
-                                    <tr data-value="{{ $item->id }}" class="table-light" style="cursor: pointer;">
+                                    <tr wire:click="process({{ $item->id }})" data-value="{{ $item->id }}" class="table-light"
+                                        style="cursor: pointer;">
                                         <td>
                                             <p class="text-center fs-6">
                                                 {{ $item->created_at }}
@@ -80,20 +81,52 @@
             </div>
         </div>
     </div>
+
+    <button hidden id="warningModalBtn" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+        data-bs-target="#warningModal">
+        warningModal
+    </button>
+    <div wire:ignore.self class="modal fade" id="warningModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Quieres abrir este ticket? Al abrir iniciará
+                        su proceso de resolución.</h1>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#getTicketModel">No</button>
+                    <button type="button" class="btn btn-primary" wire:click="startProcess">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.table-light').click(function () {
+            $('.table-lightt').click(function () {
 
                 const id = $(this).data('value');
 
-                let url = "{{ route('admin.ticket.edit', ':id') }}".replace(':id', id);
+                let url = "{{ route($to, ':id') }}".replace(':id', id);
                 url = new URL(url);
                 let params = new URLSearchParams(url.search);
-                params.set('from', 'admin.formality.inprogress');
+                params.set('from', "{{$from}}");
                 url.search = params.toString();
                 window.location.href = url.toString();
             });
         })
     </script>
+    @script
+    <script>
+
+        $wire.on('approve', (e) => {
+
+            $('#warningModalBtn').click();
+        });
+    </script>
+    @endscript
 </div>

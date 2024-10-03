@@ -83,4 +83,18 @@ class TicketAdminController extends Controller
         }
 
     }
+    public function modify(int $id, Request $request)
+    {
+        $from = $request->query('from');
+        //$program = Program::where('name', 'tickets pendientes')->first();
+
+        $ticket = $this->ticketService->getById($id);
+
+        if (!$ticket) {
+            return view('admin.error.notFound');
+        }
+
+        return view('admin.ticket.modify', ['ticket' => $ticket, 'from' => $from]);
+
+    }
 }

@@ -102,6 +102,14 @@
                 </div>
             </div>
         </div>
+    @else
+        <div class="row no-print px-3">
+            <div class="col-12">
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <button class="btn btn-secondary">cerrado</button>
+                </div>
+            </div>
+        </div>
     @endif
 </div>
 </div>

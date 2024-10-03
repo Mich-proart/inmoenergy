@@ -3,7 +3,7 @@
         <div class="mt-3 mr-3">
             <div class="col-12 ">
                 <h4>
-                    @livewire('ticket.get-ticket-modal', ['formality' => $formality])
+                    @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.edit', 'from' => 'admin.formality.inprogress', 'checkStatus' => false])
                 </h4>
             </div>
         </div>
