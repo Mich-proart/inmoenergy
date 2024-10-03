@@ -27,7 +27,7 @@
                                     </div>
                                     <div>
                                         <h6 class="fw-bold mb-1">
-                                            {{ucfirst($comment->user->name . ' ' . $comment->user->last_name . ' ' . $comment->user->second_last_name)}}
+                                            {{ucfirst($comment->user->name . ' ' . $comment->user->first_last_name . ' ' . $comment->user->second_last_name)}}
                                         </h6>
                                         <div class="d-flex align-items-center mb-3">
                                             <p class="mb-0">
