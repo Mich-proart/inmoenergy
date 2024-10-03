@@ -19,9 +19,12 @@ class EditTicketForm extends Component
 
     public $body;
 
-    public function mount($ticket)
+    public $from = null;
+
+    public function mount($ticket, $from = null)
     {
         $this->ticket = $ticket;
+        $this->from = $from;
     }
 
     public function save()
@@ -54,7 +57,12 @@ class EditTicketForm extends Component
 
             DB::commit();
 
-            return redirect()->route('admin.dashboard');
+
+            if ($this->from != null) {
+                return redirect()->route($this->from);
+            } else {
+                return redirect()->route('admin.ticket.pending');
+            }
 
         } catch (\Throwable $th) {
 

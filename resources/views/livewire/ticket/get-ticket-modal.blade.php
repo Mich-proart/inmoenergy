@@ -84,9 +84,15 @@
     <script>
         $(document).ready(function () {
             $('.table-light').click(function () {
+
                 const id = $(this).data('value');
-                window.location.href = "{{ route('admin.ticket.edit', ':id') }}".replace(':id', id);
-                console.log(id);
+
+                let url = "{{ route('admin.ticket.edit', ':id') }}".replace(':id', id);
+                url = new URL(url);
+                let params = new URLSearchParams(url.search);
+                params.set('from', 'admin.formality.inprogress');
+                url.search = params.toString();
+                window.location.href = url.toString();
             });
         })
     </script>

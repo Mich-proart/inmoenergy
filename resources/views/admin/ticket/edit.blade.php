@@ -147,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-                @livewire('ticket.edit-ticket-form', ['ticket' => $ticket])
+                @livewire('ticket.edit-ticket-form', ['ticket' => $ticket, 'from' => $from])
 
             </div>
 
