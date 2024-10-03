@@ -14,7 +14,9 @@
         <div class="mt-3 mr-3">
             <div class="col-12 ">
                 <h4>
-                    @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.modify', 'from' => 'admin.dashboard', 'checkStatus' => true])
+                    <div>
+                        @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.modify', 'from' => 'admin.dashboard', 'checkStatus' => true])
+                    </div>
                 </h4>
             </div>
         </div>

@@ -248,7 +248,7 @@
                                                 @foreach ($this->workers as $worker)
                                                     <option value="{{ $worker->id }}">
                                                         {{ ucfirst($worker->name) . ' ' . ucfirst($worker->first_last_name) . '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ' . ucfirst($worker->second_last_name) }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ' . ucfirst($worker->second_last_name) }}
                                                     </option>
                                                 @endforeach
                                             @endif
@@ -293,68 +293,75 @@
                 </div>
             </div>
         </div>
-        <div>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" hidden
-                id="cancellation_confirmation">
-                confirmation cancel
-            </button>
+    </div>
+    <div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Seguro que quieres dar de
-                                baja el contrato?</h1>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-row">
-                                <div class="col-md-12">
-                                    <label for="inputZip">Suministro: </label>
-                                    {{ucfirst($formality->service->name)}}
-                                </div>
+
+        <div>
+            <div>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    hidden id="cancellation_confirmation">
+                    confirmation cancel
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">¿Seguro que quieres dar de
+                                    baja el contrato?</h1>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="inputState">Fecha de finalización: </label>
-                                    @empty(!$cancellation->contract_completion_date)
-                                        {{$cancellation->contract_completion_date}}
-                                    @endempty
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <label for="inputZip">Suministro: </label>
+                                        {{ucfirst($formality->service->name)}}
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputState">Motivo baja: </label>
-                                    @empty(!$cancellation->reason_cancellation)
-                                        {{ucfirst($cancellation->reason_cancellation->name)}}
-                                    @endempty
-                                </div>
-                            </div>
-                            @if ($cancellation->create_new_one)
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="inputState">Trámite: </label>
-                                        {{ucfirst('nuevo trámite')}}
+                                        <label for="inputState">Fecha de finalización: </label>
+                                        @empty(!$cancellation->contract_completion_date)
+                                            {{$cancellation->contract_completion_date}}
+                                        @endempty
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="inputState">Trámite Crítico: </label>
-                                        @if ($cancellation->isCritical)
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                                class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                                <path
-                                                    d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
-                                            </svg>
-                                        @endif
+                                        <label for="inputState">Motivo baja: </label>
+                                        @empty(!$cancellation->reason_cancellation)
+                                            {{ucfirst($cancellation->reason_cancellation->name)}}
+                                        @endempty
                                     </div>
-
                                 </div>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"
-                                class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                            <button wire:click="cancelFormality" type="button" class="btn btn-primary">Si</button>
+                                @if ($cancellation->create_new_one)
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputState">Trámite: </label>
+                                            {{ucfirst('nuevo trámite')}}
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="inputState">Trámite Crítico: </label>
+                                            @if ($cancellation->isCritical)
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
+                                                    class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                    <path
+                                                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                                </svg>
+                                            @endif
+                                        </div>
+
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="modal-footer">
+                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"
+                                    class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button wire:click="cancelFormality" type="button" class="btn btn-primary">Si</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -384,8 +391,7 @@
                                             type="button" class="btn btn-primary float-right" style="margin-right: 10px"
                                             data-bs-dismiss="modal">Si</button>
                                         <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"
-                                            class="btn btn-secondary float-right" data-bs-dismiss="modal"
-                                            style="margin-right: 10px">No</button>
+                                            class="btn btn-secondary float-right" style="margin-right: 10px">No</button>
                                     </div>
                                 </div>
                             </div>

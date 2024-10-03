@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users');
             $table->boolean('is_available')->default(true);
             $table->text('body');
+            $table->boolean('isResolutionComment')->default(false);
             $table->timestamps();
         });
 

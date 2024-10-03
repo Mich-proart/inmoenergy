@@ -23,7 +23,6 @@ class Ticket extends Model
         'ticket_description',
         'resolution_date',
         'isResolved',
-        'resolution_comment',
         'assignment_date'
     ];
 

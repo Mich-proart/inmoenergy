@@ -86,7 +86,7 @@ class TicketAdminController extends Controller
     public function modify(int $id, Request $request)
     {
         $from = $request->query('from');
-        //$program = Program::where('name', 'tickets pendientes')->first();
+        $program = Program::where('name', operator: 'tickets asignados')->first();
 
         $ticket = $this->ticketService->getById($id);
 
@@ -94,7 +94,7 @@ class TicketAdminController extends Controller
             return view('admin.error.notFound');
         }
 
-        return view('admin.ticket.modify', ['ticket' => $ticket, 'from' => $from]);
+        return view('admin.ticket.modify', ['ticket' => $ticket, 'from' => $from, 'program' => $program]);
 
     }
 }

@@ -13,7 +13,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Tickets asociados</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -87,11 +87,11 @@
         warningModal
     </button>
     <div wire:ignore.self class="modal fade" id="warningModal" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Quieres abrir este ticket? Al abrir iniciará
+                    <h1 class="modal-title fs-5" id="warningModalLabel">¿Quieres abrir este ticket? Al abrir iniciará
                         su proceso de resolución.</h1>
 
                 </div>

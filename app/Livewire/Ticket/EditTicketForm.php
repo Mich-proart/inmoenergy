@@ -76,7 +76,9 @@ class EditTicketForm extends Component
 
         $comments = Comment::with(['user'])->whereHas('tickets', function ($query) {
             $query->where('id', $this->ticket->id);
-        })->orderBy('created_at', 'desc')->paginate(3);
+        })
+            ->where('isResolutionComment', false)
+            ->orderBy('created_at', 'desc')->paginate(3);
         return view('livewire.ticket.edit-ticket-form', ['comments' => $comments]);
     }
 }

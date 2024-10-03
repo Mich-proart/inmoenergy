@@ -33,6 +33,8 @@ class TicketService
             'formality.service',
             'formality.address',
             'formality.address.streetType',
+            'formality.address.location',
+            'formality.address.location.province',
         ])->firstWhere('id', $id);
     }
 
