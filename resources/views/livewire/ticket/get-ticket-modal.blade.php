@@ -81,29 +81,6 @@
             </div>
         </div>
     </div>
-
-    <button hidden id="warningModalBtn" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-        data-bs-target="#warningModal">
-        warningModal
-    </button>
-    <div wire:ignore.self class="modal fade" id="warningModal" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="warningModalLabel">¿Quieres abrir este ticket? Al abrir iniciará
-                        su proceso de resolución.</h1>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#getTicketModel">No</button>
-                    <button type="button" class="btn btn-primary" wire:click="startProcess">Si</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -124,8 +101,20 @@
     <script>
 
         $wire.on('approve', (e) => {
-
-            $('#warningModalBtn').click();
+            Swal.fire({
+                title: "¿Quieres abrir este ticket?",
+                text: "Al abrir iniciará su proceso de resolución.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "si",
+                cancelButtonText: "no"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $wire.dispatch('startProcess');
+                }
+            });
         });
     </script>
     @endscript

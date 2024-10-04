@@ -11,6 +11,7 @@ use App\Domain\Ticket\Services\TicketService;
 use Illuminate\Support\Facades\App;
 use DB;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class GetTicketModal extends Component
 {
@@ -56,6 +57,7 @@ class GetTicketModal extends Component
         }
     }
 
+    #[On('startProcess')]
     public function startProcess()
     {
 
