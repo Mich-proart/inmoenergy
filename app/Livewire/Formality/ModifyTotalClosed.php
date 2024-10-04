@@ -8,6 +8,7 @@ use App\Livewire\Forms\Formality\FormalityCancel;
 use App\Livewire\Forms\Formality\FormalityModifyTotalClosed;
 use App\Models\ComponentOption;
 use Illuminate\Support\Facades\App;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Exceptions\CustomException;
 use DB;
@@ -130,14 +131,15 @@ class ModifyTotalClosed extends Component
         }
 
         $this->cancellation->reason_cancellation = ComponentOption::firstWhere('id', $this->cancellation->reason_cancellation_id);
-        $this->dispatch('confirmation', target: 'cancel-confirmation');
+        $this->dispatch('cancel-confirmation');
     }
 
     public function attemptClose()
     {
-        $this->dispatch('confirmation', target: 'closing-confirmation');
+        $this->dispatch('closing-confirmation');
     }
 
+    #[On('cancelFormality')]
     public function cancelFormality()
     {
         $this->cancellation->validate();
@@ -177,6 +179,7 @@ class ModifyTotalClosed extends Component
         }
     }
 
+    #[On('resetCancellation')]
     public function resetCancellation()
     {
         $this->cancellation->reset();
