@@ -143,4 +143,25 @@ class TicketApiController extends Controller
             })
             ->toJson(true);
     }
+
+    public function getTotalClosed()
+    {
+        $ticket = $this->ticketQueryService->getTotalClosed();
+
+        return DataTables::of($ticket)
+            ->setRowAttr(['align' => 'center'])
+            ->setRowId(function ($ticket) {
+                return $ticket->ticket_id;
+            })
+            ->addColumn('fullName', function ($ticket) {
+                return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
+            })
+            ->addColumn('fullAddress', function ($ticket) {
+                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+            })
+            ->addColumn('issuer', function ($ticket) {
+                return $ticket->issuer_name . ' ' . $ticket->issuer_firstLastName . ' ' . $ticket->issuer_secondLastName;
+            })
+            ->toJson(true);
+    }
 }

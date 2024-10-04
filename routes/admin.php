@@ -39,6 +39,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/ticket/resolved/worker', [TicketApiController::class, 'getResolvedWorker'])->name('api.ticket.resolved.worker');
     Route::get('/ticket/assigned', [TicketApiController::class, 'getAssigned'])->name('api.ticket.assigned');
     Route::get('/ticket/total/pending', [TicketApiController::class, 'getTotalPending'])->name('api.ticket.total.pending');
+    Route::get('/ticket/total/closed', [TicketApiController::class, 'getTotalClosed'])->name('api.ticket.total.closed');
     Route::get('/ticket/assignment', [TicketApiController::class, 'getAssignment'])->name('api.ticket.assignment');
 
 
