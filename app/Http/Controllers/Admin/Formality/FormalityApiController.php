@@ -11,6 +11,7 @@ class FormalityApiController extends Controller
 {
     public function __construct(private readonly FormalityQueryService $formalityQueryService)
     {
+        $this->middleware('auth');
     }
 
 

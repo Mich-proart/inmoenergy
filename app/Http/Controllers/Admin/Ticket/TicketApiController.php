@@ -11,6 +11,7 @@ class TicketApiController extends Controller
 {
     public function __construct(private readonly TicketQueryService $ticketQueryService)
     {
+        $this->middleware('auth');
     }
 
     public function getPending()
