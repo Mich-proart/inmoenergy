@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class ToolAdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function getStatisticsClient()
     {
         $program = Program::where('name', 'estadísticas por cliente')->first();

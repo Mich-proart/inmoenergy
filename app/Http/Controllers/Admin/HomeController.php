@@ -20,6 +20,7 @@ class HomeController extends Controller
         private readonly FormalityQueryService $formalityQueryService,
         private readonly TicketQueryService $ticketQueryService
     ) {
+        $this->middleware('auth');
     }
 
     public function index()

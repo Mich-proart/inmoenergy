@@ -13,6 +13,7 @@ class CompanyAdminController extends Controller
     public function __construct(
 
     ) {
+        $this->middleware('auth');
         $this->middleware('can:manage.company.access')->only('index', 'details');
         $this->middleware('can:manage.product.access')->only('getProducts');
     }

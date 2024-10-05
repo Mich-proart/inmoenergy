@@ -15,6 +15,7 @@ class ComponentAdminController extends Controller
     public function __construct(
         private readonly ComponentService $componentService
     ) {
+        $this->middleware('auth');
         $this->middleware('can:document.authorization.access')->only('docsAuth');
         $this->middleware('can:document.changeTitle.access')->only('docsChange');
         $this->middleware('can:config.dropdown.access')->only('index', 'details', 'buinessDetails', 'docsManager', 'getBusinnesGroup');
