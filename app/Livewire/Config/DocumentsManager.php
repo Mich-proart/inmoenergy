@@ -4,6 +4,7 @@ namespace App\Livewire\Config;
 
 use App\Domain\Program\Services\FileUploadigService;
 use App\Exceptions\CustomException;
+use App\Models\File;
 use App\Models\Program;
 use App\Models\Section;
 use Illuminate\Support\Collection;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\App;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use DB;
+use Livewire\Attributes\On;
 
 
 class DocumentsManager extends Component
@@ -23,6 +25,8 @@ class DocumentsManager extends Component
     public $programs;
 
     private FileUploadigService $fileUploadigService;
+
+    public File $selected_file_to_delete;
 
     public function render()
     {
@@ -42,6 +46,34 @@ class DocumentsManager extends Component
 
         $section = Section::where('name', 'documentación')->with('programs')->first();
         $this->programs = $section->programs;
+    }
+
+    public function requestDelete($id)
+    {
+        $this->selected_file_to_delete = File::find($id);
+
+        if ($this->selected_file_to_delete) {
+            $this->dispatch('delete-confirmation');
+        }
+    }
+
+    #[On('deleteFile')]
+    public function deleteFile()
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $this->fileUploadigService->removeFile($this->selected_file_to_delete);
+
+            DB::commit();
+            return redirect()->route('admin.config.documents');
+
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
     }
 
 
