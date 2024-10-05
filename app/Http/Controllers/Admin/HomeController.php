@@ -103,6 +103,10 @@ class HomeController extends Controller
                     $ticket = $this->ticketQueryService->getAssignment();
                     $program->count = count($ticket);
                 }
+                if ($program->name == 'tickets cerrados totales') {
+                    $ticket = $this->ticketQueryService->getTotalClosed();
+                    $program->count = count($ticket);
+                }
             }
         }
 

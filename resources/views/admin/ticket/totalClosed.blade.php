@@ -81,7 +81,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{route('api.ticket.total.pending')}}",
+            "url": "{{route('api.ticket.total.closed')}}",
             "type": "GET",
         },
         "language": {
@@ -111,7 +111,7 @@
 
     $('#ticket-content').on('click', 'tbody tr', function () {
         const row = table.row(this).data();
-        console.log(row);
+        window.location.href = "{{ route('admin.ticket.view', ':id') }}".replace(':id', row.ticket_id);
     })
 
 
