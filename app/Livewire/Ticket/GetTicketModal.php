@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\App;
 use DB;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\Auth;
 
 class GetTicketModal extends Component
 {
@@ -28,9 +30,35 @@ class GetTicketModal extends Component
 
     protected $ticketService;
 
+    public $title;
+    public $description;
+    public $ticketTypeId;
+
+    public Status $defaultStatus;
+
+    public $issuer;
+
+    protected $rules = [
+        'title' => 'required|string|min:8',
+        'ticketTypeId' => 'required|exists:component_option,id',
+        'description' => 'required|string|min:8'
+    ];
+
+    protected $messages = [
+        'title.required' => 'Valor requerido',
+        'title.string' => 'Valor invalido',
+        'title.min' => 'Debe ser al menos de 8 caracteres',
+        'ticketTypeId.required' => 'Valor requerido',
+        'ticketTypeId.exists' => 'Valor invalido',
+        'description.required' => 'Valor requerido',
+        'description.string' => 'Valor invalido',
+        'description.min' => 'Debe ser al menos de 8 caracteres',
+    ];
+
     public function __construct()
     {
         $this->ticketService = App::make(TicketService::class);
+        $this->defaultStatus = Status::where('name', TicketStatusEnum::PENDIENTE->value)->first();
 
     }
 
@@ -77,6 +105,57 @@ class GetTicketModal extends Component
         }
     }
 
+    #[Computed()]
+    public function types()
+    {
+        return $this->ticketService->getTicketTypes();
+    }
+
+    public function getDataTicket()
+    {
+        return [
+            'user_issuer_id' => Auth::user()->id,
+            'formality_id' => $this->formality->id,
+            'ticket_title' => strtolower($this->title),
+            'ticket_description' => strtolower($this->description),
+            'ticket_type_id' => $this->ticketTypeId,
+            'status_id' => $this->defaultStatus->id
+        ];
+    }
+
+    public function createTicket()
+    {
+        $this->validate();
+
+
+        if ($this->formality == null) {
+
+        } else {
+            DB::beginTransaction();
+
+            try {
+
+                Ticket::create($this->getDataTicket());
+
+                DB::commit();
+                $this->dispatch('notification-created', title: "Ticket creado con exito");
+
+            } catch (\Throwable $th) {
+
+                DB::rollBack();
+                throw CustomException::badRequestException($th->getMessage());
+            }
+
+        }
+
+    }
+
+    public function resetCreateTicket()
+    {
+        $this->reset(['title', 'description', 'ticketTypeId']);
+        $this->resetValidation(['title', 'description', 'ticketTypeId']);
+    }
+
     public function render()
     {
 
@@ -85,6 +164,7 @@ class GetTicketModal extends Component
             ->whereHas('status', function ($query) {
                 $query->where('name', '!=', TicketStatusEnum::RESUELTO->value);
             })
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         return view('livewire.ticket.get-ticket-modal', ['tickets' => $tickets]);
     }

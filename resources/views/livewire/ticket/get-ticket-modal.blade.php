@@ -77,6 +77,83 @@
                             {{ $tickets->links('components.pagination') }}
                         @endif
                     </div>
+                    <div class="row no-print px-3">
+                        <div class="col-12">
+                            <div style="margin-top: 10px; margin-bottom: 10px">
+                                <button type="button" class="btn float-right btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#createNewTicketModal">
+                                    Nuevo ticket
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <!-- Button trigger modal -->
+
+
+        <!-- Modal -->
+        <div wire:ignore.self class="modal fade" id="createNewTicketModal" tabindex="-1" data-bs-backdrop="static"
+            data-bs-keyboard="false" aria-labelledby="createNewTicketModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="createNewTicketModalLabel">Nuevo ticket</h1>
+                        <button wire:click="resetCreateTicket" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="form-group">
+                                <label for="inputZip">Título: </label>
+                                <input wire:model="title" type="text"
+                                    class="form-control @error('title') is-invalid @enderror" name="title" id="title">
+                                @error('title')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="inputZip">Tipo: </label>
+                                @if (isset($this->types))
+                                    @foreach ($this->types as $item)
+                                        <div class="form-check form-check-inline">
+                                            <input wire:model="ticketTypeId" class="form-check-input" type="radio" id=""
+                                                name="ticketTypeId" value="{{ $item->id }}">
+                                            <label class="form-check-label" for="">{{ ucfirst($item->name) }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            @error('ticketTypeId')
+                                <p class="text-danger">
+                                    <strong>{{ $message }}</strong>
+                                </p>
+                            @enderror
+                            <div style="margin-top: 50px; margin-bottom: 25px">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Descripción</label>
+                                    <textarea wire:model="description"
+                                        class="form-control  @error('description') is-invalid @enderror"
+                                        id="exampleFormControlTextarea1" rows="3" name="observation"></textarea>
+                                    @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button wire:click="resetCreateTicket" type="button" class="btn btn-secondary"
+                            id="createTicketModalClose" data-bs-dismiss="modal">Cerrar</button>
+                        <button wire:click="createTicket" type="button" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,6 +193,19 @@
                 }
             });
         });
+
+        $wire.on('notification-created', (e) => {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: e.title,
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+            $('#createTicketModalClose').click();
+        });
+
     </script>
     @endscript
 </div>
