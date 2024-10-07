@@ -27,7 +27,11 @@
                     <small class="float-right"><button wire:click="resetName" type="button"
                             class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
-                            <i class="far fa-plus-square"></i> Crear opción</button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                                class="bi bi-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                            </svg> Crear opción</button>
                     </small>
                 </h4>
                 @endrole
@@ -71,11 +75,11 @@
                                                 @checked($option->is_available)>
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <button type="button" wire:click="editoption({{ $option->id }})"
                                             class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal">
-                                            <i class="fas fa-edit"></i></button>
+                                            <i class="fas fa-pencil-alt"></i> editar</button>
 
                                     </div>
                                 </div>
