@@ -246,7 +246,7 @@
                                                 @foreach ($this->workers as $worker)
                                                     <option value="{{ $worker->id }}">
                                                         {{ ucfirst($worker->name) . ' ' . ucfirst($worker->first_last_name) . '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ' . ucfirst($worker->second_last_name) }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ' . ucfirst($worker->second_last_name) }}
                                                     </option>
                                                 @endforeach
                                             @endif
@@ -293,7 +293,6 @@
         </div>
     </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     @script
     <script>
 
@@ -401,9 +400,4 @@
         });
     </script>
     @endscript
-    <style>
-        .swal2-container {
-            z-index: 100000;
-        }
-    </style>
 </div>
