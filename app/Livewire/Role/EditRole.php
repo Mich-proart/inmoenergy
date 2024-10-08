@@ -97,40 +97,44 @@ class EditRole extends Component
 
         try {
 
-            if ($this->roleName != $this->role->name) {
-                $this->role->update([
-                    'name' => strtolower($this->roleName),
-                ]);
-            }
+            if ($this->role->name !== "superadmin") {
+                if ($this->roleName != $this->role->name) {
+                    $this->role->update([
+                        'name' => strtolower($this->roleName),
+                    ]);
+                }
 
-            $added = array_filter($this->programIds, [$this, 'isAdded']);
-            $removed = array_filter($this->roleProgramsIds, [$this, 'isRemoved']);
+                $added = array_filter($this->programIds, [$this, 'isAdded']);
+                $removed = array_filter($this->roleProgramsIds, [$this, 'isRemoved']);
 
-            if (count($added) > 0) {
-                foreach ($added as $id) {
-                    $program = Program::where('id', $id)->with('permissions')->first();
-                    if ($program) {
-                        $program->roles()->attach($this->role);
-                        $this->role->givePermissionTo($program->permissions);
+                if (count($added) > 0) {
+                    foreach ($added as $id) {
+                        $program = Program::where('id', $id)->with('permissions')->first();
+                        if ($program) {
+                            $program->roles()->attach($this->role);
+                            $this->role->givePermissionTo($program->permissions);
+                        }
+                    }
+
+                }
+
+
+                if (count($removed) > 0) {
+                    foreach ($removed as $id) {
+                        $program = $this->getProgram($id);
+                        if ($program) {
+                            $program->roles()->detach($this->role);
+                            $this->role->revokePermissionTo($program->permissions);
+                        }
                     }
                 }
 
+
+                DB::commit();
+                return redirect()->route('admin.roles.index');
+
             }
 
-
-            if (count($removed) > 0) {
-                foreach ($removed as $id) {
-                    $program = $this->getProgram($id);
-                    if ($program) {
-                        $program->roles()->detach($this->role);
-                        $this->role->revokePermissionTo($program->permissions);
-                    }
-                }
-            }
-
-
-            DB::commit();
-            return redirect()->route('admin.roles.index');
 
         } catch (\Throwable $th) {
 
