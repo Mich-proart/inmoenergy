@@ -6,9 +6,12 @@ use Livewire\Component;
 use App\Exceptions\CustomException;
 use App\Models\ComponentOption;
 use DB;
+use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class EditComponentOptions extends Component
 {
+    use WithPagination;
 
     public $component;
     public $name;
@@ -63,6 +66,27 @@ class EditComponentOptions extends Component
 
     }
 
+    #[On('changeAvailability')]
+    public function changeAvailability($id)
+    {
+        DB::beginTransaction();
+        $option = ComponentOption::find($id);
+        try {
+
+            if ($option !== null) {
+                $option->update(['is_available' => !$option->is_available]);
+                DB::commit();
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+
+    }
+
+    #[On('resetName')]
     public function resetName()
     {
         $this->name = null;
@@ -71,6 +95,7 @@ class EditComponentOptions extends Component
 
     public function render()
     {
-        return view('livewire.config.edit-component-options');
+        $options = ComponentOption::where('component_id', $this->component->id)->paginate(5);
+        return view('livewire.config.edit-component-options', ['options' => $options]);
     }
 }

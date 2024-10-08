@@ -91,7 +91,7 @@
             { data: 'name' },
             {
                 data: 'id', render: function (data) {
-                    return `<button type="button" class="btn btn-sm btn-primary"">editar</button>`
+                    return `<button type="button" class="btn btn-sm btn-primary""><i class="fas fa-pencil-alt"></i> editar</button>`
                 }
             },
 

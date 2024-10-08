@@ -41,4 +41,8 @@ class File extends Model
     {
         return $this->morphedByMany(Client::class, 'fileable');
     }
+    public function programs()
+    {
+        return $this->morphedByMany(Program::class, 'fileable');
+    }
 }

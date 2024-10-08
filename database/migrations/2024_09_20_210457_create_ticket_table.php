@@ -22,7 +22,6 @@ return new class extends Migration {
             $table->timestamp('resolution_date')->nullable();
             $table->timestamp('assignment_date')->nullable();
             $table->boolean('isResolved')->default(false);
-            $table->text('resolution_comment')->nullable();
             $table->timestamps();
         });
     }

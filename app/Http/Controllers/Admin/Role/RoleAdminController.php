@@ -12,6 +12,7 @@ class RoleAdminController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware('can:manage.role.access');
     }
 

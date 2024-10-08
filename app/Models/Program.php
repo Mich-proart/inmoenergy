@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasPermissions;
@@ -26,9 +27,9 @@ class Program extends Model
 
     public $count = 0;
 
-    public function files(): MorphMany
+    public function files(): MorphToMany
     {
-        return $this->morphMany(File::class, 'fileable');
+        return $this->morphToMany(File::class, 'fileable');
     }
 
 

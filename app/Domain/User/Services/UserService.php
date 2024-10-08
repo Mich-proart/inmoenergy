@@ -77,12 +77,12 @@ class UserService
     public function getClientTypes()
     {
         $component = $this->getComponent('client_type');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
     public function getIncentiveTypes()
     {
         $component = $this->getComponent('incentive_type');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
     public function getRoles()
     {
@@ -92,13 +92,13 @@ class UserService
     public function getDocumentTypes()
     {
         $component = $this->getComponent('document_type');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
 
     public function getUserTitles()
     {
         $component = $this->getComponent('user_title');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
 
     public function addFile($file)

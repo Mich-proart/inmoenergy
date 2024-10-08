@@ -21,18 +21,18 @@ class FormalityService
     public function getFormalityTypes()
     {
         $component = $this->getComponent('formality_type');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
 
     public function getServices()
     {
         $component = $this->getComponent('service');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
     public function getReasonCancellation()
     {
         $component = $this->getComponent('reason_cancellation');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
 
     public function getServiceByName(string|null $name = null)

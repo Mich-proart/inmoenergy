@@ -12,7 +12,19 @@ class ResolvedLayoutModal extends Component
 
     public function getInfo($ticketId)
     {
-        $this->ticket = Ticket::with(['formality', 'status'])->firstWhere('id', $ticketId);
+        $this->ticket = Ticket::with([
+            'issuer',
+            'assigned',
+            'type',
+            'status',
+            'formality',
+            'formality.client',
+            'formality.service',
+            'formality.address',
+            'formality.address.streetType',
+            'formality.address.location',
+            'formality.address.location.province',
+        ])->firstWhere('id', $ticketId);
     }
 
     public function render()

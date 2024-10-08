@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Ticket extends Model
 {
@@ -22,7 +23,6 @@ class Ticket extends Model
         'ticket_description',
         'resolution_date',
         'isResolved',
-        'resolution_comment',
         'assignment_date'
     ];
 
@@ -49,6 +49,11 @@ class Ticket extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(ComponentOption::class, 'ticket_type_id');
+    }
+
+    public function comments(): MorphToMany
+    {
+        return $this->morphToMany(Comment::class, 'commentable');
     }
 
 }

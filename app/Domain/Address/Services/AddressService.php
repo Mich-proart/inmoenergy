@@ -35,7 +35,7 @@ class AddressService
     public function getHousingTypes()
     {
         $component = $this->getComponent('housing_type');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
 
     public function getLocations(int $provinceId)
@@ -49,7 +49,7 @@ class AddressService
     public function getStreetTypes()
     {
         $component = $this->getComponent('street_type');
-        return ComponentOption::whereBelongsTo($component)->get();
+        return ComponentOption::whereBelongsTo($component)->where('is_available', true)->get();
     }
 
     public function createAddress(CreateAddressDto $dto)

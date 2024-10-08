@@ -30,7 +30,7 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Usuario asignado: </label> @if (isset($ticket->assigned))
-                                {{$ticket->assigned->name}} {{ " " . $ticket->assigned->last_name}}
+                                {{$ticket->assigned->name}} {{ " " . $ticket->assigned->first_last_name}}
                                 {{ " " . $ticket->assigned->second_last_name}}
                             @endif
                         </div>
@@ -38,6 +38,7 @@
                             <label for="">Fecha de entrada:</label> {{$ticket->created_at}}
                         </div>
                         <div id="status" class="col-sm-4 invoice-col">
+                            <x-badge.status :status="$ticket->status" />
                         </div>
                     </div>
 
@@ -49,6 +50,9 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Fecha resolución ticket:</label>
                             {{ucfirst($ticket->resolution_date)}}
+                        </div>
+                        <div id="status" class="col-sm-4 invoice-col">
+                            <x-badge.resolved-ticket-label :isResolved="$ticket->isResolved" />
                         </div>
                     </div>
 
@@ -192,9 +196,9 @@
                 </div>
 
             </div>
+            @livewire('ticket.get-comments', ['ticket' => $ticket])
         </div>
     </div>
-
 </div>
 @stop
 
@@ -204,20 +208,21 @@
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
 <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     $(document).ready(function () {
         function statuscode(code) {
             return statusColor(code);
         }
-        $('#status').html(
-            `<label for="">Estado:</label> ${statuscode("{{$ticket->status->name}}")
-            }`
-        );
+
     });
 </script>
 @stop

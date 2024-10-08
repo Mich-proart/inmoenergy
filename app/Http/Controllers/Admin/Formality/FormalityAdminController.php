@@ -19,6 +19,7 @@ class FormalityAdminController extends Controller
     public function __construct(
         private readonly FormalityService $formalityService
     ) {
+        $this->middleware('auth');
         $this->middleware('can:formality.create')->only('create');
         $this->middleware('can:formality.inprogress.access')->only('getInProgress', 'edit', 'get');
         $this->middleware('can:formality.closed.access')->only('getClosed', 'get');

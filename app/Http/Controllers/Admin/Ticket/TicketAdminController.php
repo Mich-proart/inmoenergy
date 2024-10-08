@@ -13,6 +13,15 @@ class TicketAdminController extends Controller
     public function __construct(
         private readonly TicketService $ticketService
     ) {
+        $this->middleware('auth');
+        $this->middleware('can:ticket.create')->only('create');
+        $this->middleware('can:ticket.pending.access')->only('getPending', 'edit');
+        $this->middleware('can:ticket.resolved.access')->only('getResolved', 'getView');
+        $this->middleware('can:ticket.resolved.access.worker')->only('getResolvedWorker');
+        $this->middleware('can:ticket.assigned.access')->only('getAssigned', 'modify');
+        $this->middleware('can:ticket.total.closed.access')->only('getTotalClosed', 'getView');
+        $this->middleware('can:ticket.assignment.access')->only('getAssignment');
+        $this->middleware('can:ticket.total.pending.access')->only('getTotalPending', 'modify');
     }
 
     public function create()
@@ -24,6 +33,19 @@ class TicketAdminController extends Controller
     {
         $program = Program::where('name', 'tickets pendientes')->first();
         return view('admin.ticket.pending', ['program' => $program]);
+    }
+    public function edit(int $id, Request $request)
+    {
+        $from = $request->query('from');
+        $program = Program::where('name', 'tickets pendientes')->first();
+
+        $ticket = $this->ticketService->getById($id);
+
+        if (!$ticket) {
+            return view('admin.error.notFound');
+        }
+
+        return view('admin.ticket.edit', ['program' => $program, 'ticket' => $ticket, 'from' => $from]);
     }
 
     public function getAssigned()
@@ -68,6 +90,20 @@ class TicketAdminController extends Controller
         } else {
             return view('admin.error.notFound');
         }
+
+    }
+    public function modify(int $id, Request $request)
+    {
+        $from = $request->query('from');
+        $program = Program::where('name', operator: 'tickets asignados')->first();
+
+        $ticket = $this->ticketService->getById($id);
+
+        if (!$ticket) {
+            return view('admin.error.notFound');
+        }
+
+        return view('admin.ticket.modify', ['ticket' => $ticket, 'from' => $from, 'program' => $program]);
 
     }
 }

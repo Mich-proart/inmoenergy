@@ -20,6 +20,7 @@ class HomeController extends Controller
         private readonly FormalityQueryService $formalityQueryService,
         private readonly TicketQueryService $ticketQueryService
     ) {
+        $this->middleware('auth');
     }
 
     public function index()
@@ -101,6 +102,10 @@ class HomeController extends Controller
                 }
                 if ($program->name == 'asignación de tickets') {
                     $ticket = $this->ticketQueryService->getAssignment();
+                    $program->count = count($ticket);
+                }
+                if ($program->name == 'tickets cerrados totales') {
+                    $ticket = $this->ticketQueryService->getTotalClosed();
                     $program->count = count($ticket);
                 }
             }

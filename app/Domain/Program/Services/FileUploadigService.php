@@ -103,4 +103,18 @@ class FileUploadigService
         $this->model->files()->attach($file_reference);
     }
 
+    public function removeFile(File $file_reference)
+    {
+        $programs = $file_reference->programs()->get();
+
+        foreach ($programs as $program) {
+            $program->files()->detach($file_reference);
+        }
+        if ($this->deleteFile($file_reference->folder, $file_reference->filename)) {
+            $file_reference->delete() ? true : false;
+        } else {
+            return false;
+        }
+    }
+
 }

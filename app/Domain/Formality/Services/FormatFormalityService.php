@@ -12,7 +12,7 @@ class FormatFormalityService
             return [
                 'código trámite' => $item->id,
                 'cliente emisor trámite' => isset($item->issuer) ? $item->issuer->name . ' ' . $item->issuer->first_last_name . ' ' . $item->issuer->second_last_name : '',
-                'fecha y hora entrada trámite' => isset($item->created_at) ? $item->created_at : '',
+                'fecha y hora entrada trámite' => isset($item->created_at) ? $item->getCreateAtFormatted() : '',
                 'usuario asignado' => isset($item->assigned) ? $item->assigned->name . ' ' . $item->assigned->first_last_name . ' ' . $item->assigned->second_last_name : '',
                 'fecha y hora asignación' => isset($item->assignment_date) ? $item->assignment_date : '',
                 'tipo trámite' => isset($item->type) ? $item->type->name : '',
@@ -72,7 +72,7 @@ class FormatFormalityService
     {
         $test = $set->map(function ($item) {
             return [
-                'fecha y hora entrada trámite' => isset($item->created_at) ? $item->created_at : '',
+                'fecha y hora entrada trámite' => isset($item->created_at) ? $item->getCreateAtFormatted() : '',
                 'tipo trámite' => isset($item->type) ? $item->type->name : '',
                 'suministro' => isset($item->service) ? $item->service->name : '',
                 'tipo cliente' => isset($item->client->clientType) ? $item->client->clientType->name : '',

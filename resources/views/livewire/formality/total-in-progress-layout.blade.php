@@ -48,32 +48,6 @@
             </div>
 
         </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" id="tigger_modal" data-bs-toggle="modal"
-            data-bs-target="#exampleModal" hidden>
-            Launch demo modal
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Mensaje</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="fw-bold"> ¿Quieres abrir este trámite? Al abrir iniciará su proceso de tramitación.
-                        </p>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary" id="trigger_formality">Si</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div>
@@ -157,14 +131,22 @@
                     window.location.href = url;
                     return;
                 }
-                $('#tigger_modal').click();
+                Swal.fire({
+                    title: "¿Quieres abrir este trámite?",
+                    text: "Al abrir iniciará su proceso de tramitación.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "si",
+                    cancelButtonText: "no"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let url = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id) + "?" + queryParams;
+                        window.location.href = url;
+                    }
+                });
             })
-
-            $('#trigger_formality').on('click', function () {
-                let url = "{{ route('admin.formality.modify', ':id') }}".replace(':id', formality_id) + "?" + queryParams;
-                window.location.href = url;
-            })
-
 
         </script>
     </div>

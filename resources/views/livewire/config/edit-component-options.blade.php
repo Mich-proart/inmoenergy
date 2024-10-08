@@ -18,7 +18,7 @@
             </section>
         </div>
     </div>
-    <div wire:ignore class="card card-primary card-outline">
+    <div class="card card-primary card-outline">
 
         <div class="mt-3 mr-3">
             <div class="col-12 ">
@@ -27,24 +27,73 @@
                     <small class="float-right"><button wire:click="resetName" type="button"
                             class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
-                            <i class="far fa-plus-square"></i> Crear opción</button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                                class="bi bi-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                            </svg> Crear opción</button>
                     </small>
                 </h4>
                 @endrole
 
             </div>
         </div>
-        <div class="card-body table-responsive p-0">
-            <table id="options-content" class="table table-hover text-nowrap" style="cursor:pointer">
-                <thead>
-                    <tr>
-                        <th>Nombre de opciones</th>
-                        <th>Opciones</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
 
+
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th scope="col text-center">
+                        <p class="text-center fs-6">Nombre de opciones</p>
+                    </th>
+                    <th scope="col text-center">
+                        <p class="text-center fs-6">Estado</p>
+                    </th>
+                    <th scope="col text-center">
+                        <p class="text-center fs-6">Opciones</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @isset ($options)
+                    @foreach ($options as $option)
+                        <tr class="table-light">
+                            <td class="text-center">{{ ucfirst($option->name) }}</td>
+                            <td class="text-center">
+                                @if ($option->is_available)
+                                    <span class="custom-badge operative">activo</span>
+                                @else
+                                    <span class="custom-badge ko">deshabilitado</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <div class="row justify-content-center">
+                                    <div class="col-2">
+                                        <div class="form-check form-switch">
+                                            <input wire:change="changeAvailability({{ $option->id }})" class="form-check-input"
+                                                type="checkbox" role="switch" id="flexSwitchCheckChecked_{{ $option->id }}"
+                                                @checked($option->is_available)>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" wire:click="editoption({{ $option->id }})"
+                                            class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">
+                                            <i class="fas fa-pencil-alt"></i> editar</button>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endisset
+            </tbody>
+        </table>
+        <div>
+            @if (count($options) > 0)
+                {{ $options->links('components.pagination') }}
+            @endif
+        </div>
     </div>
     <div>
 
@@ -95,42 +144,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-
-    <script>
-        const table = new DataTable('#options-content', {
-            "processing": true,
-            "serverSide": true,
-            "ajax": {
-                "url": "{{route('api.component.options.query')}}",
-                "type": "GET",
-                "data": {
-                    "componentId": {{$component->id}}
-                }
-            },
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
-            },
-            "columns": [
-                { data: 'name' },
-                {
-                    data: "id", render: function (data, type, row, meta) {
-                        return `
-                            <button type="button" wire:click="editoption(${data})" class="btn btn-primary float-right btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <i class="fas fa-edit"></i></button>
-                        `;
-                    }
-                }
-
-            ],
-            "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1] },
-                { className: "text-capitalize", targets: [0, 1] }
-            ],
-            "order": [
-                [0, "desc"]
-            ],
-        });
-
-    </script>
-
 </div>

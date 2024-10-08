@@ -13,7 +13,7 @@
                             <div class="row invoice-info">
                                 <div class="col-sm-4 invoice-col">
                                     <label for="">Nombre rol: </label>
-                                    <input wire:model="roleName" type="text"
+                                    <input @disabled($role->name == 'superadmin') wire:model="roleName" type="text"
                                         class="form-control @error('roleName') is-invalid @enderror" id="inputCity"
                                         name="name">
                                     @error('roleName')
@@ -34,7 +34,8 @@
                                         @foreach ($section->programs as $program)
                                             <div class="form-check">
                                                 <input wire:model="programIds" class="form-check-input" type="checkbox"
-                                                    value="{{ $program->id }}" name="programIds[]" id="defaultCheck1">
+                                                    value="{{ $program->id }}" name="programIds[]" id="defaultCheck1"
+                                                    @disabled($role->name == 'superadmin')>
                                                 <label class="form-check-label" for="defaultCheck1">
                                                     {{ ucfirst($program->name) }}
                                                 </label>
@@ -54,8 +55,8 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Cancelar</button>
                                     </a>
-                                    <button type="submit" class="btn btn-success float-right"><i
-                                            class="far fa-save"></i>
+                                    <button @disabled($role->name == 'superadmin') type="submit"
+                                        class="btn btn-success float-right"><i class="far fa-save"></i>
                                         Guardar</button>
                                 </div>
                             </div>

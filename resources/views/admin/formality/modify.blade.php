@@ -14,7 +14,9 @@
         <div class="mt-3 mr-3">
             <div class="col-12 ">
                 <h4>
-                    <small class="float-right"><button class="btn btn-primary btn-sm">Nuevo ticket</button></small>
+                    <div>
+                        @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.modify', 'from' => 'admin.dashboard', 'checkStatus' => true])
+                    </div>
                 </h4>
             </div>
         </div>
@@ -49,16 +51,7 @@
                         @endif
 
                         <div class="col-sm-4 invoice-col">
-                            <label for="">Tramite crítico:</label>
-                            @if ($formality->isCritical != "0")
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red"
-                                    class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                    <path
-                                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
-                                </svg>
-                            @endif
-
+                            <x-badge.critical-label :isCritical="$formality->isCritical" />
                         </div>
                     </div>
                 </div>
@@ -413,11 +406,14 @@
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     $(document).ready(function () {
         /*
         function statuscode(code) {

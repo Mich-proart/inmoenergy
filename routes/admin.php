@@ -39,6 +39,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/ticket/resolved/worker', [TicketApiController::class, 'getResolvedWorker'])->name('api.ticket.resolved.worker');
     Route::get('/ticket/assigned', [TicketApiController::class, 'getAssigned'])->name('api.ticket.assigned');
     Route::get('/ticket/total/pending', [TicketApiController::class, 'getTotalPending'])->name('api.ticket.total.pending');
+    Route::get('/ticket/total/closed', [TicketApiController::class, 'getTotalClosed'])->name('api.ticket.total.closed');
     Route::get('/ticket/assignment', [TicketApiController::class, 'getAssignment'])->name('api.ticket.assignment');
 
 
@@ -124,6 +125,8 @@ Route::prefix('tickets')->group(function () {
     Route::get('/total/closed', [TicketAdminController::class, 'getTotalClosed'])->name('admin.ticket.total.closed');
     Route::get('/total/pending', [TicketAdminController::class, 'getTotalPending'])->name('admin.ticket.total.pending');
     Route::get('/{id}/view', [TicketAdminController::class, 'getView'])->name('admin.ticket.view');
+    Route::get('/{id}/edit', [TicketAdminController::class, 'edit'])->name('admin.ticket.edit');
+    Route::get('/{id}/modify', [TicketAdminController::class, 'modify'])->name('admin.ticket.modify');
 });
 
 Route::prefix('tool')->group(function () {

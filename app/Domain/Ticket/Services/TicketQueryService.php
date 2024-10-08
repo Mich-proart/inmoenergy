@@ -122,4 +122,11 @@ class TicketQueryService
         $queryBuilder->whereNull('userAssigned.id');
         return $queryBuilder->get();
     }
+
+    public function getTotalClosed()
+    {
+        $queryBuilder = $this->ticketQueryTotalPending();
+        $queryBuilder->WhereIn('status.name', [TicketStatusEnum::RESUELTO->value]);
+        return $queryBuilder->get();
+    }
 }
