@@ -367,17 +367,17 @@
             </section>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones del asesor</label>
+                    <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
-                        @readonly(true)>{{$formality->assigned_observation}}</textarea>
+                        @readonly(true)>{{$formality->observation}}</textarea>
                 </div>
 
             </div>
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Observaciones del tramitador</label>
+                    <label for="exampleFormControlTextarea1">Observaciones del asesor</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
-                        @readonly(true)>{{$formality->issuer_observation}}</textarea>
+                        @readonly(true)>{{$formality->assigned_observation}}</textarea>
                 </div>
 
             </div>
