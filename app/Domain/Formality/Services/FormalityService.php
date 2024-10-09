@@ -183,7 +183,8 @@ class FormalityService
                 'accessRate',
                 'product',
                 'product.company',
-                'previousCompany'
+                'previousCompany',
+                'reasonCancellation'
             ]
         );
 

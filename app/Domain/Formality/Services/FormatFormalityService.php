@@ -63,6 +63,10 @@ class FormatFormalityService
                 'renovación' => isset($item) ? $item->isRenewable : '',
                 'fecha activación' => isset($item->activation_date) ? $item->activation_date : '',
                 'fecha renovación' => isset($item->renewal_date) ? $item->renewal_date : '',
+                'renovado' => isset($item) ? $item->isRenovated : '',
+                'fecha finalización' => isset($item->contract_completion_date) ? $item->contract_completion_date : '',
+                'motivo de baja' => isset($item->reasonCancellation) ? $item->reasonCancellation->name : '',
+                'observaciones de baja' => isset($item->cancellation_observation) ? $item->cancellation_observation : '',
             ];
         });
 
