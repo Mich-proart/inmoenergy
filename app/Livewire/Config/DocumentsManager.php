@@ -89,7 +89,7 @@ class DocumentsManager extends Component
 
     protected $rules = [
         'inputs.*.programId' => 'required|exists:program,id',
-        'inputs.*.file' => 'required|mimes:pdf,doc,docx|max:1024',
+        'inputs.*.file' => 'required|mimes:pdf,doc,docx|max:10240',
     ];
 
     protected $messages = [
