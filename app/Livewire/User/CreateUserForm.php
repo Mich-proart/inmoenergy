@@ -123,6 +123,11 @@ class CreateUserForm extends Component
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
             ]);
 
+            $this->validate([
+                'business_target' => 'required|integer|exists:business_group,id',
+            ], [
+                'business_target.required' => 'El campo es obligatorio',
+            ]);
         }
 
         DB::beginTransaction();

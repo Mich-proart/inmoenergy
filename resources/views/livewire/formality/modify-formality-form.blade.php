@@ -21,7 +21,7 @@
                         <input wire:model="form.canClientEdit" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked">
                         <label class="form-check-label" for="flexSwitchCheckChecked">Permitir que el cliente pueda
-                            editar este tramite</label>
+                            editar este trámite</label>
                     </div>
                 </div>
             </div>

@@ -271,8 +271,8 @@
                             <div class="form-group col-md-3">
                                 <label for="inputState">Grupo empresarial: </label>
                                 <select wire:model.live="business_target"
-                                    class="form-control @error('form.businessGroup') is-invalid @enderror"
-                                    name="businessGroup" id="businessGroup">
+                                    class="form-control @error('business_target') is-invalid @enderror" name="businessGroup"
+                                    id="businessGroup">
                                     <option value="">-- selecione --</option>
                                     @if (isset($this->business))
                                         @foreach ($this->business as $option)
@@ -280,7 +280,7 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                @error('form.businessGroup')
+                                @error('business_target')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

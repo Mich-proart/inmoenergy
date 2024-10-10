@@ -134,7 +134,7 @@ class CreateFormalityForm extends Component
     }
 
     protected $rules = [
-        'inputs.*.file' => 'required|mimes:pdf|max:1024',
+        'inputs.*.file' => 'required|mimes:pdf|max:10240',
     ];
 
     protected $messages = [

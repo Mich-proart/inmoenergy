@@ -98,7 +98,7 @@ class EditFormalityForm extends Component
         if ($this->fileSet) {
             $this->files = $this->fileSet->files;
             $this->mountFilesInput();
-            $this->addInput($this->formality->service_id);
+            //$this->addInput($this->formality->service_id);
         }
 
         $this->changeCountry($formality->client->country_id);
@@ -137,14 +137,18 @@ class EditFormalityForm extends Component
             $this->service_file->pull($key);
 
         }
-        $config = FileConfig::where('component_option_id', $serviceId)->first();
-        $this->service_file->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
+        if ($serviceId !== $this->formality->service_id) {
+            $config = FileConfig::where('component_option_id', $serviceId)->first();
+            $this->service_file->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
+
+        }
+
 
     }
 
     protected $rules = [
-        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:1024',
-        'service_file.*.file' => 'sometimes|nullable|mimes:pdf|max:1024',
+        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:10240',
+        'service_file.*.file' => 'sometimes|nullable|mimes:pdf|max:10240',
     ];
 
     protected $messages = [
@@ -191,7 +195,7 @@ class EditFormalityForm extends Component
             }
 
             $object = $this->service_file->where('serviceId', $this->form->serviceIds[0])->first();
-            if ($object['file'] != null) {
+            if ($object != null && $object['file'] != null) {
 
                 $file = $object['file'];
                 $stored_file = $data->with('files')->first()->files->first();
