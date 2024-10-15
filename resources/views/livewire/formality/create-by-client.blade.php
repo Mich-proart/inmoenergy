@@ -43,20 +43,38 @@
                 </div>
                 <div class="row" style="margin-top: 5px;">
                     <div class="col-12">
-                        <x-table.table :headers="['Nombre', 'N° Documento', 'Tipo', 'Fecha de entrada']" width="16.66%">
-                            @isset ($clients)
-                                @foreach ($clients as $client)
-                                    <tr wire:click="getClient({{ $client->id }})" class="table-light">
-                                        <x-table.td
-                                            width="16.66%">{{ ucfirst($client->name . ' ' . $client->first_last_name . ' ' . $client->second_last_name) }}</x-table.td>
-                                        <x-table.td width="16.66%">{{ $client->document_number }}</x-table.td>
-                                        <x-table.td width="16.66%">{{ $client->clientType->name }}</x-table.td>
-                                        <x-table.td width="16.66%">{{ $client->created_at }}</x-table.td>
-                                    </tr>
-                                @endforeach
-                            @endisset
-
-                        </x-table.table>
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-left" style="width:16.66%;">
+                                        Nombre
+                                    </th>
+                                    <th scope="col" class="text-left" style="width:16.66%;">
+                                        N° Documento
+                                    </th>
+                                    <th scope="col" class="text-left" style="width:16.66%;">
+                                        Tipo
+                                    </th>
+                                    <th scope="col" class="text-left" style="width:16.66%;">
+                                        Fecha de entrada
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset ($clients)
+                                    @foreach ($clients as $client)
+                                        <tr wire:click="getClient({{ $client->id }})" class="table-light">
+                                            <td style="width:16.66%">
+                                                {{ ucfirst($client->name . ' ' . $client->first_last_name . ' ' . $client->second_last_name) }}
+                                            </td>
+                                            <td style="width:16.66%">{{ $client->document_number }}</td>
+                                            <td style="width:16.66%">{{ $client->clientType->name }}</td>
+                                            <td style="width:16.66%">{{ $client->created_at }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endisset
+                            </tbody>
+                        </table>
                         <div>
                             @if (count($clients) > 0)
                                 {{ $clients->links('components.pagination') }}
@@ -191,29 +209,54 @@
 
                                 @if ($selected_handler == 'getAddress')
                                     @if (isset($client) && !empty($client))
-                                        <x-table.table :headers="['', 'Direrección', 'Provincia', 'Población', 'Código postal']">
-                                            @foreach ($client->addresses as $addressOption)
-                                                @if (!$addressOption->pivot->iscorrespondence)
-                                                    <tr class="table-light">
-                                                        <x-table.td>
-                                                            <div class="container text-center">
-                                                                <div class="col-1">
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input wire:model="selectedAddressId" class="form-check-input"
-                                                                            type="radio" id="" name="selectedAddressId"
-                                                                            value="{{ $addressOption->id }}" required>
+                                        <table class="table table-hover table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" class="text-left">
+
+                                                    </th>
+                                                    <th scope="col" class="text-left">
+                                                        Direrección
+                                                    </th>
+                                                    <th scope="col" class="text-left">
+                                                        Provincia
+                                                    </th>
+                                                    <th scope="col" class="text-left">
+                                                        Población
+                                                    </th>
+                                                    <th scope="col" class="text-left">
+                                                        Código postal
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($client->addresses as $addressOption)
+                                                    @if (!$addressOption->pivot->iscorrespondence)
+                                                        <tr class="table-light">
+                                                            <td>
+                                                                <div class="container text-center">
+                                                                    <div class="col-1">
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input wire:model="selectedAddressId"
+                                                                                class="form-check-input" type="radio" id=""
+                                                                                name="selectedAddressId"
+                                                                                value="{{ $addressOption->id }}" required>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </x-table.td>
-                                                        <x-table.td>{{ $addressOption->street_type . ' ' . $addressOption->street_name . ' ' . $addressOption->street_number . ' ' . $addressOption->block . ' ' . $addressOption->block_staircase . ' ' . $addressOption->floor . ' ' . $addressOption->door }}</x-table.td>
-                                                        <x-table.td>{{ $addressOption->location ? $addressOption->location->name : '' }}</x-table.td>
-                                                        <x-table.td>{{ $addressOption->location->province ? $addressOption->location->province->name : '' }}</x-table.td>
-                                                        <x-table.td>{{ $addressOption->zip_code }}</x-table.td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                        </x-table.table>
+                                                            </td>
+                                                            <td>{{ $addressOption->street_type . ' ' . $addressOption->street_name . ' ' . $addressOption->street_number . ' ' . $addressOption->block . ' ' . $addressOption->block_staircase . ' ' . $addressOption->floor . ' ' . $addressOption->door }}
+                                                            </td>
+                                                            <td>{{ $addressOption->location ? $addressOption->location->name : '' }}
+                                                            </td>
+                                                            <td>{{ $addressOption->location->province ? $addressOption->location->province->name : '' }}
+                                                            </td>
+                                                            <td>{{ $addressOption->zip_code }}</td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     @endif
 
                                 @elseif($selected_handler == 'newAddress')
