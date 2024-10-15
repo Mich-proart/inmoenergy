@@ -54,7 +54,7 @@ class FormalityCreate extends Form
         'name' => 'required|string',
         'email' => 'required|email', //'required|email|unique:client,email',
         'documentTypeId' => 'required|integer|exists:component_option,id',
-        'phone' => 'required|string|spanish_phone',
+        //'phone' => 'required|string|spanish_phone',
         'clientTypeId' => 'required|integer|exists:component_option,id',
         'IBAN' => 'required|string|iban',
         'locationId' => 'required|integer|exists:location,id',
