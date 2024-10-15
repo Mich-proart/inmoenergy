@@ -107,7 +107,46 @@ class EditUserForm extends Component
     public function save()
     {
 
-        $this->form->validate();
+        $country = Country::firstWhere('name', 'spain');
+        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'required|string|min:11|max:11';
+        $this->form->validate(
+            [
+                'phone' => $phoneRule,
+                'name' => 'required|string',
+                'email' => 'required|email',
+                'firstLastName' => 'required|string',
+                'secondLastName' => 'required|string',
+                'documentTypeId' => 'required|integer|exists:component_option,id',
+                'documentNumber' => 'required|string',
+                //'phone' => 'required|string|spanish_phone',
+                'password' => 'sometimes|nullable|string|min:8',
+                'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
+
+                'businessGroup' => 'sometimes|nullable|string',
+                'adviserAssignedId' => 'sometimes|nullable|integer|exists:users,id',
+                'roleId' => 'required|integer|exists:roles,id',
+                'locationId' => 'required|integer|exists:location,id',
+                'zipCode' => 'required|string|spanish_postal_code',
+                'full_address' => 'required|string',
+            ],
+            [
+                'phone.min' => 'El campo debe ser un telefono valido.',
+                'phone.max' => 'El campo debe ser un telefono valido.',
+                'email.unique' => 'El correo electronico ya se encuentra registrado',
+                'email.email' => 'El correo electronico no es valido',
+                'name.required' => 'El nombre es requerido',
+                'documentTypeId.required' => 'El tipo de documento es requerido',
+                'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
+                'password.string' => 'La contraseña debe ser una cadena de caracteres',
+                'email.required' => 'El correo electronico es requerido',
+                'documentNumber.required' => 'El numero de documento es requerido',
+                'phone.required' => 'El numero de telefono es requerido',
+                'locationId.required' => 'La ubicacion es requerida',
+                'zipCode.spanish_postal_code' => 'El Código Postal no es valido',
+                'zipCode.required' => 'El Código Postal es requerido',
+                'full_address.required' => 'La dirección es requerida',
+            ]
+        );
 
         $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
 

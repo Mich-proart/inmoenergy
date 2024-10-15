@@ -295,7 +295,7 @@ class EditFormalityForm extends Component
     private function formValidation()
     {
         $country = Country::firstWhere('name', 'spain');
-        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'nullable|string|min:10|max:10';
+        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'nullable|string|min:11|max:11';
         $this->form->validate(
             [
                 'phone' => $phoneRule

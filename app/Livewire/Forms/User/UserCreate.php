@@ -53,7 +53,7 @@ class UserCreate extends Form
         'secondLastName' => 'required|string',
         'documentTypeId' => 'required|integer|exists:component_option,id',
         'documentNumber' => 'required|string',
-        'phone' => 'required|string|spanish_phone',
+        //'phone' => 'required|string|spanish_phone',
         'password' => 'required|string|min:8',
         'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
         'officeId' => 'sometimes|nullable|integer|exists:office,id',
