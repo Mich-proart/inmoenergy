@@ -34,7 +34,7 @@ class table extends Component
             'left' => 'text-left',
             'right' => 'text-right',
             'center' => 'text-center',
-        ][$align ?? 'text-left'];
+        ][$align ?? 'left'];
     }
 
 
