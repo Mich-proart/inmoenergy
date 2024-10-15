@@ -208,7 +208,17 @@ class CreateFormalityForm extends Component
 
     private function formValidation()
     {
-        $this->form->validate();
+        $country = Country::firstWhere('name', 'spain');
+        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'nullable|string|min:11|max:11';
+        $this->form->validate(
+            [
+                'phone' => $phoneRule
+            ],
+            [
+                'phone.min' => 'El campo debe ser un telefono valido.',
+                'phone.max' => 'El campo debe ser un telefono valido.',
+            ]
+        );
         $this->validate();
 
         $selectedClientType = ComponentOption::where('id', $this->form->clientTypeId)->first();
@@ -289,17 +299,17 @@ class CreateFormalityForm extends Component
 
 
                 $clientAddres = new Address();
-                $this->createFormalityService->setIsSameCorrespondenceAddress(true);
 
                 if (!$this->form->is_same_address) {
                     $clientAddres = Address::create($this->form->getCreateClientAddressDto());
-                    $this->createFormalityService->setIsSameCorrespondenceAddress(false);
                 } else {
                     $clientAddres = Address::create($this->form->getCreateAddressDto());
                 }
 
                 $this->createFormalityService->setCorrespondenceAddressId($clientAddres->id);
-                $client->update(['address_id' => $clientAddres->id]);
+                //$client->update(['address_id' => $clientAddres->id]);
+
+                $client->addresses()->attach([$clientAddres->id => ['iscorrespondence' => true], $address->id => ['iscorrespondence' => false]]);
 
 
                 $file_inputs = $this->inputs->where('serviceId', null);
@@ -346,7 +356,7 @@ class CreateFormalityForm extends Component
 
     public function isDuplicated(): bool
     {
-        $address = Address::where('location_id', $this->form->locationId)
+        return Address::where('location_id', $this->form->locationId)
             ->where('street_type_id', $this->form->streetTypeId)
             ->where('housing_type_id', $this->form->housingTypeId)
             ->where('street_name', $this->form->streetName)
@@ -356,14 +366,8 @@ class CreateFormalityForm extends Component
             ->where('block_staircase', $this->form->blockstaircase)
             ->where('floor', $this->form->floor)
             ->where('door', $this->form->door)
-            ->first();
+            ->exists();
 
-
-        if ($address) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private function getFolderName(): string

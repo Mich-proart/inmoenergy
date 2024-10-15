@@ -81,7 +81,7 @@ class FormalityUpdate extends Form
         $this->floor = $address->floor;
         $this->door = $address->door;
 
-        $this->is_same_address = $formality->isSameCorrespondenceAddress;
+        //$this->is_same_address = $formality->isSameCorrespondenceAddress;
 
         if (isset($CorrespondenceAddress)) {
             $this->client_provinceId = $CorrespondenceAddress->location->province->id;
@@ -157,7 +157,7 @@ class FormalityUpdate extends Form
             'observation' => $this->observation,
             'formality_type_id' => $this->formalityTypeId[0],
             'assigned_observation' => $this->assigned_observation,
-            'isSameCorrespondenceAddress' => $this->is_same_address
+            //'isSameCorrespondenceAddress' => $this->is_same_address
         ];
     }
 
@@ -167,7 +167,7 @@ class FormalityUpdate extends Form
         'name' => 'required|nullable|string',
         'email' => 'required|nullable|email',
         'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
-        'phone' => 'required|nullable|string|spanish_phone',
+        //'phone' => 'required|nullable|string|spanish_phone',
         'clientTypeId' => 'required|nullable|integer|exists:component_option,id',
         'IBAN' => 'required|nullable|string|iban',
         'locationId' => 'required|nullable|exists:location,id',

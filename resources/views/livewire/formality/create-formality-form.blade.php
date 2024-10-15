@@ -646,6 +646,10 @@
                 <div class="row no-print">
                     <div class="col-12">
                         <div style="margin-top: 50px; margin-bottom: 25px">
+                            <a href="{{ route('admin.formality.create') }}">
+                                <button type="button" class="btn btn-secondary">
+                                    Cerrar</button>
+                            </a>
                             <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
                                 Tramitar</button>
                         </div>

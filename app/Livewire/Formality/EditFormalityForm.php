@@ -84,7 +84,7 @@ class EditFormalityForm extends Component
         $this->target_clientProvinceId = $this->form->client_provinceId;
         $this->documentTypes = $this->userService->getDocumentTypes();
 
-        $this->same_address = $this->form->is_same_address;
+        //$this->same_address = $this->form->is_same_address;
 
         $this->clientTypeId = $this->form->clientTypeId;
 
@@ -294,7 +294,17 @@ class EditFormalityForm extends Component
 
     private function formValidation()
     {
-        $this->form->validate();
+        $country = Country::firstWhere('name', 'spain');
+        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'nullable|string|min:11|max:11';
+        $this->form->validate(
+            [
+                'phone' => $phoneRule
+            ],
+            [
+                'phone.min' => 'El campo debe ser un telefono valido.',
+                'phone.max' => 'El campo debe ser un telefono valido.',
+            ]
+        );
 
         $selectedClientType = ComponentOption::where('id', $this->form->clientTypeId)->first();
         $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();

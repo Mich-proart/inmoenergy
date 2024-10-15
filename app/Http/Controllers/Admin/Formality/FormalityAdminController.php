@@ -20,7 +20,7 @@ class FormalityAdminController extends Controller
         private readonly FormalityService $formalityService
     ) {
         $this->middleware('auth');
-        $this->middleware('can:formality.create')->only('create');
+        $this->middleware('can:formality.create')->only('create', 'createClient');
         $this->middleware('can:formality.inprogress.access')->only('getInProgress', 'edit', 'get');
         $this->middleware('can:formality.closed.access')->only('getClosed', 'get');
         $this->middleware('can:formality.assigned.access')->only('getAssigned', 'modify');
@@ -35,6 +35,10 @@ class FormalityAdminController extends Controller
     public function create()
     {
         return view('admin.formality.create');
+    }
+    public function createClient()
+    {
+        return view('admin.formality.createClient');
     }
 
     public function edit(int $id)

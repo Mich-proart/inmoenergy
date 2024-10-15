@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +55,13 @@ class Client extends Model
     public function files(): MorphToMany
     {
         return $this->morphToMany(File::class, 'fileable');
+    }
+
+    public function addresses(): BelongsToMany
+    {
+        return $this->belongsToMany(Address::class, 'client_address')
+            ->using(ClientAddress::class)
+            ->withPivot(['iscorrespondence']);
     }
 
     public function country(): BelongsTo

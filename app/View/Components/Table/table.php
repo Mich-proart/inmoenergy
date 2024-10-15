@@ -30,7 +30,11 @@ class table extends Component
 
     private function textAlignClasses($align): string
     {
-        return TextAlignment::className($align);
+        return [
+            'left' => 'text-left',
+            'right' => 'text-right',
+            'center' => 'text-center',
+        ][$align ?? 'text-left'];
     }
 
 

@@ -42,7 +42,6 @@ class Formality extends Model
         'issuer_observation',
         'assigned_observation',
         'correspondence_address_id',
-        'isSameCorrespondenceAddress',
         'product_id',
         'previous_company_id',
         'commission',

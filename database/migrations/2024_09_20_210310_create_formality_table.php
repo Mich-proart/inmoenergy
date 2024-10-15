@@ -36,7 +36,6 @@ return new class extends Migration {
             $table->decimal('potency', 10, 4)->nullable();
             $table->foreignId('address_id')->nullable()->constrained('address');
             $table->foreignId('correspondence_address_id')->nullable()->constrained('address');
-            $table->boolean('isSameCorrespondenceAddress')->default(true);
             $table->foreignId('formality_type_id')->constrained('component_option');
             $table->foreignId('status_id')->constrained('status');
             $table->foreignId('access_rate_id')->nullable()->constrained('component_option');
