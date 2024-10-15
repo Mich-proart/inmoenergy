@@ -56,6 +56,7 @@ Route::group(['prefix' => 'api'], function () {
 });
 Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
+    Route::get('/create/client', [FormalityAdminController::class, 'createClient'])->name('admin.formality.create.client');
     Route::get('/{id}/edit', [FormalityAdminController::class, 'edit'])->name('admin.formality.edit');
     Route::get('/{id}/view', [FormalityAdminController::class, 'get'])->name('admin.formality.get');
     Route::get('/inprogress', [FormalityAdminController::class, 'getInProgress'])->name('admin.formality.inprogress');

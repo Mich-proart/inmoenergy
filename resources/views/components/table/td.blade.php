@@ -1,5 +1,6 @@
 @props([
     'align' => 'left',
+    'width' => '',
 ])
 
 @php
@@ -7,6 +8,6 @@
 @endphp
 
 
-<td class="{{ $textAlignClass }}">
+<td class="{{ $textAlignClass }}" style="width: {{$width}}">
     {{ $slot }}
 </td>
