@@ -140,7 +140,8 @@ class ModifyFormalityForm extends Component
                 $this->form->getDataToUpdate(),
                 [
                     'completion_date' => now(),
-                    'status_id' => $status->id
+                    'status_id' => $status->id,
+                    'isAvailableToEdit' => true
                 ]
             );
 
@@ -175,6 +176,7 @@ class ModifyFormalityForm extends Component
         try {
             $updates = array_merge(
                 $this->form->getDataToUpdate(),
+                ['isAvailableToEdit' => true]
             );
 
 

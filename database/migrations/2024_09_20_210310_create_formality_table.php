@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->boolean('canClientEdit')->default(false);
             $table->boolean('isRenewable')->default(false);
             $table->boolean('isRenovated')->default(false);
+            $table->boolean('isAvailableToEdit')->default(true);
             $table->timestamp('assignment_date')->nullable();
             $table->timestamp('completion_date')->nullable();
             $table->timestamp('renewal_date')->nullable();

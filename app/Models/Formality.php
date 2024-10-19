@@ -24,6 +24,7 @@ class Formality extends Model
         'canClientEdit',
         'isCritical',
         'isRenewable',
+        'isAvailableToEdit',
         'assignment_date',
         'completion_date',
         'renewal_date',
