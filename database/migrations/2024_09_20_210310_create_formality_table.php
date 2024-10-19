@@ -44,6 +44,7 @@ return new class extends Migration {
             $table->foreignId('reason_cancellation_id')->nullable()->constrained('component_option');
             $table->foreignId('product_id')->nullable()->constrained('product');
             $table->foreignId('previous_company_id')->nullable()->constrained('company');
+            $table->foreignId('company_id')->nullable()->constrained('company');
             $table->timestamps();
         });
     }
