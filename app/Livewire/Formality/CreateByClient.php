@@ -64,13 +64,13 @@ class CreateByClient extends Component
     private FileUploadigService $fileUploadigService;
 
     protected $rules = [
-        'inputs.*.file' => 'required|mimes:pdf|max:10240',
+        'inputs.*.file' => 'required|mimes:pdf|max:5240',
     ];
 
     protected $messages = [
         'inputs.*.file.required' => 'Selecione un archivo.',
         'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
-        'inputs.*.file.max' => 'El archivo debe ser menor a 1MB.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
 

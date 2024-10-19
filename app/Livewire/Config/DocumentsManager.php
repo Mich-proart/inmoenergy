@@ -89,7 +89,7 @@ class DocumentsManager extends Component
 
     protected $rules = [
         'inputs.*.programId' => 'required|exists:program,id',
-        'inputs.*.file' => 'required|mimes:pdf,doc,docx|max:10240',
+        'inputs.*.file' => 'required|mimes:pdf,doc,docx|max:5240',
     ];
 
     protected $messages = [
@@ -97,7 +97,7 @@ class DocumentsManager extends Component
         'inputs.*.programId.exists' => 'El programa no existe.',
         'inputs.*.file.required' => 'Selecione un archivo.',
         'inputs.*.file.mimes' => 'El archivo debe ser un pdf, doc o docx.',
-        'inputs.*.file.max' => 'El archivo debe ser menor a 1MB.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
     public function submit()
