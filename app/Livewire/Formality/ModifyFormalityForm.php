@@ -5,6 +5,7 @@ namespace App\Livewire\Formality;
 use App\Domain\Enums\ServiceEnum;
 use App\Livewire\Forms\Formality\FormalityModify;
 use App\Models\User;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Exceptions\CustomException;
@@ -204,6 +205,27 @@ class ModifyFormalityForm extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
 
+    }
+
+    public function closeEdit()
+    {
+        try {
+            $data = Formality::firstWhere('id', $this->formality->id);
+            $updates = ['isAvailableToEdit' => true];
+            $data->update($updates);
+            DB::commit();
+            return redirect()->route('admin.dashboard');
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw CustomException::badRequestException($th->getMessage());
+        }
+    }
+
+    #[On('directClose')]
+    public function directClose()
+    {
+        Formality::firstWhere('id', $this->formality->id)->update(['isAvailableToEdit' => true]);
     }
 
     public function render()
