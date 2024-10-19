@@ -69,7 +69,7 @@ class ModifyFormalityForm extends Component
     {
         $this->formality = $formality;
         $this->accessRate = $this->formalityService->getAccessRates($this->formality->service->name);
-        $this->companyId = $formality->product->company->id ?? null;
+        $this->companyId = $formality->company->id ?? null; // $formality->product->company->id ?? null;
         $this->form->setData($this->formality);
         $this->prevStatus = $prevStatus;
 
@@ -140,7 +140,9 @@ class ModifyFormalityForm extends Component
                 $this->form->getDataToUpdate(),
                 [
                     'completion_date' => now(),
-                    'status_id' => $status->id
+                    'status_id' => $status->id,
+                    'isAvailableToEdit' => true,
+                    'company_id' => $this->companyId
                 ]
             );
 
@@ -175,6 +177,10 @@ class ModifyFormalityForm extends Component
         try {
             $updates = array_merge(
                 $this->form->getDataToUpdate(),
+                [
+                    'isAvailableToEdit' => true,
+                    'company_id' => $this->companyId
+                ]
             );
 
 

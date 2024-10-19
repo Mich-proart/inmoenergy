@@ -96,14 +96,15 @@
             data-bs-target="#editRenovationModal" hidden></button>
 
         <!-- Modal -->
-        <div wire:ignore.self class="modal fade" id="editRenovationModal" tabindex="-1"
-            aria-labelledby="editRenovationModalLabel" aria-hidden="true">
+        <div wire:ignore.self class="modal fade" id="editRenovationModal" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1" aria-labelledby="editRenovationModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="editRenovationModalLabel">Asignacion de fecha de activación
                         </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button wire:click="closeClean" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <form wire:submit.prevent="save">
                         <div class="modal-body">
@@ -193,8 +194,9 @@
                                             <button type="submit" class="btn btn-success float-right"><i
                                                     class="far fa-save"></i>
                                                 Guardar cambios</button>
-                                            <button type="button" class="btn btn-secondary float-right"
-                                                style="margin-right: 10px" data-bs-dismiss="modal">Cerrar</button>
+                                            <button wire:click="closeClean" type="button"
+                                                class="btn btn-secondary float-right" style="margin-right: 10px"
+                                                data-bs-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div>
                                 </div>

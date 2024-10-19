@@ -3,10 +3,14 @@
 namespace App\Livewire\Formality;
 
 use App\Domain\Enums\FormalityStatusEnum;
+use App\Domain\Enums\FormalityTypeEnum;
 use App\Domain\Formality\Services\FormalityService;
 use App\Livewire\Forms\Formality\FormalityCancel;
 use App\Livewire\Forms\Formality\FormalityModifyTotalClosed;
+use App\Models\Address;
 use App\Models\ComponentOption;
+use App\Models\Formality;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -142,6 +146,7 @@ class ModifyTotalClosed extends Component
     #[On('cancelFormality')]
     public function cancelFormality()
     {
+        $trigger_date = now();
         $this->cancellation->validate();
 
         if ($this->cancellation->create_new_one) {
@@ -160,16 +165,25 @@ class ModifyTotalClosed extends Component
         try {
 
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::BAJA->value);
+            $address = $this->createAddressOnCancel($this->formality->address_id);
+            $correspondence_address = $this->createAddressOnCancel($this->formality->correspondence_address_id);
             $updates = array_merge(
                 $this->cancellation->getDataUpdate(),
                 [
-                    'status_id' => $status->id
+                    'status_id' => $status->id,
+                    'address_id' => $address->id,
+                    'correspondence_address_id' => $correspondence_address->id
                 ]
             );
 
             if ($this->formality) {
                 $this->formality->update($updates);
             }
+
+            if ($this->cancellation->create_new_one) {
+                $this->createFormalityOnCancel($this->formality, $trigger_date);
+            }
+
             DB::commit();
             return redirect()->route('admin.formality.total.closed');
         } catch (\Throwable $th) {
@@ -189,6 +203,40 @@ class ModifyTotalClosed extends Component
     {
         $this->cancellation->reset(['assignedId', 'isCritical']);
 
+    }
+
+    private function createFormalityOnCancel($formality, Carbon $trigger_date)
+    {
+        $inmoenergy = User::firstWhere('name', 'inmoenergy');
+        $type = ComponentOption::firstWhere('name', FormalityTypeEnum::ALTA_NUEVA->value);
+        $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
+
+        Formality::create([
+            'client_id' => $formality->client_id,
+            'created_at' => $trigger_date,
+            'user_issuer_id' => $inmoenergy->id,
+            'service_id' => $formality->service_id,
+            'user_assigned_id' => $this->cancellation->assignedId,
+            'assignment_date' => $trigger_date,
+            'formality_type_id' => $type->id,
+            'address_id' => $formality->address_id,
+            'correspondence_address_id' => $formality->correspondence_address_id,
+            'canClientEdit' => true,
+            'status_id' => $status->id,
+            'isCritical' => $this->cancellation->isCritical,
+            'access_rate_id' => $formality->access_rate_id,
+            'CUPS' => $formality->CUPS,
+            'internal_observation' => $formality->internal_observation,
+            'previous_company_id' => $formality->company_id,
+            'potency' => $formality->potency,
+            'isRenewable' => true,
+        ]);
+    }
+
+    private function createAddressOnCancel($previousAddressId)
+    {
+        $previousAddress = Address::find($previousAddressId);
+        return Address::create($previousAddress->toArray());
     }
 
 

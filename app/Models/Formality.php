@@ -24,6 +24,7 @@ class Formality extends Model
         'canClientEdit',
         'isCritical',
         'isRenewable',
+        'isAvailableToEdit',
         'assignment_date',
         'completion_date',
         'renewal_date',
@@ -44,6 +45,7 @@ class Formality extends Model
         'correspondence_address_id',
         'product_id',
         'previous_company_id',
+        'company_id',
         'commission',
         'potency',
         'cancellation_observation',
@@ -101,6 +103,10 @@ class Formality extends Model
     public function previousCompany(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'previous_company_id');
+    }
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     public function reasonCancellation(): BelongsTo

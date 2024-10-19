@@ -50,11 +50,10 @@ class FormalityAdminController extends Controller
             return view('admin.error.notFound');
         }
 
-        if ($formality && $formality->canClientEdit == 0) {
-            return redirect()->route('admin.formality.get', ['id' => $id]);
+        if ($formality->canClientEdit == 1 && $formality->isAvailableToEdit == 1) {
+            return view('admin.formality.edit', ['formality' => $formality, 'program' => $program]);
         }
-
-        return view('admin.formality.edit', ['formality' => $formality, 'program' => $program]);
+        return redirect()->route('admin.formality.get', ['id' => $id]);
     }
     public function get(int $id)
     {
@@ -96,7 +95,7 @@ class FormalityAdminController extends Controller
 
                 $prevStatus = $data->status_id;
 
-                $data->update(['status_id' => $status->id, 'canClientEdit' => 0]);
+                $data->update(['status_id' => $status->id, 'isAvailableToEdit' => 0]);
 
                 $formality = $this->formalityService->getById($id);
                 $client = $formality->client;

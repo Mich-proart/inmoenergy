@@ -147,15 +147,15 @@ class EditFormalityForm extends Component
     }
 
     protected $rules = [
-        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:10240',
-        'service_file.*.file' => 'sometimes|nullable|mimes:pdf|max:10240',
+        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
+        'service_file.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
     ];
 
     protected $messages = [
         'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
-        'inputs.*.file.max' => 'El archivo debe ser menor a 1MB.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
         'service_file.*.file.mimes' => 'El archivo debe ser un pdf.',
-        'service_file.*.file.max' => 'El archivo debe ser menor a 1MB.',
+        'service_file.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
     public function update()

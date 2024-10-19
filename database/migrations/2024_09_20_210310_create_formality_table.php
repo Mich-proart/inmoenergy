@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->boolean('canClientEdit')->default(false);
             $table->boolean('isRenewable')->default(false);
             $table->boolean('isRenovated')->default(false);
+            $table->boolean('isAvailableToEdit')->default(true);
             $table->timestamp('assignment_date')->nullable();
             $table->timestamp('completion_date')->nullable();
             $table->timestamp('renewal_date')->nullable();
@@ -43,6 +44,7 @@ return new class extends Migration {
             $table->foreignId('reason_cancellation_id')->nullable()->constrained('component_option');
             $table->foreignId('product_id')->nullable()->constrained('product');
             $table->foreignId('previous_company_id')->nullable()->constrained('company');
+            $table->foreignId('company_id')->nullable()->constrained('company');
             $table->timestamps();
         });
     }
