@@ -7,7 +7,7 @@
     <div class="col-md-6 image-text-container">
         <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'closed_formality.png') }}" alt=""
             class="img-thumbnail align-self-center resize">
-        <h3>Trámite en curso</h3>
+        <h3>{{ucfirst($from)}}</h3>
     </div>
 </div>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

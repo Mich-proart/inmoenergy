@@ -53,16 +53,24 @@ class FormalityAdminController extends Controller
         if ($formality->canClientEdit == 1 && $formality->isAvailableToEdit == 1) {
             return view('admin.formality.edit', ['formality' => $formality, 'program' => $program]);
         }
-        return redirect()->route('admin.formality.get', ['id' => $id]);
+        return redirect()->route('admin.formality.get', ['id' => $id, 'from' => 'trámites en curso']);
     }
-    public function get(int $id)
+    public function get(Request $request, int $id)
     {
+        $from = $request->input('from');
+        $from = $from ?? 'trámites cerrados';
         $formality = $this->formalityService->getById($id);
         if ($formality) {
             $client = $formality->client;
             $address = $formality->address;
             $CorrespondenceAddress = $formality->CorrespondenceAddress;
-            return view('admin.formality.get', ['formality' => $formality, 'client' => $client, 'address' => $address, 'CorrespondenceAddress' => $CorrespondenceAddress]);
+            return view('admin.formality.get', [
+                'formality' => $formality,
+                'client' => $client,
+                'address' => $address,
+                'CorrespondenceAddress' => $CorrespondenceAddress,
+                'from' => $from
+            ]);
         } else {
             return view('admin.error.notFound');
         }
