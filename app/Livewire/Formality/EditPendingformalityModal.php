@@ -60,6 +60,16 @@ class EditPendingformalityModal extends Component
         $this->form->contract_completion_date = date('Y-m-d', strtotime($date . ' +1 year'));
     }
 
+    public function closeClean()
+    {
+        $this->form->reset([
+            'activation_date',
+            'contract_completion_date',
+            'commission',
+            'isRenewable'
+        ]);
+    }
+
     private function executeSave()
     {
         DB::beginTransaction();
