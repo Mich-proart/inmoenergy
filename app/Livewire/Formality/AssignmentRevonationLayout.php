@@ -2,7 +2,11 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\FormalityTypeEnum;
+use App\Models\Address;
+use App\Models\ComponentOption;
 use App\Models\Formality;
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Exceptions\CustomException;
 use DB;
@@ -74,31 +78,68 @@ class AssignmentRevonationLayout extends Component
 
     public function save()
     {
-
+        $trigger_date = now();
         $this->validate();
         DB::beginTransaction();
 
         try {
-            $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
+            $formality = Formality::firstWhere('id', $this->formalityId);
+            $address = $this->createAddressOnRenovation($this->formality->address_id);
+            $correspondence_address = $this->createAddressOnRenovation($this->formality->correspondence_address_id);
 
-            /*
             $updates = [
-                'status_id' => $status->id,
-                'user_assigned_id' => $this->user_assigned_id,
-                'isCritical' => $this->isCritical,
-                'assignment_date' => now()
+                'address_id' => $address->id,
+                'correspondence_address_id' => $correspondence_address->id,
+                'isRenovated' => true,
             ];
+            $formality->update($updates);
 
-            Formality::firstWhere('id', $this->formalityId)->update($updates);
-            */
-            // DB::commit();
-            // return redirect()->route('admin.formality.assignment.renovation');
+            $this->createFormalityOnRenovation($formality, $trigger_date);
+
+            DB::commit();
+            return redirect()->route('admin.formality.assignment.renovation');
         } catch (\Throwable $th) {
 
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
     }
+
+    private function createFormalityOnRenovation($formality, Carbon $trigger_date)
+    {
+        $inmoenergy = User::firstWhere('name', 'inmoenergy');
+        $type = ComponentOption::firstWhere('name', FormalityTypeEnum::ALTA_NUEVA->value);
+        $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
+
+        Formality::create([
+            'client_id' => $formality->client_id,
+            'created_at' => $trigger_date,
+            'user_issuer_id' => $inmoenergy->id,
+            'service_id' => $formality->service_id,
+            'user_assigned_id' => $this->user_assigned_id,
+            'assignment_date' => $trigger_date,
+            'formality_type_id' => $type->id,
+            'address_id' => $formality->address_id,
+            'correspondence_address_id' => $formality->correspondence_address_id,
+            'canClientEdit' => true,
+            'status_id' => $status->id,
+            'isCritical' => $this->isCritical,
+            'access_rate_id' => $formality->access_rate_id,
+            'CUPS' => $formality->CUPS,
+            'internal_observation' => $formality->internal_observation,
+            'previous_company_id' => $formality->company_id,
+            'company_id' => $formality->company_id,
+            'potency' => $formality->potency,
+            'isRenewable' => true,
+        ]);
+    }
+
+    private function createAddressOnRenovation($previousAddressId)
+    {
+        $previousAddress = Address::find($previousAddressId);
+        return Address::create($previousAddress->toArray());
+    }
+
 
     public function render()
     {
