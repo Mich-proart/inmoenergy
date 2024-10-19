@@ -107,8 +107,7 @@ class EditUserForm extends Component
     public function save()
     {
 
-        $country = Country::firstWhere('name', 'spain');
-        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'required|string|min:11|max:11';
+        $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
             [
                 'phone' => $phoneRule,
@@ -132,6 +131,8 @@ class EditUserForm extends Component
             [
                 'phone.min' => 'El campo debe ser un telefono valido.',
                 'phone.max' => 'El campo debe ser un telefono valido.',
+                'phone.required' => 'El campo es requerido.',
+                'phone.phone' => 'El campo debe ser un telefono valido.',
                 'email.unique' => 'El correo electronico ya se encuentra registrado',
                 'email.email' => 'El correo electronico no es valido',
                 'name.required' => 'El nombre es requerido',
@@ -140,7 +141,6 @@ class EditUserForm extends Component
                 'password.string' => 'La contraseña debe ser una cadena de caracteres',
                 'email.required' => 'El correo electronico es requerido',
                 'documentNumber.required' => 'El numero de documento es requerido',
-                'phone.required' => 'El numero de telefono es requerido',
                 'locationId.required' => 'La ubicacion es requerida',
                 'zipCode.spanish_postal_code' => 'El Código Postal no es valido',
                 'zipCode.required' => 'El Código Postal es requerido',

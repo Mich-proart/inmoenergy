@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Common\FormalityStatusNotDuplicated;
 use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityUpdate;
 use App\Models\Country;
@@ -162,7 +163,7 @@ class EditFormalityForm extends Component
     {
         $this->formValidation();
 
-        if ($this->isDuplicated()) {
+        if ($this->isDuplicated() && $this->formality->service_id != $this->form->serviceIds[0]) {
             $this->dispatch('checks', error: "Error al intentar editar el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
         } else {
             $this->executeUpdate();
@@ -294,8 +295,7 @@ class EditFormalityForm extends Component
 
     private function formValidation()
     {
-        $country = Country::firstWhere('name', 'spain');
-        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'nullable|string|min:11|max:11';
+        $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
             [
                 'phone' => $phoneRule
@@ -303,6 +303,8 @@ class EditFormalityForm extends Component
             [
                 'phone.min' => 'El campo debe ser un telefono valido.',
                 'phone.max' => 'El campo debe ser un telefono valido.',
+                'phone.required' => 'El campo es requerido.',
+                'phone.phone' => 'El campo debe ser un telefono valido.',
             ]
         );
 
@@ -373,14 +375,11 @@ class EditFormalityForm extends Component
             $query->where('id', $this->form->serviceIds[0]);
         })->whereHas('address', function ($query) {
             $query->where('id', $this->formality->address->id);
+        })->whereHas('status', function ($query) {
+            $query->WhereIn('name', FormalityStatusNotDuplicated::getList());
         })->where('id', '!=', $this->formality->id);
 
-        if ($Formality->exists()) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return $Formality->exists();
     }
 
     public function changeSameAddress()
