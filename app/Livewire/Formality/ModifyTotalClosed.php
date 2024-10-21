@@ -181,7 +181,8 @@ class ModifyTotalClosed extends Component
             }
 
             if ($this->cancellation->create_new_one) {
-                $this->createFormalityOnCancel($this->formality, $trigger_date);
+                $newOne = $this->createFormalityOnCancel($this->formality, $trigger_date);
+                $newOne->files()->attach($this->formality->files);
             }
 
             DB::commit();
@@ -211,7 +212,7 @@ class ModifyTotalClosed extends Component
         $type = ComponentOption::firstWhere('name', FormalityTypeEnum::ALTA_NUEVA->value);
         $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
 
-        Formality::create([
+        return Formality::create([
             'client_id' => $formality->client_id,
             'created_at' => $trigger_date,
             'user_issuer_id' => $inmoenergy->id,

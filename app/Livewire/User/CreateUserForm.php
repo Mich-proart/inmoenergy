@@ -88,8 +88,7 @@ class CreateUserForm extends Component
 
     public function save()
     {
-        $country = Country::firstWhere('name', 'spain');
-        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'required|string|min:11|max:11';
+        $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
             [
                 'phone' => $phoneRule,
@@ -113,6 +112,7 @@ class CreateUserForm extends Component
                 'phone.min' => 'El campo debe ser un telefono valido.',
                 'phone.max' => 'El campo debe ser un telefono valido.',
                 'phone.required' => 'El campo es requerido.',
+                'phone.phone' => 'El campo debe ser un telefono valido.',
                 'name.required' => 'El nombre es requerido',
                 'email.unique' => 'El correo electronico ya se encuentra registrado',
                 'email.email' => 'El correo electronico no es valido',

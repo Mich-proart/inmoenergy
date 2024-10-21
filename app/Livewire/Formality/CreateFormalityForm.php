@@ -208,8 +208,7 @@ class CreateFormalityForm extends Component
 
     private function formValidation()
     {
-        $country = Country::firstWhere('name', 'spain');
-        $phoneRule = $country->id == $this->selected_country->id ? 'required|string|spanish_phone' : 'nullable|string|min:11|max:11';
+        $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
             [
                 'phone' => $phoneRule
@@ -217,6 +216,8 @@ class CreateFormalityForm extends Component
             [
                 'phone.min' => 'El campo debe ser un telefono valido.',
                 'phone.max' => 'El campo debe ser un telefono valido.',
+                'phone.required' => 'El campo es requerido.',
+                'phone.phone' => 'El campo debe ser un telefono valido.',
             ]
         );
         $this->validate();

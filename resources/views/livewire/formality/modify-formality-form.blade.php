@@ -181,13 +181,9 @@
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
                     @if (isset($this->from) && $this->from === 'total')
-                        <a href="{{ route('admin.formality.totalInProgress') }}">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        </a>
+                        <button wire:click="closeEdit" type="button" class="btn btn-secondary">Cancelar</button>
                     @else
-                        <a href="{{ route('admin.formality.assigned') }}">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        </a>
+                        <button wire:click="closeEdit" type="button" class="btn btn-secondary">Cancelar</button>
                     @endif
                     <button type="submit" class="btn btn-success float-right"><i class="far fa-save"></i>
                         Finalizar trámite</button>
@@ -253,6 +249,11 @@
                 title: e.title,
                 text: e.error,
             });
+        });
+
+        window.addEventListener('beforeunload', () => {
+            console.log('leaveGameQueue');
+            $wire.dispatch('directClose');
         });
     </script>
     @endscript
