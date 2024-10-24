@@ -35,9 +35,15 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Fecha de entrada:</label> {{$formality->created_at}}
                         </div>
-                        <div id="status" class="col-sm-4 invoice-col">
-                            <x-badge.status :status="$formality->status" />
-                        </div>
+                        @if ($from == 'trámites cerrados')
+                            <div class="col-sm-4 invoice-col">
+                                <label for="">Fecha de finalización: </label> {{$formality->completion_date}}
+                            </div>
+                        @else
+                            <div id="status" class="col-sm-4 invoice-col">
+                                <x-badge.status :status="$formality->status" />
+                            </div>
+                        @endif
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
@@ -62,6 +68,11 @@
                         <div class="col-sm-4 invoice-col">
                             <label for="">Tipo de trámite: </label> {{ucfirst($formality->type->name)}}
                         </div>
+                        @if ($from == 'trámites cerrados')
+                            <div id="status" class="col-sm-4 invoice-col">
+                                <x-badge.status :status="$formality->status" />
+                            </div>
+                        @endif
                     </div>
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
@@ -291,6 +302,16 @@
                     </div>
                 </div>
             </section>
+            @if ($from == 'trámites cerrados')
+                <div style="margin-top: 50px; margin-bottom: 25px">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
+                            @readonly(true)>{{$formality->observation}}</textarea>
+                    </div>
+
+                </div>
+            @endif
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Observaciones del asesor</label>
