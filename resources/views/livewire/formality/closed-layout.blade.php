@@ -1,25 +1,4 @@
 <div>
-    <!-- Modal -->
-    <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Archivos</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <x-view.files-items :files="$files" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div>
         <div wire:ignore class="card card-primary card-outline">
             <div class="card-header">
@@ -29,7 +8,6 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-
                             <th>Fecha de entrada</th>
                             <th>Usuario asignado</th>
                             <th>Tipo</th>
@@ -37,10 +15,10 @@
                             <th>Cliente final</th>
                             <th>N documento</th>
                             <th>Dirección</th>
+                            <th>Fecha Finalizacion del tramite</th>
                             <th>Estado trámite</th>
                             <th>Compañía suministro</th>
                             <th>Observaciones asesor</th>
-                            <th>Documentos</th>
                         </tr>
                     </thead>
 
@@ -65,7 +43,7 @@
                     </div>
                     <div class="modal-body">
                         @if (isset($formality) && !empty($formality))
-                            <x-view.formality-body :formality="$formality" :from="'inprogress'" />
+                            <x-view.formality-body :formality="$formality" :from="'closed'" />
                         @endif
                     </div>
                     <div class="modal-footer">
@@ -94,13 +72,13 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: `Tramites en curso ${new Date()}`
+                    title: `Tramites cerrados - ${new Date()}`
                 }
             ],
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "{{route('api.formality.inprogress')}}",
+                "url": "{{route('api.formality.closed')}}",
                 "type": "GET",
             },
             "language": {
@@ -114,6 +92,7 @@
                 { data: 'fullName' },
                 { data: 'documentNumber' },
                 { data: 'fullAddress' },
+                { data: 'completion_date' },
                 {
                     data: 'status', render: function (data, type, row, meta) {
                         return statusColor(data);
@@ -121,30 +100,22 @@
                 },
                 { data: 'company' },
                 { data: 'assigned_observation' },
-                {
-                    data: 'formality_id', render: function (data, type, row, meta) {
-                        console.log(data)
-                        return `<button type="button" wire:click="getFiles(${data})" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"> <i class="far fa-file"></i></button>`
-                    }
-                },
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] }
             ],
             "order": [
                 [0, "desc"]
             ],
         });
-
-
     </script>
     @script
     <script>
-        $('#formality-content').on('click', '.target', function () {
+        $('#formality-content').on('click', 'tbody tr', function () {
             const row = table.row(this).data();
-            //window.location.href = " {{-- {{ route('admin.formality.edit', ':id') }} --}}".replace(':id', row.formality_id);
+            console.log(row);
+            // window.location.href = " {{-- {{ route('admin.formality.get', ':id') }} --}}".replace(':id', row.formality_id);
             $wire.dispatch('getFormality', {
                 id: row.formality_id
             });

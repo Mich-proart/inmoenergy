@@ -165,4 +165,9 @@ class TicketApiController extends Controller
             })
             ->toJson(true);
     }
+
+    public function getFormalityTicket()
+    {
+        return 'test';
+    }
 }
