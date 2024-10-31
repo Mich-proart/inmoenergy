@@ -94,7 +94,9 @@
         <div class="row no-print px-3">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button class="btn btn-secondary">cerrado</button>
+                    <a href="{{ route('admin.dashboard') }}">
+                        <button class="btn btn-secondary">Cerrar</button>
+                    </a>
 
                     <button wire:click="save" type="button" class="btn btn-success float-right"
                         style="margin-right: 10px"><i class="far fa-save"></i>
@@ -106,7 +108,9 @@
         <div class="row no-print px-3">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button class="btn btn-secondary">cerrado</button>
+                    <a href="{{ route('admin.dashboard') }}">
+                        <button class="btn btn-secondary">Cerrar</button>
+                    </a>
                 </div>
             </div>
         </div>
