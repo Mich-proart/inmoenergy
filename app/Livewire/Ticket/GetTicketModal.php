@@ -113,8 +113,13 @@ class GetTicketModal extends Component
 
     public function getDataTicket()
     {
+
+        if ($this->formality->user_assigned_id != null) {
+            $this->defaultStatus = Status::where('name', TicketStatusEnum::PENDIENTE_CLIENTE->value)->first();
+        }
         return [
             'user_issuer_id' => Auth::user()->id,
+            'user_assigned_id' => $this->formality->user_assigned_id,
             'formality_id' => $this->formality->id,
             'ticket_title' => strtolower($this->title),
             'ticket_description' => strtolower($this->description),
