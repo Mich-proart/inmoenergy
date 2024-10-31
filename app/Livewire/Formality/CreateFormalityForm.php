@@ -404,6 +404,7 @@ class CreateFormalityForm extends Component
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
+        $formalitytypes = $formalitytypes->where('name', '!=', 'renovación');
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();

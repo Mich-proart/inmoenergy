@@ -408,6 +408,9 @@ class EditFormalityForm extends Component
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
+
+        $formalitytypes = $formalitytypes->where('name', '!=', 'renovación');
+
         $services = $this->formalityService->getServices();
         $services = $services->where('name', '!=', 'fibra');
         $streetTypes = $this->addressService->getStreetTypes();

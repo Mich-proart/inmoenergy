@@ -1,47 +1,77 @@
 <div>
-    <div class="card card-primary card-outline" style="height: 700px;">
-        <div class="mt-3 mr-3">
+
+    <div class="col-12">
+        <h5>Para un cliente nuevo</h5>
+    </div>
+    <div class="card card-primary card-outline">
+        <div class="mt-3 mr-3 mb-4">
             <div class="col-12 ">
                 <h4>
-                    <small class="float-right">
-                        <button type="button" class="btn btn-primary btn-sm"
-                            wire:click="$dispatch('move-confirmation')">
-                            Nuevo cliente
+                    <small class="float-left">
+                        <button type="button" class="btn btn-primary" wire:click="$dispatch('move-confirmation')">
+                            Iniciar un nuevo trámite
                         </button>
                     </small>
                 </h4>
             </div>
         </div>
+    </div>
+    <div class="col-12">
+        <h5>Para un cliente existente</h5>
+    </div>
+    <div class="card card-primary card-outline" style="height: 700px;">
+        <div class="mt-3 mr-3 ms-5">
+            <div class="col-12">
+                <h4 class=" card-title fw-bold">Buscar el cliente en el sistema</h4>
+            </div>
+        </div>
         <div class="card-body">
             <div wire:ignore.self class="container" style="margin-left: 0px; margin-right: 0px">
                 <div class="row" style="margin-bottom: 5px">
-                    <div class="col-8">
-                        <div class="form-outline" data-mdb-input-init>
-                            <input wire:model.live="search_full_name" type="search" id="search_full_name"
-                                class="form-control" placeholder="Nombre completo / razon social" aria-label="Search" />
+                    <div class="row">
+                        <div class="col-3 d-flex justify-content-end">
+                            <div>Nombre completo / razon social</div>
                         </div>
-                    </div>
-                    <div class="col-3">
-                        <input wire:model.live="search_document_number" type="search" id="search_document_number"
-                            class="form-control" placeholder="Numero documento" aria-label="Search" />
+                        <div class="col-5">
+                            <div class="form-outline" data-mdb-input-init>
+                                <input wire:model.live="search_full_name" type="search" id="search_full_name"
+                                    class="form-control" aria-label="Search" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 5px">
-                    <div class="col-4">
-                        <div class="form-outline" data-mdb-input-init>
-                            <select wire:model.live="search_client_type_id" class="form-control" name="clientTypeId"
-                                id="search_client_type_id">
-                                <option value="">-- selecione --</option>
-                                @if (isset($clientTypes))
-                                    @foreach ($clientTypes as $clientType)
-                                        <option value="{{ $clientType->id }}">{{ ucfirst($clientType->name) }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
+                    <div class="row">
+                        <div class="col-3 d-flex justify-content-end">
+                            <div class="">Numero documento</div>
+                        </div>
+                        <div class="col-3">
+                            <input wire:model.live="search_document_number" type="search" id="search_document_number"
+                                class="form-control" aria-label="Search" />
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 5px;">
+                <div class="row" style="margin-bottom: 5px">
+                    <div class="row">
+                        <div class="col-3 d-flex justify-content-end">
+                            <div>Tipo cliente</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-outline" data-mdb-input-init>
+                                <select wire:model.live="search_client_type_id" class="form-control" name="clientTypeId"
+                                    id="search_client_type_id">
+                                    <option value="">-- selecione --</option>
+                                    @if (isset($clientTypes))
+                                        @foreach ($clientTypes as $clientType)
+                                            <option value="{{ $clientType->id }}">{{ ucfirst($clientType->name) }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 50px;">
                     <div class="col-12">
                         <table class="table table-hover table-sm">
                             <thead>

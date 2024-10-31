@@ -508,6 +508,7 @@ class CreateByClient extends Component
         }
 
         $formalitytypes = $this->formalityService->getFormalityTypes();
+        $formalitytypes = $formalitytypes->where('name', '!=', 'renovación');
         $services = $this->formalityService->getServices();
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
