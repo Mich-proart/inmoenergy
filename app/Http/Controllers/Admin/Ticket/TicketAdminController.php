@@ -17,7 +17,7 @@ class TicketAdminController extends Controller
         $this->middleware('can:ticket.create')->only('create');
         $this->middleware('can:ticket.pending.access')->only('getPending', 'edit');
         $this->middleware('can:ticket.resolved.access')->only('getResolved', 'getView');
-        $this->middleware('can:ticket.resolved.access.worker')->only('getResolvedWorker');
+        $this->middleware('can:ticket.resolved.access.worker')->only('getResolvedWorker', 'getView');
         $this->middleware('can:ticket.assigned.access')->only('getAssigned', 'modify');
         $this->middleware('can:ticket.total.closed.access')->only('getTotalClosed', 'getView');
         $this->middleware('can:ticket.assignment.access')->only('getAssignment');
