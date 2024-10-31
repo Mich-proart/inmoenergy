@@ -79,9 +79,18 @@ class ModifyTicketForm extends Component
         $message = [];
 
         if ($this->isResolved) {
-            $rule['resolution_comment_body'] = 'required|string';
+            $rule['resolution_comment_body'] = 'required|string|min:10';
             $message['resolution_comment_body.required'] = 'El campo resolución es requerido';
+            $message['resolution_comment_body.min'] = 'El campo resolución debe tener al menos 10 caracteres';
             $this->validate($rule, $message);
+        }
+
+        if ($this->body != null) {
+            $this->validate(['body' => 'string|min:10'], [
+                'body.required' => 'El campo comentario es requerido',
+                'body.min' => 'El campo comentario debe tener al menos 10 caracteres',
+            ]);
+
         }
 
 
