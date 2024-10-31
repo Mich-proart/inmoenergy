@@ -109,7 +109,7 @@ class AssignmentRevonationLayout extends Component
     private function createFormalityOnRenovation($formality, Carbon $trigger_date)
     {
         $inmoenergy = User::firstWhere('name', 'inmoenergy');
-        $type = ComponentOption::firstWhere('name', FormalityTypeEnum::ALTA_NUEVA->value);
+        $type = ComponentOption::firstWhere('name', FormalityTypeEnum::RENOVACION->value);
         $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
 
         return Formality::create([
