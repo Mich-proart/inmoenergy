@@ -89,7 +89,8 @@
                                                     <input wire:model="isResolved" wire:change="setIsResolved()"
                                                         class="form-check-input" type="checkbox" role="switch"
                                                         id="isRenewable">
-                                                    <label class="form-check-label" for="isRenewable">Renovación</label>
+                                                    <label class="form-check-label" for="isRenewable">Resolución
+                                                        ticket</label>
                                                 </div>
                                             </div>
                                         </div>
