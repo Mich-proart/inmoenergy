@@ -44,11 +44,12 @@ class HomeController extends Controller
                     $formality = $this->formalityQueryService->getInProgress($userId);
                     $program->count = count($formality);
                 }
-
+                /*
                 if ($program->name == 'trámites cerrados') {
                     $formality = $this->formalityQueryService->getClosed($userId);
                     $program->count = count($formality);
                 }
+                    */
                 if ($program->name == 'trámites asignados') {
                     $formality = $this->formalityQueryService->getAssigned($userId);
                     $program->count = count($formality);
@@ -75,14 +76,17 @@ class HomeController extends Controller
                     $formality = $this->formalityQueryService->getTotalInProgress();
                     $program->count = count($formality);
                 }
+                /*
                 if ($program->name == 'trámites cerrados totales') {
                     $formality = $this->formalityQueryService->getTotalClosed();
                     $program->count = count($formality);
                 }
+                    */
                 if ($program->name == 'tickets pendientes') {
                     $ticket = $this->ticketQueryService->getPending($userId);
                     $program->count = count($ticket);
                 }
+                /*
                 if ($program->name == 'tickets resueltos') {
                     $ticket = '';
                     if ($section->name == "trámites y tickets asignados") {
@@ -92,6 +96,7 @@ class HomeController extends Controller
                     }
                     $program->count = count($ticket);
                 }
+                    */
                 if ($program->name == 'tickets asignados') {
                     $ticket = $this->ticketQueryService->getAssigned($userId);
                     $program->count = count($ticket);
@@ -104,10 +109,12 @@ class HomeController extends Controller
                     $ticket = $this->ticketQueryService->getAssignment();
                     $program->count = count($ticket);
                 }
+                /*
                 if ($program->name == 'tickets cerrados totales') {
                     $ticket = $this->ticketQueryService->getTotalClosed();
                     $program->count = count($ticket);
                 }
+                    */
             }
         }
 
