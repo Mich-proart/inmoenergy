@@ -10,6 +10,10 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
+
+    protected $commands = [
+        Commands\AutoCompleteFormality::class
+    ];
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('app:auto-complete-formality')->dailyAt('00:00');
