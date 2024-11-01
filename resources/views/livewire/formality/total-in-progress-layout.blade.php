@@ -40,6 +40,7 @@
                             <th>Dirección</th>
                             <th>Estado Trámite</th>
                             <th>Trámite Crítico</th>
+                            <th>Tickets pendientes</th>
                             <th>Documentos</th>
                         </tr>
                     </thead>
@@ -63,6 +64,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+        <script src="/vendor/custom/functions.code.js"></script>
         <script src="/vendor/custom/badge.code.js"></script>
         <script>
             const table = new DataTable('#formality-content', {
@@ -106,15 +108,20 @@
                     },
                     {
                         data: 'formality_id', render: function (data, type, row, meta) {
+                            return pendinTicketsSeventeenthProgram(data, "{{route('api.formality.ticket')}}");
+                        }
+                    },
+                    {
+                        data: 'formality_id', render: function (data, type, row, meta) {
                             console.log(data)
                             return `<button type="button" wire:click="getFiles(${data})" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"> <i class="far fa-file"></i></button>`
                         }
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14] },
                     { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12] },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
                 ],
                 "order": [
                     [0, "desc"]

@@ -40,6 +40,7 @@
                             <th>Estado trámite</th>
                             <th>Compañía suministro</th>
                             <th>Observaciones asesor</th>
+                            <th>Tickets pendientes</th>
                             <th>Documentos</th>
                         </tr>
                     </thead>
@@ -88,6 +89,7 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
     <script>
         const table = new DataTable('#formality-content', {
             dom: 'Bfrtip',
@@ -123,15 +125,19 @@
                 { data: 'assigned_observation' },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {
-                        console.log(data)
+                        return pendinTicketsSecondProgram(data, "{{route('api.formality.ticket')}}");
+                    }
+                },
+                {
+                    data: 'formality_id', render: function (data, type, row, meta) {
                         return `<button type="button" wire:click="getFiles(${data})" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"> <i class="far fa-file"></i></button>`
                     }
                 },
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8] },
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8, 9, 10, 11] },
                 { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10] },
             ],
             "order": [
                 [0, "desc"]
