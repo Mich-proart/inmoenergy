@@ -70,6 +70,29 @@
                             </div>
                         </div>
                     </div>
+                    {{-- email services --}}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label for="">¿El cliente quiere tramitar el alta de otros servicios? Marcar los servicios en los que está interesado.</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                @if (isset($emailServices))
+                                    @foreach ($emailServices as $service)
+                                        <div class="form-check form-check-inline">
+                                            <input wire:model="form.serviceIds" class="form-check-input" type="checkbox" id=""
+                                                   name="serviceIds[]" wire:click="addInput({{ $service->id }})"
+                                                   value="{{ $service->id }}">
+                                            <label class="form-check-label"
+                                                   for="inlineCheckbox1">{{ ucfirst($service->name) }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section x-data="{ type: '' }">
                     <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">

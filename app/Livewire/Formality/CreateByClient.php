@@ -3,6 +3,7 @@
 namespace App\Livewire\Formality;
 
 use App\Domain\Common\FormalityStatusNotDuplicated;
+use App\Domain\Formality\Services\ServicesBasedOnEmail;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\Formality\FormalityClientCreate;
 use App\Models\Address;
@@ -63,6 +64,8 @@ class CreateByClient extends Component
     private ComponentOption $fibra;
     private FileUploadigService $fileUploadigService;
 
+    private ServicesBasedOnEmail $servicesBasedOnEmail;
+
     protected $rules = [
         'inputs.*.file' => 'required|mimes:pdf|max:5240',
     ];
@@ -82,6 +85,7 @@ class CreateByClient extends Component
         $this->addressService = App::make(AddressService::class);
         $this->fibra = ComponentOption::where('name', 'fibra')->first();
         $this->fileUploadigService = App::make(FileUploadigService::class);
+        $this->servicesBasedOnEmail = App::make(ServicesBasedOnEmail::class);
     }
 
 
@@ -507,9 +511,10 @@ class CreateByClient extends Component
             $clients = $query->with(['clientType'])->paginate(10);
         }
 
-        $formalitytypes = $this->formalityService->getFormalityTypes();
-        $formalitytypes = $formalitytypes->where('name', '!=', 'renovación');
-        $services = $this->formalityService->getServices();
+        $formalitytypes = $this->formalityService->getFormalityTypes()->where('name', '!=', 'renovación');
+
+        $services = $this->formalityService->getServices()->whereNotIn('id', $this->servicesBasedOnEmail->list_ids);
+        $emailServices = $this->formalityService->getServices()->whereIn('id', $this->servicesBasedOnEmail->list_ids);
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
 
@@ -518,6 +523,7 @@ class CreateByClient extends Component
             'clientTypes' => $clientTypes,
             'formalitytypes' => $formalitytypes,
             'services' => $services,
+            'emailServices' => $emailServices,
             'streetTypes' => $streetTypes,
             'housingTypes' => $housingTypes,
         ]);
