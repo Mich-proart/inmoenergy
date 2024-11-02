@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('fileables', function (Blueprint $table) {
-            $table->foreignId('file_id')->constrained('files');
+            $table->foreignId('file_id')->constrained('files')->onUpdate('cascade')->onDelete('cascade');;
             $table->morphs('fileable');
         });
     }
