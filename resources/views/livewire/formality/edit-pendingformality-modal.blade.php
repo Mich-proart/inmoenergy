@@ -185,6 +185,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                @foreach($inputs as $key => $input)
+                                    <div class="row">
+                                        <div class="col-24">
+                                            <label for="inputZip">{{ucfirst($input['name'])}}: </label>
+                                            <input wire:model.defer="inputs.{{$key}}.file" type="file"
+                                                   class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                                   id="input_{{$key}}_file">
+                                            @error('inputs.' . $key . '.file')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                            <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...</div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                             <div class="row no-print">
                                 <div class="col-12">
                                     <div style="margin-top: 50px; margin-bottom: 25px">

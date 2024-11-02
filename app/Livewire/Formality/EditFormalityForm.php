@@ -116,7 +116,8 @@ class EditFormalityForm extends Component
 
     public function mountFilesInput()
     {
-        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+        $fileConfig = FileConfig::whereNull('component_option_id')
+            ->where('name', '!=', 'contrato del suministro')->get();
 
         $this->fill([
             'inputs' => collect([['' => '']]),

@@ -78,7 +78,8 @@ class CreateFormalityForm extends Component
     {
         $this->documentTypes = $this->userService->getDocumentTypes();
 
-        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+        $fileConfig = FileConfig::whereNull('component_option_id')
+            ->where('name', '!=', 'contrato del suministro')->get();
 
         $this->fill([
             'inputs' => collect([['' => '']]),
