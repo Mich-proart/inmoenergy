@@ -40,6 +40,7 @@
                                 <th>Compañía Suministro</th>
                                 <th>Producto Compañía</th>
                                 <th>Observaciones asesor</th>
+                                <th>Tickets pendientes</th>
                                 <th>Documentos</th>
                             </tr>
                         </thead>
@@ -63,6 +64,7 @@
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
         <script src="/vendor/custom/badge.code.js"></script>
+        <script src="/vendor/custom/functions.code.js"></script>
         <script>
             const table = new DataTable('#formality-content', {
                 dom: 'Bfrtip',
@@ -101,6 +103,11 @@
                     { data: 'company' },
                     { data: 'product' },
                     { data: 'assigned_observation' },
+                    {
+                        data: 'formality_id', render: function (data, type, row, meta) {
+                            return pendinTicketsSeventhProgram(data, "{{route('api.formality.ticket')}}");
+                        }
+                    },
                     {
                         data: 'formality_id', render: function (data, type, row, meta) {
                             console.log(data)

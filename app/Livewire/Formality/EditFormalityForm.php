@@ -116,7 +116,8 @@ class EditFormalityForm extends Component
 
     public function mountFilesInput()
     {
-        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+        $fileConfig = FileConfig::whereNull('component_option_id')
+            ->where('name', '!=', 'contrato del suministro')->get();
 
         $this->fill([
             'inputs' => collect([['' => '']]),
@@ -408,6 +409,9 @@ class EditFormalityForm extends Component
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
         $formalitytypes = $this->formalityService->getFormalityTypes();
+
+        $formalitytypes = $formalitytypes->where('name', '!=', 'renovación');
+
         $services = $this->formalityService->getServices();
         $services = $services->where('name', '!=', 'fibra');
         $streetTypes = $this->addressService->getStreetTypes();

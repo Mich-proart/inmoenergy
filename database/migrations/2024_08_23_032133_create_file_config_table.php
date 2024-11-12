@@ -28,7 +28,8 @@ return new class extends Migration {
         $generals = array(
             "DNI (Ambas caras)",
             "contrato de alquiler o contrato de compraventa",
-            "autorización hacia InmoEnergy"
+            "autorización hacia InmoEnergy",
+            "contrato del suministro"
         );
 
         foreach ($services as $key => $value) {

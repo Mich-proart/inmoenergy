@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityPendingEdit;
+use App\Models\FileConfig;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Models\Formality;
@@ -10,10 +13,16 @@ use App\Exceptions\CustomException;
 use DB;
 use App\Domain\Formality\Services\FormalityService;
 use Illuminate\Support\Facades\App;
+use Livewire\WithFileUploads;
 
 class EditPendingformalityModal extends Component
 {
 
+    use WithFileUploads;
+
+    public Collection $inputs;
+
+    private FileUploadigService $fileUploadService;
 
     protected $formalityService;
 
@@ -21,10 +30,29 @@ class EditPendingformalityModal extends Component
 
     public $files;
 
+    public FormalityPendingEdit $form;
+
+    protected $rules = [
+        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
+    ];
+
+    protected $messages = [
+        //'inputs.*.file.required' => 'Selecione un archivo.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
+    ];
+
     public function __construct()
     {
         $this->formalityService = App::make(FormalityService::class);
+        $this->fileUploadService = App::make(FileUploadigService::class);
     }
+
+    public function mount()
+    {
+        $this->initFileInput();
+    }
+
     public function getFiles($formality_id)
     {
 
@@ -39,7 +67,14 @@ class EditPendingformalityModal extends Component
         }
     }
 
-    public FormalityPendingEdit $form;
+    private function initFileInput()
+    {
+        $fileConfig = FileConfig::where('name', 'contrato del suministro')->first();
+
+        $this->fill([
+            'inputs' => collect([['configId' => $fileConfig->id, 'serviceId' => null, 'name' => $fileConfig->name, 'file' => '']])
+        ]);
+    }
 
     public function save()
     {
@@ -68,10 +103,14 @@ class EditPendingformalityModal extends Component
             'commission',
             'isRenewable'
         ]);
+        $this->initFileInput();
     }
 
     private function executeSave()
     {
+
+        $this->validate();
+
         DB::beginTransaction();
 
         try {
@@ -81,6 +120,19 @@ class EditPendingformalityModal extends Component
             if ($formality) {
                 $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_VIGOR->value);
                 $renewal_date = null;
+
+                $savedFile = $formality->files[0];
+
+                $file_inputs = $this->inputs->where('serviceId', null);
+                foreach ($file_inputs as $file_input) {
+                    if($file_input['file']){
+                    $this->fileUploadService
+                        ->setModel($formality)
+                        ->addFile($file_input['file'])
+                        ->setConfigId($file_input['configId'])
+                        ->saveFile($savedFile->folder);
+                    }
+                }
 
                 $this->days_to_renew = $formality->product->company->days_to_renew;
 

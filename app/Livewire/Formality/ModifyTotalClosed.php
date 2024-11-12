@@ -2,15 +2,19 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\FileConfigEnum;
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Enums\FormalityTypeEnum;
 use App\Domain\Formality\Services\FormalityService;
+use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityCancel;
 use App\Livewire\Forms\Formality\FormalityModifyTotalClosed;
 use App\Models\Address;
 use App\Models\ComponentOption;
+use App\Models\FileConfig;
 use App\Models\Formality;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -19,6 +23,7 @@ use DB;
 use App\Domain\Enums\ServiceEnum;
 use App\Models\User;
 use Livewire\Attributes\Computed;
+use Livewire\WithFileUploads;
 
 class ModifyTotalClosed extends Component
 {
@@ -28,12 +33,21 @@ class ModifyTotalClosed extends Component
 
     protected $formalityService;
 
+    use WithFileUploads;
 
+    public Collection $inputs;
+
+    public $files;
+
+    public $fileConfig;
+
+    private FileUploadigService $fileUploadService;
 
 
     public function __construct()
     {
         $this->formalityService = App::make(FormalityService::class);
+        $this->fileUploadService = App::make(FileUploadigService::class);
     }
 
     public function mount($formality)
@@ -41,6 +55,24 @@ class ModifyTotalClosed extends Component
         $this->formality = $formality;
         $this->form->setData($this->formality);
         $this->cancellation->setData($this->formality);
+
+        $this->fileConfig = FileConfig::where('name', FileConfigEnum::CONTRATOSUMINISTRO->value)->first();
+
+        $this->files = $formality->files->where('config_id', $this->fileConfig->id);
+
+        if($this->files){
+            $this->initFileInput();
+        }
+
+    }
+
+    private  function initFileInput()
+    {
+        $fileConfig = FileConfig::where('name', 'contrato del suministro')->first();
+
+        $this->fill([
+            'inputs' => collect([['configId' => $fileConfig->id, 'serviceId' => null, 'name' => $fileConfig->name, 'file' => '']])
+        ]);
     }
 
     #[Computed()]
@@ -107,6 +139,37 @@ class ModifyTotalClosed extends Component
             $updates = array_merge(
                 $this->form->getDataToUpdate()
             );
+
+            $object = $this->inputs[0];
+            if ($object != null && $object['file'] != null) {
+
+                $this->validate([
+                    'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
+                ], [
+                    //'inputs.*.file.required' => 'Selecione un archivo.',
+                    'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+                    'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
+                ]);
+
+                $file = $object['file'];
+                $stored_file = $this->formality->files->where('config_id', $this->fileConfig->id)->first();
+
+                if($stored_file) {
+                    $this->fileUploadService
+                        ->addFile($file)
+                        ->setConfigId($object['configId'])
+                        ->force_replace($stored_file);
+                } else {
+                    $this->fileUploadService
+                        ->setModel($this->formality)
+                        ->addFile($file)
+                        ->setConfigId($this->fileConfig->id)
+                        ->saveFile($this->formality->files[0]->folder);
+                }
+
+
+            }
+
 
             $this->formality->update($updates);
 

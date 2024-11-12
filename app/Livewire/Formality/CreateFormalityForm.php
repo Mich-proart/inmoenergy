@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\ServiceEnum;
+use App\Domain\Formality\Services\ServicesBasedOnEmail;
 use App\Livewire\Forms\Formality\FormalityCreate;
 use App\Models\Address;
 use App\Models\Client;
@@ -40,9 +42,6 @@ class CreateFormalityForm extends Component
 
     public $folder;
 
-    public $file_fields = ['dni', 'factura_agua', 'factura_gas', 'factura_luz'];
-
-
     public $businessClientType;
     public $businessDocumentType;
 
@@ -52,8 +51,6 @@ class CreateFormalityForm extends Component
 
     private FileUploadigService $fileUploadigService;
 
-    private ComponentOption $fibra;
-
     protected $userService;
     protected $formalityService;
     protected $addressService;
@@ -61,6 +58,8 @@ class CreateFormalityForm extends Component
     protected $createFormalityService;
 
     public Country $selected_country;
+
+    private ServicesBasedOnEmail $servicesBasedOnEmail;
 
     public function __construct()
     {
@@ -71,14 +70,15 @@ class CreateFormalityForm extends Component
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
         $this->fileUploadigService = App::make(FileUploadigService::class);
-        $this->fibra = ComponentOption::where('name', 'fibra')->first();
+        $this->servicesBasedOnEmail = App::make(ServicesBasedOnEmail::class);
     }
 
     public function mount()
     {
         $this->documentTypes = $this->userService->getDocumentTypes();
 
-        $fileConfig = FileConfig::whereNull('component_option_id')->get();
+        $fileConfig = FileConfig::whereNull('component_option_id')
+            ->where('name', '!=', 'contrato del suministro')->get();
 
         $this->fill([
             'inputs' => collect([['' => '']]),
@@ -114,22 +114,30 @@ class CreateFormalityForm extends Component
         }
     }
 
+    public function getClientData()
+    {
+        return array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
+    }public function getClientEmailData()
+    {
+        return array_merge(['phone_code' => $this->selected_country->phone_code], $this->form->getClientDto());
+    }
+
     public function addInput($serviceId)
     {
-        // if ($serviceId !== $this->fibra->id) {
-        if ($this->inputs->contains('serviceId', $serviceId)) {
+        if ($serviceId !== $this->servicesBasedOnEmail->alarma->id) {
+            if ($this->inputs->contains('serviceId', $serviceId)) {
 
-            foreach ($this->inputs as $key => $value) {
-                if ($value['serviceId'] == $serviceId) {
-                    $this->inputs->pull($key);
+                foreach ($this->inputs as $key => $value) {
+                    if ($value['serviceId'] == $serviceId) {
+                        $this->inputs->pull($key);
+                    }
                 }
+                $this->inputs->pull('serviceId', $serviceId);
+            } else {
+                $config = FileConfig::where('component_option_id', $serviceId)->first();
+                $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
             }
-            $this->inputs->pull('serviceId', $serviceId);
-        } else {
-            $config = FileConfig::where('component_option_id', $serviceId)->first();
-            $this->inputs->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
         }
-        // }
 
     }
 
@@ -283,15 +291,11 @@ class CreateFormalityForm extends Component
         DB::beginTransaction();
         try {
             $this->folder = $this->getFolderName();
-
-            if (in_array($this->fibra->id, $this->form->serviceIds)) {
-                $this->emailRequest();
-            }
-
+            $this->emailRequest();
 
             if (count($this->form->serviceIds) > 0) {
-                $newdata = array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
-                $client = Client::create($newdata);
+
+                $client = Client::create($this->getClientData());
                 $address = Address::create($this->form->getCreateAddressDto());
 
                 $this->createFormalityService->setClientId($client->id);
@@ -379,22 +383,32 @@ class CreateFormalityForm extends Component
 
     private function emailRequest()
     {
-        $attachs = array();
-        $file_inputs = $this->inputs->where('serviceId', null);
-        $object = $this->inputs->where('serviceId', $this->fibra->id)->first();
-        $file_inputs->push($object);
+        if (array_intersect($this->servicesBasedOnEmail->list_ids, $this->form->serviceIds)) {
+            $attachs = array();
+            $file_inputs = $this->inputs->where('serviceId', null);
 
-        foreach ($file_inputs as $file_input) {
-            $target = $this->fileUploadigService
-                ->addFile($file_input['file'])
-                ->saveFile($this->folder);
-            array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
+            foreach ($file_inputs as $file_input) {
+                $target = $this->fileUploadigService
+                    ->addFile($file_input['file'])
+                    ->saveFile($this->folder);
+                array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
+            }
+            foreach ($this->servicesBasedOnEmail->list as $item){
+                $filesToSend = $attachs;
+                if (in_array($item->id, $this->form->serviceIds)) {
+                    $object = $this->inputs->where('serviceId', $item->id)->first();
+                    if($object){
+                        $target = $this->fileUploadigService
+                            ->addFile($object['file'])
+                            ->saveFile($this->folder);
+                        array_push($filesToSend, Attachment::fromPath(storage_path('app/public/' . $target)));
+                    }
+                    $this->servicesBasedOnEmail->sendMail($item->id, $this->getClientEmailData(), $this->form->getCreateAddressDto(), $filesToSend);
+
+                    $this->form->serviceIds = array_diff($this->form->serviceIds, [$item->id]);
+                }
+            }
         }
-        $newdata = array_merge(['phone_code' => $this->selected_country->phone_code], $this->form->getClientDto());
-        Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
-            ->send(new EmailLineaTelefonica($newdata, $this->form->getCreateAddressDto(), $attachs));
-
-        $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);
     }
 
 
@@ -403,8 +417,10 @@ class CreateFormalityForm extends Component
     {
         $clientTypes = $this->userService->getClientTypes();
         $userTitles = $this->userService->getUserTitles();
-        $formalitytypes = $this->formalityService->getFormalityTypes();
-        $services = $this->formalityService->getServices();
+        $formalitytypes = $this->formalityService->getFormalityTypes()->where('name', '!=', 'renovación');
+
+        $services = $this->formalityService->getServices()->whereNotIn('id', $this->servicesBasedOnEmail->list_ids);
+        $emailServices = $this->formalityService->getServices()->whereIn('id', $this->servicesBasedOnEmail->list_ids);
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         $countries = Country::all();
@@ -413,6 +429,7 @@ class CreateFormalityForm extends Component
             'housingTypes' => $housingTypes,
             'formalitytypes' => $formalitytypes,
             'services' => $services,
+            'emailServices' => $emailServices,
             'clientTypes' => $clientTypes,
             'userTitles' => $userTitles,
             'countries' => $countries

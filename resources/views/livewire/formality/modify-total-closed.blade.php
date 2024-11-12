@@ -129,8 +129,56 @@
                 <textarea wire:model="form.internal_observation" class="form-control" id="exampleFormControlTextarea1"
                     rows="3" name="internal_observation"></textarea>
             </div>
-
         </div>
+        <section>
+            <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
+                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                            Documentos
+                        </span>
+            </div>
+            <div class="form-group">
+                <x-view.files-items :files="$files" />
+                <section x-data="{ buttonDisabled: true, }">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top: 25px">
+                                <div class="form-check">
+                                    <div class="form-check form-switch">
+                                        <input wire:model="form.new_files" class="form-check-input"
+                                               type="checkbox" role="switch"
+                                               x-on:click="buttonDisabled = !buttonDisabled"
+                                               id="flexSwitchCheckDefault">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Editar
+                                            archivos existentes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section x-show="!buttonDisabled">
+                        @if ($inputs)
+                            @foreach($inputs as $key => $input)
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="inputZip">{{ucfirst($input['name'])}}: </label>
+                                        <input wire:model.defer="inputs.{{$key}}.file" type="file"
+                                               class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                               id="input_{{$key}}_file">
+                                        @error('inputs.' . $key . '.file')
+                                        <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                        @enderror
+                                        <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </section>
+                </section>
+            </div>
+        </section>
         <div class="row no-print">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">

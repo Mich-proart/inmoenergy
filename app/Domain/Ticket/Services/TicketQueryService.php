@@ -81,7 +81,8 @@ class TicketQueryService
     {
         $queryBuilder = $this->ticketQuery();
         $queryBuilder->where('issuer.id', $issuerId);
-        $queryBuilder->WhereNotIn('status.name', [TicketStatusEnum::RESUELTO->value]);
+        $queryBuilder->WhereIn('status.name', [TicketStatusEnum::PENDIENTE_CLIENTE->value]);
+        $queryBuilder->where('formality.user_issuer_id', $issuerId);
         return $queryBuilder->get();
     }
     public function getResolved(int $issuerId)

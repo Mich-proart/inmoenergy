@@ -31,6 +31,8 @@ class AutoCompleteFormality extends Command
     {
         $today = Carbon::today();
 
+        $this->info($today);
+
         $status = Status::where('name', FormalityStatusEnum::FINALIZADO->value)->first();
 
         Formality::where('contract_completion_date', '<', $today)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Ticket;
 
 use App\Domain\Ticket\Services\TicketQueryService;
 use App\Http\Controllers\Controller;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -166,8 +167,26 @@ class TicketApiController extends Controller
             ->toJson(true);
     }
 
-    public function getFormalityTicket()
+    public function getFormalityTicket(Request $request)
     {
-        return 'test';
+
+        $status = $request->input('status');
+        $id = $request->input('id');
+
+        $query = Ticket::whereHas('formality', function ($query) use ($id) {
+            $query->where('formality_id', $id);
+        });
+
+        if (isset($status)) {
+            $query->whereHas('status', function ($query) use ($status) {
+                $query->whereIn('name', $status);
+            });
+        }
+
+
+        $tickets = $query->get();
+
+        return response()->json($tickets, 200);
+
     }
 }
