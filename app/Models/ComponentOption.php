@@ -32,4 +32,9 @@ class ComponentOption extends Model
     {
         return $this->hasMany(ComponentOption::class, 'option_id');
     }
+
+    public function formalities(): HasMany
+    {
+        return $this->hasMany(Formality::class);
+    }
 }
