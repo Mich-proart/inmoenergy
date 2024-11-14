@@ -8,6 +8,7 @@ use App\Domain\Enums\ClientTypeEnum;
 use App\Domain\Enums\DocumentRule;
 use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\FormalityService;
+use App\Domain\Formality\Services\ServicesBasedOnEmail;
 use App\Domain\Program\Services\FileUploadigService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
@@ -62,6 +63,8 @@ class EditFormalityForm extends Component
 
     private FileUploadigService $fileUploadigService;
 
+    protected ServicesBasedOnEmail $servicesBasedOnEmail;
+
     public Country $selected_country;
 
     public function __construct()
@@ -72,6 +75,7 @@ class EditFormalityForm extends Component
         $this->fileUploadigService = App::make(FileUploadigService::class);
         $this->businessClientType = ComponentOption::where('name', ClientTypeEnum::BUSINESS->value)->first();
         $this->businessDocumentType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
+        $this->servicesBasedOnEmail = App::make(ServicesBasedOnEmail::class);
     }
 
 
@@ -411,8 +415,7 @@ class EditFormalityForm extends Component
 
         $formalitytypes = $formalitytypes->where('name', '!=', 'renovación');
 
-        $services = $this->formalityService->getServices();
-        $services = $services->where('name', '!=', 'fibra');
+        $services = $this->formalityService->getServices()->whereNotIn('id', $this->servicesBasedOnEmail->list_ids);
         $streetTypes = $this->addressService->getStreetTypes();
         $housingTypes = $this->addressService->getHousingTypes();
         $countries = Country::all();
