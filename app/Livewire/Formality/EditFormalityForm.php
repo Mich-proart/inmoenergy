@@ -2,27 +2,26 @@
 
 namespace App\Livewire\Formality;
 
-use App\Domain\Common\FormalityStatusNotDuplicated;
-use App\Domain\Program\Services\FileUploadigService;
-use App\Livewire\Forms\Formality\FormalityUpdate;
-use App\Models\Country;
-use App\Models\File;
-use App\Models\FileConfig;
-use Illuminate\Support\Collection;
-use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
+use App\Domain\Common\FormalityStatusNotDuplicated;
 use App\Domain\Enums\ClientTypeEnum;
 use App\Domain\Enums\DocumentRule;
 use App\Domain\Enums\DocumentTypeEnum;
 use App\Domain\Formality\Services\FormalityService;
+use App\Domain\Program\Services\FileUploadigService;
 use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
+use App\Livewire\Forms\Formality\FormalityUpdate;
 use App\Models\Address;
 use App\Models\ComponentOption;
+use App\Models\Country;
+use App\Models\FileConfig;
 use App\Models\Formality;
-use Illuminate\Support\Facades\App;
 use DB;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Computed;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class EditFormalityForm extends Component
@@ -149,14 +148,14 @@ class EditFormalityForm extends Component
     }
 
     protected $rules = [
-        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
-        'service_file.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
+        'inputs.*.file' => 'sometimes|nullable|mimes:pdf,jpg|max:5240',
+        'service_file.*.file' => 'sometimes|nullable|mimes:pdf,jpg|max:5240',
     ];
 
     protected $messages = [
-        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf o jpg.',
         'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
-        'service_file.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'service_file.*.file.mimes' => 'El archivo debe ser un pdf o jpg.',
         'service_file.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
@@ -234,16 +233,16 @@ class EditFormalityForm extends Component
     }
 
     #[Computed()]
-
     public function provinces()
     {
         $province = $this->addressService->getProvinces();
         return $province;
     }
+
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
+        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
         return $locations;
     }
 
@@ -257,7 +256,7 @@ class EditFormalityForm extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
         return $clientLocation;
     }
 

@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\FormalityStatusEnum;
+use App\Domain\Formality\Services\FormalityService;
 use App\Domain\Program\Services\FileUploadigService;
+use App\Exceptions\CustomException;
 use App\Livewire\Forms\Formality\FormalityPendingEdit;
 use App\Models\FileConfig;
-use Illuminate\Support\Collection;
-use Livewire\Component;
-use App\Domain\Enums\FormalityStatusEnum;
 use App\Models\Formality;
-use App\Exceptions\CustomException;
 use DB;
-use App\Domain\Formality\Services\FormalityService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class EditPendingformalityModal extends Component
@@ -33,12 +33,12 @@ class EditPendingformalityModal extends Component
     public FormalityPendingEdit $form;
 
     protected $rules = [
-        'inputs.*.file' => 'sometimes|nullable|mimes:pdf|max:5240',
+        'inputs.*.file' => 'sometimes|nullable|mimes:pdf,jpg|max:5240',
     ];
 
     protected $messages = [
         //'inputs.*.file.required' => 'Selecione un archivo.',
-        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf o jpg.',
         'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
@@ -125,12 +125,12 @@ class EditPendingformalityModal extends Component
 
                 $file_inputs = $this->inputs->where('serviceId', null);
                 foreach ($file_inputs as $file_input) {
-                    if($file_input['file']){
-                    $this->fileUploadService
-                        ->setModel($formality)
-                        ->addFile($file_input['file'])
-                        ->setConfigId($file_input['configId'])
-                        ->saveFile($savedFile->folder);
+                    if ($file_input['file']) {
+                        $this->fileUploadService
+                            ->setModel($formality)
+                            ->addFile($file_input['file'])
+                            ->setConfigId($file_input['configId'])
+                            ->saveFile($savedFile->folder);
                     }
                 }
 
@@ -200,6 +200,7 @@ class EditPendingformalityModal extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
     }
+
     public function resetFormality()
     {
         $this->form->validateOnly('formalityId');

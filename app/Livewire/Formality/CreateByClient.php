@@ -2,32 +2,32 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Address\Services\AddressService;
 use App\Domain\Common\FormalityStatusNotDuplicated;
+use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Formality\Services\FormalityService;
 use App\Domain\Formality\Services\ServicesBasedOnEmail;
+use App\Domain\Program\Services\FileUploadigService;
+use App\Domain\User\Services\UserService;
 use App\Exceptions\CustomException;
 use App\Livewire\Forms\Formality\FormalityClientCreate;
+use App\Mail\EmailLineaTelefonica;
 use App\Models\Address;
 use App\Models\Client;
 use App\Models\ClientAddress;
 use App\Models\ComponentOption;
 use App\Models\FileConfig;
 use App\Models\Formality;
+use DB;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use DB;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\App;
-use App\Domain\User\Services\UserService;
-use App\Domain\Formality\Services\FormalityService;
-use App\Domain\Address\Services\AddressService;
-use App\Mail\EmailLineaTelefonica;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Mail\Mailables\Attachment;
-use App\Domain\Formality\Services\CreateFormalityService;
-use Illuminate\Support\Facades\Auth;
-use App\Domain\Program\Services\FileUploadigService;
 
 class CreateByClient extends Component
 {
@@ -67,12 +67,12 @@ class CreateByClient extends Component
     private ServicesBasedOnEmail $servicesBasedOnEmail;
 
     protected $rules = [
-        'inputs.*.file' => 'required|mimes:pdf|max:5240',
+        'inputs.*.file' => 'required|mimes:pdf,jpg|max:5240',
     ];
 
     protected $messages = [
         'inputs.*.file.required' => 'Selecione un archivo.',
-        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf o jpg.',
         'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
@@ -157,16 +157,16 @@ class CreateByClient extends Component
     }
 
     #[Computed()]
-
     public function provinces()
     {
         $province = $this->addressService->getProvinces();
         return $province;
     }
+
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
+        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
         return $locations;
     }
 
@@ -182,7 +182,7 @@ class CreateByClient extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
         return $clientLocation;
     }
 
@@ -397,7 +397,7 @@ class CreateByClient extends Component
                 ->saveFile($this->folder);
             array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
         }
-        $newdata = array_merge(['phone_code' => $this->selected_country->phone_code], /* $this->form->getClientDto() */);
+        $newdata = array_merge(['phone_code' => $this->selected_country->phone_code] /* $this->form->getClientDto() */);
         Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
             ->send(new EmailLineaTelefonica($newdata, $this->form->getCreateAddressDto(), $attachs));
 
