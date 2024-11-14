@@ -17,10 +17,10 @@ class Filter extends Component
     protected ServicesBasedOnEmail $servicesBasedOnEmail;
 
     protected TimeFilterDto $timeFilterDto;
-    public $selectedAssigneds = [];
+    public $selectedUsers = [];
     public $selectedServices = [];
 
-    public $allAssigned = false;
+    public $allUsers = false;
 
     public $allService = false;
 
@@ -31,6 +31,8 @@ class Filter extends Component
     public $frequencies = [];
 
     public $selectedFrequency = TimeFilterDto::MENSUAL;
+
+    public $searchBasedOn;
 
 
     public function __construct()
@@ -46,20 +48,25 @@ class Filter extends Component
         $this->frequencies = $this->timeFilterDto->getFrequencyOptions();
     }
 
-
-    public function selectAllAssigned()
+    public function mount($searchBasedOn = 'user_assigned_id')
     {
-        if ($this->allAssigned) {
-            $this->selectedAssigneds = User::where('isWorker', true)->where('isActive', 1)->pluck('id');
+        $this->searchBasedOn = $searchBasedOn;
+    }
+
+
+    public function selectAllUsers()
+    {
+        if ($this->allUsers) {
+            $this->selectedUsers = User::where('isWorker', $this->searchBasedOn === 'user_assigned_id')->where('isActive', 1)->pluck('id');
         } else {
-            $this->selectedAssigneds = [];
+            $this->selectedUsers = [];
         }
         $this->onParamsChange();
     }
 
-    public function isAllCheckAssigned()
+    public function isAllCheckUsers()
     {
-        $this->allAssigned = $this->allAssigned ? false : $this->allAssigned;
+        $this->allUsers = $this->allUsers ? false : $this->allUsers;
         $this->onParamsChange();
     }
 
@@ -94,7 +101,8 @@ class Filter extends Component
     public function onParamsChange()
     {
         $this->dispatch('params-selected',
-            selectedAssigneds: $this->selectedAssigneds,
+            searchBasedOn: $this->searchBasedOn,
+            selectedUsers: $this->selectedUsers,
             selectedServices: $this->selectedServices,
             from: $this->from,
             to: $this->to,
@@ -102,10 +110,16 @@ class Filter extends Component
         );
     }
 
+    public function getUsers()
+    {
+        return User::where('isWorker', $this->searchBasedOn === 'user_assigned_id')->where('isActive', 1)->get();
+    }
+
     public function render()
     {
         return view('livewire.tool.filter', [
-            'workers' => User::where('isWorker', true)->where('isActive', 1)->get(),
+            'test' => $this->searchBasedOn,
+            'users' => $this->getUsers(),
             'services' => $this->formalityService->getServices()->whereNotIn('id', $this->servicesBasedOnEmail->list_ids)
         ]);
     }

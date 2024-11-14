@@ -3,10 +3,12 @@
 namespace App\Domain\Tool\Services;
 
 use App\Domain\Enums\FormalityStatusEnum;
-use App\Domain\Enums\ServiceEnum;
 use App\Models\Formality;
+use App\Models\User;
 use http\Exception\InvalidArgumentException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class StatisticService
 {
@@ -30,70 +32,92 @@ class StatisticService
     }
 
 
-    public function search($usersIds = [], $from, $to, $frequency, $services = []): array
+    public function search($usersIds = [], $services = [], $from, $to, string $frequency): array
     {
         $query = Formality::with('service', 'issuer', 'assigned');
 
-        if (!empty($usersIds)) {
-            $query->whereIn($this->searchBasedOn, $usersIds);
-        }
+        $query->whereIn($this->searchBasedOn, $usersIds);
 
         if ($from && $to) {
             $query->whereBetween('created_at', [$from, $to]);
         }
 
-        if (!empty($services)) {
-            $query->whereIn('service_id', $services);
-        } else {
-            $query->whereHas('service', function ($q) {
-                $q->whereIn('name', [ServiceEnum::AGUA->value, ServiceEnum::GAS->value, ServiceEnum::LUZ->value]);
-            });
-        }
+        $query->whereIn('service_id', $services);
 
         $formalities = $query->whereHas('status', function ($q) {
             $q->whereIn('name', [FormalityStatusEnum::TRAMITADO, FormalityStatusEnum::EN_VIGOR]);
         })->get();
-        return $this->formatDataForChart($formalities, $frequency);
+        return $this->formatDataForChart($formalities, $frequency, $query);
     }
 
 
-    private function formatDataForChart($formalities, $frequency): array
+    private function formatDataForChart(Collection $formalities, string $frequency, Builder $builder): array
     {
         return [
             'doughnutChart' => $this->doughnutChart($formalities),
-            'formalityCount' => $formalities->count(),
+            'horizontalBarChart' => $this->horizontalBarChart($formalities),
+            'verticalBarChart' => $this->verticalBarChart($builder, $frequency),
+            'totalCount' => $formalities->count(),
             'timeformalityAvg' => $this->getAverage($formalities)
         ];
     }
 
-    private function doughnutChart($formalities)
+    private function doughnutChart(Collection $formalities)
     {
+        return $formalities->groupBy('service_id')->map(function ($items) {
+            return [
+                'service' => $items->first()->service->name,
+                'count' => $items->count(),
+            ];
+        })->sortByDesc('count')->values();
+    }
 
-        return $formalities->groupBy('service_id')->map(function ($group) {
-            return $group->count();
+    private function horizontalBarChart(Collection $formalities)
+    {
+        return $formalities->groupBy($this->searchBasedOn)->map(function ($items) {
+            return [
+                'user' => $this->formatUserName($this->searchBasedOn === self::ASSIGNED ? $items->first()->assigned : $items->first()->issuer),
+                'count' => $items->count()
+            ];
+        })->sortByDesc('count')->values();
+
+    }
+
+    private function verticalBarChart(Builder $query, string $frequency)
+    {
+        $set = FormalityFrequency::execute($query, $frequency);
+        /*
+        return $set->groupBy(function ($item) {
+            return $item->period;
+        })->map(function ($group) {
+            return $group->groupBy('service');
         });
-    }
-
-    private function horizontalBarChart($formalities)
-    {
-
-        return $formalities->groupBy($this->searchBasedOn)->map(function ($group) {
-            return $group->count();
-        })->sortDesc();
-
-    }
-
-    private function verticalBarChart($formalities, $frequency)
-    {
-
+        */
+        return $set->groupBy(function ($item) {
+            return $item->period;
+        })->map(function ($group, $period) {
+            return [
+                'period' => $period,
+                'items' => $group->map(function ($item) {
+                    return [
+                        'service' => $item->service,
+                        'count' => $item->count
+                    ];
+                })->values()->all()
+            ];
+        })->values()->all();
     }
 
     private function getAverage($formality)
     {
-
         return $formality->avg(function ($formality) {
             return Carbon::parse($formality->contract_completion_date)->diffInMinutes(Carbon::parse($formality->created_at));
         });
+    }
+
+    private function formatUserName(User $user): string
+    {
+        return $user->name . ' ' . $user->first_last_name . ' ' . $user->second_last_name;
     }
 
 }
