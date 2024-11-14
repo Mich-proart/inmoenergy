@@ -13,8 +13,7 @@ class ServicesBasedOnEmail
     public ComponentOption $fibra;
     public ComponentOption $alarma;
 
-    //private array $emails = ['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'];
-    private array $emails = ['santiagocarvaja65@hotmail.com'];
+    private array $emails = ['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'];
 
     public array $list;
     public array $list_ids;

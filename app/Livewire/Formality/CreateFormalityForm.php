@@ -19,6 +19,7 @@ use App\Models\ComponentOption;
 use App\Models\Country;
 use App\Models\FileConfig;
 use DB;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -382,9 +383,18 @@ class CreateFormalityForm extends Component
     private function emailRequest()
     {
         if (array_intersect($this->servicesBasedOnEmail->list_ids, $this->form->serviceIds)) {
+            $attachs = array();
+            $file_inputs = $this->inputs->where('serviceId', null);
+
+            foreach ($file_inputs as $file_input) {
+                $target = $this->fileUploadigService
+                    ->addFile($file_input['file'])
+                    ->saveFile($this->folder);
+                array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
+            }
             foreach ($this->servicesBasedOnEmail->list as $item) {
                 if (in_array($item->id, $this->form->serviceIds)) {
-                    $this->servicesBasedOnEmail->sendMail($item->id, $this->getClientEmailData(), $this->form->getCreateAddressDto(), null);
+                    $this->servicesBasedOnEmail->sendMail($item->id, $this->getClientEmailData(), $this->form->getCreateAddressDto(), $attachs);
                     $this->form->serviceIds = array_diff($this->form->serviceIds, [$item->id]);
                 }
             }
