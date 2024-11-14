@@ -58,7 +58,7 @@ class StatisticService
             'horizontalBarChart' => $this->horizontalBarChart($formalities),
             'verticalBarChart' => $this->verticalBarChart($builder, $frequency),
             'totalCount' => $formalities->count(),
-            'timeformalityAvg' => $this->getAverage($formalities)
+            'timeAvg' => $this->getAverage($formalities)
         ];
     }
 
@@ -86,13 +86,6 @@ class StatisticService
     private function verticalBarChart(Builder $query, string $frequency)
     {
         $set = FormalityFrequency::execute($query, $frequency);
-        /*
-        return $set->groupBy(function ($item) {
-            return $item->period;
-        })->map(function ($group) {
-            return $group->groupBy('service');
-        });
-        */
         return $set->groupBy(function ($item) {
             return $item->period;
         })->map(function ($group, $period) {
@@ -110,9 +103,12 @@ class StatisticService
 
     private function getAverage($formality)
     {
-        return $formality->avg(function ($formality) {
+        $averageInMin = $formality->avg(function ($formality) {
             return Carbon::parse($formality->contract_completion_date)->diffInMinutes(Carbon::parse($formality->created_at));
         });
+        $avgInDays = $averageInMin / 1440;
+
+        return round($avgInDays, 2);
     }
 
     private function formatUserName(User $user): string

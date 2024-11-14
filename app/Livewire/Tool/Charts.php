@@ -14,6 +14,7 @@ class Charts extends Component
     public array $labels = [];
 
     public int $totalCount;
+    public $timeAvg;
 
     protected StatisticService $statisticService;
 
@@ -41,6 +42,7 @@ class Charts extends Component
         $this->statisticService->setSearchBasedOn($searchBasedOn);
         $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency);
         $this->totalCount = $data['totalCount'];
+        $this->timeAvg = $data['timeAvg'] . ' ' . 'días';
 
         $this->dispatch('updateChart',
             $data
