@@ -27,13 +27,14 @@ class ServicesBasedOnEmail
         $this->list = array(
             $this->fibra,
             $this->alarma
-        );$this->list_ids = array(
+        );
+        $this->list_ids = array(
             $this->fibra->id,
             $this->alarma->id
         );
     }
 
-    public function sendMail(int $serviceId, array $client, array $address, array $attachs)
+    public function sendMail(int $serviceId, array $client, array $address, array|null $attachs = null)
     {
         switch ($serviceId) {
             case $this->fibra->id:
