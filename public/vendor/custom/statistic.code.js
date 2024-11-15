@@ -15,6 +15,11 @@ const services = [
 
 const users = {backgroundColor: 'rgb(30,143,253)'};
 
+const months = [
+    "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+    "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+];
+
 
 function doughnutfnt(set_data) {
     const result = set_data.reduce((acc, target) => {
@@ -61,32 +66,6 @@ function horizontalBarfnt(set_data) {
 }
 
 function verticalBarfnt(set_data) {
-    /*
-    const services = new Set();
-    set_data.forEach(entry => {
-        entry.items.forEach(item => {
-            services.add(item.service);
-        });
-    });
-
-    const serviceArray = Array.from(services);
-
-
-    const chartData = {
-        labels: set_data.map(entry => entry.period),
-        datasets: serviceArray.map(service => {
-            return {
-                label: service,
-                data: set_data.map(entry => {
-                    const item = entry.items.find(i => i.service === service);
-                    return item ? item.count : 0;
-                }),
-                //backgroundColor: getRandomColor(), // Function to generate random colors
-            };
-        }),
-    };
-    return chartData;
-     */
 
     const serviceColors = {};
     services.forEach(service => {
@@ -112,4 +91,11 @@ function verticalBarfnt(set_data) {
 function capitalizeFirstLetter(string) {
     if (string.length === 0) return ''; // Handle empty string
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+function convertMonthly(data) {
+    const [year, month] = data.split("-");
+    const output = months[parseInt(month, 10) - 1];
+    return `${output} ${year}`;
 }

@@ -196,7 +196,7 @@
                 "permission": "formality.data.access"
             },
             {
-                "name": "estadísticas por trabajador",
+                "name": "análisis usuarios",
                 "image": "worcker_stadictic.png",
                 "route": "admin.tool.statistics.worker",
                 "description": null,
@@ -207,7 +207,7 @@
                 "permission": "tool.statistics.worker.access"
             },
             {
-                "name": "estadísticas por cliente",
+                "name": "análisis clientes",
                 "image": "client_stadictic.png",
                 "route": "admin.tool.statistics.client",
                 "description": null,

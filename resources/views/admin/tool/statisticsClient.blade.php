@@ -17,9 +17,6 @@
 @section('content')
     <div>
         <div class="card card-primary card-outline" style="height: 500px">
-            <div class="card-header">
-                <h1 class="card-title">Análisis de usuarios</h1>
-            </div>
             <div class="card-body table-responsive p-0">
                 @livewire('tool.filter', ['searchBasedOn' => 'user_issuer_id'])
                 @livewire('tool.charts')
