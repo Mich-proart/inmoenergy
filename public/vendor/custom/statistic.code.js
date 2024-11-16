@@ -39,7 +39,7 @@ function doughnutfnt(set_data) {
     return {
         labels: result.labels,
         datasets: [{
-            label: 'Suministro',
+            //label: 'Suministro',
             data: result.data,
             backgroundColor: result.backgroundColor,
             hoverOffset: 4
@@ -89,7 +89,7 @@ function verticalBarfnt(set_data) {
 }
 
 function capitalizeFirstLetter(string) {
-    if (string.length === 0) return ''; // Handle empty string
+    if (string.length === 0) return '';
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -98,4 +98,55 @@ function convertMonthly(data) {
     const [year, month] = data.split("-");
     const output = months[parseInt(month, 10) - 1];
     return `${output} ${year}`;
+}
+
+
+function chartsInit() {
+    return {
+        doughnut: {
+            type: 'doughnut',
+            data: {
+                labels: [],
+                datasets: [{
+                    //label: 'Suministro',
+                    data: [],
+                    backgroundColor: [],
+                    hoverOffset: 4
+                }]
+            },
+        },
+        horizontalBar: {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'RANKING',
+                    backgroundColor: users.backgroundColor,
+                    data: [],
+                }],
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true
+            }
+        },
+        verticalBar: {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: []
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                    }
+                }
+            }
+        }
+    }
 }

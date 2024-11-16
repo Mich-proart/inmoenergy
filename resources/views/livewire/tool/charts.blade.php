@@ -50,14 +50,6 @@
     @assets
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
     <script src="/vendor/custom/statistic.code.js"></script>
-    <style>
-        .chart-container {
-
-            width: 700px !important;
-            height: 700px !important;
-
-        }
-    </style>
     @endassets
 
     @script
@@ -66,52 +58,9 @@
         const horizontalBar_ctx = document.getElementById('horizontalBar');
         const verticalBar_ctx = document.getElementById('verticalBar');
 
-
-        const doughnut = new Chart(doughnut_ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Suministro',
-                    data: [],
-                    backgroundColor: [],
-                    hoverOffset: 4
-                }]
-            },
-        })
-        const horizontalBar = new Chart(horizontalBar_ctx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'RANKING',
-                    backgroundColor: users.backgroundColor,
-                    data: [],
-                }],
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true
-            }
-        });
-        const verticalBar = new Chart(verticalBar_ctx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: []
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        stacked: true,
-                    },
-                    y: {
-                        stacked: true,
-                    }
-                }
-            }
-        });
+        const doughnut = new Chart(doughnut_ctx, chartsInit().doughnut)
+        const horizontalBar = new Chart(horizontalBar_ctx, chartsInit().horizontalBar);
+        const verticalBar = new Chart(verticalBar_ctx, chartsInit().verticalBar);
 
         Livewire.on('updateChart', data => {
             console.log(data);

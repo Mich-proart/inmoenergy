@@ -120,7 +120,7 @@ class EditPendingformalityModal extends Component
             if ($formality) {
                 $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_VIGOR->value);
                 $renewal_date = null;
-
+                
                 $savedFile = $formality->files[0];
 
                 $file_inputs = $this->inputs->where('serviceId', null);

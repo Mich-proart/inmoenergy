@@ -118,7 +118,6 @@ class Filter extends Component
     public function render()
     {
         return view('livewire.tool.filter', [
-            'test' => $this->searchBasedOn,
             'users' => $this->getUsers(),
             'services' => $this->formalityService->getServices()->whereNotIn('id', $this->servicesBasedOnEmail->list_ids)
         ]);

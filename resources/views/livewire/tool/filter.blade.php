@@ -15,7 +15,7 @@
                                     Opciones ({{count($selectedUsers)}})
                                 @endif
                             </button>
-                            <ul wire:ignore class="dropdown-menu">
+                            <ul class="dropdown-menu">
                                 <li>
                                     <div class="dropdown-item">
                                         <input wire:model="allUsers" wire:click="selectAllUsers" type="checkbox">
@@ -47,7 +47,7 @@
                                     Opciones ({{count($selectedServices)}})
                                 @endif
                             </button>
-                            <ul wire:ignore class="dropdown-menu">
+                            <ul class="dropdown-menu">
                                 <li>
                                     <div class="dropdown-item">
                                         <input wire:model="allService" wire:click="selectAllService" type="checkbox">

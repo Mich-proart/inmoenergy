@@ -56,7 +56,7 @@ class StatisticService
         return [
             'doughnutChart' => $this->doughnutChart($formalities),
             'horizontalBarChart' => $this->horizontalBarChart($formalities),
-            'verticalBarChart' => $this->verticalBarChart($builder, $frequency),
+            'verticalBarChart' => !empty($frequency) ? $this->verticalBarChart($builder, $frequency) : array(),
             'totalCount' => $formalities->count(),
             'timeAvg' => $this->getAverage($formalities)
         ];
