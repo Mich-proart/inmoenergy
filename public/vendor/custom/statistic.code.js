@@ -51,6 +51,7 @@ function doughnutfnt(set_data) {
             backgroundColor: result.backgroundColor,
             hoverOffset: 4
         }]
+
     }
 }
 
@@ -160,6 +161,26 @@ function chartsInit() {
                     hoverOffset: 4
                 }]
             },
+            plugins: [ChartDataLabels],
+            options: {
+                tooltips: {
+                    enabled: false
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            let sum = 0;
+                            let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(data => {
+                                sum += data;
+                            });
+                            let percentage = (value * 100 / sum).toFixed(2) + "%";
+                            return percentage;
+                        },
+                        color: '#000000',
+                    }
+                }
+            }
         },
         horizontalBar: {
             type: 'bar',
@@ -183,6 +204,12 @@ function chartsInit() {
                 datasets: []
             },
             options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                },
                 responsive: true,
                 scales: {
                     x: {
