@@ -18,7 +18,7 @@ class TimeFilterDto
     {
         $currentYear = date('Y');
         $this->from = new \DateTime("$currentYear-01-01");
-        $this->to = new \DateTime("$currentYear-12-31");
+        $this->to = new \DateTime(($currentYear + 1) . "-01-01");
     }
 
 
@@ -39,10 +39,12 @@ class TimeFilterDto
         if ($interval) {
             if ($interval->y >= 1) {
                 $this->frequencyOptions = ['anual', 'mensual'];
-            } elseif ($interval->m >= 1) {
+            } elseif ($interval->y === 0 && $interval->m >= 1) {
                 $this->frequencyOptions = ['mensual', 'semanal'];
-            } else {
+            } elseif ($interval->y === 0 && $interval->m === 0 && $interval->d > 0) {
                 $this->frequencyOptions = ['semanal', 'diario'];
+            } else {
+                $this->frequencyOptions = [];
             }
 
         } else {

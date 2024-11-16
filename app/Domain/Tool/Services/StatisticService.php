@@ -18,6 +18,8 @@ class StatisticService
 
     private $searchBasedOn;
 
+    private $from;
+
     public function __construct($searchBasedOn = self::ASSIGNED)
     {
         $this->setSearchBasedOn($searchBasedOn);
@@ -32,13 +34,14 @@ class StatisticService
     }
 
 
-    public function search($usersIds = [], $services = [], $from, $to, string $frequency): array
+    public function search($usersIds = [], $services = [], $from, $to, string|null $frequency): array
     {
         $query = Formality::with('service', 'issuer', 'assigned');
 
         $query->whereIn($this->searchBasedOn, $usersIds);
 
         if ($from && $to) {
+            $this->from = $from;
             $query->whereBetween('created_at', [$from, $to]);
         }
 
@@ -51,12 +54,12 @@ class StatisticService
     }
 
 
-    private function formatDataForChart(Collection $formalities, string $frequency, Builder $builder): array
+    private function formatDataForChart(Collection $formalities, string|null $frequency, Builder $builder): array
     {
         return [
             'doughnutChart' => $this->doughnutChart($formalities),
             'horizontalBarChart' => $this->horizontalBarChart($formalities),
-            'verticalBarChart' => !empty($frequency) ? $this->verticalBarChart($builder, $frequency) : array(),
+            'verticalBarChart' => !empty($frequency) ? $this->verticalBarChart($builder, $frequency) : null,
             'totalCount' => $formalities->count(),
             'timeAvg' => $this->getAverage($formalities)
         ];
@@ -86,7 +89,7 @@ class StatisticService
     private function verticalBarChart(Builder $query, string $frequency)
     {
         $set = FormalityFrequency::execute($query, $frequency);
-        return $set->groupBy(function ($item) {
+        $data = $set->groupBy(function ($item) {
             return $item->period;
         })->map(function ($group, $period) {
             return [
@@ -99,6 +102,11 @@ class StatisticService
                 })->values()->all()
             ];
         })->values()->all();
+        return [
+            'frequency' => $frequency,
+            'from' => $this->from,
+            'data' => $data
+        ];
     }
 
     private function getAverage($formality)

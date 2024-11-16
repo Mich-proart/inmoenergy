@@ -37,7 +37,7 @@ class Charts extends Component
     }
 
     #[On('params-selected')]
-    public function searchData(string $searchBasedOn, array $selectedUsers, array $selectedServices, string $from, string $to, string $selectedFrequency)
+    public function searchData(string $searchBasedOn, array $selectedUsers, array $selectedServices, string $from, string $to, string|null $selectedFrequency)
     {
         $this->statisticService->setSearchBasedOn($searchBasedOn);
         $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency);

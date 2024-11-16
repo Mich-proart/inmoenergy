@@ -67,9 +67,6 @@
             const doughnut_set = doughnutfnt(data[0].doughnutChart);
             const horizontalBar_set = horizontalBarfnt(data[0].horizontalBarChart);
             const verticalBar_set = verticalBarfnt(data[0].verticalBarChart);
-            //console.log('doughnut_set', doughnut_set);
-            //console.log('horizontalBar_set', horizontalBar_set);
-            console.log('verticalBar_set', verticalBar_set);
             doughnut.data = doughnut_set;
             horizontalBar.data = horizontalBar_set;
             verticalBar.data = verticalBar_set;

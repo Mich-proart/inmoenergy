@@ -84,9 +84,10 @@
                     </div>
 
                     <div class="col-2">
-                        <select wire:model="selectedFrequency" wire:change="onParamsChange" name="frequency" id=""
+                        <select wire:model="selectedFrequency" wire:change="onParamsChange" name="frequency"
+                                id="frequencySet"
                                 class="form-control">
-                            <option value="">-- selecione --</option>
+                            <option value="">Frecuencia</option>
                             @foreach($this->frequencyOpt as $options)
                                 <option value="{{$options}}">{{ucfirst($options)}}</option>
                             @endforeach
@@ -96,4 +97,25 @@
             </div>
         </div>
     </div>
+    @assets
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    @endassets
+
+    @script
+    <script>
+        $("#from").on("change", function () {
+            console.log('test')
+            setTimeout(function () {
+                $("#frequencySet").val("");
+            }, 200);
+
+        });
+        $("#to").on("change", function () {
+            setTimeout(function () {
+                $("#frequencySet").val("");
+            }, 200);
+
+        });
+    </script>
+    @endscript
 </div>

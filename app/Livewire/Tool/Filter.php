@@ -30,7 +30,7 @@ class Filter extends Component
 
     public $frequencies = [];
 
-    public $selectedFrequency = TimeFilterDto::MENSUAL;
+    public $selectedFrequency;
 
     public $searchBasedOn;
 

@@ -20,6 +20,13 @@ const months = [
     "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
 ];
 
+const frequencySet = {
+    ANUAL: 'anual',
+    MENSUAL: 'mensual',
+    SENAMAL: 'semanal',
+    DIARIO: 'diario'
+}
+
 
 function doughnutfnt(set_data) {
     const result = set_data.reduce((acc, target) => {
@@ -67,17 +74,21 @@ function horizontalBarfnt(set_data) {
 
 function verticalBarfnt(set_data) {
 
+    if (set_data === null) return chartsInit().verticalBar;
+
+    const {data, frequency, from} = set_data;
+
     const serviceColors = {};
     services.forEach(service => {
         serviceColors[service.service] = service.backgroundColor;
     });
 
     const chartData = {
-        labels: set_data.map(entry => entry.period),
+        labels: getPeriod(frequency, data, from),
         datasets: services.map(service => {
             return {
                 label: capitalizeFirstLetter(service.service),
-                data: set_data.map(entry => {
+                data: data.map(entry => {
                     const item = entry.items.find(i => i.service === service.service);
                     return item ? item.count : 0;
                 }),
@@ -93,11 +104,46 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function getPeriod(frequency, data, date) {
+    if (!Array.isArray(data)) {
+        throw new Error("Data must be an array");
+    }
+    switch (frequency) {
+        case frequencySet.MENSUAL:
+            return data.map(entry => {
+                return convertMonthly(entry.period)
+            });
+            break;
+        case frequencySet.SENAMAL:
+            return data.map(entry => {
+                return convertWeekly(entry.period, date);
+            });
+        default:
+            return data.map(entry => entry.period);
+    }
+}
+
 
 function convertMonthly(data) {
     const [year, month] = data.split("-");
     const output = months[parseInt(month, 10) - 1];
     return `${output} ${year}`;
+}
+
+function convertWeekly(week, date) {
+    console.log(week)
+    const [year, month, day] = date.split("-");
+    const firstDayOfYear = new Date(year, 0, 1);
+    console.log(firstDayOfYear);
+    const daysToMonday = (firstDayOfYear.getDay() === 0 ? 6 : firstDayOfYear.getDay() - 1);
+
+    const firstDayOfWeek = new Date(firstDayOfYear);
+
+    firstDayOfWeek.setDate(firstDayOfYear.getDate() + (week - 1) * 7 - daysToMonday);
+
+    const options = {month: 'short', day: '2-digit', year: 'numeric'};
+    return firstDayOfWeek.toLocaleDateString('es-ES', options);
+
 }
 
 
