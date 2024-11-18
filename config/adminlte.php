@@ -408,12 +408,12 @@ return [
                     'can' => 'formality.data.access',
                 ],
                 [
-                    'text' => 'Estadísticas por trabajador',
+                    'text' => 'Análisis usuarios',
                     'route' => 'admin.tool.statistics.worker',
                     'can' => 'tool.statistics.worker.access',
                 ],
                 [
-                    'text' => 'Estadísticas por cliente',
+                    'text' => 'Análisis clientes',
                     'route' => 'admin.tool.statistics.client',
                     'can' => 'tool.statistics.client.access',
                 ],

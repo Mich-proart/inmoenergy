@@ -13,8 +13,7 @@ class ServicesBasedOnEmail
     public ComponentOption $fibra;
     public ComponentOption $alarma;
 
-    //private array $emails = ['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'];
-    private array $emails = ['santiagocarvaja65@hotmail.com'];
+    private array $emails = ['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'];
 
     public array $list;
     public array $list_ids;
@@ -27,13 +26,14 @@ class ServicesBasedOnEmail
         $this->list = array(
             $this->fibra,
             $this->alarma
-        );$this->list_ids = array(
+        );
+        $this->list_ids = array(
             $this->fibra->id,
             $this->alarma->id
         );
     }
 
-    public function sendMail(int $serviceId, array $client, array $address, array $attachs)
+    public function sendMail(int $serviceId, array $client, array $address, array|null $attachs = null)
     {
         switch ($serviceId) {
             case $this->fibra->id:

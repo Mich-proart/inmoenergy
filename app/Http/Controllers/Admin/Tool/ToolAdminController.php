@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Tool;
 
 use App\Http\Controllers\Controller;
 use App\Models\Program;
-use Illuminate\Http\Request;
 
 class ToolAdminController extends Controller
 {
@@ -15,12 +14,13 @@ class ToolAdminController extends Controller
 
     public function getStatisticsClient()
     {
-        $program = Program::where('name', 'estadísticas por cliente')->first();
+        $program = Program::where('name', 'análisis clientes')->first();
         return view('admin.tool.statisticsClient', ['program' => $program]);
     }
+
     public function getStatisticsWorker()
     {
-        $program = Program::where('name', 'estadísticas por trabajador')->first();
+        $program = Program::where('name', 'análisis usuarios')->first();
         return view('admin.tool.statisticsWorker', ['program' => $program]);
     }
 }

@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Domain\Enums\FormalityStatusEnum;
-use App\Domain\Formality\Dtos\FormalityQuery;
 use App\Domain\Formality\Services\FormalityQueryService;
-
 use App\Domain\Ticket\Services\TicketQueryService;
 use App\Http\Controllers\Controller;
 use App\Models\Section;
-use Illuminate\Http\Request;
 
 
 class HomeController extends Controller
@@ -18,8 +14,9 @@ class HomeController extends Controller
 
     public function __construct(
         private readonly FormalityQueryService $formalityQueryService,
-        private readonly TicketQueryService $ticketQueryService
-    ) {
+        private readonly TicketQueryService    $ticketQueryService
+    )
+    {
         $this->middleware('auth');
     }
 
@@ -54,11 +51,12 @@ class HomeController extends Controller
                     $formality = $this->formalityQueryService->getAssigned($userId);
                     $program->count = count($formality);
                 }
-
+                /*
                 if ($program->name == 'trámites realizados') {
                     $formality = $this->formalityQueryService->getCompleted($userId);
                     $program->count = count($formality);
                 }
+                */
                 //
                 if ($program->name == 'altas pendientes fecha activación') {
                     $formality = $this->formalityQueryService->totalPending();

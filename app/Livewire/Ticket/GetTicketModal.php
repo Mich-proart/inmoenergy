@@ -3,17 +3,17 @@
 namespace App\Livewire\Ticket;
 
 use App\Domain\Enums\TicketStatusEnum;
+use App\Domain\Ticket\Services\TicketService;
 use App\Exceptions\CustomException;
 use App\Models\Status;
 use App\Models\Ticket;
-use Livewire\Component;
-use App\Domain\Ticket\Services\TicketService;
-use Illuminate\Support\Facades\App;
 use DB;
-use Livewire\WithPagination;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class GetTicketModal extends Component
 {
@@ -39,9 +39,9 @@ class GetTicketModal extends Component
     public $issuer;
 
     protected $rules = [
-        'title' => 'required|string|min:8',
+        'title' => 'required|string',
         'ticketTypeId' => 'required|exists:component_option,id',
-        'description' => 'required|string|min:8'
+        'description' => 'required|string'
     ];
 
     protected $messages = [

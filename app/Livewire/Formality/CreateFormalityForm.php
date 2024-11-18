@@ -2,34 +2,30 @@
 
 namespace App\Livewire\Formality;
 
-use App\Domain\Enums\ServiceEnum;
-use App\Domain\Formality\Services\ServicesBasedOnEmail;
-use App\Livewire\Forms\Formality\FormalityCreate;
-use App\Models\Address;
-use App\Models\Client;
-use App\Models\Country;
-use App\Models\Formality;
-use Livewire\Component;
-use App\Exceptions\CustomException;
-use Illuminate\Support\Facades\Auth;
-use DB;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\App;
-use Livewire\WithFileUploads;
+use App\Domain\Address\Services\AddressService;
 use App\Domain\Enums\ClientTypeEnum;
 use App\Domain\Enums\DocumentRule;
 use App\Domain\Enums\DocumentTypeEnum;
-use App\Domain\Program\Services\FileUploadigService;
-use App\Mail\EmailLineaTelefonica;
-use App\Models\ComponentOption;
-use App\Models\FileConfig;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Mail;
-use App\Domain\Formality\Services\FormalityService;
-use App\Domain\User\Services\UserService;
-use App\Domain\Address\Services\AddressService;
 use App\Domain\Formality\Services\CreateFormalityService;
+use App\Domain\Formality\Services\FormalityService;
+use App\Domain\Formality\Services\ServicesBasedOnEmail;
+use App\Domain\Program\Services\FileUploadigService;
+use App\Domain\User\Services\UserService;
+use App\Exceptions\CustomException;
+use App\Livewire\Forms\Formality\FormalityCreate;
+use App\Models\Address;
+use App\Models\Client;
+use App\Models\ComponentOption;
+use App\Models\Country;
+use App\Models\FileConfig;
+use DB;
 use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreateFormalityForm extends Component
 {
@@ -37,6 +33,7 @@ class CreateFormalityForm extends Component
     public FormalityCreate $form;
 
     use WithFileUploads;
+
     public $target_provinceId;
     public $target_clientProvinceId;
 
@@ -117,14 +114,16 @@ class CreateFormalityForm extends Component
     public function getClientData()
     {
         return array_merge(['country_id' => $this->selected_country->id], $this->form->getClientDto());
-    }public function getClientEmailData()
+    }
+
+    public function getClientEmailData()
     {
         return array_merge(['phone_code' => $this->selected_country->phone_code], $this->form->getClientDto());
     }
 
     public function addInput($serviceId)
     {
-        if ($serviceId !== $this->servicesBasedOnEmail->alarma->id) {
+        if ($serviceId !== $this->servicesBasedOnEmail->alarma->id && $serviceId !== $this->servicesBasedOnEmail->fibra->id) {
             if ($this->inputs->contains('serviceId', $serviceId)) {
 
                 foreach ($this->inputs as $key => $value) {
@@ -142,26 +141,26 @@ class CreateFormalityForm extends Component
     }
 
     protected $rules = [
-        'inputs.*.file' => 'required|mimes:pdf|max:5240',
+        'inputs.*.file' => 'required|mimes:pdf,jpg|max:5240',
     ];
 
     protected $messages = [
         'inputs.*.file.required' => 'Selecione un archivo.',
-        'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
+        'inputs.*.file.mimes' => 'El archivo debe ser un pdf o jpg.',
         'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
     ];
 
     #[Computed()]
-
     public function provinces()
     {
         $province = $this->addressService->getProvinces();
         return $province;
     }
+
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
+        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
         return $locations;
     }
 
@@ -177,7 +176,7 @@ class CreateFormalityForm extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
         return $clientLocation;
     }
 
@@ -393,24 +392,14 @@ class CreateFormalityForm extends Component
                     ->saveFile($this->folder);
                 array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
             }
-            foreach ($this->servicesBasedOnEmail->list as $item){
-                $filesToSend = $attachs;
+            foreach ($this->servicesBasedOnEmail->list as $item) {
                 if (in_array($item->id, $this->form->serviceIds)) {
-                    $object = $this->inputs->where('serviceId', $item->id)->first();
-                    if($object){
-                        $target = $this->fileUploadigService
-                            ->addFile($object['file'])
-                            ->saveFile($this->folder);
-                        array_push($filesToSend, Attachment::fromPath(storage_path('app/public/' . $target)));
-                    }
-                    $this->servicesBasedOnEmail->sendMail($item->id, $this->getClientEmailData(), $this->form->getCreateAddressDto(), $filesToSend);
-
+                    $this->servicesBasedOnEmail->sendMail($item->id, $this->getClientEmailData(), $this->form->getCreateAddressDto(), $attachs);
                     $this->form->serviceIds = array_diff($this->form->serviceIds, [$item->id]);
                 }
             }
         }
     }
-
 
 
     public function render()

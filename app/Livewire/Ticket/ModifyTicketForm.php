@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Ticket;
 
+use App\Domain\Enums\TicketStatusEnum;
+use App\Exceptions\CustomException;
+use App\Models\Comment;
 use App\Models\Status;
+use DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Exceptions\CustomException;
-use DB;
-use App\Domain\Enums\TicketStatusEnum;
-use App\Models\Comment;
 
 class ModifyTicketForm extends Component
 {
@@ -79,14 +79,14 @@ class ModifyTicketForm extends Component
         $message = [];
 
         if ($this->isResolved) {
-            $rule['resolution_comment_body'] = 'required|string|min:10';
+            $rule['resolution_comment_body'] = 'required|string';
             $message['resolution_comment_body.required'] = 'El campo resolución es requerido';
             $message['resolution_comment_body.min'] = 'El campo resolución debe tener al menos 10 caracteres';
             $this->validate($rule, $message);
         }
 
         if ($this->body != null) {
-            $this->validate(['body' => 'string|min:10'], [
+            $this->validate(['body' => 'string'], [
                 'body.required' => 'El campo comentario es requerido',
                 'body.min' => 'El campo comentario debe tener al menos 10 caracteres',
             ]);

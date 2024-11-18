@@ -8,7 +8,7 @@
                             <h4 class="mb-0">Comentarios</h4>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <hr class="my-0" width="1100px" />
+                            <hr class="my-0" width="1100px"/>
 
                         </div>
 
@@ -16,12 +16,13 @@
                             <div class="card-body p-4">
                                 <div class="d-flex flex-start">
                                     <div width="35" height="35">
-                                        <svg class="rounded-circle shadow-1-strong me-3" xmlns="http://www.w3.org/2000/svg"
-                                            width="35" height="35" fill="currentColor" class="bi bi-person-circle"
-                                            viewBox="0 0 16 16">
-                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                        <svg class="rounded-circle shadow-1-strong me-3"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             width="35" height="35" fill="currentColor" class="bi bi-person-circle"
+                                             viewBox="0 0 16 16">
+                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                                             <path fill-rule="evenodd"
-                                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                         </svg>
 
                                     </div>
@@ -43,7 +44,7 @@
                             </div>
 
                             <div class="d-flex justify-content-center">
-                                <hr class="my-0" width="1100px" />
+                                <hr class="my-0" width="1100px"/>
                             </div>
 
                         @endforeach
@@ -67,18 +68,18 @@
                             <div class="card-body p-4">
                                 <h4 class="mb-0">Nuevo Comentario</h4>
                             </div>
-                            <hr class="my-0" />
+                            <hr class="my-0"/>
                             <div class="card-body">
                                 <div class="">
                                     <div>
                                         <div class="mb-3">
                                             <label for="exampleFormControlTextarea1"
-                                                class="form-label ml-2">Comentario</label>
+                                                   class="form-label ml-2">Comentario</label>
                                             <textarea wire:model="body"
-                                                class="form-control @error('body') is-invalid @enderror"
-                                                id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                      class="form-control @error('body') is-invalid @enderror"
+                                                      id="exampleFormControlTextarea1" rows="3"></textarea>
                                             @error('body')
-                                                <span class="invalid-feedback" role="alert">
+                                            <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
@@ -87,8 +88,8 @@
                                             <div class="form-group col-md-4" style="margin-bottom: 25px">
                                                 <div class="form-check form-switch">
                                                     <input wire:model="isResolved" wire:change="setIsResolved()"
-                                                        class="form-check-input" type="checkbox" role="switch"
-                                                        id="isRenewable">
+                                                           class="form-check-input" type="checkbox" role="switch"
+                                                           id="isRenewable">
                                                     <label class="form-check-label" for="isRenewable">Resolución
                                                         ticket</label>
                                                 </div>
@@ -99,10 +100,10 @@
                                                 <label for="exampleFormControlTextarea1" class="form-label ml-2">Comentario
                                                     de resolución</label>
                                                 <textarea wire:model="resolution_comment_body"
-                                                    class="form-control @error('resolution_comment_body') is-invalid @enderror"
-                                                    id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                          class="form-control @error('resolution_comment_body') is-invalid @enderror"
+                                                          id="exampleFormControlTextarea1" rows="3"></textarea>
                                                 @error('resolution_comment_body')
-                                                    <span class="invalid-feedback" role="alert">
+                                                <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
@@ -119,12 +120,15 @@
         <div class="row no-print px-3">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button class="btn btn-secondary">cerrado</button>
+                    <a href="{{ route('admin.dashboard') }}">
+                        <button class="btn btn-secondary">Cerrar</button>
+                    </a>
                     <button wire:click="requestClient" class="btn btn-primary">Petición a cliente</button>
 
                     <button wire:click="save" type="button" class="btn btn-success float-right"
-                        style="margin-right: 10px"><i class="far fa-save"></i>
-                        Guardar datos</button>
+                            style="margin-right: 10px"><i class="far fa-save"></i>
+                        Guardar datos
+                    </button>
                 </div>
             </div>
         </div>

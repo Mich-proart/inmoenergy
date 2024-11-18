@@ -4,19 +4,17 @@ namespace App\Livewire\Ticket;
 
 use App\Domain\Enums\TicketStatusEnum;
 use App\Domain\Ticket\Services\TicketService;
+use App\Exceptions\CustomException;
 use App\Models\Formality;
-use App\Models\Office;
 use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Livewire\Component;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\App;
-use Livewire\WithPagination;
-use App\Exceptions\CustomException;
 use DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class CreateTicketForm extends Component
 {
@@ -43,8 +41,8 @@ class CreateTicketForm extends Component
     }
 
     protected $rules = [
-        'title' => 'required|string|min:8',
-        'description' => 'required|string|min:8'
+        'title' => 'required|string',
+        'description' => 'required|string'
     ];
 
     protected $messages = [
@@ -113,7 +111,6 @@ class CreateTicketForm extends Component
             'status_id' => $this->defaultStatus->id
         ];
     }
-
 
 
     public function render()
