@@ -42,29 +42,11 @@ class Charts extends Component
         $this->statisticService->setSearchBasedOn($searchBasedOn);
         $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency);
         $this->totalCount = $data['totalCount'];
-        $this->timeAvg = $data['timeAvg'] . ' ' . 'días';
+        $this->timeAvg = $data['timeAvg'] . ' ' . 'horas';
 
         $this->dispatch('updateChart',
             $data
         );
-    }
-
-    private function getLabels()
-    {
-        $labels = [];
-        for ($i = 0; $i < 12; $i++) {
-            $labels[] = now()->subMonths($i)->format('M');
-        }
-        return $labels;
-    }
-
-    private function getRandomData()
-    {
-        $data = [];
-        for ($i = 0; $i < count($this->getLabels()); $i++) {
-            $data[] = rand(10, 100);
-        }
-        return $data;
     }
 
 
