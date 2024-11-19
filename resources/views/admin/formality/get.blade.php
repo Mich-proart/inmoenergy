@@ -17,11 +17,12 @@
     <div>
 
         <div class="card card-primary card-outline">
-            <div class="mt-3 mr-3">
-                <div class="col-12 ">
-                    <h4>
+            <div class="mt-3 mr-3 container text-end">
+                <div class="row justify-content-end">
+                    <div class="col-12 ">
                         @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.edit', 'from' => 'admin.formality.inprogress', 'checkStatus' => false])
-                    </h4>
+                    </div>
+
                 </div>
             </div>
             <div class="card-body">
