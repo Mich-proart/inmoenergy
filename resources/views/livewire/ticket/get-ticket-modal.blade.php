@@ -2,9 +2,7 @@
 
     <!-- Button trigger modal -->
     <small class="">
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#getTicketModel">
-            Tickets
-        </button>
+        
     </small>
 
     <!-- Modal -->

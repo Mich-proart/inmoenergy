@@ -14,7 +14,10 @@
             <div class="mt-3 mr-3 container text-end">
                 <div class="row justify-content-end">
                     <div class="col-10">
-                        @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.modify', 'from' => 'admin.dashboard', 'checkStatus' => true])
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#getTicketModel">
+                            Tickets
+                        </button>
                     </div>
                     @if($from !== 'totalclosed')
                         <div class="col">
@@ -26,6 +29,7 @@
                     @endif
                 </div>
             </div>
+            @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.modify', 'from' => 'admin.dashboard', 'checkStatus' => true])
             @livewire('user.edit-client-modal', ['formality' => $formality])
             <div class="card-body">
                 <section>
