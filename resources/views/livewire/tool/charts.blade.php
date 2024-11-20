@@ -38,7 +38,7 @@
                                 <div class="col">
                                     <div>Tiempo promedio trámite:</div>
                                 </div>
-                                <div class="col-4"><p>{{$timeAvg}}</p></div>
+                                <div class="col-5"><p>{{$timeAvg}}</p></div>
                             </div>
                         </div>
 

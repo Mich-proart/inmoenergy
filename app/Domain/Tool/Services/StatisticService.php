@@ -114,9 +114,9 @@ class StatisticService
         $averageInMin = $formality->avg(function ($formality) {
             return Carbon::parse($formality->contract_completion_date)->diffInMinutes(Carbon::parse($formality->created_at));
         });
-        $avgInDays = $averageInMin / 1440;
+        $avgInHours = $averageInMin / 60;
 
-        return round($avgInDays, 2);
+        return round($avgInHours, 2);
     }
 
     private function formatUserName(User $user): string

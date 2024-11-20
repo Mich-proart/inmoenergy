@@ -39,9 +39,9 @@ class TimeFilterDto
         if ($interval) {
             if ($interval->y >= 1) {
                 $this->frequencyOptions = ['anual', 'mensual'];
-            } elseif ($interval->y === 0 && $interval->m >= 1) {
+            } elseif ($interval->y < 1 && $interval->m > 1) {
                 $this->frequencyOptions = ['mensual', 'semanal'];
-            } elseif ($interval->y === 0 && $interval->m === 0 && $interval->d > 0) {
+            } elseif ($interval->m <= 1) {
                 $this->frequencyOptions = ['semanal', 'diario'];
             } else {
                 $this->frequencyOptions = [];

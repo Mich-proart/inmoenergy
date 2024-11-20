@@ -17,13 +17,17 @@
     <div>
 
         <div class="card card-primary card-outline">
-            <div class="mt-3 mr-3">
-                <div class="col-12 ">
-                    <h4>
-                        @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.edit', 'from' => 'admin.formality.inprogress', 'checkStatus' => false])
-                    </h4>
+            <div class="mt-3 mr-3 container text-end">
+                <div class="row justify-content-end">
+                    <div class="col-12 ">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#getTicketModel">
+                            Tickets
+                        </button>
+                    </div>
                 </div>
             </div>
+            @livewire('ticket.get-ticket-modal', ['formality' => $formality, 'to' => 'admin.ticket.edit', 'from' => 'admin.formality.inprogress', 'checkStatus' => false])
             <div class="card-body">
                 <section>
                     <div class="form-group">
