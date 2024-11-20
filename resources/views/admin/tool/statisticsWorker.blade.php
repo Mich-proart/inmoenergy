@@ -16,15 +16,8 @@
 
 @section('content')
     <div>
-        <div class="card card-primary card-outline" style="height: 100%">
-            <div class="card-header">
-                <h1 class="card-title">Análisis de usuarios</h1>
-            </div>
-            <div class="card-body table-responsive p-0">
-                @livewire('tool.filter')
-                @livewire('tool.charts')
-            </div>
-        </div>
+        @livewire('tool.filter')
+        @livewire('tool.charts')
     </div>
 @stop
 

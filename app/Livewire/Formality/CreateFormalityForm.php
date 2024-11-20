@@ -273,7 +273,6 @@ class CreateFormalityForm extends Component
 
     public function save()
     {
-
         $this->formValidation();
 
         if ($this->isDuplicated()) {
