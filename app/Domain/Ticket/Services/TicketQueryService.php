@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Domain\Ticket\Services;
+
 use App\Domain\Enums\TicketStatusEnum;
 use DB;
 
@@ -36,6 +38,7 @@ class TicketQueryService
                 'issuer.second_last_name as issuer_secondLastName',
             );
     }
+
     public function ticketQueryTotalPending()
     {
         return DB::table('ticket')
@@ -81,10 +84,15 @@ class TicketQueryService
     {
         $queryBuilder = $this->ticketQuery();
         $queryBuilder->where('issuer.id', $issuerId);
-        $queryBuilder->WhereIn('status.name', [TicketStatusEnum::PENDIENTE_CLIENTE->value]);
-        $queryBuilder->where('formality.user_issuer_id', $issuerId);
+
+        $queryBuilder->orWhere(function ($query) use ($issuerId) {
+            $query->where('formality.user_issuer_id', $issuerId)
+                ->where('status.name', TicketStatusEnum::PENDIENTE_CLIENTE->value);
+        });
+
         return $queryBuilder->get();
     }
+
     public function getResolved(int $issuerId)
     {
         $queryBuilder = $this->ticketQuery();
@@ -117,6 +125,7 @@ class TicketQueryService
         $queryBuilder->WhereNotIn('status.name', [TicketStatusEnum::RESUELTO->value]);
         return $queryBuilder->get();
     }
+
     public function getAssignment()
     {
         $queryBuilder = $this->ticketQueryTotalPending();
