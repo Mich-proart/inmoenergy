@@ -16,13 +16,13 @@ class TicketAdminController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('can:ticket.create')->only('create');
-        $this->middleware('can:ticket.pending.access')->only('getPending', 'edit');
+        $this->middleware('can:ticket.pending.access')->only('getPending');
         $this->middleware('can:ticket.resolved.access')->only('getResolved');
         $this->middleware('can:ticket.resolved.access.worker')->only('getResolvedWorker');
-        $this->middleware('can:ticket.assigned.access')->only('getAssigned', 'modify');
+        $this->middleware('can:ticket.assigned.access')->only('getAssigned');
         $this->middleware('can:ticket.total.closed.access')->only('getTotalClosed');
         $this->middleware('can:ticket.assignment.access')->only('getAssignment');
-        $this->middleware('can:ticket.total.pending.access')->only('getTotalPending', 'modify');
+        $this->middleware('can:ticket.total.pending.access')->only('getTotalPending');
     }
 
     public function create()
