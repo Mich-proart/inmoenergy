@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Forms\Formality;
 
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class FormalityUpdate extends Form
@@ -112,6 +111,7 @@ class FormalityUpdate extends Form
             'email' => $this->email,
             'first_last_name' => $this->firstLastName,
             'second_last_name' => $this->secondLastName,
+            'user_title_id' => $this->userTitleId == 0 ? null : $this->userTitleId,
             'phone' => $this->phone,
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
@@ -134,6 +134,7 @@ class FormalityUpdate extends Form
             'door' => $this->door
         ];
     }
+
     public function getCorresponceAddressUpdate()
     {
         return [

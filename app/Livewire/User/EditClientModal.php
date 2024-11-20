@@ -91,7 +91,7 @@ class EditClientModal extends Component
     {
         $this->formValidation();
         $this->executeUpdate();
-        
+
     }
 
 
@@ -104,7 +104,7 @@ class EditClientModal extends Component
             $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
 
             $data = Formality::firstWhere('id', $this->formality->id);
-
+            
             $data->client()->update($updates);
 
             $address = Address::firstWhere('id', $data->address->id);
