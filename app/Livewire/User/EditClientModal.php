@@ -90,14 +90,8 @@ class EditClientModal extends Component
     public function update()
     {
         $this->formValidation();
-
-        if ($this->isDuplicatedAddress()) {
-            $this->dispatch('checks', title: "Direccion duplicada", error: "Existen una dirección igual para el mismo cliente");
-        } else {
-            $this->executeUpdate();
-        }
-
-
+        $this->executeUpdate();
+        
     }
 
 
