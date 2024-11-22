@@ -90,13 +90,7 @@ class EditClientModal extends Component
     public function update()
     {
         $this->formValidation();
-
-        if ($this->isDuplicatedAddress()) {
-            $this->dispatch('checks', title: "Direccion duplicada", error: "Existen una dirección igual para el mismo cliente");
-        } else {
-            $this->executeUpdate();
-        }
-
+        $this->executeUpdate();
 
     }
 
@@ -110,7 +104,7 @@ class EditClientModal extends Component
             $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
 
             $data = Formality::firstWhere('id', $this->formality->id);
-
+            
             $data->client()->update($updates);
 
             $address = Address::firstWhere('id', $data->address->id);

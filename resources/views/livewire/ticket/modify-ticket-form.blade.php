@@ -136,7 +136,9 @@
         <div class="row no-print px-3">
             <div class="col-12">
                 <div style="margin-top: 50px; margin-bottom: 25px">
-                    <button class="btn btn-secondary">cerrado</button>
+                    <a href="{{ route('admin.dashboard') }}">
+                        <button class="btn btn-secondary">Cerrar</button>
+                    </a>
                     @if ($ticket->status->name == 'pendiente de cliente')
                         <button wire:click="backToInProgress" class="btn btn-warning">Volver a "En curso"</button>
                     @endif

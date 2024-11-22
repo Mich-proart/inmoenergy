@@ -16,12 +16,8 @@
 
 @section('content')
     <div>
-        <div class="card card-primary card-outline" style="height: 100%">
-            <div class="card-body table-responsive p-0">
-                @livewire('tool.filter', ['searchBasedOn' => 'user_issuer_id'])
-                @livewire('tool.charts')
-            </div>
-        </div>
+        @livewire('tool.filter', ['searchBasedOn' => 'user_issuer_id'])
+        @livewire('tool.charts')
     </div>
 @stop
 
