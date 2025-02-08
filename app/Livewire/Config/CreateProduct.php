@@ -25,7 +25,7 @@ class CreateProduct extends Component
 
     protected $rules = [
         'companyId' => 'required|exists:company,id',
-        'name' => 'required|max:255|min:3|unique:product,name',
+        'name' => 'required|max:255|min:3',
     ];
 
     protected $messages = [
@@ -38,8 +38,7 @@ class CreateProduct extends Component
 
     public function save()
     {
-
-        $this->validate();
+        $this->validateSaving();
 
         DB::beginTransaction();
 
@@ -66,6 +65,29 @@ class CreateProduct extends Component
             throw CustomException::badRequestException($th->getMessage());
         }
 
+    }
+
+
+    public function validateSaving()
+    {
+        $this->validate();
+        if ($this->product !== null) {
+
+            if ($this->product->name !== $this->name) {
+                $this->validate([
+                    'name' => 'unique:product,name',
+                ], [
+                    'name.unique' => 'El nombre ya existe',
+                ]);
+            }
+
+        } else {
+            $this->validate([
+                'name' => 'unique:product,name',
+            ], [
+                'name.unique' => 'El nombre ya existe',
+            ]);
+        }
     }
 
     public function resetVar()
