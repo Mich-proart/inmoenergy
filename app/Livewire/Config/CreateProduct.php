@@ -93,6 +93,12 @@ class CreateProduct extends Component
     public function resetVar()
     {
         $this->reset();
+        $this->resetErrorBag();
+    }
+
+    public function resetErrors()
+    {
+        $this->resetErrorBag();
     }
 
 
