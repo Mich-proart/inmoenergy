@@ -38,7 +38,8 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="create-product-modal-Label">Producto
                             </h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button wire:click="resetErrors" type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <form wire:submit.prevent="save">
                             <div class="modal-body">
@@ -76,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
+                                    <button wire:click="resetErrors" type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cerrar</button>
                                     <button type="submit" class="btn btn-success float-right"><i
                                             class="far fa-save"></i>

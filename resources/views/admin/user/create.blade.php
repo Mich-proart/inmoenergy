@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
 
 @section('content_header')
 <div class="row">
@@ -10,8 +9,10 @@
                 class="img-thumbnail align-self-center resize">
             @if (isset($content) && $content == 'worker')
                 <h3>Nuevo usuario</h3>
+                @section('title', 'Nuevo usuario')
             @else
                 <h3>Nuevo cliente</h3>
+                @section('title', 'Nuevo cliente')
             @endif
         @endif
     </div>

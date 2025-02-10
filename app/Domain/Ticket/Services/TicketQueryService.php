@@ -83,7 +83,8 @@ class TicketQueryService
     public function getPending(int $issuerId)
     {
         $queryBuilder = $this->ticketQuery();
-        $queryBuilder->where('issuer.id', $issuerId);
+        $queryBuilder->where('issuer.id', $issuerId)
+            ->whereNot('status.name', TicketStatusEnum::RESUELTO->value);
 
         $queryBuilder->orWhere(function ($query) use ($issuerId) {
             $query->where('formality.user_issuer_id', $issuerId)

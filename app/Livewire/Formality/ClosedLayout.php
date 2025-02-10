@@ -9,6 +9,8 @@ use Livewire\Component;
 class ClosedLayout extends Component
 {
 
+    public $files;
+
     public Formality $formality;
 
     #[On('getFormality')]
@@ -18,6 +20,19 @@ class ClosedLayout extends Component
 
         if ($this->formality) {
             $this->dispatch('view-formality');
+        }
+    }
+
+    public function getFiles($formality_id)
+    {
+
+        $formality = Formality::where('id', $formality_id)->with(
+            'files',
+            'files.config'
+        )->first();
+
+        if ($formality) {
+            $this->files = $formality->files;
         }
     }
 

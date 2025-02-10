@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
 
 @section('content_header')
 <div class="row">
@@ -9,6 +8,7 @@
             <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
                 class="img-thumbnail align-self-center resize">
             <h3>{{ucfirst($program->name)}}</h3>
+            @section('title', ucfirst($program->name))
         @endif
     </div>
 </div>

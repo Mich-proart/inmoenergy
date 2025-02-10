@@ -1,4 +1,23 @@
 <div>
+    <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Archivos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <x-view.files-items :files="$files" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div>
         <div wire:ignore class="card card-primary card-outline">
             <div class="card-header">
@@ -19,6 +38,7 @@
                             <th>Estado trámite</th>
                             <th>Compañía suministro</th>
                             <th>Observaciones asesor</th>
+                            <th>Documentos</th>
                         </tr>
                     </thead>
 
@@ -100,10 +120,17 @@
                 },
                 { data: 'company' },
                 { data: 'assigned_observation' },
+                {
+                    data: 'formality_id', render: function (data, type, row, meta) {
+                        console.log(data)
+                        return `<button type="button" wire:click="getFiles(${data})" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"> <i class="far fa-file"></i></button>`
+                    }
+                },
             ],
             "columnDefs": [
                 { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] }
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
             ],
             "order": [
                 [0, "desc"]
@@ -112,7 +139,7 @@
     </script>
     @script
     <script>
-        $('#formality-content').on('click', 'tbody tr', function () {
+        $('#formality-content').on('click', '.target', function () {
             const row = table.row(this).data();
             console.log(row);
             // window.location.href = " {{-- {{ route('admin.formality.get', ':id') }} --}}".replace(':id', row.formality_id);

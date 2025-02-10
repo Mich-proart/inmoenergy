@@ -768,7 +768,7 @@
         $wire.on('move-confirmation', () => {
             Swal.fire({
                 title: "¿Seguro que quieres iniciar un nuevo trámite?",
-                text: "Al aceptar iniciara el proceso para un nuevo cliente.",
+                text: "Al aceptar iniciará el proceso para un nuevo cliente.",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",

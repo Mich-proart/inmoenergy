@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Optiones de desplegable')
 
 @section('content_header')
 <h1>Optiones de desplegable</h1>
