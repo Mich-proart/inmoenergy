@@ -386,7 +386,7 @@ return [
                     'can' => 'document.authorization.access',
                 ],
                 [
-                    'text' => 'Documentos para cambio de titular',
+                    'text' => 'Manuales aplicación', //'Documentos para cambio de titular',
                     'route' => 'admin.document.changeTitle',
                     'icon' => 'fas fa-fw fa-file',
                     'can' => 'document.changeTitle.access',
