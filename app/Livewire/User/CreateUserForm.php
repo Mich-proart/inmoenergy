@@ -96,8 +96,8 @@ class CreateUserForm extends Component
                 'email' => 'required|email|unique:users,email',
                 'firstLastName' => 'required|string',
                 'secondLastName' => 'required|string',
-                'documentTypeId' => 'required|integer|exists:component_option,id',
-                'documentNumber' => 'required|string',
+                'documentTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
+                'documentNumber' => 'sometimes|nullable|string',
                 'password' => 'required|string|min:8',
                 'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
                 'officeId' => 'sometimes|nullable|integer|exists:office,id',
@@ -133,21 +133,22 @@ class CreateUserForm extends Component
             ]
         );
 
+        if ($this->form->documentTypeId) {
+            $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
 
-        $selectedDocumentType = ComponentOption::where('id', $this->form->documentTypeId)->first();
+            $rule = '';
+            if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
+                $rule = 'required|string|min:9|max:9';
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
+                $rule = DocumentRule::$DNI;
+            } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
+                $rule = DocumentRule::$NIE;
+            }
 
-        $rule = '';
-        if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
-            $rule = 'required|string|min:9|max:9';
-        } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
-            $rule = DocumentRule::$DNI;
-        } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
-            $rule = DocumentRule::$NIE;
+            $this->form->validate([
+                'documentNumber' => $rule
+            ]);
         }
-
-        $this->form->validate([
-            'documentNumber' => $rule
-        ]);
 
         if (!$this->form->isWorker) {
             $this->form->validate([
@@ -193,7 +194,6 @@ class CreateUserForm extends Component
                 }
                 $updates['office_id'] = $office->id;
             }
-
             $user = User::create($updates);
 
             $role = Role::firstWhere('id', $this->form->getRoleId());
