@@ -309,16 +309,15 @@
                     </div>
                 </div>
             </section>
-            @if ($from == 'trámites cerrados')
-                <div style="margin-top: 50px; margin-bottom: 25px">
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
-                            @readonly(true)>{{$formality->observation}}</textarea>
-                    </div>
-
+            <div style="margin-top: 50px; margin-bottom: 25px">
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Observaciones del trámite</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="observation"
+                        @readonly(true)>{{$formality->observation}}</textarea>
                 </div>
-            @endif
+
+            </div>
+
             <div style="margin-top: 50px; margin-bottom: 25px">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Observaciones del asesor</label>

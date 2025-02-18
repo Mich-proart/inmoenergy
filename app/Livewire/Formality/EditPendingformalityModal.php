@@ -92,7 +92,7 @@ class EditPendingformalityModal extends Component
     public function setContractCompletionDate()
     {
         $date = $this->form->activation_date;
-        $this->form->contract_completion_date = date('Y-m-d', strtotime($date . ' +1 year'));
+        $this->form->contract_completion_date = date('Y-m-d', strtotime($date . '+1 year -1 day'));
     }
 
     public function closeClean()
@@ -120,7 +120,7 @@ class EditPendingformalityModal extends Component
             if ($formality) {
                 $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_VIGOR->value);
                 $renewal_date = null;
-                
+
                 $savedFile = $formality->files[0];
 
                 $file_inputs = $this->inputs->where('serviceId', null);
