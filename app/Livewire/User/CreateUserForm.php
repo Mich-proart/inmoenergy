@@ -4,6 +4,8 @@ namespace App\Livewire\User;
 
 use App\Livewire\Forms\User\UserCreate;
 use App\Models\Country;
+use Livewire\Attributes\Modelable;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Enums\DocumentRule;
@@ -28,6 +30,10 @@ class CreateUserForm extends Component
     public $target_regionId;
 
     public $business_target;
+
+    public $office_list = [];
+
+    public $officeId;
 
     public Country $selected_country;
 
@@ -88,6 +94,7 @@ class CreateUserForm extends Component
 
     public function save()
     {
+        $this->resetErrorBag();
         $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
             [
@@ -152,16 +159,16 @@ class CreateUserForm extends Component
 
         if (!$this->form->isWorker) {
             $this->form->validate([
-                // 'officeId' => 'required|integer|exists:office,id',
+                //'officeId' => 'required',
                 //'responsibleId' => 'required|integer|exists:users,id',
-                'officeName' => 'required|string',
+                // 'officeName' => 'required|string',
                 'responsibleName' => 'required|string',
                 'adviserAssignedId' => 'required|integer|exists:users,id',
                 'incentiveTypeTd' => 'required|integer|exists:component_option,id',
             ], [
-                // 'officeId.required' => 'El campo Oficina es obligatorio',
+                //'officeId.required' => 'El campo Oficina es obligatorio',
                 // 'responsibleId.required' => 'El campo Responsable es obligatorio',
-                'officeName.required' => 'El campo Oficina es obligatorio',
+                //'officeName.required' => 'El campo Oficina es obligatorio',
                 'responsibleName.required' => 'El campo Responsable es obligatorio',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
@@ -169,8 +176,10 @@ class CreateUserForm extends Component
 
             $this->validate([
                 'business_target' => 'required|integer|exists:business_group,id',
+                'officeId' => 'required'
             ], [
                 'business_target.required' => 'El campo es obligatorio',
+                'officeId.required' => 'El campo Oficina es obligatorio',
             ]);
         }
 
@@ -182,13 +191,12 @@ class CreateUserForm extends Component
             $updates['country_id'] = $this->selected_country->id;
             if (!$this->form->isWorker) {
                 $office = Office::firstWhere([
-                    'name' => strtolower($this->form->officeName),
-                    'business_group_id' => $this->business_target,
+                    'id' => $this->officeId
                 ]);
 
                 if (!$office) {
                     $office = Office::create([
-                        'name' => strtolower($this->form->officeName),
+                        'name' => strtolower($this->officeId),
                         'business_group_id' => $this->business_target,
                     ]);
                 }
@@ -224,11 +232,13 @@ class CreateUserForm extends Component
         $businessGroup = BusinessGroup::all();
         return $businessGroup;
     }
-    #[Computed()]
-    public function offices()
+
+
+
+    #[On('change-businessGroup')]
+    public function changeBusinessGroup()
     {
-        $offices = Office::where('business_group_id', $this->business_target)->get();
-        return $offices;
+        $this->office_list = Office::where('business_group_id', $this->business_target)->get();
     }
 
     public function render()

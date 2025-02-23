@@ -59,7 +59,7 @@ class UserEdit extends Form
         $this->incentiveTypeTd = $user->incentive->id ?? null;
         $this->businessGroup = $user->business_group;
         //$this->officeId = $user->office->id ?? null;
-        $this->officeName = $user->office->name ?? null;
+        //$this->officeName = $user->office->name ?? null;
         $this->adviserAssignedId = $user->adviserAssigned->id ?? null;
         //$this->responsibleId = $user->responsible->id ?? null;
         $this->responsibleName = $user->responsible_name;

@@ -270,9 +270,8 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="inputState">Grupo empresarial: </label>
-                                <select wire:model.live="business_target"
-                                    class="form-control @error('business_target') is-invalid @enderror" name="businessGroup"
-                                    id="businessGroup">
+                                <select class="form-control @error('business_target') is-invalid @enderror"
+                                    name="businessGroup" id="businessGroup">
                                     <option value="">-- selecione --</option>
                                     @if (isset($this->business))
                                         @foreach ($this->business as $option)
@@ -286,27 +285,23 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3" style="display: none;">
+                            <div class="form-group col-md-3">
                                 <label for="inputCity">Oficina usuario</label>
-                                <select wire:model="form.officeId"
-                                    class="form-control @error('form.officeId') is-invalid @enderror" name="officeId"
-                                    id="officeId">
+                                <select wire:model="officeId" class="form-control @error('officeId') is-invalid @enderror"
+                                    name="officeId" id="officeId">
                                     <option value="">-- selecione --</option>
-                                    @if (isset($this->offices))
-                                        @foreach ($this->offices as $option)
-                                            <option value="{{ $option->id }}">{{ $option->name }}</option>
-                                        @endforeach
 
-                                    @endif
-
+                                    @foreach ($office_list as $option)
+                                        <option value="{{ $option->id }}">{{ $option->name }}</option>
+                                    @endforeach
                                 </select>
-                                @error('form.officeId')
+                                @error('officeId')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3" style="display: none;">
                                 <label for="inputCity">Oficina usuario</label>
                                 <input wire:model="form.officeName" type="text"
                                     class="form-control @error('form.officeName') is-invalid @enderror" id="officeName"
@@ -385,33 +380,34 @@
         </div>
     </div>
     <script src="/vendor/jquery/jquery.min.js"></script>
-
-
 </div>
 
 @script
-<script>
-    /*
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.3.2/build/js/utils.js",
-    });
-    */
+<script type="text/javascript">
+    document.addEventListener('livewire:initialized', () => {
+        function LoadDropdown() {
 
+            $('#businessGroup').on('change', function (event) {
+                $wire.$set('business_target', event.target.value)
+                $wire.dispatch('change-businessGroup')
+                console.log(event.target.value)
+
+            });
+            $('#officeId').select2({
+                tags: true
+            }).on('change', function (event) {
+                $wire.$set('officeId', event.target.value)
+
+            });
+        }
+        LoadDropdown()
+
+        Livewire.hook('morph.updating', () => {
+            LoadDropdown()
+            console.log('morph.updating')
+        })
+    })
     $(document).ready(function () {
-        /*
-        $('#businessGroup').select2({
-            tags: true
-        });
-        $('#office').select2({
-            tags: true
-        });
-
-        $('#businessGroup').on('change', function (event) {
-            $wire.$set('business_target', event.target.value)
-            console.log(event.target.value)
-        });
-        */
 
         $('#phone').keypress(function (event) {
             if ((event.which < 48 || event.which > 57) && event.which !== 46) {
@@ -421,6 +417,7 @@
                 event.preventDefault();
             }
         });
+
 
     });
 </script>
