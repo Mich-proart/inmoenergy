@@ -6,6 +6,7 @@ use App\Livewire\Forms\User\UserEdit;
 use App\Models\BusinessGroup;
 use App\Models\Country;
 use App\Models\Office;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Domain\Address\Services\AddressService;
 use App\Domain\Enums\DocumentRule;
@@ -40,6 +41,11 @@ class EditUserForm extends Component
 
     public Country $selected_country;
 
+    public $office_list = [];
+
+    public $officeId;
+
+
 
     public function __construct()
     {
@@ -65,6 +71,11 @@ class EditUserForm extends Component
         $this->business_target = $user->office->businessGroup->id ?? null;
         $this->userId = $this->user->id;
         $this->isActive = $this->user->isActive;
+
+        if ($this->business_target) {
+            $this->office_list = Office::where('business_group_id', $this->business_target)->get();
+        }
+        $this->officeId = $user->office->id;
 
         if ($user->country_id) {
             $this->changeCountry($user->country_id);
@@ -106,7 +117,7 @@ class EditUserForm extends Component
 
     public function save()
     {
-
+        $this->resetErrorBag();
         $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
             [
@@ -169,20 +180,21 @@ class EditUserForm extends Component
             $this->form->validate([
                 // 'officeId' => 'required|integer|exists:office,id',
                 // 'responsibleId' => 'required|integer|exists:users,id',
-                'officeName' => 'required|string',
+                //'officeName' => 'required|string',
                 'responsibleName' => 'required|string',
                 'adviserAssignedId' => 'required|integer|exists:users,id',
                 'incentiveTypeTd' => 'required|integer|exists:component_option,id',
             ], [
                 //'officeId.required' => 'El campo Oficina es obligatorio',
                 //'responsibleId.required' => 'El campo Responsable es obligatorio',
-                'officeName.required' => 'El campo Oficina es obligatorio',
+                //'officeName.required' => 'El campo Oficina es obligatorio',
                 'responsibleName.required' => 'El campo Responsable es obligatorio',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
             ]);
 
         }
+
 
         if (!$this->form->isActive) {
             $this->form->validate(
@@ -195,8 +207,12 @@ class EditUserForm extends Component
             );
         }
 
+
+
         if (!$this->form->isWorker && ($this->business_target == null || $this->business_target == '' || $this->business_target == 0)) {
             $this->dispatch('msg', error: "Por favor, Seleccione un grupo empresarial", title: "Dato incompleto", type: "error");
+        } elseif ($this->officeId == null || $this->officeId == '' || $this->officeId == 0) {
+            $this->dispatch('msg', error: "Por favor, Seleccione una oficina", title: "Dato incompleto", type: "error");
         } elseif (!$this->user->isActive && $this->form->isActive) {
             if ($this->form->password == null || $this->form->password == '') {
                 $this->dispatch('msg', error: "Por favor, proporcione una contraseña de acceso", title: "Activación de usuario", type: "warning");
@@ -220,11 +236,19 @@ class EditUserForm extends Component
                 ['country_id' => $this->selected_country->id],
                 $this->form->getclientUpdate()
             );
-            if (!$this->form->isWorker && $this->user->office != null && $this->form->officeName != null) {
-                $this->user->office()->update([
-                    'name' => strtolower($this->form->officeName),
-                    'business_group_id' => $this->business_target
+            if (!$this->form->isWorker) {
+
+                $office = Office::firstWhere([
+                    'id' => $this->officeId
                 ]);
+
+                if (!$office) {
+                    $office = Office::create([
+                        'name' => strtolower($this->officeId),
+                        'business_group_id' => $this->business_target,
+                    ]);
+                }
+                $updates['office_id'] = $office->id;
             }
 
             $data = User::where('id', $this->userId)->with('address')->first();
@@ -262,13 +286,11 @@ class EditUserForm extends Component
         $businessGroup = BusinessGroup::all();
         return $businessGroup;
     }
-    #[Computed()]
-    public function offices()
+    #[On('change-businessGroup')]
+    public function changeBusinessGroup()
     {
-        $offices = Office::where('business_group_id', $this->business_target)->get();
-        return $offices;
+        $this->office_list = Office::where('business_group_id', $this->business_target)->get();
     }
-
 
     public function render()
     {
