@@ -75,7 +75,7 @@ class EditUserForm extends Component
         if ($this->business_target) {
             $this->office_list = Office::where('business_group_id', $this->business_target)->get();
         }
-        $this->officeId = $user->office->id;
+        $this->officeId = $user->office ? $user->office->id : null;
 
         if ($user->country_id) {
             $this->changeCountry($user->country_id);
@@ -211,7 +211,7 @@ class EditUserForm extends Component
 
         if (!$this->form->isWorker && ($this->business_target == null || $this->business_target == '' || $this->business_target == 0)) {
             $this->dispatch('msg', error: "Por favor, Seleccione un grupo empresarial", title: "Dato incompleto", type: "error");
-        } elseif ($this->officeId == null || $this->officeId == '' || $this->officeId == 0) {
+        } elseif (!$this->form->isWorker && ($this->officeId == null || $this->officeId == '' || $this->officeId == 0)) {
             $this->dispatch('msg', error: "Por favor, Seleccione una oficina", title: "Dato incompleto", type: "error");
         } elseif (!$this->user->isActive && $this->form->isActive) {
             if ($this->form->password == null || $this->form->password == '') {
