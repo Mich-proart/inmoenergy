@@ -5,10 +5,10 @@
 <div class="row">
     <div class="col-md-6 image-text-container">
         @if (isset($program))
-            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
-                class="img-thumbnail align-self-center resize">
-            <h3>{{ucfirst($program->name)}}</h3>
-            @section('title', ucfirst($program->name))
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>{{ucfirst($program->name)}}</h3>
+        @section('title', ucfirst($program->name))
         @endif
     </div>
 </div>
@@ -17,7 +17,7 @@
 @section('content')
 
 <div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-body table-responsive p-0">
             <div class="card-body">
                 <table class="table">
@@ -34,7 +34,7 @@
                                     <td>{{$file->name}}</td>
                                     <td>
                                         <a href="{{route('admin.documents.download', $file->id)}}">
-                                            <button class="btn btn-primary btn-sm">
+                                            <button class="btn btn-success btn-sm">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                                                     <path

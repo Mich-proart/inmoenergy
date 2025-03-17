@@ -1,5 +1,5 @@
 <div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-header">
             <div class="row no-print">
                 <div class="col-12">

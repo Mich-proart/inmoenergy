@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="mt-3 mr-3">
             <div class="col-12 ">
                 <h4 class=" card-title">{{Auth::user()->name}}</h4>

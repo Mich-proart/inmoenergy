@@ -5,10 +5,10 @@
 <div class="row">
     <div class="col-md-6 image-text-container">
         @if (isset($program))
-            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
-                class="img-thumbnail align-self-center resize">
-            <h3>{{ucfirst($program->name)}}</h3>
-            @section('title', ucfirst($program->name))
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>{{ucfirst($program->name)}}</h3>
+        @section('title', ucfirst($program->name))
         @endif
     </div>
 </div>
@@ -17,14 +17,14 @@
 @section('content')
 
 <div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-header">
             <div class="row no-print">
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
                         @role('superadmin')
-                        <button type="submit" onclick="addQueryParam()" class="btn btn-primary float-right btn-sm"><i
+                        <button type="submit" onclick="addQueryParam()" class="btn btn-success float-right btn-sm"><i
                                 class="far fa-plus-square"></i>
                             Agregar usuario</button>
                         @endrole

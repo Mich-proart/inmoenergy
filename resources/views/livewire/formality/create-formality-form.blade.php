@@ -1,6 +1,6 @@
 <div>
     <div class="spinner-wrapper" style="display: none;">
-        <div class="spinner-border text-primary" role="status">
+        <div class="spinner-border text-success" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
@@ -22,7 +22,7 @@
     </div>
     @enderror
 
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-body">
             <form wire:submit="save">
                 @csrf

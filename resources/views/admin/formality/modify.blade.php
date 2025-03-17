@@ -10,11 +10,11 @@
 @section('content')
 <div>
 
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="mt-3 mr-3 container text-end">
             <div class="row justify-content-end">
                 <div class="col-10">
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                         data-bs-target="#getTicketModel">
                         Tickets
                     </button>

@@ -10,7 +10,7 @@
 
 <livewire:config.edit-company :company="$company">
     <div>
-        <div class="card card-primary card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <section>
                     <div class="form-group">

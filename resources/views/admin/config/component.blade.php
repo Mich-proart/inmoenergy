@@ -5,10 +5,10 @@
 <div class="row">
     <div class="col-md-6 image-text-container">
         @if (isset($program))
-            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
-                class="img-thumbnail align-self-center resize">
-            <h3>{{ucfirst($program->name)}}</h3>
-            @section('title', ucfirst($program->name))
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>{{ucfirst($program->name)}}</h3>
+        @section('title', ucfirst($program->name))
         @endif
     </div>
 </div>
@@ -17,19 +17,19 @@
 @section('content')
 
 <div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-header">
             <div class="row no-print">
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
                         <a href="{{ route('admin.config.businessGroup') }}">
-                            <button type="button" class="btn btn-primary float-right btn-sm">
+                            <button type="button" class="btn btn-success float-right btn-sm">
                                 <i class="far fa-plus-square"></i> Ver grupo empresarial
                             </button>
                         </a>
                         <a href="{{route('admin.config.documents')}}"><button type="button"
-                                class="btn btn-primary float-right btn-sm mr-1">Documentos</button></a>
+                                class="btn btn-success float-right btn-sm mr-1">Documentos</button></a>
                     </div>
                 </div>
             </div>

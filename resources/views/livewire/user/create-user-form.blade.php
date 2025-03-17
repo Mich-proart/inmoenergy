@@ -1,6 +1,6 @@
 <div>
     @section('plugins.select2', true)
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-body">
             <form wire:submit="save">
                 @csrf

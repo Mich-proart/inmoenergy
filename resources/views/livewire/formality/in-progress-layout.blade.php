@@ -1,7 +1,7 @@
 <div>
     <!-- Modal -->
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -11,7 +11,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <x-view.files-items :files="$files"/>
+                    <x-view.files-items :files="$files" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -28,21 +28,21 @@
             <div class="card-body table-responsive p-0">
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
-                    <tr>
+                        <tr>
 
-                        <th>Fecha de entrada</th>
-                        <th>Usuario asignado</th>
-                        <th>Tipo</th>
-                        <th>Suministro</th>
-                        <th>Cliente final</th>
-                        <th>N documento</th>
-                        <th>Dirección</th>
-                        <th>Estado trámite</th>
-                        <th>Compañía suministro</th>
-                        <th>Observaciones asesor</th>
-                        <th>Tickets pendientes</th>
-                        <th>Documentos</th>
-                    </tr>
+                            <th>Fecha de entrada</th>
+                            <th>Usuario asignado</th>
+                            <th>Tipo</th>
+                            <th>Suministro</th>
+                            <th>Cliente final</th>
+                            <th>N documento</th>
+                            <th>Dirección</th>
+                            <th>Estado trámite</th>
+                            <th>Compañía suministro</th>
+                            <th>Observaciones asesor</th>
+                            <th>Tickets pendientes</th>
+                            <th>Documentos</th>
+                        </tr>
                     </thead>
 
                 </table>
@@ -51,13 +51,13 @@
         </div>
         <!-- Button trigger modal -->
         <button id="openModal" type="button" hidden class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop">
+            data-bs-target="#staticBackdrop">
             Launch static backdrop modal
         </button>
 
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="modal-body">
                         @if (isset($formality) && !empty($formality))
-                            <x-view.formality-body :formality="$formality" :from="'inprogress'"/>
+                            <x-view.formality-body :formality="$formality" :from="'inprogress'" />
                         @endif
                     </div>
                     <div class="modal-footer">
@@ -109,20 +109,20 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                {data: 'created_at'},
-                {data: 'assigned'},
-                {data: 'type'},
-                {data: 'service'},
-                {data: 'fullName'},
-                {data: 'documentNumber'},
-                {data: 'fullAddress'},
+                { data: 'created_at' },
+                { data: 'assigned' },
+                { data: 'type' },
+                { data: 'service' },
+                { data: 'fullName' },
+                { data: 'documentNumber' },
+                { data: 'fullAddress' },
                 {
                     data: 'status', render: function (data, type, row, meta) {
                         return statusColor(data);
                     }
                 },
-                {data: 'company'},
-                {data: 'assigned_observation'},
+                { data: 'company' },
+                { data: 'assigned_observation' },
                 {
                     data: 'formality_id', render: function (data, type, row, meta) {
                         return pendinTicketsSecondProgram(data, "{{route('api.formality.ticket')}}");
@@ -135,9 +135,9 @@
                 },
             ],
             "columnDefs": [
-                {className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8, 9, 10, 11]},
-                {className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8]},
-                {className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10]},
+                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8, 9, 10, 11] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10] },
             ],
             "order": [
                 [0, "desc"]

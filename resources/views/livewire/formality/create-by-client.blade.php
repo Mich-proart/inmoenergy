@@ -3,12 +3,12 @@
     <div class="col-12">
         <h5>Para un cliente nuevo</h5>
     </div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="mt-3 mr-3 mb-4">
             <div class="col-12 ">
                 <h4>
                     <small class="float-left">
-                        <button type="button" class="btn btn-primary" wire:click="$dispatch('move-confirmation')">
+                        <button type="button" class="btn btn-success" wire:click="$dispatch('move-confirmation')">
                             Iniciar un nuevo trámite
                         </button>
                     </small>
@@ -19,7 +19,7 @@
     <div class="col-12">
         <h5>Para un cliente existente</h5>
     </div>
-    <div class="card card-primary card-outline" style="height: 700px;">
+    <div class="card card-success card-outline" style="height: 700px;">
         <div class="mt-3 mr-3 ms-5">
             <div class="col-12">
                 <h4 class=" card-title fw-bold">Buscar el cliente en el sistema</h4>
@@ -115,7 +115,7 @@
             </div>
         </div>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden
             id="openModal">
             Launch static backdrop modal
         </button>
@@ -230,7 +230,7 @@
                                                 <input wire:model.live="selected_handler" wire:click="switchAddressHandler"
                                                     type="radio" class="btn-check" id="btn-check-{{$key}}" autocomplete="off"
                                                     name="addressHandler" value="{{$option['handler']}}">
-                                                <label class="btn btn-outline-primary"
+                                                <label class="btn btn-outline-success"
                                                     for="btn-check-{{$key}}">{{$option['display']}}</label><br>
                                             </div>
                                         @endforeach

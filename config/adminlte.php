@@ -14,8 +14,8 @@ return [
     |
     */
 
-    'title' => 'InmoEnergy',
-    'title_prefix' => 'InmoEnergy | ',
+    'title' => 'Lendersconsulting',
+    'title_prefix' => 'Lendersconsulting | ',
     'title_postfix' => '',
 
     /*
@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>InmoEnergy</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/logo.png',
+    'logo' => '<b>Lendersconsulting</b>',
+    'logo_img' => 'vendor/adminlte/dist/img/Logo_sinnombre.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/logo.png',
+            'path' => 'vendor/adminlte/dist/img/Logo.jpg',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/logo.png',
+            'path' => 'vendor/adminlte/dist/img/Logo.jpg',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -171,12 +171,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
+    'classes_auth_card' => 'card-outline card-success',
     'classes_auth_header' => '',
     'classes_auth_body' => '',
     'classes_auth_footer' => '',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_btn' => 'btn-flat btn-success',
 
     /*
     |--------------------------------------------------------------------------

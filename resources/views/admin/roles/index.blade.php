@@ -5,10 +5,10 @@
 <div class="row">
     <div class="col-md-6 image-text-container">
         @if (isset($program))
-            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
-                class="img-thumbnail align-self-center resize">
-            <h3>{{ucfirst($program->name)}}</h3>
-            @section('title', ucfirst($program->name))
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>{{ucfirst($program->name)}}</h3>
+        @section('title', ucfirst($program->name))
         @endif
     </div>
 </div>
@@ -16,7 +16,7 @@
 
 @section('content')
 <div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-header">
             <div class="row no-print">
                 <div class="col-12">
@@ -91,7 +91,7 @@
             { data: 'name' },
             {
                 data: 'id', render: function (data) {
-                    return `<button type="button" class="btn btn-sm btn-primary""><i class="fas fa-pencil-alt"></i> editar</button>`
+                    return `<button type="button" class="btn btn-sm btn-success""><i class="fas fa-pencil-alt"></i> editar</button>`
                 }
             },
 

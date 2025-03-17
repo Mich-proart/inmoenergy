@@ -1,5 +1,5 @@
 <div>
-    <div x-data="{ buttonDisabled: true }" class="card card-primary card-outline">
+    <div x-data="{ buttonDisabled: true }" class="card card-success card-outline">
         <div class="card-body">
             <form wire:submit="save">
                 @csrf

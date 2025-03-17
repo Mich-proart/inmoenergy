@@ -63,7 +63,7 @@
         </div>
     </div>
     <div>
-        <div class="card card-primary card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>
@@ -92,7 +92,7 @@
 
         </div>
         <!-- Button trigger modal -->
-        <button type="button" id="edit_renovation_btn" class="btn btn-primary" data-bs-toggle="modal"
+        <button type="button" id="edit_renovation_btn" class="btn btn-success" data-bs-toggle="modal"
             data-bs-target="#editRenovationModal" hidden></button>
 
         <!-- Modal -->
@@ -191,12 +191,12 @@
                                         <div class="col-24">
                                             <label for="inputZip">{{ucfirst($input['name'])}}: </label>
                                             <input wire:model.defer="inputs.{{$key}}.file" type="file"
-                                                   class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
-                                                   id="input_{{$key}}_file">
+                                                class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                                id="input_{{$key}}_file">
                                             @error('inputs.' . $key . '.file')
-                                            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                             @enderror
                                             <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...</div>
                                         </div>
@@ -275,7 +275,7 @@
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" wire:click="editFormality(${data})" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-pencil-alt"></i> Volver a tramitar</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-pencil-alt"></i> Volver a tramitar</button>
                             <button type="button" wire:click="editFormality(${data})" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O.</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>

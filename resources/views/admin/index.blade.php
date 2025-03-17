@@ -44,7 +44,7 @@
                                             </div>
 
                                         </div>
-                                        <a href="{{route($program->route)}}">
+                                        <a href="{{route($program->route)}}" style="color: #368d68;">
                                             <p class="fw-bolder text-center">{{ucfirst($program->name)}}</p>
                                         </a>
 
