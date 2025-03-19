@@ -7,7 +7,7 @@
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
                         @role('superadmin')
                         <button wire:click="resetVar" type="button" id="edit_renovation_btn"
-                            class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
+                            class="btn btn-success float-right btn-sm" data-bs-toggle="modal"
                             data-bs-target="#create-product-modal"><i class="far fa-plus-square"></i> Agregar
                             producto</button>
                         @endrole
