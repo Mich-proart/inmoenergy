@@ -207,7 +207,7 @@ class FormalityAdminController extends Controller
 
     public function getData()
     {
-        $program = Program::where('name', 'datos trámites inmoenergy')->first();
+        $program = Program::where('name', 'datos trámites lenders consulting')->first();
         $count = $this->formalityService->getQueryWithAll()->count();
         return view('admin.formality.data', ['program' => $program, 'count' => $count]);
     }

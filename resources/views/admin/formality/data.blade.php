@@ -80,7 +80,7 @@
 
         }
         $('#csvDownload').click(function () {
-            csvDownload(csv, 'datos_trámites_inmoenergy');
+            csvDownload(csv, 'datos_trámites_lenders_consulting');
         })
     });
 </script>

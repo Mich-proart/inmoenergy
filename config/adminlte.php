@@ -403,7 +403,7 @@ return [
                     'can' => 'formality.extract.access',
                 ],
                 [
-                    'text' => 'Datos trámites lendersconsulting',
+                    'text' => 'Datos trámites lenders Consulting',
                     'route' => 'admin.formality.data',
                     'can' => 'formality.data.access',
                 ],
