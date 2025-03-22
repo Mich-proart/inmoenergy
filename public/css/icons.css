@@ -1,5 +1,5 @@
 .img-thumbnail {
-    width: 100px;
+    width: 64px;
 }
 
 .resize {
@@ -15,3 +15,43 @@
     margin-right: 10px;
     /* Adjust this value to control the space between the image and text */
 }
+
+
+/*
+New CSS
+*/
+
+
+:root {
+    --btn-success-bg: #368D68; /* Default background color */
+    --btn-success-bg-hover: #206d4c; /* Hover, active, and visited background color */
+}
+
+
+
+.text-decoration-none {
+    text-decoration: none;
+    color: var(--btn-success-bg);
+}
+
+.text-decoration-none:hover {
+    text-decoration: none;
+    color: var(--btn-success-bg);
+}
+
+
+
+
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+    background-color:var(--btn-success-bg) !important;
+}
+.btn-success:hover, .btn-success:active, .btn-success:visited {
+    background-color: var(--btn-success-bg-hover) !important;
+}
+
+
+.card.card-success.card-outline {
+    border-top: 3px solid var(--btn-success-bg);
+}
+

@@ -14,8 +14,8 @@ return [
     |
     */
 
-    'title' => 'Lendersconsulting',
-    'title_prefix' => 'Lendersconsulting | ',
+    'title' => 'Lenders Consulting',
+    'title_prefix' => 'Lenders Consulting | ',
     'title_postfix' => '',
 
     /*
@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>Lendersconsulting</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/Logo_sinnombre.png',
+    'logo' => '<b>Lenders Consulting</b>',
+    'logo_img' => 'vendor/adminlte/dist/img/Logo_sinnombre-removebg.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/Logo.jpg',
+            'path' => 'vendor/adminlte/dist/img/Logo_sinnombre-removebg-preview.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,

@@ -5,9 +5,11 @@
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
+        <!--
         <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'dashboard.png') }}" alt=""
             class="img-thumbnail align-self-center resize">
-        <h3>Panel de control</h3>
+-->
+        <h3 style="color: #368D68" >Panel de control</h3>
     </div>
 </div>
 @stop
@@ -44,8 +46,8 @@
                                             </div>
 
                                         </div>
-                                        <a href="{{route($program->route)}}" style="color: #368d68;">
-                                            <p class="fw-bolder text-center">{{ucfirst($program->name)}}</p>
+                                        <a class="text-decoration-none" href="{{route($program->route)}}">
+                                            <p class="fw-bolder text-center" style="margin-top: 20px;">{{ucfirst($program->name)}}</p>
                                         </a>
 
                                     </div>

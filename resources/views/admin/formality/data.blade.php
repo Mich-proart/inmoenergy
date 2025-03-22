@@ -37,7 +37,7 @@
                                     @endisset
                                 </td>
                                 <td class="text-center">
-                                    <button id="csvDownload" class="btn btn-primary btn-sm" type="button">
+                                    <button id="csvDownload" class="btn btn-success btn-sm" type="button">
                                         archivo .CSV
                                     </button>
                                 </td>
