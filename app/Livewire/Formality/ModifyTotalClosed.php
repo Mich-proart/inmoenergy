@@ -271,14 +271,14 @@ class ModifyTotalClosed extends Component
 
     private function createFormalityOnCancel($formality, Carbon $trigger_date)
     {
-        $inmoenergy = User::firstWhere('name', 'inmoenergy');
+        $lenders = User::firstWhere('name', 'lenders consulting');
         $type = ComponentOption::firstWhere('name', FormalityTypeEnum::ALTA_NUEVA->value);
         $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
 
         return Formality::create([
             'client_id' => $formality->client_id,
             'created_at' => $trigger_date,
-            'user_issuer_id' => $inmoenergy->id,
+            'user_issuer_id' => $lenders->id,
             'service_id' => $formality->service_id,
             'user_assigned_id' => $this->cancellation->assignedId,
             'assignment_date' => $trigger_date,
