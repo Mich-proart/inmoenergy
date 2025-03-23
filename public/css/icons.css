@@ -25,6 +25,11 @@ New CSS
 :root {
     --btn-success-bg: #368D68; /* Default background color */
     --btn-success-bg-hover: #206d4c; /* Hover, active, and visited background color */
+
+    --background: #bacdc5;
+    --background-hover: #368d686e;
+    --text-color: #368D68;
+    --text-color-hover: #e1f1ea;
 }
 
 
@@ -55,3 +60,37 @@ New CSS
     border-top: 3px solid var(--btn-success-bg);
 }
 
+.main-sidebar.sidebar-dark-success.elevation-4 {
+    background-color: var(--background) !important;
+}
+
+.brand-link {
+    color: var(--text-color) !important;
+    background-color: var(--background) !important;
+}
+
+.brand-link:hover {
+    color: var(--text-color-hover) !important;
+}
+
+.os-content nav ul p {
+    color: var(--text-color) !important;
+}
+.os-content nav ul p:hover {
+    color: var(--text-color-hover) !important;
+}
+
+.nav-link.active {
+    background-color: var(--background-hover) !important;
+} 
+.nav-link:hover {
+    background-color: var(--background-hover) !important;
+} 
+.nav-link.active p {
+    color: var(--text-color-hover) !important;
+} 
+
+
+.os-content nav ul i {
+    color: var(--text-color) !important;
+}

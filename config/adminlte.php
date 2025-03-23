@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>Lenders Consulting</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/Logo_sinnombre-removebg.png',
+    'logo_img' => 'vendor/adminlte/dist/img/Logo_sinnombre_resize_large.jpg',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
