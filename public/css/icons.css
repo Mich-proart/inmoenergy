@@ -94,3 +94,13 @@ New CSS
 .os-content nav ul i {
     color: var(--text-color) !important;
 }
+
+
+.page-item.active .page-link, .dt-button.buttons-excel.buttons-html5 {
+    background-color:var(--btn-success-bg) !important;
+    border: 1px solid var(--btn-success-bg) !important;
+    color: var(--text-color-hover) !important;
+}
+.page-link {
+    color: #6c757d !important;
+}
