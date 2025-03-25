@@ -63,6 +63,9 @@ New CSS
 .main-sidebar.sidebar-dark-success.elevation-4 {
     background-color: var(--background) !important;
 }
+.main-sidebar.sidebar-dark-success.elevation-4 a {
+    text-decoration: none !important;
+}
 
 .brand-link {
     color: var(--text-color) !important;
