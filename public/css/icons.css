@@ -48,11 +48,13 @@ New CSS
 
 
 
-.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
     background-color:var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
 }
-.btn-success:hover, .btn-success:active, .btn-success:visited {
+.btn-success:hover, .btn-success:active, .btn-success:visited, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
     background-color: var(--btn-success-bg-hover) !important;
+    border-color: var(--btn-success-bg-hover) !important;
 }
 
 
@@ -106,4 +108,10 @@ New CSS
 }
 .page-link {
     color: #6c757d !important;
+}
+
+
+.form-check-input:checked {
+    background-color: var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
 }
