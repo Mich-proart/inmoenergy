@@ -160,7 +160,7 @@ class CreateFormalityForm extends Component
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
+        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
         return $locations;
     }
 
@@ -176,7 +176,7 @@ class CreateFormalityForm extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
     }
 
@@ -274,13 +274,16 @@ class CreateFormalityForm extends Component
     public function save()
     {
         $this->formValidation();
-
+        $this->dispatch('load');
+        $this->execute();
+        /*
         if ($this->isDuplicated()) {
             $this->dispatch('checks', error: "Error al intentar crear el formulario, ya existe un trámite con los mismo datos.", title: "Datos duplicados");
         } else {
             $this->dispatch('load');
             $this->execute();
         }
+            */
 
     }
 
