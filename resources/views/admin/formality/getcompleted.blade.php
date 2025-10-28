@@ -356,12 +356,13 @@
                                 <span>kW </span> {{$formality->annual_consumption}}
                             @endif
                         </div>
+                        @if ($formality->service->name !== 'gas')
                         <div class="form-group col-md-3">
                             <label for="">Potencia: </label> @if (isset($formality->potency))
                                 <span>kW </span>{{$formality->potency_Spanish()}}
                             @endif
                         </div>
-
+                        @endif
                     </div>
                 @endif
             </section>
