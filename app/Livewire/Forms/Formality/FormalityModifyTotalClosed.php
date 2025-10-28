@@ -14,7 +14,7 @@ class FormalityModifyTotalClosed extends Form
     public $contract_completion_date;
     public $internal_observation;
     public $annual_consumption;
-    public $commission;
+    //public $commission;
     public $reason_cancellation_id;
     public $cancellation_observation;
 
@@ -22,7 +22,7 @@ class FormalityModifyTotalClosed extends Form
         'activation_date' => 'required|date',
         'contract_completion_date' => 'required|date',
         'isRenewable' => 'nullable|boolean',
-        'commission' => 'required|string'
+        //'commission' => 'required|string'
     ];
 
     protected $messages = [
@@ -30,16 +30,16 @@ class FormalityModifyTotalClosed extends Form
         'activation_date.date' => 'Debes seleccionar una fecha de activación valida',
         'contract_completion_date.required' => 'Debes seleccionar una fecha',
         'contract_completion_date.date' => 'Debes seleccionar una fecha valida',
-        'commission.required' => 'Debes rellenar la comision',
-        'commission.integer' => 'Debes rellenar la comision',
-        'commission.gt' => 'La comision debe ser mayor que 0',
-        'commission.numeric' => 'La comision debe ser un valor valido',
+        //'commission.required' => 'Debes rellenar la comision',
+        //'commission.integer' => 'Debes rellenar la comision',
+        //'commission.gt' => 'La comision debe ser mayor que 0',
+        //'commission.numeric' => 'La comision debe ser un valor valido',
     ];
 
     public function setData($formality)
     {
         $formality->isRenewable == 1 ? $this->isRenewable = true : $this->isRenewable = false;
-        $this->commission = $formality->commission ? $this->number_format_spanish($formality->getCommision()) : null;
+        //$this->commission = $formality->commission ? $this->number_format_spanish($formality->getCommision()) : null;
         $this->annual_consumption = $formality->annual_consumption ? $this->number_format_spanish($formality->annual_consumption) : null;
         $this->activation_date = $formality->activation_date ? date('Y-m-d', strtotime($formality->activation_date)) : null;
         $this->renewal_date = $formality->renewal_date ? date('Y-m-d', strtotime($formality->renewal_date)) : null;
@@ -54,11 +54,13 @@ class FormalityModifyTotalClosed extends Form
     public function getDataToUpdate()
     {
 
-        $commission = null;
+        //$commission = null;
         $annual_consumption = null;
+        /*
         if ($this->commission != 0 || $this->commission != null || $this->commission != '') {
             $commission = $this->number_format_english($this->commission);
         }
+        */
 
         if ($this->annual_consumption != 0 && $this->annual_consumption != null && $this->annual_consumption != '') {
             $annual_consumption = intval($this->annual_consumption);
@@ -67,7 +69,7 @@ class FormalityModifyTotalClosed extends Form
         return [
             'activation_date' => $this->activation_date,
             'isRenewable' => $this->isRenewable,
-            'commission' => $commission,
+            //'commission' => $commission,
             'contract_completion_date' => $this->contract_completion_date,
             'renewal_date' => $this->renewal_date,
             'annual_consumption' => $annual_consumption,
