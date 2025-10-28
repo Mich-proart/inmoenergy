@@ -23,10 +23,7 @@
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
-                        @role('superadmin')
                         <livewire:config.create-company />
-                        @endrole
-
                     </div>
                 </div>
             </div>
