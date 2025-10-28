@@ -364,7 +364,7 @@
                                 @endif
                         </div>
                     </div>
-                    @if ($formality->service->name !== 'agua')
+                    @if ($formality->service->name !== 'agua' && $formality->service->name !== 'gas')
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
