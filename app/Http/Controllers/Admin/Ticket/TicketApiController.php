@@ -115,7 +115,7 @@ class TicketApiController extends Controller
                 return $ticket->issuer_formality_name . ' ' . $ticket->issuer_formality_firstLastName . ' ' . $ticket->issuer_formality_secondLastName;
             })
             ->addColumn('assigned', function ($ticket) {
-                return $ticket->assigned_name . ' ' . $ticket->assigned_firstLastName . ' ' . $ticket->assigned_secondLastName;
+                return $ticket->assigned_name . ' ' . $ticket->assigned_firstLastName; //$ticket->assigned_secondLastName;
             })
             ->toJson(true);
     }
@@ -141,7 +141,7 @@ class TicketApiController extends Controller
                 return $ticket->issuer_formality_name . ' ' . $ticket->issuer_formality_firstLastName . ' ' . $ticket->issuer_formality_secondLastName;
             })
             ->addColumn('assigned', function ($ticket) {
-                return $ticket->assigned_name . ' ' . $ticket->assigned_firstLastName . ' ' . $ticket->assigned_secondLastName;
+                return $ticket->assigned_name . ' ' . $ticket->assigned_firstLastName; //$ticket->assigned_secondLastName;
             })
             ->toJson(true);
     }

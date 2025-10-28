@@ -29,7 +29,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -53,7 +53,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -77,7 +77,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -101,7 +101,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -124,7 +124,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -147,7 +147,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -170,7 +170,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
@@ -194,7 +194,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName . ' ' . $formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName; //$formality->assigned_secondLastName;
             })
             ->addColumn('issuer', function ($formality) {
                 return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
