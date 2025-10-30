@@ -170,6 +170,14 @@ class ModifyTotalClosed extends Component
 
             }
 
+            if (!empty($updates['contract_completion_date'])) {
+                $completionDate = Carbon::parse($updates['contract_completion_date']);
+
+                if ($completionDate->isToday() || $completionDate->isPast()) {
+                    $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::FINALIZADO->value);
+                    $updates['status_id'] = $status->id;
+                }
+            }
 
             $this->formality->update($updates);
 
