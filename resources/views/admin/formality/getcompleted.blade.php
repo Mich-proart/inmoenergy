@@ -199,7 +199,7 @@
                                 {{ucfirst($address->location->province->name)}}
                             @else
                                 {{ $address->location->province->region->name }}, {{ $address->location->province->name }}
-                            @endif @endif
+                        @endif @endif
                     </div>
                     <!-- location -->
                     <div class="col-md-3">
@@ -304,7 +304,7 @@
                                 @else
                                     {{ $CorrespondenceAddress->location->province->region->name }},
                                     {{ $CorrespondenceAddress->location->province->name }}
-                                @endif @endif
+                            @endif @endif
                         </div>
 
                         <!-- client location -->
@@ -357,11 +357,11 @@
                             @endif
                         </div>
                         @if ($formality->service->name !== 'gas')
-                        <div class="form-group col-md-3">
-                            <label for="">Potencia: </label> @if (isset($formality->potency))
-                                <span>kW </span>{{$formality->potency_Spanish()}}
-                            @endif
-                        </div>
+                            <div class="form-group col-md-3">
+                                <label for="">Potencia: </label> @if (isset($formality->potency))
+                                    <span>kW </span>{{$formality->potency_Spanish()}}
+                                @endif
+                            </div>
                         @endif
                     </div>
                 @endif
@@ -401,6 +401,7 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 
