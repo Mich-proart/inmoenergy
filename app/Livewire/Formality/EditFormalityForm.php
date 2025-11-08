@@ -246,7 +246,7 @@ class EditFormalityForm extends Component
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
+        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
         return $locations;
     }
 
@@ -260,7 +260,7 @@ class EditFormalityForm extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
     }
 
