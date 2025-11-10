@@ -16,17 +16,19 @@
 @section('content')
 
 <div>
-    <div class="card">
-        <div class="card-body">
+    <div class="">
+        <div class="card-body p-0">
 
-
-            <div class="container">
+            <!--
+                class container removed
+            -->
+            <div class="">
                 @if (isset($sections))
                     @foreach ($sections as $section)
                         @if ($section->programs->count() > 0)
                             <div class="row mr-2">
                                 <h6 class="card-subtitle mb-2 text-muted">{{ ucfirst($section->name) }}</h6>
-                                <hr>
+                                <hr class="my-4">
                                 @foreach ($section->programs as $program)
                                     <div class="col-md-2">
                                         <div class="d-flex justify-content-center align-items-center">
@@ -41,13 +43,13 @@
 
                                                     @endif
                                                     <img src="{{'/vendor/adminlte/dist/img/icons/' . $program->image}}" alt=""
-                                                        class="img-thumbnail align-self-center">
+                                                        class="img-fluid">
                                                 </a>
                                             </div>
 
                                         </div>
                                         <a class="text-decoration-none" href="{{route($program->route)}}">
-                                            <p class="fw-bolder text-center" style="margin-top: 20px;">{{ucfirst($program->name)}}</p>
+                                            <p class="fw-bolder text-center mt-3" style="margin-top: 20px;">{{ucfirst($program->name)}}</p>
                                         </a>
 
                                     </div>
