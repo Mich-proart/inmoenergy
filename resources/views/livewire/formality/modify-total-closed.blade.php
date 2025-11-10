@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="form-row">
-                
+
                 <div class="form-group col-md-3">
                     <label for="inputState">Fecha de activación: </label>
                     <input wire:model="form.activation_date" wire:change="setContractCompletionDate()" type="date"
@@ -71,6 +71,100 @@
                     </div>
                 @endif
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="">Compañía suministro: </label>
+                    <select wire:model.live="companyId" wire:model="companyId"
+                        class="form-control @error('companyId') is-invalid @enderror" name="company_id" id="company_id"
+                        required>
+                        <option value="">-- seleccione --</option>
+                        @foreach ($this->companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('companyId')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="">Producto compañía: </label>
+                    <select wire:model="form.product_id"
+                        class="form-control @error('form.product_id') is-invalid @enderror" name="product_id"
+                        id="product_id" required>
+                        <option value="">-- seleccione --</option>
+                        @foreach ($this->products as $product)
+                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('form.product_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                @if ($this->formality->service->name !== 'agua')
+                    <div class="form-group col-md-2">
+                        <label for="">Tarifa acceso: </label>
+                        <select wire:model="form.access_rate_id"
+                            class="form-control @error('form.access_rate_id') is-invalid @enderror" id="inputLocation"
+                            name="access_rate_id" required>
+                            <option value="">-- seleccione --</option>
+                            @if (isset($accessRate))
+                                @foreach ($accessRate as $rate)
+                                    <option value="{{ $rate->id }}">{{ $rate->name }}</option>
+                                @endforeach
+
+                            @endif
+                        </select>
+                        @error('form.access_rate_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                @endif
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="">Compañía suministro anterior: </label>
+                    <select wire:model="form.previous_company_id"
+                        class="form-control @error('form.previous_company_id') is-invalid @enderror"
+                        name="previous_company_id" required>
+                        <option value="">-- seleccione --</option>
+                        @foreach ($this->companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('form.previous_company_id')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                @if ($this->formality->service->name !== 'agua')
+                    @if ($this->formality->service->name !== 'gas')
+                        <div class="form-group col-md-3">
+                            <label for="">Potencia: </label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">
+                                    kW
+                                </span>
+                                <input wire:model="form.potency" type="text"
+                                    class="form-control @error('form.potency') is-invalid @enderror" id="potency" name="potency"
+                                    required>
+                                @error('form.potency')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    @endif
+                @endif
+            </div>
         </section>
         <section>
             <div class="form-group">
@@ -113,9 +207,9 @@
         </div>
         <section>
             <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">
-                        <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
-                            Documentos
-                        </span>
+                <span style="font-size: 23px;"><i class="fas fa-file-invoice"></i>
+                    Documentos
+                </span>
             </div>
             <div class="form-group">
                 <x-view.files-items :files="$files" />
@@ -125,10 +219,9 @@
                             <div class="col-md-12" style="margin-top: 25px">
                                 <div class="form-check">
                                     <div class="form-check form-switch">
-                                        <input wire:model="form.new_files" class="form-check-input"
-                                               type="checkbox" role="switch"
-                                               x-on:click="buttonDisabled = !buttonDisabled"
-                                               id="flexSwitchCheckDefault">
+                                        <input wire:model="form.new_files" class="form-check-input" type="checkbox"
+                                            role="switch" x-on:click="buttonDisabled = !buttonDisabled"
+                                            id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Editar
                                             archivos existentes</label>
                                     </div>
@@ -143,12 +236,12 @@
                                     <div class="col-md-6">
                                         <label for="inputZip">{{ucfirst($input['name'])}}: </label>
                                         <input wire:model.defer="inputs.{{$key}}.file" type="file"
-                                               class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
-                                               id="input_{{$key}}_file">
+                                            class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                            id="input_{{$key}}_file">
                                         @error('inputs.' . $key . '.file')
-                                        <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                         <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...
                                         </div>
@@ -275,7 +368,7 @@
                                                 @foreach ($this->workers as $worker)
                                                     <option value="{{ $worker->id }}">
                                                         {{ ucfirst($worker->name) . ' ' . ucfirst($worker->first_last_name) . '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ' . ucfirst($worker->second_last_name) }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ' . ucfirst($worker->second_last_name) }}
                                                     </option>
                                                 @endforeach
                                             @endif
