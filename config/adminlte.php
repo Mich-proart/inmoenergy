@@ -14,8 +14,8 @@ return [
     |
     */
 
-    'title' => 'InmoEnergy',
-    'title_prefix' => 'InmoEnergy | ',
+    'title' => 'Lenders Consulting',
+    'title_prefix' => 'Lenders Consulting | ',
     'title_postfix' => '',
 
     /*
@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>InmoEnergy</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/logo.png',
+    'logo' => '<b>Lenders Consulting</b>',
+    'logo_img' => 'vendor/adminlte/dist/img/logo_fixed.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/logo.png',
+            'path' => 'vendor/adminlte/dist/img/Logo.jpg',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/logo.png',
+            'path' => 'vendor/adminlte/dist/img/Logo_sinnombre-removebg-preview.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -171,12 +171,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
+    'classes_auth_card' => 'card-outline card-success',
     'classes_auth_header' => '',
     'classes_auth_body' => '',
     'classes_auth_footer' => '',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_btn' => 'btn-flat btn-success',
 
     /*
     |--------------------------------------------------------------------------
@@ -196,7 +196,7 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-dark-success elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
@@ -403,7 +403,7 @@ return [
                     'can' => 'formality.extract.access',
                 ],
                 [
-                    'text' => 'Datos trámites inmoenergy',
+                    'text' => 'Datos trámites lenders Consulting',
                     'route' => 'admin.formality.data',
                     'can' => 'formality.data.access',
                 ],

@@ -63,7 +63,7 @@
         </div>
     </div>
     <div>
-        <div class="card card-primary card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>
@@ -92,7 +92,7 @@
 
         </div>
         <!-- Button trigger modal -->
-        <button type="button" id="edit_renovation_btn" class="btn btn-primary" data-bs-toggle="modal"
+        <button type="button" id="edit_renovation_btn" class="btn btn-success" data-bs-toggle="modal"
             data-bs-target="#editRenovationModal" hidden></button>
 
         <!-- Modal -->
@@ -133,28 +133,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="">Comisión bruta: </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-currency-euro" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M4 9.42h1.063C5.4 12.323 7.317 14 10.34 14c.622 0 1.167-.068 1.659-.185v-1.3c-.484.119-1.045.17-1.659.17-2.1 0-3.455-1.198-3.775-3.264h4.017v-.928H6.497v-.936q-.002-.165.008-.329h4.078v-.927H6.618c.388-1.898 1.719-2.985 3.723-2.985.614 0 1.175.05 1.659.177V2.194A6.6 6.6 0 0 0 10.341 2c-2.928 0-4.82 1.569-5.244 4.3H4v.928h1.01v1.265H4v.928z" />
-                                            </svg>
-                                        </span>
-                                        <input wire:model="form.commission" type="text"
-                                            class="form-control @error('form.commission') is-invalid @enderror"
-                                            id="commission" name="commission">
-                                        @error('form.commission')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="form-row">
                                 <div class="form-group col-md-6">
 
@@ -191,12 +170,12 @@
                                         <div class="col-24">
                                             <label for="inputZip">{{ucfirst($input['name'])}}: </label>
                                             <input wire:model.defer="inputs.{{$key}}.file" type="file"
-                                                   class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
-                                                   id="input_{{$key}}_file">
+                                                class="form-control @error('inputs.' . $key . '.file') is-invalid @enderror"
+                                                id="input_{{$key}}_file">
                                             @error('inputs.' . $key . '.file')
-                                            <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                             @enderror
                                             <div wire:loading wire:target="inputs.{{$key}}.file">Subiendo archivo...</div>
                                         </div>
@@ -275,7 +254,7 @@
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" wire:click="editFormality(${data})" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-pencil-alt"></i> Volver a tramitar</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-pencil-alt"></i> Volver a tramitar</button>
                             <button type="button" wire:click="editFormality(${data})" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O.</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>

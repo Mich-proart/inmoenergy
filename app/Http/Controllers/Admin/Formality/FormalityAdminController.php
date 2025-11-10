@@ -18,8 +18,7 @@ class FormalityAdminController extends Controller
 
     public function __construct(
         private readonly FormalityService $formalityService
-    )
-    {
+    ) {
         $this->middleware('auth');
         $this->middleware('can:formality.create')->only('create', 'createClient');
         $this->middleware('can:formality.inprogress.access')->only('getInProgress');
@@ -32,6 +31,7 @@ class FormalityAdminController extends Controller
         $this->middleware('can:formality.total.closed.access')->only('getTotalClosed');
         $this->middleware('can:formality.assignment.access')->only('getAssignment');
         $this->middleware('can:formality.totalInProgress.access')->only('getTotalInProgress');
+        $this->middleware('can:formality.commission.manager.access')->only('getCommissionManager');
     }
 
     public function create()
@@ -207,7 +207,7 @@ class FormalityAdminController extends Controller
 
     public function getData()
     {
-        $program = Program::where('name', 'datos trámites inmoenergy')->first();
+        $program = Program::where('name', 'datos trámites lenders consulting')->first();
         $count = $this->formalityService->getQueryWithAll()->count();
         return view('admin.formality.data', ['program' => $program, 'count' => $count]);
     }
@@ -257,5 +257,11 @@ class FormalityAdminController extends Controller
     public function exportExcel()
     {
 
+    }
+
+    public function getCommissionManager()
+    {
+        $program = Program::where('name', 'gestión de comisiones')->first();
+        return view('admin.formality.commission', ['program' => $program]);
     }
 }

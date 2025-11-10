@@ -33,6 +33,8 @@ class EditUserForm extends Component
     public $target_regionId;
     public $business_target;
 
+    public $target_officeId;
+
     public $userId;
 
     public $isActive;
@@ -113,6 +115,13 @@ class EditUserForm extends Component
     {
         $locations = $this->addressService->getLocations((int) $this->target_provinceId);
         return $locations;
+    }
+
+    #[Computed()]
+    public function offices()
+    {
+        $offices = Office::where('business_group_id', $this->business_target)->get();
+        return $offices;
     }
 
     public function save()
@@ -286,11 +295,13 @@ class EditUserForm extends Component
         $businessGroup = BusinessGroup::all();
         return $businessGroup;
     }
-    #[On('change-businessGroup')]
+    //#[On('change-businessGroup')]
+    /*
     public function changeBusinessGroup()
     {
         $this->office_list = Office::where('business_group_id', $this->business_target)->get();
     }
+        */
 
     public function render()
     {

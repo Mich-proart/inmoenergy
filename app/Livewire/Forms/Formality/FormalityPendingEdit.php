@@ -22,7 +22,7 @@ class FormalityPendingEdit extends Form
         'activation_date' => 'required|date',
         'contract_completion_date' => 'required|date',
         'isRenewable' => 'nullable|boolean',
-        'commission' => 'required|string'
+        //'commission' => 'required|string'
         //'renewal_date' => 'nullable|date',
     ];
 
@@ -33,10 +33,10 @@ class FormalityPendingEdit extends Form
         'activation_date.date' => 'Debes seleccionar una fecha de activación valida',
         'contract_completion_date.required' => 'Debes seleccionar una fecha',
         'contract_completion_date.date' => 'Debes seleccionar una fecha valida',
-        'commission.required' => 'Debes rellenar la comision',
-        'commission.integer' => 'Debes rellenar la comision',
-        'commission.gt' => 'La comision debe ser mayor que 0',
-        'commission.numeric' => 'La comision debe ser un valor valido',
+        //'commission.required' => 'Debes rellenar la comision',
+        //'commission.integer' => 'Debes rellenar la comision',
+        //'commission.gt' => 'La comision debe ser mayor que 0',
+        //'commission.numeric' => 'La comision debe ser un valor valido',
     ];
 
     public function setId($formalityId)
@@ -46,16 +46,16 @@ class FormalityPendingEdit extends Form
 
     public function getDataToUpdate()
     {
-
+        /*
         $commission = null;
         if ($this->commission != 0 || $this->commission != null || $this->commission != '') {
             $commission = $this->number_format_english($this->commission);
         }
-
+        */
         return [
             'activation_date' => $this->activation_date,
             'isRenewable' => $this->isRenewable,
-            'commission' => $commission,
+            //'commission' => $commission,
             'contract_completion_date' => $this->contract_completion_date
         ];
     }

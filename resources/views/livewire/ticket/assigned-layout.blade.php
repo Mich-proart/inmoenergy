@@ -1,6 +1,6 @@
 <div>
     <div>
-        <div wire:ignore class="card card-primary card-outline">
+        <div wire:ignore class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>

@@ -10,11 +10,11 @@
 @section('content')
 <div>
 
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="mt-3 mr-3 container text-end">
             <div class="row justify-content-end">
                 <div class="col-10">
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                         data-bs-target="#getTicketModel">
                         Tickets
                     </button>
@@ -364,7 +364,7 @@
                                 @endif
                         </div>
                     </div>
-                    @if ($formality->service->name !== 'agua')
+                    @if ($formality->service->name !== 'agua' && $formality->service->name !== 'gas')
 
                         <div class="form-row">
                             <div class="form-group col-md-3">
@@ -414,6 +414,7 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 

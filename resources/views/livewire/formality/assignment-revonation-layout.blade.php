@@ -21,7 +21,7 @@
         </div>
     </div>
     <div>
-        <div class="card card-primary card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>
@@ -49,7 +49,7 @@
 
         </div>
         <!-- Button trigger modal -->
-        <button type="button" id="edit_renovation_btn" class="btn btn-primary" data-bs-toggle="modal"
+        <button type="button" id="edit_renovation_btn" class="btn btn-success" data-bs-toggle="modal"
             data-bs-target="#editRenovationModal" hidden></button>
 
         <!-- Modal -->

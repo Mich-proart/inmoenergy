@@ -10,7 +10,7 @@
 
 <livewire:config.edit-company :company="$company">
     <div>
-        <div class="card card-primary card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <section>
                     <div class="form-group">
@@ -44,6 +44,7 @@
     {{-- Add here extra stylesheets --}}
     {{--
     <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     @stop

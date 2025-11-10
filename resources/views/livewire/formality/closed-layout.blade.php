@@ -19,7 +19,7 @@
         </div>
     </div>
     <div>
-        <div wire:ignore class="card card-primary card-outline">
+        <div wire:ignore class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>
@@ -47,7 +47,7 @@
 
         </div>
         <!-- Button trigger modal -->
-        <button id="openModal" type="button" hidden class="btn btn-primary" data-bs-toggle="modal"
+        <button id="openModal" type="button" hidden class="btn btn-success" data-bs-toggle="modal"
             data-bs-target="#staticBackdrop">
             Launch static backdrop modal
         </button>

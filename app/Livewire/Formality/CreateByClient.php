@@ -398,7 +398,7 @@ class CreateByClient extends Component
             array_push($attachs, Attachment::fromPath(storage_path('app/public/' . $target)));
         }
         $newdata = array_merge(['phone_code' => $this->selected_country->phone_code] /* $this->form->getClientDto() */);
-        Mail::to(['jose.gomez@inmoenergy.es', 'inmobiliarias@inmoenergy.es'])
+        Mail::to(['jose@lendersconsulting.es', 'inmobiliarias@lendersconsulting.es'])
             ->send(new EmailLineaTelefonica($newdata, $this->form->getCreateAddressDto(), $attachs));
 
         $this->form->serviceIds = array_diff($this->form->serviceIds, [$this->fibra->id]);

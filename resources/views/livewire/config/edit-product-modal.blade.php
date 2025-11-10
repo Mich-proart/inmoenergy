@@ -1,6 +1,6 @@
 <div>
     <!-- Button trigger modal -->
-    <button type="button" id="edit_renovation_btn" class="btn btn-primary float-right" data-bs-toggle="modal"
+    <button type="button" id="edit_renovation_btn" class="btn btn-success float-right" data-bs-toggle="modal"
         data-bs-target="#edit-product-modal"><i class="far fa-plus-square"></i> Agregar producto</button>
 
     <!-- Modal -->

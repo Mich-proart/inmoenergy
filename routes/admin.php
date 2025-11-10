@@ -79,6 +79,7 @@ Route::prefix('formality')->group(function () {
     Route::get('/export/excel', [FormalityAdminController::class, 'exportExcel'])->name('admin.formality.exportExcel');
     Route::get('/fetch', [FormalityAdminController::class, 'fetch'])->name('admin.formality.fetch');
     Route::get('/fetch/issuer', [FormalityAdminController::class, 'fetchByIssuer'])->name('admin.formality.fetch.issuer');
+    Route::get('/commission/manager', [FormalityAdminController::class, 'getCommissionManager'])->name('admin.formality.commission.manager');
 });
 
 Route::prefix('users')->group(function () {

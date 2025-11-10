@@ -44,6 +44,7 @@ class FormalityQueryService
                 'formality.renewal_date',
                 'formality.assignment_date',
                 'formality.potency',
+                'formality.commission',
                 'issuer.name as issuer_name',
                 'status.name as status',
                 'service.name as service',

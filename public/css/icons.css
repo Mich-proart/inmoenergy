@@ -1,5 +1,5 @@
 .img-thumbnail {
-    width: 100px;
+    width: 64px;
 }
 
 .resize {
@@ -14,4 +14,104 @@
 .image-text-container img {
     margin-right: 10px;
     /* Adjust this value to control the space between the image and text */
+}
+
+
+/*
+New CSS
+*/
+
+
+:root {
+    --btn-success-bg: #368D68; /* Default background color */
+    --btn-success-bg-hover: #206d4c; /* Hover, active, and visited background color */
+
+    --background: #bacdc5;
+    --background-hover: #368d686e;
+    --text-color: #368D68;
+    --text-color-hover: #e1f1ea;
+}
+
+
+
+.text-decoration-none {
+    text-decoration: none;
+    color: var(--btn-success-bg);
+}
+
+.text-decoration-none:hover {
+    text-decoration: none;
+    color: var(--btn-success-bg);
+}
+
+
+
+
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited, .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color:var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
+}
+.btn-success:hover, .btn-success:active, .btn-success:visited, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: var(--btn-success-bg-hover) !important;
+    border-color: var(--btn-success-bg-hover) !important;
+}
+
+
+.card.card-success.card-outline {
+    border-top: 3px solid var(--btn-success-bg);
+}
+
+.main-sidebar.sidebar-dark-success.elevation-4 {
+    background-color: var(--background) !important;
+}
+.main-sidebar.sidebar-dark-success.elevation-4 a {
+    text-decoration: none !important;
+}
+
+.brand-link {
+    color: var(--text-color) !important;
+    background-color: var(--background) !important;
+}
+
+.brand-link:hover {
+    color: var(--text-color-hover) !important;
+}
+
+.os-content nav ul p {
+    color: var(--text-color) !important;
+}
+.os-content nav ul p:hover {
+    color: var(--text-color-hover) !important;
+}
+
+.nav-link.active {
+    background-color: var(--background-hover) !important;
+} 
+.nav-link:hover {
+    background-color: var(--background-hover) !important;
+} 
+.nav-link.active p {
+    color: var(--text-color-hover) !important;
+} 
+
+
+.os-content nav ul i {
+    color: var(--text-color) !important;
+}
+
+
+.page-item.active .page-link, .dt-button.buttons-excel.buttons-html5 {
+    background-color:var(--btn-success-bg) !important;
+    border: 1px solid var(--btn-success-bg) !important;
+    color: var(--text-color-hover) !important;
+}
+.page-link {
+    color: #6c757d !important;
+}
+
+
+.form-check-input:checked {
+    background-color: var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
 }

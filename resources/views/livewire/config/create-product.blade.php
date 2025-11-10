@@ -1,16 +1,18 @@
 <div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="card-header">
             <div class="row no-print">
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
-                        @role('superadmin')
                         <button wire:click="resetVar" type="button" id="edit_renovation_btn"
-                            class="btn btn-primary float-right btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#create-product-modal"><i class="far fa-plus-square"></i> Agregar
+                            class="btn btn-success float-right btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#create-product-modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
+            viewBox="0 0 16 16">
+            <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+        </svg> Agregar
                             producto</button>
-                        @endrole
                     </div>
                 </div>
             </div>

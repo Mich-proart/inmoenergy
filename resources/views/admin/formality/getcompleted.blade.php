@@ -10,7 +10,7 @@
 @section('content')
 <div>
 
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div class="mt-3 mr-3">
             <div class="col-12 ">
             </div>
@@ -199,7 +199,7 @@
                                 {{ucfirst($address->location->province->name)}}
                             @else
                                 {{ $address->location->province->region->name }}, {{ $address->location->province->name }}
-                            @endif @endif
+                        @endif @endif
                     </div>
                     <!-- location -->
                     <div class="col-md-3">
@@ -304,7 +304,7 @@
                                 @else
                                     {{ $CorrespondenceAddress->location->province->region->name }},
                                     {{ $CorrespondenceAddress->location->province->name }}
-                                @endif @endif
+                            @endif @endif
                         </div>
 
                         <!-- client location -->
@@ -356,12 +356,13 @@
                                 <span>kW </span> {{$formality->annual_consumption}}
                             @endif
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="">Potencia: </label> @if (isset($formality->potency))
-                                <span>kW </span>{{$formality->potency_Spanish()}}
-                            @endif
-                        </div>
-
+                        @if ($formality->service->name !== 'gas')
+                            <div class="form-group col-md-3">
+                                <label for="">Potencia: </label> @if (isset($formality->potency))
+                                    <span>kW </span>{{$formality->potency_Spanish()}}
+                                @endif
+                            </div>
+                        @endif
                     </div>
                 @endif
             </section>
@@ -400,6 +401,7 @@
 {{--
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 

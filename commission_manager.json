@@ -1,0 +1,18 @@
+[
+    {
+        "name": "herramientas de trabajo",
+        "programs": [
+            {
+                "name": "gestión de comisiones",
+                "image": "commission_manager.png",
+                "route": "admin.formality.commission.manager",
+                "description": null,
+                "placed_in": "9",
+                "roles": [
+                    "superadmin"
+                ],
+                "permission": "formality.commission.manager.access"
+            }
+        ]
+    }
+]

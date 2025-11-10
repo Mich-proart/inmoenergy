@@ -150,6 +150,7 @@
                             @enderror
                         </div>
                     </div>
+                    @if ($this->formality->service->name !== 'gas')
                     <div class="form-group col-md-3">
                         <label for="">Potencia: </label>
                         <div class="input-group">
@@ -166,6 +167,7 @@
                             @enderror
                         </div>
                     </div>
+                    @endif
                 @endif
             </div>
         </section>
