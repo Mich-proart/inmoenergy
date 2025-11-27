@@ -9,7 +9,7 @@
         <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'dashboard.png') }}" alt=""
             class="img-thumbnail align-self-center resize">
 -->
-        <h3 style="color: #368D68" >Panel de control</h3>
+        <h3 style="color: #368D68">Panel de control</h3>
     </div>
 </div>
 @stop
@@ -49,7 +49,8 @@
 
                                         </div>
                                         <a class="text-decoration-none" href="{{route($program->route)}}">
-                                            <p class="fw-bolder text-center mt-3" style="margin-top: 20px;">{{ucfirst($program->name)}}</p>
+                                            <p class="fw-bolder text-center mt-3" style="margin-top: 20px;">{{ucfirst($program->name)}}
+                                            </p>
                                         </a>
 
                                     </div>

@@ -447,6 +447,11 @@ return [
                     'route' => 'admin.ticket.total.pending',
                     'can' => 'ticket.total.pending.access',
                 ],
+                [
+                    'text' => 'Gestión de comisiones',
+                    'route' => 'admin.formality.commission.manager',
+                    'can' => 'formality.commission.manager.access',
+                ],
             ]
 
         ],

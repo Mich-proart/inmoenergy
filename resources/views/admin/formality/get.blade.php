@@ -35,7 +35,6 @@
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
                                 {{$formality->assigned->name}} {{ " " . $formality->assigned->last_name}}
-                                {{ " " . $formality->assigned->second_last_name}}
                             @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
