@@ -81,6 +81,7 @@ class ModifyFormalityForm extends Component
 
     public function update()
     {
+        $this->cleanData();
         $this->validate();
         $this->form->validate();
 
@@ -93,7 +94,7 @@ class ModifyFormalityForm extends Component
             if ($this->formality->service->name !== ServiceEnum::GAS->value) {
                 $rules['potency'] = 'required|string';
             }
-            
+
             $this->form->validate($rules, [
                 'CUPS.required' => 'Debes rellenar el CUPS',
                 'CUPS.string' => 'Debes rellenar el CUPS',
@@ -133,6 +134,16 @@ class ModifyFormalityForm extends Component
             $this->executeUpdate();
         }
 
+    }
+
+    private function cleanData()
+    {
+        if ($this->form->annual_consumption) {
+            $this->form->annual_consumption = str_replace('.', '', $this->form->annual_consumption);
+        }
+        if ($this->form->potency) {
+            $this->form->potency = str_replace('.', '', $this->form->potency);
+        }
     }
 
     private function executeUpdate()
