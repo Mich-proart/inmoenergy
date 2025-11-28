@@ -43,7 +43,7 @@
 
                                                     @endif
                                                     <img src="{{'/vendor/adminlte/dist/img/icons/' . $program->image}}" alt=""
-                                                        class="img-fluid">
+                                                        class="img-fluid" style="width: 64px; height: 64px;">
                                                 </a>
                                             </div>
 
