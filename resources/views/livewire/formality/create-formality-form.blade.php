@@ -167,7 +167,9 @@
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
                             <input wire:model="form.secondLastName" type="text" class="form-control"
-                                name="secondLastName" id="second-LastName">
+                                name="secondLastName" id="second-LastName"
+                                :disabled="type === '{{$businessClientType->id}}'"
+                                :required="type !== '{{$businessClientType->id}}'">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
