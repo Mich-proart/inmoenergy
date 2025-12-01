@@ -48,37 +48,42 @@ class FormalityCreate extends Form
 
     public $prove;
 
-    protected $rules = [
-        'formalityTypeId' => 'required|exists:component_option,id',
-        'serviceIds' => 'required|array|exists:component_option,id',
-        'name' => 'required|string',
-        'email' => 'required|email', //'required|email|unique:client,email',
-        'documentTypeId' => 'required|integer|exists:component_option,id',
-        //'phone' => 'required|string|spanish_phone',
-        'clientTypeId' => 'required|integer|exists:component_option,id',
-        'IBAN' => 'required|string|iban',
-        'locationId' => 'required|integer|exists:location,id',
-        'streetTypeId' => 'required|integer|exists:component_option,id',
-        'housingTypeId' => 'required|integer|exists:component_option,id',
-        'streetName' => 'required|string',
-        'streetNumber' => 'required|string',
-        'zipCode' => 'required|string|spanish_postal_code',
-        'block' => 'sometimes|nullable|string',
-        'blockstaircase' => 'sometimes|nullable|string',
-        'floor' => 'sometimes|nullable|string',
-        'door' => 'sometimes|nullable|string',
-        'client_locationId' => 'sometimes|nullable|integer|exists:location,id',
-        'client_streetTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
-        'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
-        'client_streetName' => 'sometimes|nullable|string',
-        'client_streetNumber' => 'sometimes|nullable|string',
-        'client_zipCode' => 'sometimes|nullable|string|spanish_postal_code',
-        'client_block' => 'sometimes|nullable|string',
-        'client_blockstaircase' => 'sometimes|nullable|string',
-        'client_floor' => 'sometimes|nullable|string',
-        'client_door' => 'sometimes|nullable|string',
-        'observation' => 'sometimes|nullable|string|max:255',
-    ];
+    public $is_foreign_account = false;
+
+    public function rules()
+    {
+        return [
+            'formalityTypeId' => 'required|exists:component_option,id',
+            'serviceIds' => 'required|array|exists:component_option,id',
+            'name' => 'required|string',
+            'email' => 'required|email', //'required|email|unique:client,email',
+            'documentTypeId' => 'required|integer|exists:component_option,id',
+            //'phone' => 'required|string|spanish_phone',
+            'clientTypeId' => 'required|integer|exists:component_option,id',
+            'IBAN' => $this->is_foreign_account ? 'required|string' : 'required|string|iban',
+            'locationId' => 'required|integer|exists:location,id',
+            'streetTypeId' => 'required|integer|exists:component_option,id',
+            'housingTypeId' => 'required|integer|exists:component_option,id',
+            'streetName' => 'required|string',
+            'streetNumber' => 'required|string',
+            'zipCode' => 'required|string|spanish_postal_code',
+            'block' => 'sometimes|nullable|string',
+            'blockstaircase' => 'sometimes|nullable|string',
+            'floor' => 'sometimes|nullable|string',
+            'door' => 'sometimes|nullable|string',
+            'client_locationId' => 'sometimes|nullable|integer|exists:location,id',
+            'client_streetTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
+            'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
+            'client_streetName' => 'sometimes|nullable|string',
+            'client_streetNumber' => 'sometimes|nullable|string',
+            'client_zipCode' => 'sometimes|nullable|string|spanish_postal_code',
+            'client_block' => 'sometimes|nullable|string',
+            'client_blockstaircase' => 'sometimes|nullable|string',
+            'client_floor' => 'sometimes|nullable|string',
+            'client_door' => 'sometimes|nullable|string',
+            'observation' => 'sometimes|nullable|string|max:255',
+        ];
+    }
 
     protected $messages = [
         'formalityTypeId.required' => 'Tipo de formulario es requerido',
