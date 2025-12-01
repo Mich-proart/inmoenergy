@@ -16,6 +16,9 @@ use App\Domain\Formality\Services\FormalityService;
 use Illuminate\Support\Facades\App;
 use App\Domain\Enums\FormalityStatusEnum;
 
+use App\Models\Company;
+use App\Models\Product;
+
 class AssignmentRevonationLayout extends Component
 {
 
@@ -27,6 +30,8 @@ class AssignmentRevonationLayout extends Component
 
     public bool $isCritical;
     public $user_assigned_id;
+    public $companyId;
+    public $productId;
     protected $formalityService;
 
     public function __construct()
@@ -38,6 +43,8 @@ class AssignmentRevonationLayout extends Component
         'formalityId' => 'required|exists:formality,id',
         'user_assigned_id' => 'required|exists:users,id',
         'isCritical' => 'nullable|boolean',
+        'companyId' => 'required|exists:company,id',
+        'productId' => 'required|exists:product,id',
     ];
 
     protected $messages = [
@@ -46,6 +53,10 @@ class AssignmentRevonationLayout extends Component
         'user_assigned_id.required' => 'Debes seleccionar un usuario',
         'user_assigned_id.exists' => 'Debes seleccionar un usuario existente',
         'isCritical.boolean' => 'Debe ser un valor booleano',
+        'companyId.required' => 'Debes seleccionar una comercializadora',
+        'companyId.exists' => 'Debes seleccionar una comercializadora existente',
+        'productId.required' => 'Debes seleccionar un producto',
+        'productId.exists' => 'Debes seleccionar un producto existente',
     ];
 
     public function editFormality($formalityId)
@@ -76,6 +87,18 @@ class AssignmentRevonationLayout extends Component
         return User::where('isWorker', true)->where('isActive', 1)->get();
     }
 
+    #[Computed()]
+
+    public function companies()
+    {
+        return Company::all();
+    }
+    #[Computed()]
+    public function products()
+    {
+        return Product::where('company_id', $this->companyId)->get();
+    }
+
     public function save()
     {
         $trigger_date = now();
@@ -92,7 +115,7 @@ class AssignmentRevonationLayout extends Component
                 'correspondence_address_id' => $correspondence_address->id,
                 'isRenovated' => true,
             ];
-            
+
             $formality->update($updates);
 
             $newOne = $this->createFormalityOnRenovation($formality, $trigger_date);
@@ -107,7 +130,7 @@ class AssignmentRevonationLayout extends Component
         }
     }
 
-    private function createFormalityOnRenovation($formality, Carbon $trigger_date)
+    private function createFormalityOnRenovation($formality, Carbon $trigger_date): Formality
     {
         $lenders = User::firstWhere('name', 'lenders consulting');
         $type = ComponentOption::firstWhere('name', FormalityTypeEnum::RENOVACION->value);
@@ -130,7 +153,8 @@ class AssignmentRevonationLayout extends Component
             'CUPS' => $formality->CUPS,
             'internal_observation' => $formality->internal_observation,
             'previous_company_id' => $formality->company_id,
-            'company_id' => $formality->company_id,
+            'company_id' => $this->companyId,
+            'product_id' => $this->productId,
             'potency' => $formality->potency,
             'isRenewable' => true,
         ]);
