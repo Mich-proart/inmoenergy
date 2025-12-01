@@ -98,6 +98,41 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="">Nueva comercializadora: </label>
+                                    <select wire:model.live="companyId" wire:model="companyId"
+                                        class="form-control @error('companyId') is-invalid @enderror" name="company_id"
+                                        id="company_id" required>
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->companies as $company)
+                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('companyId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="">Producto: </label>
+                                    <select wire:model="productId"
+                                        class="form-control @error('productId') is-invalid @enderror" name="product_id"
+                                        id="product_id" required>
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->products as $product)
+                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('productId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <div class="form-check">
                                         <input wire:model="isCritical" class="form-check-input" type="checkbox"
