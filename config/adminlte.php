@@ -307,7 +307,7 @@ return [
 
         // Sidebar items:
         [
-            'text' => 'Trámites clientes',
+            'text' => 'TRÁMITES CLIENTES',
             'icon' => 'fas fa-fw fa-file-invoice',
             'submenu' => [
                 [
@@ -344,7 +344,7 @@ return [
         ],
 
         [
-            'text' => 'Trámites y tickets',
+            'text' => 'TRÁMITES Y TICKETS',
             'icon' => 'fas fa-copy',
             'submenu' => [
                 [
@@ -376,7 +376,7 @@ return [
             ]
         ],
         [
-            'text' => 'Documentación',
+            'text' => 'DOCUMENTACIÓN',
             'icon' => 'fas fa-fw fa-file',
             'submenu' => [
                 [
@@ -394,7 +394,7 @@ return [
             ]
         ],
         [
-            'text' => 'Herramientas de trabajo',
+            'text' => 'HERRAMIENTAS DE TRABAJO',
             'icon' => 'nav-icon fas fa-th',
             'submenu' => [
                 [
@@ -456,7 +456,7 @@ return [
 
         ],
         [
-            'text' => 'Configuración',
+            'text' => 'CONFIGURACIÓN',
             'icon' => 'fas fa-fw fa-cog',
             'submenu' => [
                 [
