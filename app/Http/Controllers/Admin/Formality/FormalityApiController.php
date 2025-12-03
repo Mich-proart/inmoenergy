@@ -157,11 +157,50 @@ class FormalityApiController extends Controller
             })
             ->toJson(true);
     }
-    public function getTotalInprogress()
+    public function getTotalInprogress(Request $request)
     {
-        $formality = $this->formalityQueryService->getTotalInProgress();
+        $queryBuilder = $this->formalityQueryService->getTotalInProgressQuery();
 
-        return DataTables::of($formality)
+        if ($request->has('date_from') && $request->date_from) {
+            $queryBuilder->whereDate('formality.created_at', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to) {
+            $queryBuilder->whereDate('formality.created_at', '<=', $request->date_to);
+        }
+        if ($request->has('assigned_id') && $request->assigned_id) {
+            $assignedIds = is_array($request->assigned_id) ? $request->assigned_id : [$request->assigned_id];
+            $queryBuilder->whereIn('userAssigned.id', $assignedIds);
+        }
+        if ($request->has('service_id') && $request->service_id) {
+            $serviceIds = is_array($request->service_id) ? $request->service_id : [$request->service_id];
+            $queryBuilder->whereIn('service.id', $serviceIds);
+        }
+        if ($request->has('status_id') && $request->status_id) {
+            $statusIds = is_array($request->status_id) ? $request->status_id : [$request->status_id];
+            $queryBuilder->whereIn('status.id', $statusIds);
+        }
+        if ($request->has('company_id') && $request->company_id) {
+            $companyIds = is_array($request->company_id) ? $request->company_id : [$request->company_id];
+            $queryBuilder->whereIn('company.id', $companyIds);
+        }
+        if ($request->has('cups') && $request->cups) {
+            $cupsArray = explode(',', $request->cups);
+            $queryBuilder->where(function ($q) use ($cupsArray) {
+                foreach ($cupsArray as $cup) {
+                    $q->orWhere('formality.CUPS', 'like', '%' . trim($cup) . '%');
+                }
+            });
+        }
+        if ($request->has('is_renewable') && $request->is_renewable !== null) {
+            $renewableIds = is_array($request->is_renewable) ? $request->is_renewable : [$request->is_renewable];
+            $queryBuilder->whereIn('formality.isRenewable', $renewableIds);
+        }
+        if ($request->has('issuer_id') && $request->issuer_id) {
+            $issuerIds = is_array($request->issuer_id) ? $request->issuer_id : [$request->issuer_id];
+            $queryBuilder->whereIn('issuer.id', $issuerIds);
+        }
+
+        return DataTables::of($queryBuilder)
             ->setRowAttr(['align' => 'center'])
             ->setRowId(function ($formality) {
                 return $formality->formality_id;
@@ -181,11 +220,56 @@ class FormalityApiController extends Controller
             ->toJson(true);
     }
 
-    public function getTotalClosed()
+    public function getTotalClosed(Request $request)
     {
-        $formality = $this->formalityQueryService->getTotalClosed();
+        $queryBuilder = $this->formalityQueryService->getTotalClosedQuery();
 
-        return DataTables::of($formality)
+        if ($request->has('date_from') && $request->date_from) {
+            $queryBuilder->whereDate('formality.created_at', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to) {
+            $queryBuilder->whereDate('formality.created_at', '<=', $request->date_to);
+        }
+        if ($request->has('activation_date_from') && $request->activation_date_from) {
+            $queryBuilder->whereDate('formality.activation_date', '>=', $request->activation_date_from);
+        }
+        if ($request->has('activation_date_to') && $request->activation_date_to) {
+            $queryBuilder->whereDate('formality.activation_date', '<=', $request->activation_date_to);
+        }
+        if ($request->has('assigned_id') && $request->assigned_id) {
+            $assignedIds = is_array($request->assigned_id) ? $request->assigned_id : [$request->assigned_id];
+            $queryBuilder->whereIn('userAssigned.id', $assignedIds);
+        }
+        if ($request->has('service_id') && $request->service_id) {
+            $serviceIds = is_array($request->service_id) ? $request->service_id : [$request->service_id];
+            $queryBuilder->whereIn('service.id', $serviceIds);
+        }
+        if ($request->has('status_id') && $request->status_id) {
+            $statusIds = is_array($request->status_id) ? $request->status_id : [$request->status_id];
+            $queryBuilder->whereIn('status.id', $statusIds);
+        }
+        if ($request->has('company_id') && $request->company_id) {
+            $companyIds = is_array($request->company_id) ? $request->company_id : [$request->company_id];
+            $queryBuilder->whereIn('company.id', $companyIds);
+        }
+        if ($request->has('cups') && $request->cups) {
+            $cupsArray = explode(',', $request->cups);
+            $queryBuilder->where(function ($q) use ($cupsArray) {
+                foreach ($cupsArray as $cup) {
+                    $q->orWhere('formality.CUPS', 'like', '%' . trim($cup) . '%');
+                }
+            });
+        }
+        if ($request->has('is_renewable') && $request->is_renewable !== null) {
+            $renewableIds = is_array($request->is_renewable) ? $request->is_renewable : [$request->is_renewable];
+            $queryBuilder->whereIn('formality.isRenewable', $renewableIds);
+        }
+        if ($request->has('issuer_id') && $request->issuer_id) {
+            $issuerIds = is_array($request->issuer_id) ? $request->issuer_id : [$request->issuer_id];
+            $queryBuilder->whereIn('issuer.id', $issuerIds);
+        }
+
+        return DataTables::of($queryBuilder)
             ->setRowAttr(['align' => 'center'])
             ->setRowId(function ($formality) {
                 return $formality->formality_id;

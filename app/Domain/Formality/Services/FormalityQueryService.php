@@ -149,20 +149,28 @@ class FormalityQueryService
         return $queryBuilder->get();
     }
 
-    public function getTotalInProgress()
+    public function getTotalInProgressQuery()
     {
         $queryBuilder = $this->formalityQuery();
         $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
-        return $queryBuilder->get();
+        return $queryBuilder;
+    }
+
+    public function getTotalInProgress()
+    {
+        return $this->getTotalInProgressQuery()->get();
+    }
+
+    public function getTotalClosedQuery()
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+        return $queryBuilder;
     }
 
     public function getTotalClosed()
     {
-
-        $queryBuilder = $this->formalityQuery();
-        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
-
-        return $queryBuilder->get();
+        return $this->getTotalClosedQuery()->get();
     }
 
     public function getRenewable()
