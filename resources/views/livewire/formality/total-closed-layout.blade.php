@@ -19,11 +19,234 @@
         </div>
     </div>
     <div>
-        <div wire:ignore class="card card-success card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>
-            <div class="card-body table-responsive p-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Fecha entrada desde:</label>
+                        <input type="date" id="date_from" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha entrada hasta:</label>
+                        <input type="date" id="date_to" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Usuario asignado:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedUsers))
+                                    Todos
+                                @elseif($allUsers)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedUsers)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allUsers" wire:click="selectAllUsers" type="checkbox"> Todos
+                                    </div>
+                                </li>
+                                @foreach($users as $user)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedUsers" wire:change="isAllCheckUsers"
+                                                type="checkbox" value="{{ $user->id }}"> {{ $user->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="assigned_id" value="{{ json_encode($selectedUsers) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Suministro:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedServices))
+                                    Todos
+                                @elseif($allServices)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedServices)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allServices" wire:click="selectAllServices" type="checkbox">
+                                        Todos
+                                    </div>
+                                </li>
+                                @foreach($services as $service)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedServices" wire:change="isAllCheckServices"
+                                                type="checkbox" value="{{ $service->id }}"> {{ $service->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="service_id" value="{{ json_encode($selectedServices) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Estado trámite:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedStatuses))
+                                    Todos
+                                @elseif($allStatuses)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedStatuses)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allStatuses" wire:click="selectAllStatuses" type="checkbox">
+                                        Todos
+                                    </div>
+                                </li>
+                                @foreach($statuses as $status)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedStatuses" wire:change="isAllCheckStatuses"
+                                                type="checkbox" value="{{ $status->id }}"> {{ $status->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="status_id" value="{{ json_encode($selectedStatuses) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Compañía suministro:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedCompanies))
+                                    Todos
+                                @elseif($allCompanies)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedCompanies)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allCompanies" wire:click="selectAllCompanies"
+                                            type="checkbox"> Todos
+                                    </div>
+                                </li>
+                                @foreach($companies as $company)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedCompanies" wire:change="isAllCheckCompanies"
+                                                type="checkbox" value="{{ $company->id }}"> {{ $company->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="company_id" value="{{ json_encode($selectedCompanies) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>CUPS:</label>
+                        <input type="text" id="cups" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Renovación:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedRenewable))
+                                    Todos
+                                @elseif($allRenewable)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedRenewable)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allRenewable" wire:click="selectAllRenewable"
+                                            type="checkbox"> Todos
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model.live="selectedRenewable" wire:change="isAllCheckRenewable"
+                                            type="checkbox" value="1"> Si
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model.live="selectedRenewable" wire:change="isAllCheckRenewable"
+                                            type="checkbox" value="0"> No
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <input type="hidden" id="is_renewable" value="{{ json_encode($selectedRenewable) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha activación desde:</label>
+                        <input type="date" id="activation_date_from" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha activación hasta:</label>
+                        <input type="date" id="activation_date_to" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Cliente emisor trámite:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedIssuers))
+                                    Todos
+                                @elseif($allIssuers)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedIssuers)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allIssuers" wire:click="selectAllIssuers" type="checkbox">
+                                        Todos
+                                    </div>
+                                </li>
+                                @foreach($issuers as $issuer)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedIssuers" wire:change="isAllCheckIssuers"
+                                                type="checkbox" value="{{ $issuer->id }}"> {{ $issuer->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="issuer_id" value="{{ json_encode($selectedIssuers) }}">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button id="filter-btn" class="btn btn-primary">Filtrar</button>
+                        <button id="clear-btn" class="btn btn-secondary ml-2">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+            <div wire:ignore class="card-body table-responsive p-0">
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
@@ -101,7 +324,20 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "{{route('api.formality.totalClosed')}}",
-                    "type": "GET"
+                    "type": "GET",
+                    "data": function (d) {
+                        d.date_from = $('#date_from').val();
+                        d.date_to = $('#date_to').val();
+                        d.assigned_id = JSON.parse($('#assigned_id').val() || '[]');
+                        d.service_id = JSON.parse($('#service_id').val() || '[]');
+                        d.status_id = JSON.parse($('#status_id').val() || '[]');
+                        d.company_id = JSON.parse($('#company_id').val() || '[]');
+                        d.cups = $('#cups').val();
+                        d.is_renewable = JSON.parse($('#is_renewable').val() || '[]');
+                        d.activation_date_from = $('#activation_date_from').val();
+                        d.activation_date_to = $('#activation_date_to').val();
+                        d.issuer_id = JSON.parse($('#issuer_id').val() || '[]');
+                    }
                 },
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
@@ -152,6 +388,15 @@
                 "order": [
                     [0, "desc"]
                 ],
+            });
+
+            $('#filter-btn').on('click', function () {
+                table.draw();
+            });
+
+            $('#clear-btn').on('click', function () {
+                $('.filter-input').val('');
+                table.draw();
             });
 
             let queryParams = "from=totalclosed";
