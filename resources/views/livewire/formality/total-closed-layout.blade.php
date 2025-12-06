@@ -57,6 +57,7 @@
                                         <div class="dropdown-item">
                                             <input wire:model.live="selectedUsers" wire:change="isAllCheckUsers"
                                                 type="checkbox" value="{{ $user->id }}"> {{ $user->name }}
+                                            {{ $user->first_last_name }} {{ $user->second_last_name }}
                                         </div>
                                     </li>
                                 @endforeach
@@ -233,6 +234,7 @@
                                         <div class="dropdown-item">
                                             <input wire:model.live="selectedIssuers" wire:change="isAllCheckIssuers"
                                                 type="checkbox" value="{{ $issuer->id }}"> {{ $issuer->name }}
+                                            {{ $issuer->first_last_name }} {{ $issuer->second_last_name }}
                                         </div>
                                     </li>
                                 @endforeach
