@@ -93,7 +93,7 @@ class FormalityModifyTotalClosed extends Form
         */
 
         if ($this->annual_consumption != 0 && $this->annual_consumption != null && $this->annual_consumption != '') {
-            $dataToUpdate['annual_consumption'] = intval($this->annual_consumption);
+            $dataToUpdate['annual_consumption'] = $this->number_format_english($this->annual_consumption);
         }
 
         if ($this->potency != 0 && $this->potency != null && $this->potency != '') {
