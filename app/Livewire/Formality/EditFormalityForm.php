@@ -361,14 +361,14 @@ class EditFormalityForm extends Component
             $this->form->validate(
                 [
                     'firstLastName' => 'required|string',
-                    'secondLastName' => 'required|string',
+                    'secondLastName' => 'nullable|string',
                     'userTitleId' => 'required|integer|exists:component_option,id',
                     'documentNumber' => $documentRule
                 ],
                 [
 
                     'firstLastName.required' => 'El campo Primer Apellido es obligatorio',
-                    'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
+                    //'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
                     'userTitleId.required' => 'El campo Titulo es obligatorio',
                     'userTitleId.exists' => 'El Titulo no es valido',
                     'documentNumber.required' => 'El campo Documento es obligatorio',
