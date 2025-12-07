@@ -133,6 +133,21 @@ class EditFormalityForm extends Component
 
         $this->inputs->pull(0);
         $this->service_file->pull(0);
+
+        // Apply filtering based on client type
+        if ($this->isBusinessPerson) {
+            $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+            foreach ($businessDocs as $doc) {
+                if (!$this->inputs->contains('name', $doc->name)) {
+                    $this->inputs->push(['configId' => $doc->id, 'serviceId' => null, 'name' => $doc->name, 'file' => '']);
+                }
+            }
+        } else {
+            $businessDocsNames = ['CIF', 'escritura empresa'];
+            $this->inputs = $this->inputs->reject(function ($value) use ($businessDocsNames) {
+                return in_array($value['name'], $businessDocsNames);
+            });
+        }
     }
 
     public function addInput($serviceId)
@@ -284,6 +299,15 @@ class EditFormalityForm extends Component
                 $this->form->setDocumentTypeId($documentType->id);
                 $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
 
+                // Add required documents for Business
+                if ($this->inputs) {
+                    $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+                    foreach ($businessDocs as $doc) {
+                        if (!$this->inputs->contains('name', $doc->name)) {
+                            $this->inputs->push(['configId' => $doc->id, 'serviceId' => null, 'name' => $doc->name, 'file' => '']);
+                        }
+                    }
+                }
 
             }
 
@@ -292,6 +316,14 @@ class EditFormalityForm extends Component
                 $this->isBusinessPerson = false;
                 $documentTypes = $this->userService->getDocumentTypes();
                 $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+
+                // Remove Business documents if present
+                if ($this->inputs) {
+                    $businessDocsNames = ['CIF', 'escritura empresa'];
+                    $this->inputs = $this->inputs->reject(function ($value) use ($businessDocsNames) {
+                        return in_array($value['name'], $businessDocsNames);
+                    });
+                }
             }
 
         }
@@ -356,6 +388,37 @@ class EditFormalityForm extends Component
                     'documentNumber.cif' => 'El Cif no es valido',
                 ],
             );
+
+            // Validate mandatory documents for Business
+            $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+            foreach ($businessDocs as $doc) {
+                // Check if already uploaded (in $this->files)
+                $alreadyUploaded = false;
+                if ($this->files) {
+                    foreach ($this->files as $file) {
+                        if ($file->config_id == $doc->id) {
+                            $alreadyUploaded = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Check if being uploaded now (in $this->inputs)
+                $beingUploaded = false;
+                if ($this->inputs) {
+                    $input = $this->inputs->firstWhere('name', $doc->name);
+                    if ($input && !empty($input['file'])) {
+                        $beingUploaded = true;
+                    }
+                }
+
+                if (!$alreadyUploaded && !$beingUploaded) {
+                    $this->addError('inputs', 'El documento ' . $doc->name . ' es obligatorio.');
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'inputs' => ['Falta el documento: ' . $doc->name],
+                    ]);
+                }
+            }
         }
 
         $inputServiceid = intval($this->form->serviceIds[0]);

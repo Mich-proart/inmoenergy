@@ -160,7 +160,7 @@ class CreateFormalityForm extends Component
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
+        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
         return $locations;
     }
 
@@ -176,7 +176,7 @@ class CreateFormalityForm extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
     }
 
@@ -201,6 +201,13 @@ class CreateFormalityForm extends Component
                 $this->form->setDocumentTypeId($documentType->id);
                 $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
 
+                // Add required documents for Business
+                $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+                foreach ($businessDocs as $doc) {
+                    if (!$this->inputs->contains('name', $doc->name)) {
+                        $this->inputs->push(['configId' => $doc->id, 'serviceId' => null, 'name' => $doc->name, 'file' => '']);
+                    }
+                }
 
             }
 
@@ -208,6 +215,12 @@ class CreateFormalityForm extends Component
                 $this->field_name = 'Nombre';
                 $documentTypes = $this->userService->getDocumentTypes();
                 $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+
+                // Remove Business documents if present
+                $businessDocsNames = ['CIF', 'escritura empresa'];
+                $this->inputs = $this->inputs->reject(function ($value) use ($businessDocsNames) {
+                    return in_array($value['name'], $businessDocsNames);
+                });
             }
 
         }
