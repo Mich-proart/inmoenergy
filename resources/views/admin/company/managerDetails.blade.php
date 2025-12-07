@@ -2,6 +2,10 @@
 
 @section('title', 'Comercializadoras')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <h1>Comercializadoras</h1>
 @stop

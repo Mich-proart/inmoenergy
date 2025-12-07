@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
