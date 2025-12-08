@@ -73,3 +73,16 @@ function pendinTicketsSeventeenthProgram(formality_id, url) {
 
     return pedingTicketPresentation(resultData);
 }
+
+
+
+function formatDate(data) {
+    if (data) {
+        var date = new Date(data);
+        var day = date.getDate().toString().padStart(2, '0');
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var year = date.getFullYear().toString().slice(-2);
+        return `${day}-${month}-${year}`;
+    }
+    return "";
+}

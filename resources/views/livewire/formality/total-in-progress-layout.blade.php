@@ -317,8 +317,16 @@
                     { data: 'business_group' },
                     { data: 'issuer' },
                     { data: 'assigned' },
-                    { data: 'created_at' },
-                    { data: 'assignment_date' },
+                    {
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
+                    {
+                        data: 'assignment_date', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
                     { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
