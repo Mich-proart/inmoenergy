@@ -27,18 +27,18 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha de entrada</th>
+                            <th>Entrada</th>
                             <th>Usuario asignado</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Fecha Finalizacion del tramite</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía suministro</th>
+                            <th>Finalizado</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
                             <th>Observaciones asesor</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 

@@ -19,16 +19,16 @@
                         <thead>
                         <tr>
                             <th scope="col text-center">
-                                <p class="text-center fs-6">Fecha emisión ticket</p>
+                                <p class="text-center fs-6">Emisión</p>
                             </th>
                             <th scope="col text-center">
-                                <p class="text-center fs-6">Cliente emisor ticket</p>
+                                <p class="text-center fs-6">Emisor</p>
                             </th>
                             <th scope="col text-center">
                                 <p class="text-center fs-6">Tipo de ticket</p>
                             </th>
                             <th scope="col text-center">
-                                <p class="text-center fs-6">Título ticket</p>
+                                <p class="text-center fs-6">Ticket</p>
                             </th>
                             <th scope="col text-center">
                                 <p class="text-center fs-6">Estado ticket</p>

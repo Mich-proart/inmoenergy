@@ -33,9 +33,9 @@
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha emisión ticket</th>
+                            <th>Emisión</th>
                             <th>Tipo</th>
-                            <th>Título ticket</th>
+                            <th>Ticket</th>
                             <th>Estado</th>
                         </tr>
                     </thead>

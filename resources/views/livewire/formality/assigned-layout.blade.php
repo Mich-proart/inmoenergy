@@ -29,19 +29,19 @@
                     <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                         <thead>
                             <tr>
-                                <th>Fecha de entrada</th>
+                                <th>Entrada</th>
                                 <th>Tipo</th>
                                 <th>Suministro</th>
                                 <th>Cliente final</th>
-                                <th>N documento</th>
+                                <th>Identificador</th>
                                 <th>Dirección</th>
-                                <th>Estado trámite</th>
-                                <th>Trámite Crítico</th>
-                                <th>Compañía Suministro</th>
-                                <th>Producto Compañía</th>
+                                <th>Estado</th>
+                                <th>Crítico</th>
+                                <th>Comercializadora</th>
+                                <th>Producto</th>
                                 <th>Observaciones asesor</th>
-                                <th>Tickets pendientes</th>
-                                <th>Documentos</th>
+                                <th>Tickets</th>
+                                <th>Doc</th>
                             </tr>
                         </thead>
 

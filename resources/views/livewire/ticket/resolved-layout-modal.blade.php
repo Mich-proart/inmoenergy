@@ -12,12 +12,12 @@
                                 <th>Suministro</th>
                                 <th>Cliente final</th>
                                 <th>Dirección</th>
-                                <th>Fecha emisión ticket</th>
-                                <th>Cliente emisor ticket</th>
+                                <th>Emisión</th>
+                                <th>Emisor</th>
                                 <th>Tipo</th>
-                                <th>Título ticket</th>
-                                <th>Fecha resolución ticket</th>
-                                <th>Resolución ticket</th>
+                                <th>Ticket</th>
+                                <th>F. Resolución</th>
+                                <th>Resolución</th>
                                 <th hidden>Opciones</th>
                             </tr>
                         </thead>

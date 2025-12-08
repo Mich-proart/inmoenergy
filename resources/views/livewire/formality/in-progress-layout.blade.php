@@ -30,18 +30,18 @@
                     <thead>
                         <tr>
 
-                            <th>Fecha de entrada</th>
+                            <th>Entrada</th>
                             <th>Usuario asignado</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía suministro</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
                             <th>Observaciones asesor</th>
-                            <th>Tickets pendientes</th>
-                            <th>Documentos</th>
+                            <th>Tickets</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 

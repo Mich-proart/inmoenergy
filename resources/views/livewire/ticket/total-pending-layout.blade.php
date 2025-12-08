@@ -8,19 +8,19 @@
                 <table id="ticket-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Nombre responsable</th>
-                            <th>Oficina usuario</th>
-                            <th>Grupo empresarial</th>
-                            <th>Cliente emisor trámite</th>
+                            <th>Responsable</th>
+                            <th>Oficina</th>
+                            <th>Grupo</th>
+                            <th>Emisor trámite</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha emisión ticket</th>
-                            <th>Cliente emisor ticket</th>
+                            <th>Emisión</th>
+                            <th>Emisor</th>
                             <th>Tipo</th>
-                            <th>Título ticket</th>
+                            <th>Ticket</th>
                             <th>Estado</th>
-                            <th>Usuario asignado ticket</th>
+                            <th>Usuario asignado</th>
                         </tr>
                     </thead>
 

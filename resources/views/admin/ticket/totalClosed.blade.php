@@ -33,10 +33,10 @@
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha emisión ticket</th>
-                            <th>Cliente emisor ticket</th>
+                            <th>Emisión</th>
+                            <th>Emisor</th>
                             <th>Tipo</th>
-                            <th>resolución ticket</th>
+                            <th>Resolución</th>
                         </tr>
                     </thead>
 

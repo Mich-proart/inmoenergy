@@ -252,18 +252,18 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha de entrada</th>
+                            <th>Entrada</th>
                             <th>Usuario asignado</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía suministro</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
                             <th>CUPS</th>
                             <th>Renovación</th>
-                            <th>Fecha de activación</th>
-                            <th>Documentos</th>
+                            <th>Activación</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 

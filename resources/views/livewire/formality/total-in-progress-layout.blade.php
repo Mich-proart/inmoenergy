@@ -244,21 +244,21 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Oficina usuario</th>
-                            <th>Grupo empresarial</th>
-                            <th>Cliente emisor</th>
+                            <th>Oficina</th>
+                            <th>Grupo</th>
+                            <th>Emisor trámite</th>
                             <th>Usuario asignado</th>
-                            <th>Fecha de entrada</th>
-                            <th>Fecha de asignación</th>
+                            <th>Entrada</th>
+                            <th>Asignación</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Estado Trámite</th>
-                            <th>Trámite Crítico</th>
-                            <th>Tickets pendientes</th>
-                            <th>Documentos</th>
+                            <th>Estado</th>
+                            <th>Crítico</th>
+                            <th>Tickets</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
