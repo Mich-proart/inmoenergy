@@ -59,6 +59,7 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
     <script>
         const table = new DataTable('#formality-content', {
             dom: 'Bfrtip',
@@ -78,7 +79,11 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                {
+                    data: 'created_at', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'documentNumber' },
@@ -97,14 +102,7 @@
                 },
                 {
                     data: 'activation_date', render: function (data, type, row, meta) {
-                        if (data) {
-                            const date = new Date(data);
-                            const formattedDate = date.toISOString().split('T')[0];
-                            console.log(formattedDate)
-                            return formattedDate;
-                        } else {
-                            return '';
-                        }
+                        return formatDate(data);
                     }
                 },
                 {

@@ -139,6 +139,7 @@
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
         <script src="/vendor/custom/ticket.resolve.js"></script>
+        <script src="/vendor/custom/functions.code.js"></script>
         <script>
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -163,7 +164,11 @@
                     { data: 'service' },
                     { data: 'fullName' },
                     { data: 'fullAddress' },
-                    { data: 'created_at' },
+                    { 
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        } 
+                    },
                     { data: 'issuer' },
                     { data: 'type' },
                     { data: 'ticket_title' },

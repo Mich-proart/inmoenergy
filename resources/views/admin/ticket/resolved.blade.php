@@ -72,6 +72,7 @@
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
+<script src="/vendor/custom/functions.code.js"></script>
 <script>
     const table = new DataTable('#ticket-content', {
         dom: 'Bfrtip',
@@ -94,7 +95,11 @@
             { data: 'service' },
             { data: 'fullName' },
             { data: 'fullAddress' },
-            { data: 'created_at' },
+            { 
+                data: 'created_at', render: function (data, type, row, meta) {
+                    return formatDate(data);
+                } 
+            },
             { data: 'type' },
             { data: 'ticket_title' },
             { data: 'resolution_date' },

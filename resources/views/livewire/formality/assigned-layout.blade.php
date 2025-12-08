@@ -84,7 +84,11 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
-                    { data: 'created_at' },
+                    {
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
                     { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
