@@ -71,15 +71,15 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha de entrada</th>
+                            <th>Entrada</th>
                             <th>Usuario asignado</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha finalización trámite</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
+                            <th>Finalizado</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
+                            <th>Producto</th>
                             <th>Consumo anual</th>
                             <th>CUPS</th>
                             <th>Opciones</th>
@@ -216,6 +216,7 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
 
     <script>
         const table = new DataTable('#formality-content', {
@@ -236,12 +237,21 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                { 
+                    data: 'created_at',
+                    render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 { data: 'assigned' },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'fullAddress' },
-                { data: 'completion_date' },
+                { 
+                    data: 'completion_date', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 {
                     data: 'status', render: function (data, type, row, meta) {
                         return statusColor(data);

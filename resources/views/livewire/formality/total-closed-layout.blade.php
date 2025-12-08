@@ -382,7 +382,7 @@
                 ],
                 "columnDefs": [
                     { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
+                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
                     { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
                 ],
                 "order": [

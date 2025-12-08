@@ -102,7 +102,11 @@
             },
             { data: 'type' },
             { data: 'ticket_title' },
-            { data: 'resolution_date' },
+            { 
+                data: 'resolution_date', render: function (data, type, row, meta) {
+                    return formatDate(data);
+                } 
+            },
 
         ],
         "columnDefs": [
