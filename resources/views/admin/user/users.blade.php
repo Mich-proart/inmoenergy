@@ -125,7 +125,7 @@
             },
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3] },
+            { className: "text-left", targets: [0, 1, 2, 3] },
             { className: "text-capitalize", targets: [1, 2, 3] }
         ],
         "order": [

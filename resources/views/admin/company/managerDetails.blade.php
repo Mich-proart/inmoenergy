@@ -80,13 +80,13 @@
                     data: 'created_at',
                     render: function (data, type, row, meta) {
                         return formatDate(data);
-                    } 
+                    }
                 },
                 { data: 'product_name' },
 
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1] },
+                { className: "text-left", targets: [0, 1] },
                 { className: "text-capitalize", targets: [0, 1] }
             ],
             "order": [
