@@ -59,6 +59,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')
@@ -113,7 +114,14 @@
         ],
         "columnDefs": [
             { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6] }
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6] },
+            {
+                targets: 5, // tickets index
+                render: function (data, type, row, meta) {
+                    if (!data) return '';
+                    return `<span class="truncate-text" title="${data}">${data}</span>`;
+                }
+            }
         ],
         "order": [
             [3, "desc"]

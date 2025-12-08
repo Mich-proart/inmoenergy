@@ -1,4 +1,5 @@
 <div>
+    <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
     <div>
         <div wire:ignore class="card card-success card-outline">
             <div class="card-header">
@@ -79,6 +80,13 @@
                     { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
                     { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
                     { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    {
+                        targets: 6, // tickets index
+                        render: function (data, type, row, meta) {
+                            if (!data) return '';
+                            return `<span class="truncate-text" title="${data}">${data}</span>`;
+                        }
+                    }
                 ],
             "order": [
                 [3, "desc"]
