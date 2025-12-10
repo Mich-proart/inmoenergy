@@ -31,13 +31,13 @@
                         <tr>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha de activación</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
+                            <th>Activación</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
+                            <th>Producto</th>
                             <th>CUPS</th>
                             <th>Comisión Bruta</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -192,8 +192,8 @@
             ],
             "columnDefs": [
 
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
             ], "order": [
                 [0, "desc"]

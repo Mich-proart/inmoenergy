@@ -1,4 +1,5 @@
 <div>
+    <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -27,18 +28,18 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha de entrada</th>
+                            <th>Entrada</th>
                             <th>Usuario asignado</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Fecha Finalizacion del tramite</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía suministro</th>
+                            <th>Finalizado</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
                             <th>Observaciones asesor</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -86,6 +87,7 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
     <script>
         const table = new DataTable('#formality-content', {
             dom: 'Bfrtip',
@@ -105,14 +107,22 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                {
+                    data: 'created_at', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 { data: 'assigned' },
                 { data: 'type' },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'documentNumber' },
                 { data: 'fullAddress' },
-                { data: 'completion_date' },
+                {
+                    data: 'completion_date', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 {
                     data: 'status', render: function (data, type, row, meta) {
                         return statusColor(data);
@@ -128,9 +138,16 @@
                 },
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
+                {
+                targets: 10, // observation index
+                render: function (data, type, row, meta) {
+                    if (!data) return '';
+                    return `<span class="truncate-text" title="${data}">${data}</span>`;
+                }
+            }
             ],
             "order": [
                 [0, "desc"]

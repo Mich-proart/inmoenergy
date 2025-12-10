@@ -252,18 +252,18 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha de entrada</th>
+                            <th>Entrada</th>
                             <th>Usuario asignado</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía suministro</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
                             <th>CUPS</th>
                             <th>Renovación</th>
-                            <th>Fecha de activación</th>
-                            <th>Documentos</th>
+                            <th>Activación</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -313,6 +313,7 @@
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
         <script src="/vendor/custom/badge.code.js"></script>
+        <script src="/vendor/custom/functions.code.js"></script>
         <script>
             const table = new DataTable('#formality-content', {
                 dom: 'Bfrtip',
@@ -345,7 +346,11 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
-                    { data: 'created_at' },
+                    {
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
                     { data: 'assigned' },
                     { data: 'service' },
                     { data: 'fullName' },
@@ -365,14 +370,7 @@
                     },
                     {
                         data: 'activation_date', render: function (data, type, row, meta) {
-                            if (data) {
-                                const date = new Date(data);
-                                const formattedDate = date.toISOString().split('T')[0];
-                                console.log(formattedDate)
-                                return formattedDate;
-                            } else {
-                                return '';
-                            }
+                            return formatDate(data);
                         }
                     },
                     {
@@ -383,8 +381,8 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
+                    { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11] },
+                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
                     { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
                 ],
                 "order": [

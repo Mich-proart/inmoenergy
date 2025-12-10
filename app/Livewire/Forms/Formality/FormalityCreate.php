@@ -56,7 +56,7 @@ class FormalityCreate extends Form
             'formalityTypeId' => 'required|exists:component_option,id',
             'serviceIds' => 'required|array|exists:component_option,id',
             'name' => 'required|string',
-            'email' => 'required|email', //'required|email|unique:client,email',
+            'email' => 'sometimes|nullable|email', //'required|email|unique:client,email',
             'documentTypeId' => 'required|integer|exists:component_option,id',
             //'phone' => 'required|string|spanish_phone',
             'clientTypeId' => 'required|integer|exists:component_option,id',
@@ -116,6 +116,9 @@ class FormalityCreate extends Form
 
     public function getClientDto()
     {
+        if (empty($this->email)) {
+            $this->email = $this->documentNumber . '@lenders.com';
+        }
         return [
             'name' => $this->name,
             'first_last_name' => $this->firstLastName,

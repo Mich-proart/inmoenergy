@@ -29,13 +29,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -53,13 +53,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -77,13 +77,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -101,13 +101,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -124,13 +124,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -147,13 +147,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -209,13 +209,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -278,13 +278,13 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('assigned', function ($formality) {
-                return $formality->assigned_name . ' ' . $formality->assigned_firstLastName; //$formality->assigned_secondLastName;
+                return $formality->assigned_name . ' ' . (isset($formality->assigned_firstLastName[0]) ? strtoupper($formality->assigned_firstLastName[0]) . '.' : '');
             })
             ->addColumn('issuer', function ($formality) {
-                return $formality->issuer_name . ' ' . $formality->issuer_firstLastName . ' ' . $formality->issuer_secondLastName;
+                return $formality->issuer_name . ' ' . (isset($formality->issuer_firstLastName[0]) ? strtoupper($formality->issuer_firstLastName[0]) . '.' : '');
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }
@@ -301,7 +301,7 @@ class FormalityApiController extends Controller
                 return $formality->name . ' ' . $formality->firstLastName . ' ' . $formality->secondLastName;
             })
             ->addColumn('fullAddress', function ($formality) {
-                return $formality->street_type . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
+                return $formality->street_type_abbreviation . ' ' . $formality->street_name . ' ' . $formality->street_number . ' ' . $formality->block . ' ' . $formality->block_staircase . ' ' . $formality->floor . ' ' . $formality->door;
             })
             ->toJson(true);
     }

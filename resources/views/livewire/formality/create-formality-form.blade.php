@@ -169,7 +169,7 @@
                             <input wire:model="form.secondLastName" type="text" class="form-control"
                                 name="secondLastName" id="second-LastName"
                                 :disabled="type === '{{$businessClientType->id}}'"
-                                :required="type !== '{{$businessClientType->id}}'">
+                                :disabled="type === '{{$businessClientType->id}}'">
                             @error('form.secondLastName')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -242,7 +242,7 @@
                             <label for="inputZip">Email: </label>
                             <input wire:model="form.email" type="text"
                                 class="form-control @error('form.email') is-invalid @enderror" id="inputZip"
-                                name="email" required>
+                                name="email">
                             @error('form.email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

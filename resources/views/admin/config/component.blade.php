@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -98,7 +102,7 @@
 
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0] },
+            { className: "text-left", targets: [0] },
             { className: "text-capitalize", targets: [0] }
         ],
         "order": [

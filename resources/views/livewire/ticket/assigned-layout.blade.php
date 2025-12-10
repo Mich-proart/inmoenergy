@@ -1,4 +1,5 @@
 <div>
+    <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
     <div>
         <div wire:ignore class="card card-success card-outline">
             <div class="card-header">
@@ -11,10 +12,10 @@
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha emisión ticket</th>
-                            <th>Cliente emisor ticket</th>
+                            <th>Emisión</th>
+                            <th>Emisor</th>
                             <th>Tipo</th>
-                            <th>Título ticket</th>
+                            <th>Ticket</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
@@ -36,6 +37,7 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
     @script
     <script>
         const table = new DataTable('#ticket-content', {
@@ -59,7 +61,11 @@
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'fullAddress' },
-                { data: 'created_at' },
+                { 
+                    data: 'created_at', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    } 
+                },
                 { data: 'issuer' },
                 { data: 'type' },
                 { data: 'ticket_title' },
@@ -71,9 +77,17 @@
 
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7] }
-            ],
+                    { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    {
+                        targets: 6, // tickets index
+                        render: function (data, type, row, meta) {
+                            if (!data) return '';
+                            return `<span class="truncate-text" title="${data}">${data}</span>`;
+                        }
+                    }
+                ],
             "order": [
                 [3, "desc"]
             ],

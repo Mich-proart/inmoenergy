@@ -2,6 +2,10 @@
 
 @section('title', 'Optiones de desplegable')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <h1>Optiones de desplegable</h1>
 @stop

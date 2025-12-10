@@ -180,7 +180,6 @@
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
                             <input wire:model="form.secondLastName" {{$isBusinessPerson ? 'disabled' : ''}} type="text"
-                                {{$isBusinessPerson ? '' : 'required'}}
                                 class="form-control @error('form.secondLastName') is-invalid @enderror"
                                 id="second-LastName" name="secondLastName">
                             @error('form.secondLastName')
@@ -254,7 +253,7 @@
                             <label for="inputZip">Email: </label>
                             <input wire:model="form.email" type="text"
                                 class="form-control @error('form.email') is-invalid @enderror" id="inputZip"
-                                name="email" required>
+                                name="email">
                             @error('form.email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

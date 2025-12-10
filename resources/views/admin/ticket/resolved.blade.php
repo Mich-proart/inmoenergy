@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -28,10 +32,10 @@
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha emisión ticket</th>
+                            <th>Emisión</th>
                             <th>Tipo</th>
-                            <th>Título ticket</th>
-                            <th>Fecha resolución ticket</th>
+                            <th>Ticket</th>
+                            <th>F. Resolución</th>
                         </tr>
                     </thead>
 
@@ -53,6 +57,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
 @stop
 
 @section('js')
@@ -68,6 +73,7 @@
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
 <script src="/vendor/custom/badge.code.js"></script>
+<script src="/vendor/custom/functions.code.js"></script>
 <script>
     const table = new DataTable('#ticket-content', {
         dom: 'Bfrtip',
@@ -90,15 +96,30 @@
             { data: 'service' },
             { data: 'fullName' },
             { data: 'fullAddress' },
-            { data: 'created_at' },
+            { 
+                data: 'created_at', render: function (data, type, row, meta) {
+                    return formatDate(data);
+                } 
+            },
             { data: 'type' },
             { data: 'ticket_title' },
-            { data: 'resolution_date' },
+            { 
+                data: 'resolution_date', render: function (data, type, row, meta) {
+                    return formatDate(data);
+                } 
+            },
 
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6] }
+            { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6] },
+            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6] },
+            {
+                targets: 5, // ticket_title index
+                render: function (data, type, row, meta) {
+                    if (!data) return '';
+                    return `<span class="truncate-text" title="${data}">${data}</span>`;
+                }
+            }
         ],
         "order": [
             [3, "desc"]

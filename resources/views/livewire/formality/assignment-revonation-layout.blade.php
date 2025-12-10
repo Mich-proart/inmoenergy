@@ -31,15 +31,15 @@
                         <tr>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>CUPS</th>
                             <th>Dirección</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
+                            <th>Comercializadora</th>
+                            <th>Producto</th>
                             <th>Consumo anual</th>
                             <th>Potencia</th>
                             <th>Tipo de vivienda</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -220,7 +220,7 @@
                 }
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
+                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
                 { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
             ], "order": [

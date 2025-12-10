@@ -1,4 +1,5 @@
 <div>
+    <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
     <!-- Modal -->
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -29,19 +30,19 @@
                     <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                         <thead>
                             <tr>
-                                <th>Fecha de entrada</th>
+                                <th>Entrada</th>
                                 <th>Tipo</th>
                                 <th>Suministro</th>
                                 <th>Cliente final</th>
-                                <th>N documento</th>
+                                <th>Identificador</th>
                                 <th>Dirección</th>
-                                <th>Estado trámite</th>
-                                <th>Trámite Crítico</th>
-                                <th>Compañía Suministro</th>
-                                <th>Producto Compañía</th>
+                                <th>Estado</th>
+                                <th>Crítico</th>
+                                <th>Comercializadora</th>
+                                <th>Producto</th>
                                 <th>Observaciones asesor</th>
-                                <th>Tickets pendientes</th>
-                                <th>Documentos</th>
+                                <th>Tickets</th>
+                                <th>Doc</th>
                             </tr>
                         </thead>
 
@@ -84,7 +85,11 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
-                    { data: 'created_at' },
+                    {
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
                     { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
@@ -116,10 +121,17 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
-                    { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                ],
+                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+                {
+                targets: 10, // observation index
+                    render: function (data, type, row, meta) {
+                        if (!data) return '';
+                        return `<span class="truncate-text" title="${data}">${data}</span>`;
+                    }
+                }
+            ],
                 "order": [
                     [0, "desc"]
                 ],

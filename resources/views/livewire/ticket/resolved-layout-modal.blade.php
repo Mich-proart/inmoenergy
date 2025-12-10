@@ -1,4 +1,5 @@
 <div>
+    <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
     <div>
         <div>
             <div class="card card-success card-outline">
@@ -12,12 +13,12 @@
                                 <th>Suministro</th>
                                 <th>Cliente final</th>
                                 <th>Dirección</th>
-                                <th>Fecha emisión ticket</th>
-                                <th>Cliente emisor ticket</th>
+                                <th>Emisión</th>
+                                <th>Emisor</th>
                                 <th>Tipo</th>
-                                <th>Título ticket</th>
-                                <th>Fecha resolución ticket</th>
-                                <th>Resolución ticket</th>
+                                <th>Ticket</th>
+                                <th>F. Resolución</th>
+                                <th>Resolución</th>
                                 <th hidden>Opciones</th>
                             </tr>
                         </thead>
@@ -139,6 +140,7 @@
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
         <script src="/vendor/custom/ticket.resolve.js"></script>
+        <script src="/vendor/custom/functions.code.js"></script>
         <script>
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -163,11 +165,19 @@
                     { data: 'service' },
                     { data: 'fullName' },
                     { data: 'fullAddress' },
-                    { data: 'created_at' },
+                    { 
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        } 
+                    },
                     { data: 'issuer' },
                     { data: 'type' },
                     { data: 'ticket_title' },
-                    { data: 'resolution_date' },
+                    { 
+                        data: 'resolution_date', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        } 
+                    },
                     {
                         data: 'isResolved', render: function (data, type, row, meta) {
                             return isResolvedTicket(data);
@@ -184,9 +194,16 @@
 
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+                    { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
                     { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
                     { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8,] },
+                    {
+                        targets: 6, // tickets index
+                        render: function (data, type, row, meta) {
+                            if (!data) return '';
+                            return `<span class="truncate-text" title="${data}">${data}</span>`;
+                        }
+                    }
                 ],
                 "order": [
                     [3, "desc"]

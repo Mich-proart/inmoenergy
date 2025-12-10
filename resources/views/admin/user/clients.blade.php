@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -73,6 +77,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
 <script src="/vendor/custom/user.status.js"></script>
+<script src="/vendor/custom/functions.code.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
@@ -104,7 +109,12 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
-            { data: 'created_at' },
+            { 
+                data: 'created_at', 
+                render: function (data, type, row, meta) {
+                    return formatDate(data);
+                } 
+            },
             { data: 'fullName' },
             { data: 'fullAddress' },
             {
@@ -114,7 +124,7 @@
             },
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3] },
+            { className: "text-left", targets: [0, 1, 2, 3] },
             { className: "text-capitalize", targets: [1, 2, 3] }
         ],
         "order": [
