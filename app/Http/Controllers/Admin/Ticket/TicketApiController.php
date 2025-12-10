@@ -29,7 +29,7 @@ class TicketApiController extends Controller
                 return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->toJson(true);
     }
@@ -47,7 +47,7 @@ class TicketApiController extends Controller
                 return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->toJson(true);
     }
@@ -68,7 +68,7 @@ class TicketApiController extends Controller
                 return $ticket->issuer_name . ' ' . $ticket->issuer_firstLastName . ' ' . $ticket->issuer_secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->toJson(true);
     }
@@ -86,7 +86,7 @@ class TicketApiController extends Controller
                 return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->addColumn('issuer', function ($ticket) {
                 return $ticket->issuer_name . ' ' . $ticket->issuer_firstLastName . ' ' . $ticket->issuer_secondLastName;
@@ -106,7 +106,7 @@ class TicketApiController extends Controller
                 return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->addColumn('issuer', function ($ticket) {
                 return $ticket->issuer_name . ' ' . $ticket->issuer_firstLastName . ' ' . $ticket->issuer_secondLastName;
@@ -132,7 +132,7 @@ class TicketApiController extends Controller
                 return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->addColumn('issuer', function ($ticket) {
                 return $ticket->issuer_name . ' ' . $ticket->issuer_firstLastName . ' ' . $ticket->issuer_secondLastName;
@@ -159,7 +159,7 @@ class TicketApiController extends Controller
                 return $ticket->name . ' ' . $ticket->firstLastName . ' ' . $ticket->secondLastName;
             })
             ->addColumn('fullAddress', function ($ticket) {
-                return $ticket->street_type . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
+                return $ticket->street_type_abbreviation . ' ' . $ticket->street_name . ' ' . $ticket->street_number . ' ' . $ticket->block . ' ' . $ticket->block_staircase . ' ' . $ticket->floor . ' ' . $ticket->door;
             })
             ->addColumn('issuer', function ($ticket) {
                 return $ticket->issuer_name . ' ' . $ticket->issuer_firstLastName . ' ' . $ticket->issuer_secondLastName;

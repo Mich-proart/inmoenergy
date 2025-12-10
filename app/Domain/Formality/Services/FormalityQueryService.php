@@ -60,6 +60,7 @@ class FormalityQueryService
                 'client.document_number as documentNumber',
                 'address.*',
                 'street_type.name as street_type',
+                'street_type.abbreviation as street_type_abbreviation',
                 'housing_type.name as housing_type',
                 'location.name as location',
                 'province.name as province',
