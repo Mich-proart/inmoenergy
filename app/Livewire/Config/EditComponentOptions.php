@@ -15,6 +15,7 @@ class EditComponentOptions extends Component
 
     public $component;
     public $name;
+    public $abbreviation;
     public ComponentOption|null $option = null;
 
     public function mount($component)
@@ -25,11 +26,15 @@ class EditComponentOptions extends Component
     {
         $this->option = ComponentOption::find($id);
         $this->name = $this->option->name;
+        $this->abbreviation = $this->option->abbreviation;
     }
 
-    protected $rules = [
-        'name' => 'required|max:255|unique:component_option,name'
-    ];
+    public function rules()
+    {
+        return [
+            'name' => 'required|max:255|unique:component_option,name,' . ($this->option->id ?? ''),
+        ];
+    }
 
     protected $messages = [
         'name.required' => 'El nombre es requerido',
@@ -44,17 +49,20 @@ class EditComponentOptions extends Component
         DB::beginTransaction();
 
         try {
+            $data = ['name' => strtolower($this->name)];
+            
+            if ($this->component->alias == 'street_type') {
+                $data['abbreviation'] = $this->abbreviation;
+            }
 
             if ($this->option !== null) {
-                $this->option->update(['name' => strtolower($this->name)]);
+                $this->option->update($data);
                 DB::commit();
                 return redirect()->route('admin.component.details', $this->component->id);
             }
 
-            ComponentOption::create([
-                'name' => strtolower($this->name),
-                'component_id' => $this->component->id
-            ]);
+            $data['component_id'] = $this->component->id;
+            ComponentOption::create($data);
 
             DB::commit();
             return redirect()->route('admin.component.details', $this->component->id);
@@ -90,6 +98,7 @@ class EditComponentOptions extends Component
     public function resetName()
     {
         $this->name = null;
+        $this->abbreviation = null;
         $this->option = null;
     }
 
