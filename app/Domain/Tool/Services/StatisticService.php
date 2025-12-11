@@ -47,9 +47,11 @@ class StatisticService
 
         $query->whereIn('service_id', $services);
 
+        // New prefilter: exclude formalities with status "KO"
         $formalities = $query->whereHas('status', function ($q) {
-            $q->whereIn('name', [FormalityStatusEnum::TRAMITADO, FormalityStatusEnum::EN_VIGOR]);
+            $q->where('name', '!=', FormalityStatusEnum::KO->value);
         })->get();
+        
         return $this->formatDataForChart($formalities, $frequency, $query);
     }
 
@@ -78,11 +80,33 @@ class StatisticService
     private function horizontalBarChart(Collection $formalities)
     {
         return $formalities->groupBy($this->searchBasedOn)->map(function ($items) {
+            // Active/completed statuses
+            $activeCount = $items->filter(function ($item) {
+                return in_array($item->status->name, [
+                    FormalityStatusEnum::PENDIENTE->value,
+                    FormalityStatusEnum::ASIGNADO->value,
+                    FormalityStatusEnum::EN_CURSO->value,
+                    FormalityStatusEnum::TRAMITADO->value,
+                    FormalityStatusEnum::EN_VIGOR->value,
+                    FormalityStatusEnum::FINALIZADO->value
+                ]);
+            })->count();
+            
+            // Baja status count
+            $bajaCount = $items->filter(function ($item) {
+                return $item->status->name === FormalityStatusEnum::BAJA->value;
+            })->count();
+            
+            // Difference
+            $differenceCount = $activeCount - $bajaCount;
+            
             return [
                 'user' => $this->formatUserName($this->searchBasedOn === self::ASSIGNED ? $items->first()->assigned : $items->first()->issuer),
-                'count' => $items->count()
+                'activeCount' => $activeCount,
+                'bajaCount' => $bajaCount,
+                'differenceCount' => $differenceCount
             ];
-        })->sortByDesc('count')->values();
+        })->sortByDesc('activeCount')->values();
 
     }
 
