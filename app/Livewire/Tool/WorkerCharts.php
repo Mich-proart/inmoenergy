@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Tool;
 
-use App\Domain\Tool\Services\StatisticService;
+use App\Domain\Tool\Services\WorkerStatisticService;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class Charts extends Component
+class WorkerCharts extends Component
 {
 
     public array $dataset = [];
@@ -15,22 +15,17 @@ class Charts extends Component
 
     public int $totalCount;
     public $timeAvg;
-    
-    public bool $hideTimeAvg = false;
-    public bool $groupByService = false;
 
-    protected StatisticService $statisticService;
+    protected WorkerStatisticService $statisticService;
 
     public function __construct()
     {
-        $this->statisticService = App::make(StatisticService::class);
+        $this->statisticService = App::make(WorkerStatisticService::class);
     }
 
 
-    public function mount($hideTimeAvg = false, $groupByService = false)
+    public function mount()
     {
-        $this->hideTimeAvg = $hideTimeAvg;
-        $this->groupByService = $groupByService;
         $this->dataset = [
             [
                 'label' => 'Logged In',
@@ -45,7 +40,7 @@ class Charts extends Component
     public function searchData(string $searchBasedOn, array $selectedUsers, array $selectedServices, string $from, string $to, string|null $selectedFrequency)
     {
         $this->statisticService->setSearchBasedOn($searchBasedOn);
-        $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency, $this->groupByService);
+        $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency);
         $this->totalCount = $data['totalCount'];
         $this->timeAvg = $data['timeAvg'] . ' ' . 'horas';
 
@@ -57,6 +52,6 @@ class Charts extends Component
 
     public function render()
     {
-        return view('livewire.tool.charts');
+        return view('livewire.tool.worker-charts');
     }
 }

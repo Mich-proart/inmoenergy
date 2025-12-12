@@ -34,14 +34,12 @@
                                 </div>
                                 <div class="col-4"><p>{{$totalCount}}</p></div>
                             </div>
-                            @if(!$hideTimeAvg)
                             <div class="row align-items-center">
                                 <div class="col">
                                     <div>Tiempo promedio trámite:</div>
                                 </div>
                                 <div class="col-5"><p>{{$timeAvg}}</p></div>
                             </div>
-                            @endif
                         </div>
 
                     </div>
@@ -51,7 +49,7 @@
     </div>
     @assets
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-    <script src="/vendor/custom/statistic.code.js"></script>
+    <script src="/vendor/custom/worker-statistic.code.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     @endassets
 
@@ -61,15 +59,15 @@
         const horizontalBar_ctx = document.getElementById('horizontalBar');
         const verticalBar_ctx = document.getElementById('verticalBar');
 
-        const doughnut = new Chart(doughnut_ctx, chartsInit().doughnut)
-        const horizontalBar = new Chart(horizontalBar_ctx, chartsInit().horizontalBar);
-        const verticalBar = new Chart(verticalBar_ctx, chartsInit().verticalBar);
+        const doughnut = new Chart(doughnut_ctx, workerChartsInit().doughnut)
+        const horizontalBar = new Chart(horizontalBar_ctx, workerChartsInit().horizontalBar);
+        const verticalBar = new Chart(verticalBar_ctx, workerChartsInit().verticalBar);
 
         Livewire.on('updateChart', data => {
             console.log(data);
-            const doughnut_set = doughnutfnt(data[0].doughnutChart);
-            const horizontalBar_set = horizontalBarfnt(data[0].horizontalBarChart);
-            const verticalBar_set = verticalBarfnt(data[0].verticalBarChart);
+            const doughnut_set = workerDoughnutfnt(data[0].doughnutChart);
+            const horizontalBar_set = workerHorizontalBarfnt(data[0].horizontalBarChart);
+            const verticalBar_set = workerVerticalBarfnt(data[0].verticalBarChart);
             doughnut.data = doughnut_set;
             horizontalBar.data = horizontalBar_set;
             verticalBar.data = verticalBar_set;

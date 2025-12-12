@@ -418,6 +418,11 @@ return [
                     'can' => 'tool.statistics.client.access',
                 ],
                 [
+                    'text' => 'Análisis trámites',
+                    'route' => 'admin.tool.statistics.formality',
+                    'can' => 'tool.statistics.formality.access',
+                ],
+                [
                     'text' => 'Trámites cerrados totales',
                     'route' => 'admin.formality.total.closed',
                     'can' => 'formality.total.closed.access',

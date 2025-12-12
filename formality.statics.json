@@ -1,0 +1,18 @@
+[
+    {
+        "name": "herramientas de trabajo",
+        "programs": [
+            {
+                "name": "análisis trámites",
+                "image": "statistics_formality.png",
+                "route": "admin.tool.statistics.formality",
+                "description": null,
+                "placed_in": "4",
+                "roles": [
+                    "superadmin"
+                ],
+                "permission": "tool.statistics.formality.access"
+            }
+        ]
+    }
+]

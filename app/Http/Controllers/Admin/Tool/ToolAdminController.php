@@ -10,6 +10,9 @@ class ToolAdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        //$this->middleware('can:formality.statistics.client.access')->only('getStatisticsClient');
+        //$this->middleware('can:formality.statistics.worker.access')->only('getStatisticsWorker');
+        $this->middleware('can:tool.statistics.formality.access')->only('getStatisticsFormality');
     }
 
     public function getStatisticsClient()
@@ -22,5 +25,11 @@ class ToolAdminController extends Controller
     {
         $program = Program::where('name', 'análisis usuarios')->first();
         return view('admin.tool.statisticsWorker', ['program' => $program]);
+    }
+
+    public function getStatisticsFormality()
+    {
+        $program = Program::where('name', 'análisis trámites')->first();
+        return view('admin.tool.statisticsFormality', ['program' => $program]);
     }
 }
