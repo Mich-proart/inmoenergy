@@ -135,4 +135,5 @@ Route::prefix('tickets')->group(function () {
 Route::prefix('tool')->group(function () {
     Route::get('/statistics/client', [ToolAdminController::class, 'getStatisticsClient'])->name('admin.tool.statistics.client');
     Route::get('/statistics/worker', [ToolAdminController::class, 'getStatisticsWorker'])->name('admin.tool.statistics.worker');
+    Route::get('/statistics/formality', [ToolAdminController::class, 'getStatisticsFormality'])->name('admin.tool.statistics.formality');
 });

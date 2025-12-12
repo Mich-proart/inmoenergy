@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-class StatisticService
+class WorkerStatisticService
 {
 
     const ISSUER = 'user_issuer_id';
@@ -34,7 +34,7 @@ class StatisticService
     }
 
 
-    public function search($usersIds = [], $services = [], $from, $to, string|null $frequency, bool $groupByService = false): array
+    public function search($usersIds = [], $services = [], $from, $to, string|null $frequency): array
     {
         $query = Formality::with('service', 'issuer', 'assigned');
 
@@ -47,21 +47,20 @@ class StatisticService
 
         $query->whereIn('service_id', $services);
 
-        // New prefilter: exclude formalities with status "KO"
+        // Original prefilter: only "Tramitado" and "En vigor"
         $formalities = $query->whereHas('status', function ($q) {
-            $q->where('name', '!=', FormalityStatusEnum::KO->value);
+            $q->whereIn('name', [FormalityStatusEnum::TRAMITADO->value, FormalityStatusEnum::EN_VIGOR->value]);
         })->get();
         
-        return $this->formatDataForChart($formalities, $frequency, $query, $groupByService);
+        return $this->formatDataForChart($formalities, $frequency, $query);
     }
 
 
-
-    private function formatDataForChart(Collection $formalities, string|null $frequency, Builder $builder, bool $groupByService = false): array
+    private function formatDataForChart(Collection $formalities, string|null $frequency, Builder $builder): array
     {
         return [
             'doughnutChart' => $this->doughnutChart($formalities),
-            'horizontalBarChart' => $this->horizontalBarChart($formalities, $groupByService),
+            'horizontalBarChart' => $this->horizontalBarChart($formalities),
             'verticalBarChart' => !empty($frequency) ? $this->verticalBarChart($builder, $frequency) : null,
             'totalCount' => $formalities->count(),
             'timeAvg' => $this->getAverage($formalities)
@@ -78,46 +77,15 @@ class StatisticService
         })->sortByDesc('count')->values();
     }
 
-    private function horizontalBarChart(Collection $formalities, bool $groupByService = false)
+    private function horizontalBarChart(Collection $formalities)
     {
-        $groupBy = $groupByService ? 'service_id' : $this->searchBasedOn;
-        
-        return $formalities->groupBy($groupBy)->map(function ($items) use ($groupByService) {
-            // Active/completed statuses
-            $activeCount = $items->filter(function ($item) {
-                return in_array($item->status->name, [
-                    FormalityStatusEnum::PENDIENTE->value,
-                    FormalityStatusEnum::ASIGNADO->value,
-                    FormalityStatusEnum::EN_CURSO->value,
-                    FormalityStatusEnum::TRAMITADO->value,
-                    FormalityStatusEnum::EN_VIGOR->value,
-                    FormalityStatusEnum::FINALIZADO->value
-                ]);
-            })->count();
-            
-            // Baja status count
-            $bajaCount = $items->filter(function ($item) {
-                return $item->status->name === FormalityStatusEnum::BAJA->value;
-            })->count();
-            
-            // Difference
-            $differenceCount = $activeCount - $bajaCount;
-            
-            // Determine label based on grouping
-            if ($groupByService) {
-                $label = ucfirst($items->first()->service->name);
-            } else {
-                $label = $this->formatUserName($this->searchBasedOn === self::ASSIGNED ? $items->first()->assigned : $items->first()->issuer);
-            }
-            
+        // Original behavior: single bar per user
+        return $formalities->groupBy($this->searchBasedOn)->map(function ($items) {
             return [
-                'user' => $label,
-                'activeCount' => $activeCount,
-                'bajaCount' => $bajaCount,
-                'differenceCount' => $differenceCount
+                'user' => $this->formatUserName($this->searchBasedOn === self::ASSIGNED ? $items->first()->assigned : $items->first()->issuer),
+                'count' => $items->count()
             ];
-        })->sortByDesc('activeCount')->values();
-
+        })->sortByDesc('count')->values();
     }
 
     private function verticalBarChart(Builder $query, string $frequency)
