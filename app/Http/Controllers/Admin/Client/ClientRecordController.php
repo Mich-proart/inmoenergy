@@ -14,11 +14,18 @@ class ClientRecordController extends Controller
     public function __construct() {
         $this->middleware('auth');
         $this->middleware('can:client.record.access')->only('index');
+        $this->middleware('can:client.records.view.access')->only('viewRecords');
     }
 
     public function index()
     {
         $program = Program::where('name', 'ver o editar fichas clientes')->first();
         return view('admin.client.client-record', ['program' => $program]);
+    }
+
+    public function viewRecords()
+    {
+        $program = Program::where('name', 'fichas clientes')->first();
+        return view('admin.client.client-records-view', ['program' => $program]);
     }
 }

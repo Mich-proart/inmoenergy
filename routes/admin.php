@@ -95,6 +95,7 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('client')->group(function () {
     Route::get('/record', [ClientRecordController::class, 'index'])->name('admin.client.record');
+    Route::get('/records/view', [ClientRecordController::class, 'viewRecords'])->name('admin.client.records.view');
 });
 
 Route::prefix('company')->group(function () {
