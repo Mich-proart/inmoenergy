@@ -457,6 +457,11 @@ return [
                     'route' => 'admin.formality.commission.manager',
                     'can' => 'formality.commission.manager.access',
                 ],
+                [
+                    'text' => 'Ver o editar fichas clientes',
+                    'route' => 'admin.client.record',
+                    'can' => 'client.record.access',
+                ],
             ]
 
         ],

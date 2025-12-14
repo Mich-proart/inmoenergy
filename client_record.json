@@ -1,0 +1,18 @@
+[
+    {
+        "name": "herramientas de trabajo",
+        "programs": [
+            {
+                "name": "ver o editar fichas clientes",
+                "image": "client_record.png",
+                "route": "admin.client.record",
+                "description": null,
+                "placed_in": "9",
+                "roles": [
+                    "superadmin"
+                ],
+                "permission": "client.record.access"
+            }
+        ]
+    }
+]
