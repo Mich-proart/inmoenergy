@@ -29,11 +29,11 @@
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
                         <a href="{{ route('admin.config.businessGroup') }}">
                             <button type="button" class="btn btn-success float-right btn-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
-            viewBox="0 0 16 16">
-            <path
-                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-        </svg> Ver grupo empresarial
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                </svg> Ver grupo empresarial
                             </button>
                         </a>
                         <a href="{{route('admin.config.documents')}}"><button type="button"
@@ -68,6 +68,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')

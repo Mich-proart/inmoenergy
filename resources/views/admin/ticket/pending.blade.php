@@ -60,6 +60,7 @@
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')
@@ -98,10 +99,10 @@
             { data: 'service' },
             { data: 'fullName' },
             { data: 'fullAddress' },
-            { 
+            {
                 data: 'created_at', render: function (data, type, row, meta) {
                     return formatDate(data);
-                } 
+                }
             },
             { data: 'type' },
             { data: 'ticket_title' },

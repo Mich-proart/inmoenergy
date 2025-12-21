@@ -35,6 +35,7 @@
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'spinner.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 <style>
     .dropdown-menu {
         max-height: 200px;

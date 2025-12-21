@@ -9,10 +9,10 @@
 <div class="row">
     <div class="col-md-6 image-text-container">
         @if (isset($program))
-            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
-                class="img-thumbnail align-self-center resize">
-            <h3>{{ucfirst($program->name)}}</h3>
-            @section('title', ucfirst($program->name))
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        <h3>{{ucfirst($program->name)}}</h3>
+        @section('title', ucfirst($program->name))
         @endif
     </div>
 </div>
@@ -32,6 +32,7 @@
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')

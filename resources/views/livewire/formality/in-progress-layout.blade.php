@@ -1,5 +1,6 @@
 <div>
     <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
     <!-- Modal -->
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

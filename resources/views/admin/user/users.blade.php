@@ -70,6 +70,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')
@@ -110,11 +111,11 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
-            { 
-                data: 'created_at', 
+            {
+                data: 'created_at',
                 render: function (data, type, row, meta) {
                     return formatDate(data);
-                } 
+                }
             },
             { data: 'fullName' },
             { data: 'fullAddress' },
