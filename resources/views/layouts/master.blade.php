@@ -25,6 +25,9 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/components.css') }}">
+
+    <!-- Custom Focus Styles - Green Theme -->
+    <link rel="stylesheet" href="{{ asset('css/custom-focus.css') }}">
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>

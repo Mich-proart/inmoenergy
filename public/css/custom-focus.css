@@ -1,0 +1,18 @@
+/* Custom focus styles - Green theme */
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #368D68 !important;
+    box-shadow: 0 0 0 0.2rem rgba(186, 205, 197, 0.25) !important;
+}
+
+/* Remove default outline */
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 0;
+}

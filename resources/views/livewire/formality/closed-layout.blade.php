@@ -1,5 +1,6 @@
 <div>
     <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -142,12 +143,12 @@
                 { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10] },
                 {
-                targets: 10, // observation index
-                render: function (data, type, row, meta) {
-                    if (!data) return '';
-                    return `<span class="truncate-text" title="${data}">${data}</span>`;
+                    targets: 10, // observation index
+                    render: function (data, type, row, meta) {
+                        if (!data) return '';
+                        return `<span class="truncate-text" title="${data}">${data}</span>`;
+                    }
                 }
-            }
             ],
             "order": [
                 [0, "desc"]

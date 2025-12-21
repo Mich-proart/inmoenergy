@@ -1,5 +1,6 @@
 <div>
     <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
     <div>
         <div>
             <div class="card card-success card-outline">
@@ -165,18 +166,18 @@
                     { data: 'service' },
                     { data: 'fullName' },
                     { data: 'fullAddress' },
-                    { 
+                    {
                         data: 'created_at', render: function (data, type, row, meta) {
                             return formatDate(data);
-                        } 
+                        }
                     },
                     { data: 'issuer' },
                     { data: 'type' },
                     { data: 'ticket_title' },
-                    { 
+                    {
                         data: 'resolution_date', render: function (data, type, row, meta) {
                             return formatDate(data);
-                        } 
+                        }
                     },
                     {
                         data: 'isResolved', render: function (data, type, row, meta) {

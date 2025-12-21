@@ -9,15 +9,15 @@
 <div class="row">
     <div class="col-md-6 image-text-container">
         @if (isset($program))
-            <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
-                class="img-thumbnail align-self-center resize">
-            @if (isset($content) && $content == 'worker')
-                <h3>Editar usuario</h3>
-                @section('title', 'Editar usuario')
-            @else
-                <h3>Editar cliente</h3>
-                @section('title', 'Editar cliente')
-            @endif
+        <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . $program->image) }}" alt=""
+            class="img-thumbnail align-self-center resize">
+        @if (isset($content) && $content == 'worker')
+        <h3>Editar usuario</h3>
+        @section('title', 'Editar usuario')
+        @else
+        <h3>Editar cliente</h3>
+        @section('title', 'Editar cliente')
+        @endif
         @endif
     </div>
 </div>
@@ -40,6 +40,7 @@
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 <style>
     .dropdown-menu {
         max-height: 200px;
