@@ -16,3 +16,17 @@ select:focus,
 textarea:focus {
     outline: 0;
 }
+
+/* Remove gray border from sidebar brand/logo area */
+.main-sidebar .brand-link,
+.main-sidebar .sidebar-brand,
+.sidebar .brand-link,
+.brand-link {
+    border-bottom: none !important;
+    border-bottom-color: transparent !important;
+}
+
+/* Ensure sidebar brand background matches sidebar */
+.main-sidebar .brand-link {
+    background-color: inherit !important;
+}
