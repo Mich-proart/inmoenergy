@@ -493,7 +493,7 @@
                 title: "¿Seguro que quieres cancelar la baja?",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#368D68",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "si",
                 cancelButtonText: "no"
@@ -510,7 +510,7 @@
                 title: "¿Seguro que quieres dar de baja el contrato?",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#368D68",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "si",
                 cancelButtonText: "no"

@@ -754,7 +754,7 @@
                 text: "Al aceptar iniciara el proceso para el cliente seleccionado.",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#368D68",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "si",
                 cancelButtonText: "no"
@@ -771,7 +771,7 @@
                 text: "Al aceptar iniciará el proceso para un nuevo cliente.",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#368D68",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "si",
                 cancelButtonText: "no"
