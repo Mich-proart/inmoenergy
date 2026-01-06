@@ -28,6 +28,7 @@ class TicketQueryService
                 'client.second_last_name as secondLastName',
                 'address.*',
                 'street_type.name as street_type',
+                'street_type.abbreviation as street_type_abbreviation',
                 'ticket.*',
                 'ticket_type.name as type',
                 'userAssigned.name as assigned_name',
