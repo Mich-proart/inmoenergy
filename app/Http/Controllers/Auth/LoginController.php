@@ -37,4 +37,19 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(\Illuminate\Http\Request $request, $user)
+    {
+        // Regenerate session to prevent fixation attacks and clear stale data
+        $request->session()->regenerate();
+
+        return redirect()->intended($this->redirectPath());
+    }
 }
