@@ -62,7 +62,7 @@
             <tbody>
                 @isset ($options)
                     @foreach ($options as $option)
-                        <tr class="table-light">
+                        <tr class="table-success-light">
                             <td class="text-center">{{ ucfirst($option->name) }}</td>
                             @if ($component->alias == 'street_type')
                                 <td class="text-center">{{ $option->abbreviation }}</td>
