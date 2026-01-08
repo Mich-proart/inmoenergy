@@ -210,6 +210,7 @@ class ModifyTotalClosed extends Component
 
                 if ($stored_file) {
                     $this->fileUploadService
+                        ->setModel($this->formality)
                         ->addFile($file)
                         ->setConfigId($object['configId'])
                         ->force_replace($stored_file);

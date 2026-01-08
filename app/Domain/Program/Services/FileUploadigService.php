@@ -227,20 +227,23 @@ class FileUploadigService
                 // $temp = explode('.', $this->file->getClientOriginalName())[0];
 
                 $name = uniqid() . uniqid(); // $temp . '_' . uniqid() . uniqid();
-                $newFilename = $name . '.' . $this->file->getClientOriginalExtension();
+                $tempName = $name . '.' . $this->file->getClientOriginalExtension();
 
-                // Generate display name
-                $displayName = $this->generateDisplayName($newFilename);
+                // Generate display name (this will be used for both DB and disk storage)
+                $fileName = $this->generateDisplayName($tempName);
+                
+                // Extract name without extension (matching saveFile behavior)
+                $nameWithNoExtension = pathinfo($fileName, PATHINFO_FILENAME);
 
                 $file_reference->update([
-                    'name' => $displayName,
-                    'filename' => $newFilename,
+                    'name' => $nameWithNoExtension,
+                    'filename' => $fileName,
                     'mime_type' => $this->file->getMimeType(),
                     'config_id' => $this->configId ?? null
                 ]);
 
-                $this->file->storeAs('public/' . $file_reference->folder, $newFilename);
-                return $file_reference->folder . '/' . $newFilename;
+                $this->file->storeAs('public/' . $file_reference->folder, $fileName);
+                return $file_reference->folder . '/' . $fileName;
             }
         }
 
