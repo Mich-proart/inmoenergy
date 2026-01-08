@@ -112,8 +112,8 @@
 
         ],
         "columnDefs": [
-            { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6] },
-            { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6] },
+            { className: "text-left", targets: "_all" },
+            { className: "text-capitalize", targets: "_all" },
             {
                 targets: 5, // ticket_title index
                 render: function (data, type, row, meta) {

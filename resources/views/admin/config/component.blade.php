@@ -103,8 +103,8 @@
 
         ],
         "columnDefs": [
-            { className: "text-left", targets: [0] },
-            { className: "text-capitalize", targets: [0] }
+            { className: "text-left", targets: "_all" },
+            { className: "text-capitalize", targets: "_all" }
         ],
         "order": [
             [0, "desc"]
