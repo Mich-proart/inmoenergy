@@ -92,7 +92,7 @@
                                         <label for="inputZip">Segundo apellido: </label>
                                         <input wire:model="form.secondLastName" type="text" class="form-control"
                                                name="secondLastName"
-                                               id="second-LastName" {{$isBusinessPerson ? '' : 'required'}}
+                                               id="second-LastName"
                                             {{$isBusinessPerson ? 'disabled' : ''}}>
                                         @error('form.secondLastName')
                                         <span class="invalid-feedback" role="alert">
@@ -172,7 +172,7 @@
                                         <input wire:model="form.email" type="text"
                                                class="form-control @error('form.email') is-invalid @enderror"
                                                id="inputZip"
-                                               name="email" required>
+                                               name="email">
                                         @error('form.email')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -638,7 +638,7 @@
         });
         $wire.on('end-update', (e) => {
             Swal.fire({
-                position: "top-end",
+                position: "center",
                 icon: "success",
                 title: "Datos actualizados correctamente",
                 showConfirmButton: false,
