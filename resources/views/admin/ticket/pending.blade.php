@@ -81,7 +81,7 @@
 <script src="/vendor/custom/functions.code.js"></script>
 <script>
     const table = new DataTable('#ticket-content', {
-        dom: 'Bfrtip',
+        dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
         buttons: [
             {
                 extend: 'excelHtml5',

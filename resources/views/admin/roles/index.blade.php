@@ -76,7 +76,7 @@
 
 <script>
     const table = new DataTable('#roles-content', {
-        dom: 'Bfrtip',
+        dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
         buttons: [
             {
                 extend: 'excelHtml5',

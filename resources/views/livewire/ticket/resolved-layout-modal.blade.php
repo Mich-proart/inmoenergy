@@ -146,7 +146,7 @@
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             const table = new DataTable('#ticket-content', {
-                dom: 'Bfrtip',
+                dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
                 buttons: [
                     {
                         extend: 'excelHtml5',
