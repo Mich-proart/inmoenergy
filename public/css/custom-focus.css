@@ -30,3 +30,31 @@ textarea:focus {
 .main-sidebar .brand-link {
     background-color: inherit !important;
 }
+
+/* Fix for Point 24: Reduce table font size for 1800px resolution */
+.table {
+    font-size: 14px !important;
+}
+
+.table thead th {
+    font-size: 14px !important;
+}
+
+.table tbody td {
+    font-size: 14px !important;
+}
+
+/* Also reduce DataTables control elements */
+.dataTables_wrapper {
+    font-size: 14px !important;
+}
+
+.dataTables_info,
+.dataTables_paginate {
+    font-size: 14px !important;
+}
+
+/* Ensure buttons also use smaller font */
+.dt-buttons .btn {
+    font-size: 14px !important;
+}

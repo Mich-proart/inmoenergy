@@ -72,7 +72,7 @@
                     <thead>
                         <tr>
                             <th>Entrada</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>

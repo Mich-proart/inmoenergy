@@ -247,7 +247,7 @@
                             <th>Oficina</th>
                             <th>Grupo</th>
                             <th>Emisor trámite</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                             <th>Entrada</th>
                             <th>Asignación</th>
                             <th>Tipo</th>

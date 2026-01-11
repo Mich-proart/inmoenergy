@@ -19,7 +19,7 @@
                             <th>Tipo</th>
                             <th>Ticket</th>
                             <th>Estado</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
