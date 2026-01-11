@@ -78,8 +78,8 @@
 
             ],
             "columnDefs": [
-                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
+                { className: "text-left", targets: "_all" },
+                { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
                 {
                     targets: 6, // tickets index
@@ -104,7 +104,7 @@
                 text: "Al abrir iniciará su proceso de resolución.",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#368D68",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "si",
                 cancelButtonText: "no"

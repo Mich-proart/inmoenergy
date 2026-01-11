@@ -221,6 +221,7 @@ class EditFormalityForm extends Component
                 $stored_file = $data->with('files')->first()->files->first();
                 if ($file) {
                     $this->fileUploadigService
+                        ->setModel($data)
                         ->addFile($file)
                         ->setConfigId($object['configId'])
                         ->force_replace($stored_file);
@@ -235,6 +236,7 @@ class EditFormalityForm extends Component
                     $target_file = $stored_client_client->where('config_id', $value['configId'])->first();
                     if ($target_file) {
                         $this->fileUploadigService
+                            ->setModel($data->client)
                             ->addFile($value['file'])
                             ->setConfigId($value['configId'])
                             ->force_replace($target_file);

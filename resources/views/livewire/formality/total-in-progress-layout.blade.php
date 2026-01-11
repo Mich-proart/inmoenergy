@@ -247,7 +247,7 @@
                             <th>Oficina</th>
                             <th>Grupo</th>
                             <th>Emisor trámite</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                             <th>Entrada</th>
                             <th>Asignación</th>
                             <th>Tipo</th>
@@ -355,8 +355,8 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                    { className: "text-left", targets: "_all" },
+                    { className: "text-capitalize", targets: "_all" },
                     { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
                 ],
                 "order": [
@@ -388,7 +388,7 @@
                     text: "Al abrir iniciará su proceso de tramitación.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
+                    confirmButtonColor: "#368D68",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "si",
                     cancelButtonText: "no"

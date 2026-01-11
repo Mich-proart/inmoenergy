@@ -122,8 +122,8 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+                    { className: "text-left", targets: "_all" },
+                    { className: "text-capitalize", targets: "_all" },
                     { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
                     {
                         targets: 10, // observation index
@@ -151,7 +151,7 @@
                     text: "Al abrir iniciará su proceso de tramitación.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
+                    confirmButtonColor: "#368D68",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "si",
                     cancelButtonText: "no"

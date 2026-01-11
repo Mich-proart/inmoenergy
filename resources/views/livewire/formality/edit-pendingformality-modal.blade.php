@@ -72,7 +72,7 @@
                     <thead>
                         <tr>
                             <th>Entrada</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
@@ -280,8 +280,8 @@
             ],
                         "columnDefs": [
 
-                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9] },
+                { className: "text-left", targets: "_all" },
+                { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10] },
             ], "order": [
                 [0, "desc"]

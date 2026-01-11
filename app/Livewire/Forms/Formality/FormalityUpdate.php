@@ -166,7 +166,7 @@ class FormalityUpdate extends Form
         'formalityTypeId' => 'required|nullable|exists:component_option,id',
         'serviceIds' => 'required|nullable|exists:component_option,id',
         'name' => 'required|nullable|string',
-        'email' => 'required|nullable|email',
+        'email' => 'nullable|email',
         'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
         //'phone' => 'required|nullable|string|spanish_phone',
         'clientTypeId' => 'required|nullable|integer|exists:component_option,id',

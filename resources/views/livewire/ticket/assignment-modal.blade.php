@@ -19,7 +19,7 @@
                             <th>Tipo</th>
                             <th>Ticket</th>
                             <th>Estado</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -155,8 +155,8 @@
 
             ],
             "columnDefs": [
-                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+                { className: "text-left", targets: "_all" },
+                { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
             ], "order": [
                 [7, "desc"]

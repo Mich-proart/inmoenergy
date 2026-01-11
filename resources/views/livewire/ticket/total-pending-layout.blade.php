@@ -20,7 +20,7 @@
                             <th>Tipo</th>
                             <th>Ticket</th>
                             <th>Estado</th>
-                            <th>Usuario asignado</th>
+                            <th>Asignado</th>
                         </tr>
                     </thead>
 
@@ -86,8 +86,8 @@
 
             ],
             "columnDefs": [
-                { className: "text-left", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
+                { className: "text-left", targets: "_all" },
+                { className: "text-capitalize", targets: "_all" }
                 ],
             "order": [
                 [7, "desc"]
@@ -105,7 +105,7 @@
                 text: "Al abrir iniciará su proceso de resolución.",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#368D68",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "si",
                 cancelButtonText: "no"

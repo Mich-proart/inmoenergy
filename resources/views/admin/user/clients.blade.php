@@ -69,6 +69,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')
@@ -124,8 +125,8 @@
             },
         ],
         "columnDefs": [
-            { className: "text-left", targets: [0, 1, 2, 3] },
-            { className: "text-capitalize", targets: [1, 2, 3] }
+            { className: "text-left", targets: "_all" },
+            { className: "text-capitalize", targets: "_all" }
         ],
         "order": [
             [0, "desc"]

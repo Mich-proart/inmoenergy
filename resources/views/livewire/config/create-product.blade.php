@@ -147,8 +147,8 @@
 
             ],
             "columnDefs": [
-                { className: "text-left", targets: [0, 1, 2] },
-                { className: "text-capitalize", targets: [0, 1, 2] },
+                { className: "text-left", targets: "_all" },
+                { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2] }
             ],
             "order": [

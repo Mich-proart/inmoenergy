@@ -14,17 +14,32 @@ class HomeController extends Controller
 
     public function __construct(
         private readonly FormalityQueryService $formalityQueryService,
-        private readonly TicketQueryService    $ticketQueryService
-    )
-    {
+        private readonly TicketQueryService $ticketQueryService
+    ) {
         $this->middleware('auth');
     }
 
     public function index()
     {
-        $role = auth()->user()->roles()->first();
+        $user = auth()->user();
+
+        // Ensure user is authenticated
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        // Get user's first role with null check
+        $role = $user->roles()->first();
+
+        if (!$role) {
+            // User has no role assigned - redirect with error
+            auth()->logout();
+            return redirect()->route('login')
+                ->withErrors(['error' => 'No role assigned to your account. Please contact administrator.']);
+        }
+
         $roleId = $role->id;
-        $userId = auth()->user()->id;
+        $userId = $user->id;
 
         $sections = Section::with([
             'programs' => function ($query) use ($roleId) {
