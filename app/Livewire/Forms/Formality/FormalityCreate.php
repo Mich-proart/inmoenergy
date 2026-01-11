@@ -116,9 +116,6 @@ class FormalityCreate extends Form
 
     public function getClientDto()
     {
-        if (empty($this->email)) {
-            $this->email = $this->documentNumber . '@lenders.com';
-        }
         return [
             'name' => $this->name,
             'first_last_name' => $this->firstLastName,
