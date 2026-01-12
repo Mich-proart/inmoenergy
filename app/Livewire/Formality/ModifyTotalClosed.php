@@ -203,6 +203,7 @@ class ModifyTotalClosed extends Component
                     //'inputs.*.file.required' => 'Selecione un archivo.',
                     'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
                     'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
+                    'inputs.*.file.uploaded' => 'El archivo debe ser menor a 5MB.',
                 ]);
 
                 $file = $object['file'];
@@ -238,6 +239,10 @@ class ModifyTotalClosed extends Component
 
             DB::commit();
             return redirect()->route('admin.formality.total.closed');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire can handle them properly
+            DB::rollBack();
+            throw $e;
         } catch (\Throwable $th) {
 
             DB::rollBack();
