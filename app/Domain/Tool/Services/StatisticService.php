@@ -83,7 +83,7 @@ class StatisticService
         $groupBy = $groupByService ? 'service_id' : $this->searchBasedOn;
         
         return $formalities->groupBy($groupBy)->map(function ($items) use ($groupByService) {
-            // Active/completed statuses
+            // Active/completed statuses (including Baja as per requirement point 26)
             $activeCount = $items->filter(function ($item) {
                 return in_array($item->status->name, [
                     FormalityStatusEnum::PENDIENTE->value,
@@ -91,16 +91,17 @@ class StatisticService
                     FormalityStatusEnum::EN_CURSO->value,
                     FormalityStatusEnum::TRAMITADO->value,
                     FormalityStatusEnum::EN_VIGOR->value,
-                    FormalityStatusEnum::FINALIZADO->value
+                    FormalityStatusEnum::FINALIZADO->value,
+                    FormalityStatusEnum::BAJA->value  // Added as per point 26
                 ]);
             })->count();
             
-            // Baja status count
+            // Baja status count (for separate tracking)
             $bajaCount = $items->filter(function ($item) {
                 return $item->status->name === FormalityStatusEnum::BAJA->value;
             })->count();
             
-            // Difference
+            // Difference (activeCount now includes Baja, so this is the count excluding Baja)
             $differenceCount = $activeCount - $bajaCount;
             
             // Determine label based on grouping

@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 
+@section('classes_body', 'layout-fixed layout-navbar-fixed sidebar-mini sidebar-closed sidebar-collapse')
 
 @section('meta_tags')
 <meta name="version" content="{{ config('app.version') }}">
