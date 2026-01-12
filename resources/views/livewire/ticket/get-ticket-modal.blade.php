@@ -18,20 +18,20 @@
                     <table class="table table-hover table-sm">
                         <thead>
                         <tr>
-                            <th scope="col text-center">
-                                <p class="text-center fs-6">Emisión</p>
+                            <th scope="col text-left">
+                                <p class="text-left fs-6">Emisión</p>
                             </th>
-                            <th scope="col text-center">
-                                <p class="text-center fs-6">Emisor</p>
+                            <th scope="col text-left">
+                                <p class="text-left fs-6">Emisor</p>
                             </th>
-                            <th scope="col text-center">
-                                <p class="text-center fs-6">Tipo de ticket</p>
+                            <th scope="col text-left">
+                                <p class="text-left fs-6">Tipo de ticket</p>
                             </th>
-                            <th scope="col text-center">
-                                <p class="text-center fs-6">Ticket</p>
+                            <th scope="col text-left">
+                                <p class="text-left fs-6">Ticket</p>
                             </th>
-                            <th scope="col text-center">
-                                <p class="text-center fs-6">Estado ticket</p>
+                            <th scope="col text-left">
+                                <p class="text-left fs-6">Estado ticket</p>
                             </th>
                         </tr>
                         </thead>
@@ -42,22 +42,22 @@
                                     class="table-light"
                                     style="cursor: pointer;">
                                     <td>
-                                        <p class="text-center fs-6">
+                                        <p class="text-left fs-6">
                                             {{ $item->created_at }}
                                         </p>
                                     </td>
                                     <td>
-                                        <p class="text-center fs-6">
+                                        <p class="text-left fs-6">
                                             {{ ucfirst($item->issuer->name . ' ' . $item->issuer->first_last_name . ' ' . $item->issuer->second_last_name) }}
                                         </p>
                                     </td>
                                     <td>
-                                        <p class="text-center fs-6">
+                                        <p class="text-left fs-6">
                                             {{ $item->type->name }}
                                         </p>
                                     </td>
                                     <td>
-                                        <p class="text-center fs-6">
+                                        <p class="text-left fs-6">
                                             {{ $item->ticket_title }}
                                         </p>
                                     </td>
@@ -202,7 +202,7 @@
 
         $wire.on('notification-created', (e) => {
             Swal.fire({
-                position: "top-end",
+                position: "center",
                 icon: "success",
                 title: e.title,
                 showConfirmButton: false,
