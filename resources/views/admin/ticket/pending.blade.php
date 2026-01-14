@@ -117,7 +117,7 @@
         ],
         "columnDefs": [
             { className: "text-left", targets: "_all" },
-            { className: "text-capitalize", targets: "_all" },
+            // { className: "text-capitalize", targets: "_all" },
             {
                 targets: 5, // tickets index
                 render: function (data, type, row, meta) {
