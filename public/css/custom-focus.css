@@ -58,3 +58,9 @@ textarea:focus {
 .dt-buttons .btn {
     font-size: 14px !important;
 }
+
+
+/* Capitalize only first letter of table cell content */
+.table tbody td::first-letter {
+    text-transform: uppercase;
+}
