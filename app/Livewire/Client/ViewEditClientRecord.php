@@ -294,6 +294,7 @@ class ViewEditClientRecord extends Component
             ];
         }
         $this->editingClient = false;
+        $this->resetValidation();
     }
 
     public function cancelAddressEdit()
@@ -314,6 +315,7 @@ class ViewEditClientRecord extends Component
             ];
         }
         $this->editingAddress = false;
+        $this->resetValidation();
     }
 
     public function render()
