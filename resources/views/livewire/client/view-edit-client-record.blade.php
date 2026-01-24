@@ -216,7 +216,7 @@
             <div class="col-md-5">
                 <div class="card card-success card-outline">
                     <div class="card-header">
-                        <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Dirección de suministro</h5>
+                        <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Dirección de suministro / correspondencia</h5>
                     </div>
                     <div class="card-body">
                         <div class="address-list">
@@ -225,6 +225,11 @@
                                     <div wire:click="selectAddress({{ $address->id }})" 
                                          class="address-item @if($selectedAddress && $selectedAddress->id == $address->id) active @endif">
                                         <div><strong>Dirección:</strong> 
+                                            @if($address->pivot->iscorrespondence)
+                                                <span class="badge badge-secondary float-right">Correspondencia</span>
+                                            @else
+                                                <span class="badge badge-secondary float-right">Suministro</span>
+                                            @endif 
                                             {{ $address->streetType ? $address->streetType->name : '' }} 
                                             {{ $address->street_name }} 
                                             {{ $address->street_number }}
