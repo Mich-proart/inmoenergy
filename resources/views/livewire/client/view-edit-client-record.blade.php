@@ -179,7 +179,13 @@
                             </div>
                             <div class="col-md-6">
                                 <label>IBAN:</label>
-
+                                <div class="form-check" style="margin-bottom: 10px;">
+                                    <input wire:model.live="clientForm.is_foreign_account" class="form-check-input" type="checkbox"
+                                        id="clientForm_is_foreign_account" @if(!$editingClient) disabled @endif>
+                                    <label class="form-check-label" for="clientForm_is_foreign_account">
+                                        Cuenta extranjera
+                                    </label>
+                                </div>
                                 <input type="text" wire:model="clientForm.IBAN" class="form-control" 
                                        @if(!$editingClient) disabled @endif>
                                 @error('clientForm.IBAN') <span class="text-danger">{{ $message }}</span> @enderror

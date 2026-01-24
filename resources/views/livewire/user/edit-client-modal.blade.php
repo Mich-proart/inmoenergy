@@ -182,6 +182,13 @@
                                 </div>
 
                                 <div class=" form-group">
+                                    <div class="form-check" style="margin-bottom: 10px;">
+                                        <input wire:model.live="form.is_foreign_account" class="form-check-input" type="checkbox"
+                                            id="is_foreign_account">
+                                        <label class="form-check-label" for="is_foreign_account">
+                                            Cuenta extranjera
+                                        </label>
+                                    </div>
                                     <label for="inputAddress2">Cuenta Bancaria: </label>
                                     <input wire:model="form.IBAN" type="text"
                                            class="form-control @error('form.IBAN') is-invalid @enderror" id="IBAN"
