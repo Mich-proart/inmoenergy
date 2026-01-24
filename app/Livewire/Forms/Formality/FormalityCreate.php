@@ -126,6 +126,7 @@ class FormalityCreate extends Form
             'document_number' => $this->documentNumber,
             'phone' => $this->phone,
             'IBAN' => $this->IBAN,
+            'is_foreign_account' => $this->is_foreign_account,
             'user_title_id' => $this->userTitleId,
         ];
     }

@@ -267,6 +267,15 @@
                         <input wire:model="form.IBAN" type="text" class="form-control" id="inputAddress2" placeholder=""
                             name="IBAN" required>
                     </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input wire:model.live="form.is_foreign_account" class="form-check-input" type="checkbox"
+                                id="is_foreign_account">
+                            <label class="form-check-label" for="is_foreign_account">
+                                Cuenta extranjera
+                            </label>
+                        </div>
+                    </div>
                 </section>
                 <section>
                     <div class="form-row" style="margin-top: 50px; margin-bottom: 25px">

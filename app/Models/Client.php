@@ -26,11 +26,17 @@ class Client extends Model
         'document_number',
         'phone',
         'IBAN',
+        'is_foreign_account',
         'user_title_id',
         'address_id',
         'isActive',
         'disabled_at',
         'country_id'
+    ];
+
+    protected $casts = [
+        'is_foreign_account' => 'boolean',
+        'isActive' => 'boolean',
     ];
 
 

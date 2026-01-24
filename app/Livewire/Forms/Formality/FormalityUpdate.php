@@ -49,6 +49,8 @@ class FormalityUpdate extends Form
     public $assigned_observation;
     public $observation;
 
+    public $is_foreign_account = false;
+
     public function setformality($formality)
     {
 
@@ -68,6 +70,7 @@ class FormalityUpdate extends Form
         $this->documentNumber = $client->document_number;
         $this->phone = $client->phone;
         $this->IBAN = $client->IBAN;
+        $this->is_foreign_account = $client->is_foreign_account ?? false;
         $this->provinceId = $address->location->province->id;
         $this->locationId = $address->location->id;
         $this->streetTypeId = $address->streetType->id;
@@ -115,7 +118,8 @@ class FormalityUpdate extends Form
             'phone' => $this->phone,
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,
-            'IBAN' => $this->IBAN
+            'IBAN' => $this->IBAN,
+            'is_foreign_account' => $this->is_foreign_account
         ];
     }
 
@@ -162,38 +166,41 @@ class FormalityUpdate extends Form
         ];
     }
 
-    protected $rules = [
-        'formalityTypeId' => 'required|nullable|exists:component_option,id',
-        'serviceIds' => 'required|nullable|exists:component_option,id',
-        'name' => 'required|nullable|string',
-        'email' => 'nullable|email',
-        'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
-        //'phone' => 'required|nullable|string|spanish_phone',
-        'clientTypeId' => 'required|nullable|integer|exists:component_option,id',
-        'IBAN' => 'required|nullable|string|iban',
-        'locationId' => 'required|nullable|exists:location,id',
-        'streetTypeId' => 'required|nullable|exists:component_option,id',
-        'housingTypeId' => 'required|nullable|exists:component_option,id',
-        'streetName' => 'required|nullable|string',
-        'streetNumber' => 'required|nullable|string',
-        'zipCode' => 'required|nullable|string|spanish_postal_code',
-        'block' => 'sometimes|nullable|string',
-        'blockstaircase' => 'sometimes|nullable|string',
-        'floor' => 'sometimes|nullable|string',
-        'door' => 'sometimes|nullable|string',
-        'client_locationId' => 'sometimes|nullable|integer|exists:location,id',
-        'client_streetTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
-        'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
-        'client_streetName' => 'sometimes|nullable|string',
-        'client_streetNumber' => 'sometimes|nullable|string',
-        'client_zipCode' => 'sometimes|nullable|spanish_postal_code',
-        'client_block' => 'sometimes|nullable|string',
-        'client_blockstaircase' => 'sometimes|nullable|string',
-        'client_floor' => 'sometimes|nullable|string',
-        'client_door' => 'sometimes|nullable|string',
-        'observation' => 'sometimes|nullable|string|max:255',
-        'assigned_observation' => 'sometimes|nullable|string|max:255'
-    ];
+    public function rules()
+    {
+        return [
+            'formalityTypeId' => 'required|nullable|exists:component_option,id',
+            'serviceIds' => 'required|nullable|exists:component_option,id',
+            'name' => 'required|nullable|string',
+            'email' => 'nullable|email',
+            'documentTypeId' => 'required|nullable|integer|exists:component_option,id',
+            //'phone' => 'required|nullable|string|spanish_phone',
+            'clientTypeId' => 'required|nullable|integer|exists:component_option,id',
+            'IBAN' => $this->is_foreign_account ? 'required|nullable|string' : 'required|nullable|string|iban',
+            'locationId' => 'required|nullable|exists:location,id',
+            'streetTypeId' => 'required|nullable|exists:component_option,id',
+            'housingTypeId' => 'required|nullable|exists:component_option,id',
+            'streetName' => 'required|nullable|string',
+            'streetNumber' => 'required|nullable|string',
+            'zipCode' => 'required|nullable|string|spanish_postal_code',
+            'block' => 'sometimes|nullable|string',
+            'blockstaircase' => 'sometimes|nullable|string',
+            'floor' => 'sometimes|nullable|string',
+            'door' => 'sometimes|nullable|string',
+            'client_locationId' => 'sometimes|nullable|integer|exists:location,id',
+            'client_streetTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
+            'client_housingTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
+            'client_streetName' => 'sometimes|nullable|string',
+            'client_streetNumber' => 'sometimes|nullable|string',
+            'client_zipCode' => 'sometimes|nullable|spanish_postal_code',
+            'client_block' => 'sometimes|nullable|string',
+            'client_blockstaircase' => 'sometimes|nullable|string',
+            'client_floor' => 'sometimes|nullable|string',
+            'client_door' => 'sometimes|nullable|string',
+            'observation' => 'sometimes|nullable|string|max:255',
+            'assigned_observation' => 'sometimes|nullable|string|max:255'
+        ];
+    }
 
     protected $messages = [
         'formalityTypeId.required' => 'Tipo de formulario es requerido',
