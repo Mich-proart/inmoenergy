@@ -47,6 +47,7 @@ class ViewEditClientRecord extends Component
         'IBAN' => '',
         'user_title_id' => '',
         'country_id' => '',
+        'is_foreign_account' => false,
     ];
 
     // Address form data
@@ -118,6 +119,7 @@ class ViewEditClientRecord extends Component
                 'IBAN' => $this->selectedClient->IBAN,
                 'user_title_id' => $this->selectedClient->user_title_id,
                 'country_id' => $this->selectedClient->country_id,
+                'is_foreign_account' => $this->selectedClient->is_foreign_account ?? false,
             ];
 
             // Select first address if available
@@ -181,12 +183,13 @@ class ViewEditClientRecord extends Component
         // Base validation rules
         $rules = [
             'clientForm.name' => 'required|string|max:255',
-            'clientForm.email' => 'required|email',
+            'clientForm.email' => 'nullable|email',
             'clientForm.client_type_id' => 'required|exists:component_option,id',
             'clientForm.document_type_id' => 'required|exists:component_option,id',
             'clientForm.phone' => $phoneRule,
-            'clientForm.IBAN' => 'nullable|string|iban',
+            'clientForm.IBAN' => $this->clientForm['is_foreign_account'] ? 'nullable|string' : 'nullable|string|iban',
             'clientForm.country_id' => 'required|exists:country,id',
+            'clientForm.is_foreign_account' => 'boolean',
         ];
         
         $messages = [
@@ -287,6 +290,7 @@ class ViewEditClientRecord extends Component
                 'IBAN' => $this->selectedClient->IBAN,
                 'user_title_id' => $this->selectedClient->user_title_id,
                 'country_id' => $this->selectedClient->country_id,
+                'is_foreign_account' => $this->selectedClient->is_foreign_account ?? false,
             ];
         }
         $this->editingClient = false;

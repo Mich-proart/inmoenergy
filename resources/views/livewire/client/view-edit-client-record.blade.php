@@ -179,6 +179,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label>IBAN:</label>
+
                                 <input type="text" wire:model="clientForm.IBAN" class="form-control" 
                                        @if(!$editingClient) disabled @endif>
                                 @error('clientForm.IBAN') <span class="text-danger">{{ $message }}</span> @enderror
