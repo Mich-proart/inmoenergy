@@ -95,7 +95,7 @@
                                 @if(!$editingClient)
                                     <input type="text" value="{{ $selectedClient->clientType ? ucfirst($selectedClient->clientType->name) : '' }}" class="form-control" disabled>
                                 @else
-                                    <select wire:model="clientForm.client_type_id" class="form-control">
+                                    <select wire:model.live="clientForm.client_type_id" class="form-control">
                                         <option value="">-- seleccione --</option>
                                         @foreach($clientTypes as $type)
                                             <option value="{{ $type->id }}">{{ ucfirst($type->name) }}</option>
@@ -109,7 +109,7 @@
                                 @if(!$editingClient)
                                     <input type="text" value="{{ $selectedClient->title ? ucfirst($selectedClient->title->name) : '' }}" class="form-control" disabled>
                                 @else
-                                    <select wire:model="clientForm.user_title_id" class="form-control">
+                                    <select wire:model="clientForm.user_title_id" class="form-control" @if($nameLabel === 'Razón social') disabled @endif>
                                         <option value="">-- seleccione --</option>
                                         @foreach($userTitles as $title)
                                             <option value="{{ $title->id }}">{{ ucfirst($title->name) }}</option>
@@ -123,7 +123,7 @@
                                 @if(!$editingClient)
                                     <input type="text" value="{{ $selectedClient->documentType ? ucfirst($selectedClient->documentType->name) : '' }}" class="form-control" disabled>
                                 @else
-                                    <select wire:model="clientForm.document_type_id" class="form-control">
+                                    <select wire:model="clientForm.document_type_id" class="form-control" @if($nameLabel === 'Razón social') disabled @endif>
                                         <option value="">-- seleccione --</option>
                                         @foreach($documentTypes as $docType)
                                             <option value="{{ $docType->id }}">{{ ucfirst($docType->name) }}</option>
@@ -136,7 +136,7 @@
 
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label>Nombre:</label>
+                                <label>{{ $nameLabel }}:</label>
                                 <input type="text" wire:model="clientForm.name" class="form-control" 
                                        @if(!$editingClient) disabled @endif>
                                 @error('clientForm.name') <span class="text-danger">{{ $message }}</span> @enderror
@@ -144,13 +144,13 @@
                             <div class="col-md-4">
                                 <label>Primer apellido:</label>
                                 <input type="text" wire:model="clientForm.first_last_name" class="form-control" 
-                                       @if(!$editingClient) disabled @endif>
+                                       @if(!$editingClient || $nameLabel === 'Razón social') disabled @endif>
                                 @error('clientForm.first_last_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-4">
                                 <label>Segundo apellido:</label>
                                 <input type="text" wire:model="clientForm.second_last_name" class="form-control" 
-                                       @if(!$editingClient) disabled @endif>
+                                       @if(!$editingClient || $nameLabel === 'Razón social') disabled @endif>
                                 @error('clientForm.second_last_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
