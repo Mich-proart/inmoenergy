@@ -95,7 +95,7 @@
                                 @if(!$editingClient)
                                     <input type="text" value="{{ $selectedClient->clientType ? ucfirst($selectedClient->clientType->name) : '' }}" class="form-control" disabled>
                                 @else
-                                    <select wire:model="clientForm.client_type_id" class="form-control">
+                                    <select wire:model.live="clientForm.client_type_id" class="form-control">
                                         <option value="">-- seleccione --</option>
                                         @foreach($clientTypes as $type)
                                             <option value="{{ $type->id }}">{{ ucfirst($type->name) }}</option>
@@ -109,7 +109,7 @@
                                 @if(!$editingClient)
                                     <input type="text" value="{{ $selectedClient->title ? ucfirst($selectedClient->title->name) : '' }}" class="form-control" disabled>
                                 @else
-                                    <select wire:model="clientForm.user_title_id" class="form-control">
+                                    <select wire:model="clientForm.user_title_id" class="form-control" @if($nameLabel === 'Razón social') disabled @endif>
                                         <option value="">-- seleccione --</option>
                                         @foreach($userTitles as $title)
                                             <option value="{{ $title->id }}">{{ ucfirst($title->name) }}</option>
@@ -123,7 +123,7 @@
                                 @if(!$editingClient)
                                     <input type="text" value="{{ $selectedClient->documentType ? ucfirst($selectedClient->documentType->name) : '' }}" class="form-control" disabled>
                                 @else
-                                    <select wire:model="clientForm.document_type_id" class="form-control">
+                                    <select wire:model="clientForm.document_type_id" class="form-control" @if($nameLabel === 'Razón social') disabled @endif>
                                         <option value="">-- seleccione --</option>
                                         @foreach($documentTypes as $docType)
                                             <option value="{{ $docType->id }}">{{ ucfirst($docType->name) }}</option>
@@ -136,7 +136,7 @@
 
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label>Nombre:</label>
+                                <label>{{ $nameLabel }}:</label>
                                 <input type="text" wire:model="clientForm.name" class="form-control" 
                                        @if(!$editingClient) disabled @endif>
                                 @error('clientForm.name') <span class="text-danger">{{ $message }}</span> @enderror
@@ -144,13 +144,13 @@
                             <div class="col-md-4">
                                 <label>Primer apellido:</label>
                                 <input type="text" wire:model="clientForm.first_last_name" class="form-control" 
-                                       @if(!$editingClient) disabled @endif>
+                                       @if(!$editingClient || $nameLabel === 'Razón social') disabled @endif>
                                 @error('clientForm.first_last_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-4">
                                 <label>Segundo apellido:</label>
                                 <input type="text" wire:model="clientForm.second_last_name" class="form-control" 
-                                       @if(!$editingClient) disabled @endif>
+                                       @if(!$editingClient || $nameLabel === 'Razón social') disabled @endif>
                                 @error('clientForm.second_last_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -179,6 +179,13 @@
                             </div>
                             <div class="col-md-6">
                                 <label>IBAN:</label>
+                                <div class="form-check" style="margin-bottom: 10px;">
+                                    <input wire:model.live="clientForm.is_foreign_account" class="form-check-input" type="checkbox"
+                                        id="clientForm_is_foreign_account" @if(!$editingClient) disabled @endif>
+                                    <label class="form-check-label" for="clientForm_is_foreign_account">
+                                        Cuenta extranjera
+                                    </label>
+                                </div>
                                 <input type="text" wire:model="clientForm.IBAN" class="form-control" 
                                        @if(!$editingClient) disabled @endif>
                                 @error('clientForm.IBAN') <span class="text-danger">{{ $message }}</span> @enderror
@@ -209,7 +216,7 @@
             <div class="col-md-5">
                 <div class="card card-success card-outline">
                     <div class="card-header">
-                        <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Dirección de suministro</h5>
+                        <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Dirección de suministro / correspondencia</h5>
                     </div>
                     <div class="card-body">
                         <div class="address-list">
@@ -218,6 +225,11 @@
                                     <div wire:click="selectAddress({{ $address->id }})" 
                                          class="address-item @if($selectedAddress && $selectedAddress->id == $address->id) active @endif">
                                         <div><strong>Dirección:</strong> 
+                                            @if($address->pivot->iscorrespondence)
+                                                <span class="badge badge-secondary float-right">Correspondencia</span>
+                                            @else
+                                                <span class="badge badge-secondary float-right">Suministro</span>
+                                            @endif 
                                             {{ $address->streetType ? $address->streetType->name : '' }} 
                                             {{ $address->street_name }} 
                                             {{ $address->street_number }}

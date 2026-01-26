@@ -58,7 +58,7 @@
             </section>
         </div>
     </div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div wire:ignore class="card-body table-responsive p-0">
             <table id="office-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>

@@ -47,6 +47,7 @@ class ViewEditClientRecord extends Component
         'IBAN' => '',
         'user_title_id' => '',
         'country_id' => '',
+        'is_foreign_account' => false,
     ];
 
     // Address form data
@@ -63,7 +64,10 @@ class ViewEditClientRecord extends Component
         'door' => '',
     ];
 
+    public $nameLabel = 'Nombre';
+
     // Province selection for address
+
     public $target_provinceId;
 
     protected $userService;
@@ -118,6 +122,7 @@ class ViewEditClientRecord extends Component
                 'IBAN' => $this->selectedClient->IBAN,
                 'user_title_id' => $this->selectedClient->user_title_id,
                 'country_id' => $this->selectedClient->country_id,
+                'is_foreign_account' => $this->selectedClient->is_foreign_account ?? false,
             ];
 
             // Select first address if available
@@ -127,6 +132,13 @@ class ViewEditClientRecord extends Component
 
             $this->editingClient = false;
             $this->editingAddress = false;
+
+            // Set initial name label
+            if ($this->selectedClient->clientType && $this->selectedClient->clientType->name === ClientTypeEnum::BUSINESS->value) {
+                $this->nameLabel = 'Razón social';
+            } else {
+                $this->nameLabel = 'Nombre';
+            }
         }
     }
 
@@ -168,8 +180,39 @@ class ViewEditClientRecord extends Component
         $this->editingAddress = true;
     }
 
+    public function updatedClientForm($value, $key)
+    {
+        if ($key === 'client_type_id') {
+            $clientType = ComponentOption::find($value);
+
+            if ($clientType) {
+                if ($clientType->name === ClientTypeEnum::BUSINESS->value) {
+                    $this->nameLabel = 'Razón social';
+                    
+                    // Reset and disable fields for business
+                    $this->clientForm['first_last_name'] = null;
+                    $this->clientForm['second_last_name'] = null;
+                    $this->clientForm['user_title_id'] = null;
+
+                    // Set default document type to CIF if available
+                    $cifType = ComponentOption::where('name', DocumentTypeEnum::CIF->value)->first();
+                    if ($cifType) {
+                        $this->clientForm['document_type_id'] = $cifType->id;
+                    }
+                } else {
+                    $this->nameLabel = 'Nombre';
+                }
+            }
+        }
+    }
+
     public function saveClient()
     {
+        // Sanitize nullable fields
+        if (empty($this->clientForm['user_title_id'])) $this->clientForm['user_title_id'] = null;
+        if (empty($this->clientForm['first_last_name'])) $this->clientForm['first_last_name'] = null;
+        if (empty($this->clientForm['second_last_name'])) $this->clientForm['second_last_name'] = null;
+
         // Get country for phone validation
         $country = Country::find($this->clientForm['country_id']);
         $phoneRule = 'required|string|phone:' . ($country ? $country->iso2 : 'ES');
@@ -181,12 +224,13 @@ class ViewEditClientRecord extends Component
         // Base validation rules
         $rules = [
             'clientForm.name' => 'required|string|max:255',
-            'clientForm.email' => 'required|email',
+            'clientForm.email' => 'nullable|email',
             'clientForm.client_type_id' => 'required|exists:component_option,id',
             'clientForm.document_type_id' => 'required|exists:component_option,id',
             'clientForm.phone' => $phoneRule,
-            'clientForm.IBAN' => 'nullable|string|iban',
+            'clientForm.IBAN' => $this->clientForm['is_foreign_account'] ? 'nullable|string' : 'nullable|string|iban',
             'clientForm.country_id' => 'required|exists:country,id',
+            'clientForm.is_foreign_account' => 'boolean',
         ];
         
         $messages = [
@@ -287,9 +331,17 @@ class ViewEditClientRecord extends Component
                 'IBAN' => $this->selectedClient->IBAN,
                 'user_title_id' => $this->selectedClient->user_title_id,
                 'country_id' => $this->selectedClient->country_id,
+                'is_foreign_account' => $this->selectedClient->is_foreign_account ?? false,
             ];
+             // Reset name label
+             if ($this->selectedClient->clientType && $this->selectedClient->clientType->name === ClientTypeEnum::BUSINESS->value) {
+                $this->nameLabel = 'Razón social';
+            } else {
+                $this->nameLabel = 'Nombre';
+            }
         }
         $this->editingClient = false;
+        $this->resetValidation();
     }
 
     public function cancelAddressEdit()
@@ -310,6 +362,7 @@ class ViewEditClientRecord extends Component
             ];
         }
         $this->editingAddress = false;
+        $this->resetValidation();
     }
 
     public function render()

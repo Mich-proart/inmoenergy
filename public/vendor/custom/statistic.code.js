@@ -75,7 +75,7 @@ function horizontalBarfnt(set_data) {
         labels: result.labels,
         datasets: [
             {
-                label: 'Activos/Completados',
+                label: 'Contratos tramitados',
                 data: result.activeData,
                 backgroundColor: users.activeColor
             },
@@ -208,7 +208,7 @@ function chartsInit() {
                 labels: [],
                 datasets: [
                     {
-                        label: 'Activos/Completados',
+                        label: 'Contratos tramitados',
                         backgroundColor: users.activeColor,
                         data: [],
                     },
