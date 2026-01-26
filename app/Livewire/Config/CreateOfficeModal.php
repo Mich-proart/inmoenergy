@@ -37,13 +37,13 @@ class CreateOfficeModal extends Component
         try {
 
             if ($this->office !== null) {
-                $this->office->update(['name' => strtolower($this->name)]);
+                $this->office->update(['name' => $this->name]);
                 DB::commit();
                 return redirect()->route('admin.config.offices', $this->business->id);
             }
 
             Office::create([
-                'name' => strtolower($this->name),
+                'name' => $this->name,
                 'business_group_id' => $this->business->id
             ]);
 

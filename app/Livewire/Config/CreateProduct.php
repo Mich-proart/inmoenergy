@@ -46,7 +46,7 @@ class CreateProduct extends Component
 
             if ($this->product !== null) {
                 $this->product->update([
-                    'name' => strtolower($this->name),
+                    'name' => $this->name,
                     'company_id' => $this->companyId
                 ]);
                 DB::commit();
@@ -54,7 +54,7 @@ class CreateProduct extends Component
             }
 
             Product::create([
-                'name' => strtolower($this->name),
+                'name' => $this->name,
                 'company_id' => $this->companyId
             ]);
             DB::commit();
