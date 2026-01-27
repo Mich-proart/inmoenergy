@@ -39,7 +39,7 @@ class CreateCompany extends Component
                 throw CustomException::badRequestException('Company already exists');
 
             Company::create([
-                'name' => strtolower($this->name),
+                'name' => $this->name,
                 'days_to_renew' => $this->days_to_renew
             ]);
             DB::commit();

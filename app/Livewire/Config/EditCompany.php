@@ -48,7 +48,7 @@ class EditCompany extends Component
         try {
 
             $updates = [
-                'name' => strtolower($this->company_name),
+                'name' => $this->company_name,
                 'days_to_renew' => $this->days_to_renew
             ];
 
@@ -83,7 +83,7 @@ class EditCompany extends Component
                 throw CustomException::badRequestException('Product already exists');
 
             Product::create([
-                'name' => strtolower($this->product_name),
+                'name' => $this->product_name,
                 'company_id' => $this->company->id
             ]);
             DB::commit();
