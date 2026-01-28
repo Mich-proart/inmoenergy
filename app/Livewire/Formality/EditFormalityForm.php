@@ -102,7 +102,7 @@ class EditFormalityForm extends Component
         if ($this->fileSet) {
             $this->files = $this->fileSet->files;
             $this->mountFilesInput();
-            //$this->addInput($this->formality->service_id);
+            $this->addInput($this->formality->service_id);
         }
 
         $this->changeCountry($formality->client->country_id);
@@ -157,10 +157,10 @@ class EditFormalityForm extends Component
             $this->service_file->pull($key);
 
         }
-        if ($serviceId !== $this->formality->service_id) {
-            $config = FileConfig::where('component_option_id', $serviceId)->first();
+        
+        $config = FileConfig::where('component_option_id', $serviceId)->first();
+        if ($config) {
             $this->service_file->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
-
         }
 
 
@@ -218,13 +218,21 @@ class EditFormalityForm extends Component
             if ($object != null && $object['file'] != null) {
 
                 $file = $object['file'];
-                $stored_file = $data->with('files')->first()->files->first();
+                // Refresh data to get files or use the relationship
+                $stored_file = $data->files->where('config_id', $object['configId'])->first();
+                
                 if ($file) {
-                    $this->fileUploadigService
+                    $uploader = $this->fileUploadigService
                         ->setModel($data)
                         ->addFile($file)
-                        ->setConfigId($object['configId'])
-                        ->force_replace($stored_file);
+                        ->setConfigId($object['configId']);
+                        
+                    if ($stored_file) {
+                         $uploader->force_replace($stored_file);
+                    } else {
+                         // If no file exists, just save the new one (though force_replace might handle null, safe to allow new upload too)
+                         $uploader->save();
+                    }
 
                 }
             }

@@ -667,7 +667,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <section x-show="!buttonDisabled">
                                 @if ($service_file)
                                     @foreach($service_file as $key => $file)
                                         <div class="row">
@@ -688,8 +688,6 @@
                                         </div>
                                     @endforeach
                                 @endif
-                            </div>
-                            <section x-show="!buttonDisabled">
                                 @if ($inputs)
                                     @foreach($inputs as $key => $input)
                                         <div class="row">
