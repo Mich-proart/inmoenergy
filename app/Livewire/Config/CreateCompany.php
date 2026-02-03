@@ -14,13 +14,14 @@ class CreateCompany extends Component
     public $days_to_renew;
 
     protected $rules = [
-        'name' => 'required|string|max:255',
+        'name' => 'required|string|max:255|unique:company,name',
         'days_to_renew' => 'required|integer|between:1,365',
     ];
 
     protected $messages = [
         'name.required' => 'Debes introducir un nombre',
         'name.max' => 'El nombre no puede superar los 255 caracteres',
+        'name.unique' => 'Ya existe una comercializadora con este nombre',
         'days_to_renew.required' => 'Debes introducir un día de renovación',
         'days_to_renew.integer' => 'El día de renovación debe ser un número',
         'days_to_renew.between' => 'El día de renovación debe estar entre 1 y 365 días',

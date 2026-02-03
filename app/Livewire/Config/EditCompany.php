@@ -47,11 +47,14 @@ class EditCompany extends Component
 
         try {
 
-            $found = Company::where('name', $this->company_name)->first();
-            if ($found) {
-                DB::rollBack();
-                session()->flash('error', 'Ya existe una comercializadora con este nombre');
-                return;
+            // Only check for duplicate names if the name has changed
+            if ($this->company_name !== $this->company->name) {
+                $found = Company::where('name', $this->company_name)->first();
+                if ($found) {
+                    DB::rollBack();
+                    session()->flash('error', 'Ya existe una comercializadora con este nombre');
+                    return;
+                }
             }
 
             $updates = [
