@@ -233,10 +233,11 @@ class CreateUserForm extends Component
 
 
 
-    #[On('change-businessGroup')]
-    public function changeBusinessGroup()
+    // #[On('change-businessGroup')]
+    public function updatedBusinessTarget()
     {
         $this->office_list = Office::where('business_group_id', $this->business_target)->get();
+        $this->officeId = null; // Reset office selection
     }
 
     public function render()
