@@ -47,6 +47,16 @@ class EditCompany extends Component
 
         try {
 
+            // Only check for duplicate names if the name has changed
+            if ($this->company_name !== $this->company->name) {
+                $found = Company::where('name', $this->company_name)->first();
+                if ($found) {
+                    DB::rollBack();
+                    session()->flash('error', 'Ya existe una comercializadora con este nombre');
+                    return;
+                }
+            }
+
             $updates = [
                 'name' => $this->company_name,
                 'days_to_renew' => $this->days_to_renew
@@ -54,11 +64,12 @@ class EditCompany extends Component
 
             Company::firstWhere('id', $this->company->id)->update($updates);
             DB::commit();
+            session()->flash('success', 'Comercializadora actualizada exitosamente');
             return redirect()->route('admin.company.manager');
         } catch (\Throwable $th) {
-
             DB::rollBack();
-            throw CustomException::badRequestException($th->getMessage());
+            session()->flash('error', 'Error al actualizar la comercializadora: ' . $th->getMessage());
+            return;
         }
     }
 
@@ -79,19 +90,23 @@ class EditCompany extends Component
 
         try {
             $found = Product::where('name', $this->product_name)->first();
-            if ($found)
-                throw CustomException::badRequestException('Product already exists');
+            if ($found) {
+                DB::rollBack();
+                session()->flash('error', 'Ya existe un producto con este nombre');
+                return;
+            }
 
             Product::create([
                 'name' => $this->product_name,
                 'company_id' => $this->company->id
             ]);
             DB::commit();
+            session()->flash('success', 'Producto creado exitosamente');
             return redirect()->route('admin.company.manager.details', $this->company->id);
         } catch (\Throwable $th) {
-
             DB::rollBack();
-            throw CustomException::badRequestException($th->getMessage());
+            session()->flash('error', 'Error al crear el producto: ' . $th->getMessage());
+            return;
         }
 
 

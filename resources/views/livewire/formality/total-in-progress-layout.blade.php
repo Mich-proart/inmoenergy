@@ -246,7 +246,7 @@
                         <tr>
                             <th>Oficina</th>
                             <th>Grupo</th>
-                            <th>Emisor trámite</th>
+                            <th>Emisor</th>
                             <th>Asignado</th>
                             <th>Entrada</th>
                             <th>Asignación</th>
@@ -313,7 +313,14 @@
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
-                    { data: 'office' },
+                    {
+                        data: 'office', render: function (data, type, row) {
+                            if (type === 'display') {
+                                return `<div style="width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${data}">${data}</div>`;
+                            }
+                            return data;
+                        }
+                    },
                     { data: 'business_group' },
                     { data: 'issuer' },
                     { data: 'assigned' },

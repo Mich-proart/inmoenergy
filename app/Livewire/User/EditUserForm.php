@@ -132,9 +132,9 @@ class EditUserForm extends Component
             [
                 'phone' => $phoneRule,
                 'name' => 'required|string',
-                'email' => 'required|email',
+                'email' => 'nullable|email',
                 'firstLastName' => 'required|string',
-                'secondLastName' => 'required|string',
+                'secondLastName' => 'nullable|string',
                 'documentTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
                 'documentNumber' => 'sometimes|nullable|string',
                 //'phone' => 'required|string|spanish_phone',
@@ -159,7 +159,7 @@ class EditUserForm extends Component
                 'documentTypeId.required' => 'El tipo de documento es requerido',
                 'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
                 'password.string' => 'La contraseña debe ser una cadena de caracteres',
-                'email.required' => 'El correo electronico es requerido',
+
                 'documentNumber.required' => 'El numero de documento es requerido',
                 'locationId.required' => 'La ubicacion es requerida',
                 'zipCode.spanish_postal_code' => 'El Código Postal no es valido',
@@ -173,11 +173,11 @@ class EditUserForm extends Component
 
             $rule = '';
             if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
-                $rule = 'required|string|min:9|max:9';
+                $rule = 'nullable|string|min:9|max:9';
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
-                $rule = DocumentRule::$DNI;
+                $rule = 'nullable|' . DocumentRule::$DNI;
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
-                $rule = DocumentRule::$NIE;
+                $rule = 'nullable|' . DocumentRule::$NIE;
             }
 
             $this->form->validate([

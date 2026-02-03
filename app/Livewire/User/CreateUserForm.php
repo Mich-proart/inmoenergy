@@ -100,9 +100,9 @@ class CreateUserForm extends Component
             [
                 'phone' => $phoneRule,
                 'name' => 'required|string',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'nullable|email|unique:users,email',
                 'firstLastName' => 'required|string',
-                'secondLastName' => 'required|string',
+                'secondLastName' => 'nullable|string',
                 'documentTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
                 'documentNumber' => 'sometimes|nullable|string',
                 'password' => 'required|string|min:8',
@@ -123,13 +123,11 @@ class CreateUserForm extends Component
                 'name.required' => 'El nombre es requerido',
                 'email.unique' => 'El correo electronico ya se encuentra registrado',
                 'email.email' => 'El correo electronico no es valido',
-                'email.required' => 'El correo electronico es requerido',
                 'password.string' => 'La contraseña debe ser una cadena de caracteres',
                 'phone.spanish_phone' => 'El numero de telefono no es valido',
                 'password.min' => 'La contraseña debe tener al menos 8 caracteres',
                 'password.required' => 'La contraseña es requerida',
                 'firstLastName.required' => 'El primer apellido es requerido',
-                'secondLastName.required' => 'El segundo apellido es requerido',
                 'documentTypeId.required' => 'El tipo de documento es requerido',
                 'documentNumber.required' => 'El numero de documento es requerido',
                 'incentiveTypeTd.required' => 'El tipo de incentivo es requerido',
@@ -145,11 +143,11 @@ class CreateUserForm extends Component
 
             $rule = '';
             if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
-                $rule = 'required|string|min:9|max:9';
+                $rule = 'nullable|string|min:9|max:9';
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
-                $rule = DocumentRule::$DNI;
+                $rule = 'nullable|' . DocumentRule::$DNI;
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
-                $rule = DocumentRule::$NIE;
+                $rule = 'nullable|' . DocumentRule::$NIE;
             }
 
             $this->form->validate([
@@ -235,10 +233,11 @@ class CreateUserForm extends Component
 
 
 
-    #[On('change-businessGroup')]
-    public function changeBusinessGroup()
+    // #[On('change-businessGroup')]
+    public function updatedBusinessTarget()
     {
         $this->office_list = Office::where('business_group_id', $this->business_target)->get();
+        $this->officeId = null; // Reset office selection
     }
 
     public function render()
