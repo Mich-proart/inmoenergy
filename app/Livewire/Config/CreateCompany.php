@@ -35,19 +35,23 @@ class CreateCompany extends Component
 
         try {
             $found = Company::where('name', $this->name)->first();
-            if ($found)
-                throw CustomException::badRequestException('Company already exists');
+            if ($found) {
+                DB::rollBack();
+                session()->flash('error', 'Ya existe una comercializadora con este nombre');
+                return;
+            }
 
             Company::create([
                 'name' => $this->name,
                 'days_to_renew' => $this->days_to_renew
             ]);
             DB::commit();
+            session()->flash('success', 'Comercializadora creada exitosamente');
             return redirect()->route('admin.company.manager');
         } catch (\Throwable $th) {
-
             DB::rollBack();
-            throw CustomException::badRequestException($th->getMessage());
+            session()->flash('error', 'Error al crear la comercializadora: ' . $th->getMessage());
+            return;
         }
 
     }
