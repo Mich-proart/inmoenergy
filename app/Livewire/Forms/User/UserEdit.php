@@ -93,9 +93,9 @@ class UserEdit extends Form
 
     protected $rules = [
         'name' => 'required|string',
-        'email' => 'required|email',
+        'email' => 'nullable|email',
         'firstLastName' => 'required|string',
-        'secondLastName' => 'required|string',
+        'secondLastName' => 'nullable|string',
         'documentTypeId' => 'required|integer|exists:component_option,id',
         'documentNumber' => 'required|string',
         //'phone' => 'required|string|spanish_phone',
@@ -117,7 +117,7 @@ class UserEdit extends Form
         'documentTypeId.required' => 'El tipo de documento es requerido',
         'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
         'password.string' => 'La contraseña debe ser una cadena de caracteres',
-        'email.required' => 'El correo electronico es requerido',
+
         'documentNumber.required' => 'El numero de documento es requerido',
         'phone.spanish_phone' => 'El numero de telefono no es valido',
         'phone.required' => 'El numero de telefono es requerido',
@@ -132,10 +132,10 @@ class UserEdit extends Form
 
         $data = [
             'name' => $this->name,
-            'email' => $this->email,
+            'email' => empty($this->email) ? null : $this->email,
             'isWorker' => $this->isWorker,
             'first_last_name' => $this->firstLastName,
-            'second_last_name' => $this->secondLastName,
+            'second_last_name' => empty($this->secondLastName) ? null : $this->secondLastName,
             'phone' => $this->phone,
             'document_number' => $this->documentNumber,
             'document_type_id' => $this->documentTypeId,

@@ -209,6 +209,7 @@ class ViewEditClientRecord extends Component
     public function saveClient()
     {
         // Sanitize nullable fields
+        if (empty($this->clientForm['email'])) $this->clientForm['email'] = null;
         if (empty($this->clientForm['user_title_id'])) $this->clientForm['user_title_id'] = null;
         if (empty($this->clientForm['first_last_name'])) $this->clientForm['first_last_name'] = null;
         if (empty($this->clientForm['second_last_name'])) $this->clientForm['second_last_name'] = null;
