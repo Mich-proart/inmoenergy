@@ -213,6 +213,8 @@ class ViewEditClientRecord extends Component
         if (empty($this->clientForm['user_title_id'])) $this->clientForm['user_title_id'] = null;
         if (empty($this->clientForm['first_last_name'])) $this->clientForm['first_last_name'] = null;
         if (empty($this->clientForm['second_last_name'])) $this->clientForm['second_last_name'] = null;
+        if (empty($this->clientForm['document_number'])) $this->clientForm['document_number'] = null;
+        if (empty($this->clientForm['document_type_id'])) $this->clientForm['document_type_id'] = null;
 
         // Get country for phone validation
         $country = Country::find($this->clientForm['country_id']);
@@ -242,18 +244,18 @@ class ViewEditClientRecord extends Component
         // Document number validation based on type
         if ($selectedDocumentType) {
             if ($selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
-                $rules['clientForm.document_number'] = DocumentRule::$DNI;
+                $rules['clientForm.document_number'] = 'nullable|' . DocumentRule::$DNI;
             } elseif ($selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
-                $rules['clientForm.document_number'] = DocumentRule::$NIE;
+                $rules['clientForm.document_number'] = 'nullable|' . DocumentRule::$NIE;
             } elseif ($selectedDocumentType->name === DocumentTypeEnum::CIF->value) {
-                $rules['clientForm.document_number'] = DocumentRule::$CIF;
+                $rules['clientForm.document_number'] = 'nullable|' . DocumentRule::$CIF;
             } elseif ($selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
-                $rules['clientForm.document_number'] = 'required|string|min:9|max:9';
+                $rules['clientForm.document_number'] = 'nullable|string|min:9|max:9';
             } else {
-                $rules['clientForm.document_number'] = 'required|string';
+                $rules['clientForm.document_number'] = 'nullable|string';
             }
         } else {
-            $rules['clientForm.document_number'] = 'required|string';
+            $rules['clientForm.document_number'] = 'nullable|string';
         }
         
         // Additional rules for person type

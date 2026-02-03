@@ -173,11 +173,11 @@ class EditUserForm extends Component
 
             $rule = '';
             if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
-                $rule = 'required|string|min:9|max:9';
+                $rule = 'nullable|string|min:9|max:9';
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
-                $rule = DocumentRule::$DNI;
+                $rule = 'nullable|' . DocumentRule::$DNI;
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
-                $rule = DocumentRule::$NIE;
+                $rule = 'nullable|' . DocumentRule::$NIE;
             }
 
             $this->form->validate([
