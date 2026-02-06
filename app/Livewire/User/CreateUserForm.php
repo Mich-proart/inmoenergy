@@ -211,6 +211,8 @@ class CreateUserForm extends Component
 
             DB::commit();
 
+            \Illuminate\Support\Facades\Artisan::call('permission:cache-reset');
+
             if ($this->form->isWorker == true) {
                 return redirect()->route('admin.users');
             } else {
