@@ -107,30 +107,42 @@ class EditRole extends Component
                 $added = array_filter($this->programIds, [$this, 'isAdded']);
                 $removed = array_filter($this->roleProgramsIds, [$this, 'isRemoved']);
 
-                if (count($added) > 0) {
-                    foreach ($added as $id) {
-                        $program = Program::where('id', $id)->with('permissions')->first();
-                        if ($program) {
-                            $program->roles()->attach($this->role);
-                            $this->role->givePermissionTo($program->permissions);
-                        }
-                    }
-
-                }
-
-
                 if (count($removed) > 0) {
                     foreach ($removed as $id) {
                         $program = $this->getProgram($id);
                         if ($program) {
                             $program->roles()->detach($this->role);
-                            $this->role->revokePermissionTo($program->permissions);
+                            foreach ($program->permissions as $permission) {
+                                $this->role->revokePermissionTo($permission);
+                            }
                         }
                     }
                 }
 
+                if (count($added) > 0) {
+                    foreach ($added as $id) {
+                        $program = Program::find($id);
+                        if ($program) {
+                            $program->roles()->attach($this->role);
+                        }
+                    }
+                }
+
+                // Self-healing: Ensure all selected programs have their permissions granted to the role
+                // This covers newly added programs AND existing programs that might have missing permissions
+                foreach ($this->programIds as $id) {
+                    $program = Program::where('id', $id)->with('permissions')->first();
+                    if ($program) {
+                         foreach ($program->permissions as $permission) {
+                            $this->role->givePermissionTo($permission);
+                        }
+                    }
+                }
 
                 DB::commit();
+
+                \Illuminate\Support\Facades\Artisan::call('permission:cache-reset');
+
                 return redirect()->route('admin.roles.index');
 
             }
