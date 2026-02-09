@@ -8,7 +8,7 @@ const services = [
         backgroundColor: 'rgb(30,143,253)'
     },
     {
-        service: 'luz',
+        service: 'electricidad',
         backgroundColor: 'rgb(252,214,0)'
     }
 ]
