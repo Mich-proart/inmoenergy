@@ -237,8 +237,20 @@ class ViewEditClientRecord extends Component
         ];
         
         $messages = [
+            'clientForm.name.required' => 'El campo Nombre es obligatorio.',
+            'clientForm.name.max' => 'El campo Nombre no puede tener más de 255 caracteres.',
+            'clientForm.first_last_name.required' => 'El campo Primer apellido es obligatorio.',
+            'clientForm.first_last_name.max' => 'El campo Primer apellido no puede tener más de 255 caracteres.',
+            'clientForm.client_type_id.required' => 'El campo Tipo Cliente es obligatorio.',
+            'clientForm.document_type_id.required' => 'El campo Tipo documento es obligatorio.',
+            'clientForm.country_id.required' => 'El campo País es obligatorio.',
+            'clientForm.phone.required' => 'El campo Teléfono es obligatorio.',
             'clientForm.phone.phone' => 'El campo debe ser un teléfono válido.',
+            'clientForm.email.email' => 'El campo Email debe ser una dirección de correo válida.',
             'clientForm.IBAN.iban' => 'El IBAN no es válido.',
+            'clientForm.document_number.required' => 'El campo Número documento es obligatorio.',
+            'clientForm.document_number.min' => 'El número de documento debe tener al menos :min caracteres.',
+            'clientForm.document_number.max' => 'El número de documento no puede tener más de :max caracteres.',
         ];
         
         // Document number validation based on type
@@ -299,6 +311,16 @@ class ViewEditClientRecord extends Component
             'addressForm.block_staircase' => 'nullable|string|max:50',
             'addressForm.floor' => 'nullable|string|max:50',
             'addressForm.door' => 'nullable|string|max:50',
+        ], [
+            'addressForm.location_id.required' => 'El campo Población es obligatorio.',
+            'addressForm.street_type_id.required' => 'El campo Tipo de calle es obligatorio.',
+            'addressForm.housing_type_id.required' => 'El campo Tipo de vivienda es obligatorio.',
+            'addressForm.street_name.required' => 'El campo Nombre calle es obligatorio.',
+            'addressForm.street_name.max' => 'El campo Nombre calle no puede tener más de 255 caracteres.',
+            'addressForm.street_number.required' => 'El campo N° es obligatorio.',
+            'addressForm.street_number.max' => 'El campo N° no puede tener más de 50 caracteres.',
+            'addressForm.zip_code.required' => 'El campo Código postal es obligatorio.',
+            'addressForm.zip_code.spanish_postal_code' => 'El Código postal no es válido.',
         ]);
 
         try {
