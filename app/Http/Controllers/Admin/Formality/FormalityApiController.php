@@ -267,6 +267,9 @@ class FormalityApiController extends Controller
                 ]);
                 return $fullAddress;
             })
+            ->addColumn('office', function ($formality) {
+                return $formality->office ?? '';
+            })
             // Map DataTables column names to actual database columns for filtering
             ->filterColumn('office', function($query, $keyword) {
                 $query->where('office.name', 'like', "%{$keyword}%");
@@ -458,6 +461,9 @@ class FormalityApiController extends Controller
                     'fullAddress' => $fullAddress
                 ]);
                 return $fullAddress;
+            })
+            ->addColumn('office', function ($formality) {
+                return $formality->office ?? '';
             })
             // Map DataTables column names to actual database columns for filtering
             ->filterColumn('office', function($query, $keyword) {
