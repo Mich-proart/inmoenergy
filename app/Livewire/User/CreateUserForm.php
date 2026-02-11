@@ -100,7 +100,7 @@ class CreateUserForm extends Component
             [
                 'phone' => $phoneRule,
                 'name' => 'required|string',
-                'email' => 'nullable|email|unique:users,email',
+                'email' => 'required|email|unique:users,email',
                 'firstLastName' => 'required|string',
                 'secondLastName' => 'nullable|string',
                 'documentTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
@@ -121,6 +121,7 @@ class CreateUserForm extends Component
                 'phone.required' => 'El campo es requerido.',
                 'phone.phone' => 'El campo debe ser un telefono valido.',
                 'name.required' => 'El nombre es requerido',
+                'email.required' => 'El correo electronico es requerido',
                 'email.unique' => 'El correo electronico ya se encuentra registrado',
                 'email.email' => 'El correo electronico no es valido',
                 'password.string' => 'La contraseña debe ser una cadena de caracteres',
