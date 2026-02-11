@@ -169,8 +169,13 @@ class CreateUserForm extends Component
                 // 'responsibleId.required' => 'El campo Responsable es obligatorio',
                 //'officeName.required' => 'El campo Oficina es obligatorio',
                 'responsibleName.required' => 'El campo Responsable es obligatorio',
+                'responsibleName.string' => 'El campo Responsable debe ser una cadena de texto',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
+                'adviserAssignedId.exists' => 'El asesor asignado seleccionado no es válido',
+                'adviserAssignedId.integer' => 'El asesor asignado no es válido',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
+                'incentiveTypeTd.exists' => 'El tipo de incentivo seleccionado no es válido',
+                'incentiveTypeTd.integer' => 'El tipo de incentivo no es válido',
             ]);
 
             $this->validate([
@@ -178,6 +183,8 @@ class CreateUserForm extends Component
                 'officeId' => 'required'
             ], [
                 'business_target.required' => 'El campo es obligatorio',
+                'business_target.integer' => 'El grupo empresarial no es válido',
+                'business_target.exists' => 'El grupo empresarial seleccionado no es válido',
                 'officeId.required' => 'El campo Oficina es obligatorio',
             ]);
         }

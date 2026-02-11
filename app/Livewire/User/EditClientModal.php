@@ -229,6 +229,7 @@ class EditClientModal extends Component
                 [
 
                     'firstLastName.required' => 'El campo Primer Apellido es obligatorio',
+                    'firstLastName.string' => 'El campo Primer Apellido debe ser una cadena de texto',
                     'userTitleId.required' => 'El campo Titulo es obligatorio',
                     'userTitleId.exists' => 'El Titulo no es valido',
                     'documentNumber.required' => 'El campo Documento es obligatorio',

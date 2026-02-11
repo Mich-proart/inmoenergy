@@ -391,9 +391,6 @@
                 </div>
             </form>
         </div>
-        @foreach ($errors->all() as $error)
-            <div>{{$error}}</div>
-        @endforeach
     </div>
     <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
     @script
