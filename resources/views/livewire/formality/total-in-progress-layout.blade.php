@@ -314,9 +314,34 @@
                 },
                 "columns": [
                     {
-                        data: 'office', render: function (data, type, row) {
-                            if (type === 'display') {
-                                return `<div style="width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${data}">${data}</div>`;
+                        data: 'office',
+                        width: '160px', // 1. Define el ancho para DataTables (afecta el cálculo de la tabla)
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            // 2. Aplica estilos CSS directos a la etiqueta <td> para forzar el tamaño
+                            $(td).css({
+                                'width': '160px',
+                                'min-width': '160px',
+                                'max-width': '160px',
+                                'overflow': 'hidden',
+                                'white-space': 'nowrap',
+                                'box-sizing': 'border-box'
+                            });
+                            $(td).attr('style', $(td).attr('style') + ' width: 160px !important; min-width: 160px !important; max-width: 160px !important;');
+                        },
+                        render: function (data, type, row) {
+                            if (type === 'display' && data) {
+                                // 3. El div interno maneja el degradado del texto
+                                return `
+                                    <div style="
+                                        width: 100%;
+                                        white-space: nowrap; 
+                                        overflow: hidden; 
+                                        mask-image: linear-gradient(to right, black 85%, transparent 100%);
+                                        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+                                    " title="${data}">
+                                        ${data}
+                                    </div>
+                                `;
                             }
                             return data;
                         }
