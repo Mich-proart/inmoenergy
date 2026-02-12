@@ -132,7 +132,7 @@ class EditUserForm extends Component
             [
                 'phone' => $phoneRule,
                 'name' => 'required|string',
-                'email' => 'nullable|email',
+                'email' => 'required|email',
                 'firstLastName' => 'required|string',
                 'secondLastName' => 'nullable|string',
                 'documentTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
@@ -153,6 +153,7 @@ class EditUserForm extends Component
                 'phone.max' => 'El campo debe ser un telefono valido.',
                 'phone.required' => 'El campo es requerido.',
                 'phone.phone' => 'El campo debe ser un telefono valido.',
+                'email.required' => 'El correo electronico es requerido',
                 'email.unique' => 'El correo electronico ya se encuentra registrado',
                 'email.email' => 'El correo electronico no es valido',
                 'name.required' => 'El nombre es requerido',
@@ -198,8 +199,13 @@ class EditUserForm extends Component
                 //'responsibleId.required' => 'El campo Responsable es obligatorio',
                 //'officeName.required' => 'El campo Oficina es obligatorio',
                 'responsibleName.required' => 'El campo Responsable es obligatorio',
+                'responsibleName.string' => 'El campo Responsable debe ser una cadena de texto',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
+                'adviserAssignedId.exists' => 'El asesor asignado seleccionado no es válido',
+                'adviserAssignedId.integer' => 'El asesor asignado no es válido',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
+                'incentiveTypeTd.exists' => 'El tipo de incentivo seleccionado no es válido',
+                'incentiveTypeTd.integer' => 'El tipo de incentivo no es válido',
             ]);
 
         }

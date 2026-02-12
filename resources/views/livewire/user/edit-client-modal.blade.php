@@ -1,8 +1,5 @@
 <div>
 
-    <small class="">
-        
-    </small>
     <!-- Modal -->
     <div>
         <div wire:ignore.self class="modal fade" id="editClientModal" data-bs-backdrop="static" data-bs-keyboard="false"
