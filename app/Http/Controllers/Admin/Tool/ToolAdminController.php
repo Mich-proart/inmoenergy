@@ -10,8 +10,8 @@ class ToolAdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        //$this->middleware('can:formality.statistics.client.access')->only('getStatisticsClient');
-        //$this->middleware('can:formality.statistics.worker.access')->only('getStatisticsWorker');
+        $this->middleware('can:tool.statistics.client.access')->only('getStatisticsClient');
+        $this->middleware('can:tool.statistics.worker.access')->only('getStatisticsWorker');
         $this->middleware('can:tool.statistics.formality.access')->only('getStatisticsFormality');
     }
 
