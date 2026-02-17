@@ -32,6 +32,7 @@ class FormalityAdminController extends Controller
         $this->middleware('can:formality.assignment.access')->only('getAssignment');
         $this->middleware('can:formality.totalInProgress.access')->only('getTotalInProgress');
         $this->middleware('can:formality.commission.manager.access')->only('getCommissionManager');
+        $this->middleware('can:ticket.total.pending.access')->only('getAssignmentRenovation');
     }
 
     public function create()
@@ -99,6 +100,11 @@ class FormalityAdminController extends Controller
 
         DB::beginTransaction();
         $from = $request->input('from');
+
+        
+        if ($from === 'total' && !auth()->user()->can('formality.totalInProgress.access')) {
+            abort(403);
+        }
 
 
         try {
