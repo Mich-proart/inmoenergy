@@ -121,7 +121,7 @@ class EditRole extends Component
 
                 if (count($added) > 0) {
                     foreach ($added as $id) {
-                        $program = Program::find($id);
+                        $program = Program::where('id', $id)->with('permissions')->first();
                         if ($program) {
                             $program->roles()->attach($this->role);
                         }
