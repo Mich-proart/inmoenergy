@@ -102,6 +102,10 @@ class FormalityAdminController extends Controller
         $from = $request->input('from');
 
         
+        if (auth()->user()->hasRole('inmobiliaria')) {
+            abort(403);
+        }
+
         if ($from === 'total' && !auth()->user()->can('formality.totalInProgress.access')) {
             abort(403);
         }
