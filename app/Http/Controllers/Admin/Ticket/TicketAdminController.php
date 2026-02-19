@@ -23,6 +23,8 @@ class TicketAdminController extends Controller
         $this->middleware('can:ticket.total.closed.access')->only('getTotalClosed');
         $this->middleware('can:ticket.assignment.access')->only('getAssignment');
         $this->middleware('can:ticket.total.pending.access')->only('getTotalPending');
+        $this->middleware('can:ticket.pending.access')->only('edit');
+        $this->middleware('can:ticket.resolved.access')->only('getView');
     }
 
     public function create()
@@ -102,6 +104,10 @@ class TicketAdminController extends Controller
 
     public function modify(int $id, Request $request)
     {
+        if (auth()->user()->hasRole('inmobiliaria')) {
+            abort(403);
+        }
+
         $from = $request->query('from');
         $program = Program::where('name', operator: 'tickets asignados')->first();
 
