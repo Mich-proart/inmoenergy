@@ -180,7 +180,6 @@
                         <div class="form-group col-md-3">
                             <label for="inputZip">Segundo apellido: </label>
                             <input wire:model="form.secondLastName" {{$isBusinessPerson ? 'disabled' : ''}} type="text"
-                                {{$isBusinessPerson ? '' : 'required'}}
                                 class="form-control @error('form.secondLastName') is-invalid @enderror"
                                 id="second-LastName" name="secondLastName">
                             @error('form.secondLastName')
@@ -254,7 +253,7 @@
                             <label for="inputZip">Email: </label>
                             <input wire:model="form.email" type="text"
                                 class="form-control @error('form.email') is-invalid @enderror" id="inputZip"
-                                name="email" required>
+                                name="email">
                             @error('form.email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -267,6 +266,15 @@
                         <label for="inputAddress2">Cuenta Bancaria: </label>
                         <input wire:model="form.IBAN" type="text" class="form-control" id="inputAddress2" placeholder=""
                             name="IBAN" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input wire:model.live="form.is_foreign_account" class="form-check-input" type="checkbox"
+                                id="is_foreign_account">
+                            <label class="form-check-label" for="is_foreign_account">
+                                Cuenta extranjera
+                            </label>
+                        </div>
                     </div>
                 </section>
                 <section>
@@ -659,7 +667,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <section x-show="!buttonDisabled">
                                 @if ($service_file)
                                     @foreach($service_file as $key => $file)
                                         <div class="row">
@@ -680,8 +688,6 @@
                                         </div>
                                     @endforeach
                                 @endif
-                            </div>
-                            <section x-show="!buttonDisabled">
                                 @if ($inputs)
                                     @foreach($inputs as $key => $input)
                                         <div class="row">

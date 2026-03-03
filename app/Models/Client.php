@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -25,11 +26,17 @@ class Client extends Model
         'document_number',
         'phone',
         'IBAN',
+        'is_foreign_account',
         'user_title_id',
         'address_id',
         'isActive',
         'disabled_at',
         'country_id'
+    ];
+
+    protected $casts = [
+        'is_foreign_account' => 'boolean',
+        'isActive' => 'boolean',
     ];
 
 
@@ -67,6 +74,11 @@ class Client extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function formalities(): HasMany
+    {
+        return $this->hasMany(Formality::class, 'client_id');
     }
 
     public function telephone()

@@ -31,15 +31,15 @@
                         <tr>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>CUPS</th>
                             <th>Dirección</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
+                            <th>Comercializadora</th>
+                            <th>Producto</th>
                             <th>Consumo anual</th>
                             <th>Potencia</th>
                             <th>Tipo de vivienda</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                             <th hidden>Optiones</th>
                         </tr>
                     </thead>
@@ -98,6 +98,41 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="">Nueva comercializadora: </label>
+                                    <select wire:model.live="companyId" wire:model="companyId"
+                                        class="form-control @error('companyId') is-invalid @enderror" name="company_id"
+                                        id="company_id" required>
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->companies as $company)
+                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('companyId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="">Producto: </label>
+                                    <select wire:model="productId"
+                                        class="form-control @error('productId') is-invalid @enderror" name="product_id"
+                                        id="product_id" required>
+                                        <option value="">-- seleccione --</option>
+                                        @foreach ($this->products as $product)
+                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('productId')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <div class="form-check">
                                         <input wire:model="isCritical" class="form-check-input" type="checkbox"
@@ -134,7 +169,7 @@
 
     <script>
         const table = new DataTable('#formality-content', {
-            dom: 'Bfrtip',
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
@@ -185,8 +220,8 @@
                 }
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5] },
+                { className: "text-left", targets: "_all" },
+                // { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9] },
             ], "order": [
                 [1, "desc"]

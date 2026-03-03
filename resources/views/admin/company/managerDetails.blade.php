@@ -2,6 +2,10 @@
 
 @section('title', 'Comercializadoras')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <h1>Comercializadoras</h1>
 @stop
@@ -45,6 +49,7 @@
     {{--
     <link rel="stylesheet" href="/css/admin_custom.css"> --}}
     <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     @stop
@@ -54,6 +59,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
+
 
     <script>
         const table = new DataTable('#product-content', {
@@ -70,13 +77,18 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                {
+                    data: 'created_at',
+                    render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 { data: 'product_name' },
 
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1] },
-                { className: "text-capitalize", targets: [0, 1] }
+                { className: "text-left", targets: "_all" },
+                // { className: "text-capitalize", targets: "_all" }
             ],
             "order": [
                 [0, "desc"]

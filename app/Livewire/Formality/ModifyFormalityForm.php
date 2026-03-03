@@ -81,16 +81,21 @@ class ModifyFormalityForm extends Component
 
     public function update()
     {
+        $this->cleanData();
         $this->validate();
         $this->form->validate();
 
         if ($this->formality->service->name !== ServiceEnum::AGUA->value) {
-            $this->form->validate([
+            $rules = [
                 'CUPS' => 'required|string|min:20|max:22',
                 'access_rate_id' => 'required|integer|exists:component_option,id',
                 'annual_consumption' => 'required|integer|gt:0',
-                'potency' => 'required|string',
-            ], [
+            ];
+            if ($this->formality->service->name !== ServiceEnum::GAS->value) {
+                $rules['potency'] = 'required|string';
+            }
+
+            $this->form->validate($rules, [
                 'CUPS.required' => 'Debes rellenar el CUPS',
                 'CUPS.string' => 'Debes rellenar el CUPS',
                 'CUPS.min' => 'Minimo 20 caracteres',
@@ -102,7 +107,6 @@ class ModifyFormalityForm extends Component
                 'annual_consumption.numeric' => 'Debes rellenar el consumo anual valido',
                 'annual_consumption.gt' => 'Consumo anual debe ser mayor que 0',
                 'potency.required' => 'Debes rellenar la potencia',
-                'potency.gt' => 'Debes rellenar la potencia',
             ]);
         }
 
@@ -119,7 +123,7 @@ class ModifyFormalityForm extends Component
             );
         }
 
-        if ($this->formality->service->name !== ServiceEnum::AGUA->value) {
+        if ($this->formality->service->name !== ServiceEnum::AGUA->value && $this->formality->service->name !== ServiceEnum::GAS->value) {
             if ($this->form->potency == null || $this->form->potency == '' || $this->form->potency == 0) {
                 $this->dispatch('checks', error: "Por favor, rellene la potencia correctamente", title: "Valor no valido");
             } else {
@@ -130,6 +134,16 @@ class ModifyFormalityForm extends Component
             $this->executeUpdate();
         }
 
+    }
+
+    private function cleanData()
+    {
+        if ($this->form->annual_consumption) {
+            $this->form->annual_consumption = str_replace('.', '', $this->form->annual_consumption);
+        }
+        if ($this->form->potency) {
+            $this->form->potency = str_replace('.', '', $this->form->potency);
+        }
     }
 
     private function executeUpdate()

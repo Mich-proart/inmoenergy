@@ -19,29 +19,246 @@
         </div>
     </div>
     <div>
-        <div wire:ignore class="card card-success card-outline">
+        <div class="card card-success card-outline">
             <div class="card-header">
                 <h3 class="card-title">{{Auth::user()->name}}</h3>
             </div>
-            <div class="card-body table-responsive p-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Fecha entrada desde:</label>
+                        <input type="date" id="date_from" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha entrada hasta:</label>
+                        <input type="date" id="date_to" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Usuario asignado:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedUsers))
+                                    Todos
+                                @elseif($allUsers)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedUsers)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allUsers" wire:click="selectAllUsers" type="checkbox"> Todos
+                                    </div>
+                                </li>
+                                @foreach($users as $user)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedUsers" wire:change="isAllCheckUsers"
+                                                type="checkbox" value="{{ $user->id }}"> {{ $user->name }}
+                                            {{ $user->first_last_name }} {{ $user->second_last_name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="assigned_id" value="{{ json_encode($selectedUsers) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Suministro:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedServices))
+                                    Todos
+                                @elseif($allServices)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedServices)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allServices" wire:click="selectAllServices" type="checkbox">
+                                        Todos
+                                    </div>
+                                </li>
+                                @foreach($services as $service)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedServices" wire:change="isAllCheckServices"
+                                                type="checkbox" value="{{ $service->id }}"> {{ $service->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="service_id" value="{{ json_encode($selectedServices) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Estado trámite:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedStatuses))
+                                    Todos
+                                @elseif($allStatuses)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedStatuses)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allStatuses" wire:click="selectAllStatuses" type="checkbox">
+                                        Todos
+                                    </div>
+                                </li>
+                                @foreach($statuses as $status)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedStatuses" wire:change="isAllCheckStatuses"
+                                                type="checkbox" value="{{ $status->id }}"> {{ $status->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="status_id" value="{{ json_encode($selectedStatuses) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Compañía suministro:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedCompanies))
+                                    Todos
+                                @elseif($allCompanies)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedCompanies)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allCompanies" wire:click="selectAllCompanies"
+                                            type="checkbox"> Todos
+                                    </div>
+                                </li>
+                                @foreach($companies as $company)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedCompanies" wire:change="isAllCheckCompanies"
+                                                type="checkbox" value="{{ $company->id }}"> {{ $company->name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="company_id" value="{{ json_encode($selectedCompanies) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>CUPS:</label>
+                        <input type="text" id="cups" class="form-control filter-input">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Renovación:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedRenewable))
+                                    Todos
+                                @elseif($allRenewable)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedRenewable)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allRenewable" wire:click="selectAllRenewable"
+                                            type="checkbox"> Todos
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model.live="selectedRenewable" wire:change="isAllCheckRenewable"
+                                            type="checkbox" value="1"> Si
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model.live="selectedRenewable" wire:change="isAllCheckRenewable"
+                                            type="checkbox" value="0"> No
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <input type="hidden" id="is_renewable" value="{{ json_encode($selectedRenewable) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Cliente emisor trámite:</label>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle form-control text-start" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                @if(empty($selectedIssuers))
+                                    Todos
+                                @elseif($allIssuers)
+                                    Todos
+                                @else
+                                    Opciones ({{count($selectedIssuers)}})
+                                @endif
+                            </button>
+                            <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <input wire:model="allIssuers" wire:click="selectAllIssuers" type="checkbox">
+                                        Todos
+                                    </div>
+                                </li>
+                                @foreach($issuers as $issuer)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <input wire:model.live="selectedIssuers" wire:change="isAllCheckIssuers"
+                                                type="checkbox" value="{{ $issuer->id }}"> {{ $issuer->name }}
+                                            {{ $issuer->first_last_name }} {{ $issuer->second_last_name }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" id="issuer_id" value="{{ json_encode($selectedIssuers) }}">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button id="filter-btn" class="btn btn-primary">Filtrar</button>
+                        <button id="clear-btn" class="btn btn-secondary ml-2">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+            <div wire:ignore class="card-body table-responsive p-0">
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Oficina usuario</th>
-                            <th>Grupo empresarial</th>
-                            <th>Cliente emisor</th>
-                            <th>Usuario asignado</th>
-                            <th>Fecha de entrada</th>
-                            <th>Fecha de asignación</th>
+                            <th>Oficina</th>
+                            <th>Grupo</th>
+                            <th>Emisor</th>
+                            <th>Asignado</th>
+                            <th>Entrada</th>
+                            <th>Asignación</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Estado Trámite</th>
-                            <th>Trámite Crítico</th>
-                            <th>Tickets pendientes</th>
-                            <th>Documentos</th>
+                            <th>Estado</th>
+                            <th>Crítico</th>
+                            <th>Tickets</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -68,7 +285,7 @@
         <script src="/vendor/custom/badge.code.js"></script>
         <script>
             const table = new DataTable('#formality-content', {
-                dom: 'Bfrtip',
+                dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
                 buttons: [
                     {
                         extend: 'excelHtml5',
@@ -79,18 +296,69 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "{{route('api.formality.totalInprogress')}}",
-                    "type": "GET"
+                    "type": "GET",
+                    "data": function (d) {
+                        d.date_from = $('#date_from').val();
+                        d.date_to = $('#date_to').val();
+                        d.assigned_id = JSON.parse($('#assigned_id').val() || '[]');
+                        d.service_id = JSON.parse($('#service_id').val() || '[]');
+                        d.status_id = JSON.parse($('#status_id').val() || '[]');
+                        d.company_id = JSON.parse($('#company_id').val() || '[]');
+                        d.cups = $('#cups').val();
+                        d.is_renewable = JSON.parse($('#is_renewable').val() || '[]');
+                        d.issuer_id = JSON.parse($('#issuer_id').val() || '[]');
+                    }
                 },
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 },
                 "columns": [
-                    { data: 'office' },
+                    {
+                        data: 'office',
+                        width: '160px', // 1. Define el ancho para DataTables (afecta el cálculo de la tabla)
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            // 2. Aplica estilos CSS directos a la etiqueta <td> para forzar el tamaño
+                            $(td).css({
+                                'width': '160px',
+                                'min-width': '160px',
+                                'max-width': '160px',
+                                'overflow': 'hidden',
+                                'white-space': 'nowrap',
+                                'box-sizing': 'border-box'
+                            });
+                            $(td).attr('style', $(td).attr('style') + ' width: 160px !important; min-width: 160px !important; max-width: 160px !important;');
+                        },
+                        render: function (data, type, row) {
+                            if (type === 'display' && data) {
+                                // 3. El div interno maneja el degradado del texto
+                                return `
+                                    <div style="
+                                        width: 100%;
+                                        white-space: nowrap; 
+                                        overflow: hidden; 
+                                        mask-image: linear-gradient(to right, black 85%, transparent 100%);
+                                        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+                                    " title="${data}">
+                                        ${data}
+                                    </div>
+                                `;
+                            }
+                            return data;
+                        }
+                    },
                     { data: 'business_group' },
                     { data: 'issuer' },
                     { data: 'assigned' },
-                    { data: 'created_at' },
-                    { data: 'assignment_date' },
+                    {
+                        data: 'created_at', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
+                    {
+                        data: 'assignment_date', render: function (data, type, row, meta) {
+                            return formatDate(data);
+                        }
+                    },
                     { data: 'type' },
                     { data: 'service' },
                     { data: 'fullName' },
@@ -119,13 +387,22 @@
                     },
                 ],
                 "columnDefs": [
-                    { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14] },
-                    { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
-                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13] },
+                    { className: "text-left", targets: "_all" },
+                    // { className: "text-capitalize", targets: "_all" },
+                    { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
                 ],
                 "order": [
                     [0, "desc"]
                 ],
+            });
+
+            $('#filter-btn').on('click', function () {
+                table.draw();
+            });
+
+            $('#clear-btn').on('click', function () {
+                $('.filter-input').val('');
+                table.draw();
             });
 
             let queryParams = "from=total";
@@ -143,7 +420,7 @@
                     text: "Al abrir iniciará su proceso de tramitación.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
+                    confirmButtonColor: "#368D68",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "si",
                     cancelButtonText: "no"

@@ -8,12 +8,16 @@ const services = [
         backgroundColor: 'rgb(30,143,253)'
     },
     {
-        service: 'luz',
+        service: 'electricidad',
         backgroundColor: 'rgb(252,214,0)'
     }
 ]
 
-const users = {backgroundColor: 'rgb(30,143,253)'};
+const users = {
+    activeColor: 'rgb(30,143,253)',      // Blue for active/completed
+    bajaColor: 'rgb(220,53,69)',         // Red for baja
+    differenceColor: 'rgb(40,167,69)'    // Green for difference
+};
 
 const months = [
     "Ene", "Feb", "Mar", "Abr", "May", "Jun",
@@ -57,19 +61,35 @@ function doughnutfnt(set_data) {
 
 function horizontalBarfnt(set_data) {
     const result = set_data.reduce((acc, target) => {
-        const {user, count} = target;
+        const {user, activeCount, bajaCount, differenceCount} = target;
         acc.labels.push(capitalizeFirstLetter(user));
-        acc.data.push(count);
+        acc.activeData.push(activeCount);
+        acc.bajaData.push(bajaCount);
+        acc.differenceData.push(differenceCount);
         return acc;
-    }, {labels: [], data: []});
-    console.log(set_data)
+    }, {labels: [], activeData: [], bajaData: [], differenceData: []});
+    
+    console.log(set_data);
+    
     return {
         labels: result.labels,
-        datasets: [{
-            label: 'RANKING',
-            data: result.data,
-            backgroundColor: users.backgroundColor
-        }]
+        datasets: [
+            {
+                label: 'Contratos tramitados',
+                data: result.activeData,
+                backgroundColor: users.activeColor
+            },
+            {
+                label: 'Baja',
+                data: result.bajaData,
+                backgroundColor: users.bajaColor
+            },
+            {
+                label: 'Diferencia',
+                data: result.differenceData,
+                backgroundColor: users.differenceColor
+            }
+        ]
     }
 }
 
@@ -186,15 +206,33 @@ function chartsInit() {
             type: 'bar',
             data: {
                 labels: [],
-                datasets: [{
-                    label: 'RANKING',
-                    backgroundColor: users.backgroundColor,
-                    data: [],
-                }],
+                datasets: [
+                    {
+                        label: 'Contratos tramitados',
+                        backgroundColor: users.activeColor,
+                        data: [],
+                    },
+                    {
+                        label: 'Baja',
+                        backgroundColor: users.bajaColor,
+                        data: [],
+                    },
+                    {
+                        label: 'Diferencia',
+                        backgroundColor: users.differenceColor,
+                        data: [],
+                    }
+                ],
             },
             options: {
                 indexAxis: 'y',
-                responsive: true
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
             }
         },
         verticalBar: {

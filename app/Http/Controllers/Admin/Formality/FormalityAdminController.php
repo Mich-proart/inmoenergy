@@ -18,20 +18,21 @@ class FormalityAdminController extends Controller
 
     public function __construct(
         private readonly FormalityService $formalityService
-    )
-    {
+    ) {
         $this->middleware('auth');
         $this->middleware('can:formality.create')->only('create', 'createClient');
-        $this->middleware('can:formality.inprogress.access')->only('getInProgress');
+        $this->middleware('can:formality.inprogress.access')->only('getInProgress', 'modify', 'edit');
         $this->middleware('can:formality.closed.access')->only('getClosed');
         $this->middleware('can:formality.assigned.access')->only('getAssigned');
-        $this->middleware('can:formality.completed.access')->only('getCompleted');
+        $this->middleware('can:formality.completed.access')->only('getCompleted', 'viewCompleted');
         $this->middleware('can:formality.pending.access')->only('getPending');
         $this->middleware('can:formality.extract.access')->only('getExtract');
         $this->middleware('can:formality.data.access')->only('getData');
-        $this->middleware('can:formality.total.closed.access')->only('getTotalClosed');
+        $this->middleware('can:formality.total.closed.access')->only('getTotalClosed', 'modifyTotalClosed');
         $this->middleware('can:formality.assignment.access')->only('getAssignment');
         $this->middleware('can:formality.totalInProgress.access')->only('getTotalInProgress');
+        $this->middleware('can:formality.commission.manager.access')->only('getCommissionManager');
+        $this->middleware('can:ticket.total.pending.access')->only('getAssignmentRenovation');
     }
 
     public function create()
@@ -99,6 +100,15 @@ class FormalityAdminController extends Controller
 
         DB::beginTransaction();
         $from = $request->input('from');
+
+        
+        if (auth()->user()->hasRole('inmobiliaria')) {
+            abort(403);
+        }
+
+        if ($from === 'total' && !auth()->user()->can('formality.totalInProgress.access')) {
+            abort(403);
+        }
 
 
         try {
@@ -257,5 +267,11 @@ class FormalityAdminController extends Controller
     public function exportExcel()
     {
 
+    }
+
+    public function getCommissionManager()
+    {
+        $program = Program::where('name', 'gestión de comisiones')->first();
+        return view('admin.formality.commission', ['program' => $program]);
     }
 }

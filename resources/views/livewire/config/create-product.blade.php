@@ -5,7 +5,6 @@
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
-                        @role('superadmin')
                         <button wire:click="resetVar" type="button" id="edit_renovation_btn"
                             class="btn btn-success float-right btn-sm" data-bs-toggle="modal"
                             data-bs-target="#create-product-modal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
@@ -14,7 +13,6 @@
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
         </svg> Agregar
                             producto</button>
-                        @endrole
                     </div>
                 </div>
             </div>
@@ -105,10 +103,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
+
 
     <script>
         const table = new DataTable('#product-content', {
-            dom: 'Bfrtip',
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
@@ -127,7 +127,12 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                { 
+                    data: 'created_at',
+                    render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    } 
+                },
                 { data: 'product_name' },
                 { data: 'company_name' },
                 {
@@ -142,8 +147,8 @@
 
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2] },
-                { className: "text-capitalize", targets: [0, 1, 2] },
+                { className: "text-left", targets: "_all" },
+                // { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2] }
             ],
             "order": [

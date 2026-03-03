@@ -1,4 +1,6 @@
 <div>
+    <link href="{{ asset('css/' . 'truncate.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
     <!-- Modal -->
     <div wire:ignore.self class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -30,18 +32,18 @@
                     <thead>
                         <tr>
 
-                            <th>Fecha de entrada</th>
-                            <th>Usuario asignado</th>
+                            <th>Entrada</th>
+                            <th>Asignado</th>
                             <th>Tipo</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
-                            <th>N documento</th>
+                            <th>Identificador</th>
                             <th>Dirección</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía suministro</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
                             <th>Observaciones asesor</th>
-                            <th>Tickets pendientes</th>
-                            <th>Documentos</th>
+                            <th>Tickets</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -92,7 +94,7 @@
     <script src="/vendor/custom/functions.code.js"></script>
     <script>
         const table = new DataTable('#formality-content', {
-            dom: 'Bfrtip',
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
@@ -109,7 +111,11 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                {
+                    data: 'created_at', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 { data: 'assigned' },
                 { data: 'type' },
                 { data: 'service' },
@@ -135,9 +141,16 @@
                 },
             ],
             "columnDefs": [
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 8, 9, 10, 11] },
-                { className: "text-capitalize", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-left", targets: "_all" },
+                // { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10] },
+                {
+                    targets: 9, // assigned_observation
+                    render: function (data, type, row, meta) {
+                        if (!data) return '';
+                        return `<span class="truncate-text" title="${data}">${data}</span>`;
+                    }
+                }
             ],
             "order": [
                 [0, "desc"]
