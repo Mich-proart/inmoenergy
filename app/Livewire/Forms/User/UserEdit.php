@@ -93,11 +93,11 @@ class UserEdit extends Form
 
     protected $rules = [
         'name' => 'required|string',
-        'email' => 'required|email',
+        'email' => 'nullable|email',
         'firstLastName' => 'required|string',
-        'secondLastName' => 'required|string',
-        'documentTypeId' => 'required|integer|exists:component_option,id',
-        'documentNumber' => 'required|string',
+        'secondLastName' => 'nullable|string',
+        'documentTypeId' => 'nullable|integer|exists:component_option,id',
+        'documentNumber' => 'nullable|string',
         //'phone' => 'required|string|spanish_phone',
         'password' => 'sometimes|nullable|string|min:8',
         'incentiveTypeTd' => 'sometimes|nullable|integer|exists:component_option,id',
@@ -114,11 +114,10 @@ class UserEdit extends Form
         'email.unique' => 'El correo electronico ya se encuentra registrado',
         'email.email' => 'El correo electronico no es valido',
         'name.required' => 'El nombre es requerido',
-        'documentTypeId.required' => 'El tipo de documento es requerido',
         'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
         'password.string' => 'La contraseña debe ser una cadena de caracteres',
-        'email.required' => 'El correo electronico es requerido',
-        'documentNumber.required' => 'El numero de documento es requerido',
+
+
         'phone.spanish_phone' => 'El numero de telefono no es valido',
         'phone.required' => 'El numero de telefono es requerido',
         'locationId.required' => 'La ubicacion es requerida',
@@ -132,13 +131,13 @@ class UserEdit extends Form
 
         $data = [
             'name' => $this->name,
-            'email' => $this->email,
+            'email' => empty($this->email) ? null : $this->email,
             'isWorker' => $this->isWorker,
             'first_last_name' => $this->firstLastName,
-            'second_last_name' => $this->secondLastName,
+            'second_last_name' => empty($this->secondLastName) ? null : $this->secondLastName,
             'phone' => $this->phone,
-            'document_number' => $this->documentNumber,
-            'document_type_id' => $this->documentTypeId,
+            'document_number' => empty($this->documentNumber) ? null : $this->documentNumber,
+            'document_type_id' => empty($this->documentTypeId) ? null : $this->documentTypeId,
             'adviser_assigned_id' => $this->adviserAssignedId,
             // 'responsible_id' => $this->responsibleId,
             'responsible_name' => $this->responsibleName,

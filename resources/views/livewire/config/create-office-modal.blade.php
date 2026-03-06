@@ -58,7 +58,7 @@
             </section>
         </div>
     </div>
-    <div class="card card-primary card-outline">
+    <div class="card card-success card-outline">
         <div wire:ignore class="card-body table-responsive p-0">
             <table id="office-content" class="table table-hover text-nowrap" style="cursor:pointer">
                 <thead>
@@ -114,9 +114,9 @@
 
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0] },
-            { className: "text-capitalize", targets: [0] },
-            { className: "target", targets: [0] }
+            { className: "text-left", targets: "_all" },
+            // { className: "text-capitalize", targets: "_all" },
+            { className: "target", targets: [0] },
         ],
         "order": [
             [0, "desc"]

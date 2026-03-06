@@ -34,7 +34,7 @@ class StatisticService
     }
 
 
-    public function search($usersIds = [], $services = [], $from, $to, string|null $frequency): array
+    public function search($usersIds = [], $services = [], $from, $to, string|null $frequency, bool $groupByService = false): array
     {
         $query = Formality::with('service', 'issuer', 'assigned');
 
@@ -47,18 +47,21 @@ class StatisticService
 
         $query->whereIn('service_id', $services);
 
+        // New prefilter: exclude formalities with status "KO"
         $formalities = $query->whereHas('status', function ($q) {
-            $q->whereIn('name', [FormalityStatusEnum::TRAMITADO, FormalityStatusEnum::EN_VIGOR]);
+            $q->where('name', '!=', FormalityStatusEnum::KO->value);
         })->get();
-        return $this->formatDataForChart($formalities, $frequency, $query);
+        
+        return $this->formatDataForChart($formalities, $frequency, $query, $groupByService);
     }
 
 
-    private function formatDataForChart(Collection $formalities, string|null $frequency, Builder $builder): array
+
+    private function formatDataForChart(Collection $formalities, string|null $frequency, Builder $builder, bool $groupByService = false): array
     {
         return [
             'doughnutChart' => $this->doughnutChart($formalities),
-            'horizontalBarChart' => $this->horizontalBarChart($formalities),
+            'horizontalBarChart' => $this->horizontalBarChart($formalities, $groupByService),
             'verticalBarChart' => !empty($frequency) ? $this->verticalBarChart($builder, $frequency) : null,
             'totalCount' => $formalities->count(),
             'timeAvg' => $this->getAverage($formalities)
@@ -75,14 +78,46 @@ class StatisticService
         })->sortByDesc('count')->values();
     }
 
-    private function horizontalBarChart(Collection $formalities)
+    private function horizontalBarChart(Collection $formalities, bool $groupByService = false)
     {
-        return $formalities->groupBy($this->searchBasedOn)->map(function ($items) {
+        $groupBy = $groupByService ? 'service_id' : $this->searchBasedOn;
+        
+        return $formalities->groupBy($groupBy)->map(function ($items) use ($groupByService) {
+            // Active/completed statuses (including Baja as per requirement point 26)
+            $activeCount = $items->filter(function ($item) {
+                return in_array($item->status->name, [
+                    FormalityStatusEnum::PENDIENTE->value,
+                    FormalityStatusEnum::ASIGNADO->value,
+                    FormalityStatusEnum::EN_CURSO->value,
+                    FormalityStatusEnum::TRAMITADO->value,
+                    FormalityStatusEnum::EN_VIGOR->value,
+                    FormalityStatusEnum::FINALIZADO->value,
+                    FormalityStatusEnum::BAJA->value  // Added as per point 26
+                ]);
+            })->count();
+            
+            // Baja status count (for separate tracking)
+            $bajaCount = $items->filter(function ($item) {
+                return $item->status->name === FormalityStatusEnum::BAJA->value;
+            })->count();
+            
+            // Difference (activeCount now includes Baja, so this is the count excluding Baja)
+            $differenceCount = $activeCount - $bajaCount;
+            
+            // Determine label based on grouping
+            if ($groupByService) {
+                $label = ucfirst($items->first()->service->name);
+            } else {
+                $label = $this->formatUserName($this->searchBasedOn === self::ASSIGNED ? $items->first()->assigned : $items->first()->issuer);
+            }
+            
             return [
-                'user' => $this->formatUserName($this->searchBasedOn === self::ASSIGNED ? $items->first()->assigned : $items->first()->issuer),
-                'count' => $items->count()
+                'user' => $label,
+                'activeCount' => $activeCount,
+                'bajaCount' => $bajaCount,
+                'differenceCount' => $differenceCount
             ];
-        })->sortByDesc('count')->values();
+        })->sortByDesc('activeCount')->values();
 
     }
 

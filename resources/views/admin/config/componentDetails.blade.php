@@ -2,6 +2,10 @@
 
 @section('title', 'Optiones de desplegable')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <h1>Optiones de desplegable</h1>
 @stop
@@ -22,6 +26,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
     <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
     @stop
 
     @section('js')

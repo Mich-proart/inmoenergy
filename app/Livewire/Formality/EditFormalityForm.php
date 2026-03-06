@@ -102,7 +102,7 @@ class EditFormalityForm extends Component
         if ($this->fileSet) {
             $this->files = $this->fileSet->files;
             $this->mountFilesInput();
-            //$this->addInput($this->formality->service_id);
+            $this->addInput($this->formality->service_id);
         }
 
         $this->changeCountry($formality->client->country_id);
@@ -133,6 +133,21 @@ class EditFormalityForm extends Component
 
         $this->inputs->pull(0);
         $this->service_file->pull(0);
+
+        // Apply filtering based on client type
+        if ($this->isBusinessPerson) {
+            $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+            foreach ($businessDocs as $doc) {
+                if (!$this->inputs->contains('name', $doc->name)) {
+                    $this->inputs->push(['configId' => $doc->id, 'serviceId' => null, 'name' => $doc->name, 'file' => '']);
+                }
+            }
+        } else {
+            $businessDocsNames = ['CIF', 'escritura empresa'];
+            $this->inputs = $this->inputs->reject(function ($value) use ($businessDocsNames) {
+                return in_array($value['name'], $businessDocsNames);
+            });
+        }
     }
 
     public function addInput($serviceId)
@@ -142,10 +157,10 @@ class EditFormalityForm extends Component
             $this->service_file->pull($key);
 
         }
-        if ($serviceId !== $this->formality->service_id) {
-            $config = FileConfig::where('component_option_id', $serviceId)->first();
+        
+        $config = FileConfig::where('component_option_id', $serviceId)->first();
+        if ($config) {
             $this->service_file->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
-
         }
 
 
@@ -203,12 +218,21 @@ class EditFormalityForm extends Component
             if ($object != null && $object['file'] != null) {
 
                 $file = $object['file'];
-                $stored_file = $data->with('files')->first()->files->first();
+                // Refresh data to get files or use the relationship
+                $stored_file = $data->files->where('config_id', $object['configId'])->first();
+                
                 if ($file) {
-                    $this->fileUploadigService
+                    $uploader = $this->fileUploadigService
+                        ->setModel($data)
                         ->addFile($file)
-                        ->setConfigId($object['configId'])
-                        ->force_replace($stored_file);
+                        ->setConfigId($object['configId']);
+                        
+                    if ($stored_file) {
+                         $uploader->force_replace($stored_file);
+                    } else {
+                         // If no file exists, just save the new one (though force_replace might handle null, safe to allow new upload too)
+                         $uploader->save();
+                    }
 
                 }
             }
@@ -220,6 +244,7 @@ class EditFormalityForm extends Component
                     $target_file = $stored_client_client->where('config_id', $value['configId'])->first();
                     if ($target_file) {
                         $this->fileUploadigService
+                            ->setModel($data->client)
                             ->addFile($value['file'])
                             ->setConfigId($value['configId'])
                             ->force_replace($target_file);
@@ -246,7 +271,7 @@ class EditFormalityForm extends Component
     #[Computed()]
     public function locations()
     {
-        $locations = $this->addressService->getLocations((int)$this->target_provinceId);
+        $locations = $this->addressService->getLocations((int) $this->target_provinceId);
         return $locations;
     }
 
@@ -260,7 +285,7 @@ class EditFormalityForm extends Component
     #[Computed()]
     public function clientLocations()
     {
-        $clientLocation = $this->addressService->getLocations((int)$this->target_clientProvinceId);
+        $clientLocation = $this->addressService->getLocations((int) $this->target_clientProvinceId);
         return $clientLocation;
     }
 
@@ -284,6 +309,15 @@ class EditFormalityForm extends Component
                 $this->form->setDocumentTypeId($documentType->id);
                 $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
 
+                // Add required documents for Business
+                if ($this->inputs) {
+                    $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+                    foreach ($businessDocs as $doc) {
+                        if (!$this->inputs->contains('name', $doc->name)) {
+                            $this->inputs->push(['configId' => $doc->id, 'serviceId' => null, 'name' => $doc->name, 'file' => '']);
+                        }
+                    }
+                }
 
             }
 
@@ -292,6 +326,14 @@ class EditFormalityForm extends Component
                 $this->isBusinessPerson = false;
                 $documentTypes = $this->userService->getDocumentTypes();
                 $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+
+                // Remove Business documents if present
+                if ($this->inputs) {
+                    $businessDocsNames = ['CIF', 'escritura empresa'];
+                    $this->inputs = $this->inputs->reject(function ($value) use ($businessDocsNames) {
+                        return in_array($value['name'], $businessDocsNames);
+                    });
+                }
             }
 
         }
@@ -329,14 +371,14 @@ class EditFormalityForm extends Component
             $this->form->validate(
                 [
                     'firstLastName' => 'required|string',
-                    'secondLastName' => 'required|string',
+                    'secondLastName' => 'nullable|string',
                     'userTitleId' => 'required|integer|exists:component_option,id',
                     'documentNumber' => $documentRule
                 ],
                 [
 
                     'firstLastName.required' => 'El campo Primer Apellido es obligatorio',
-                    'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
+                    //'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
                     'userTitleId.required' => 'El campo Titulo es obligatorio',
                     'userTitleId.exists' => 'El Titulo no es valido',
                     'documentNumber.required' => 'El campo Documento es obligatorio',
@@ -356,6 +398,37 @@ class EditFormalityForm extends Component
                     'documentNumber.cif' => 'El Cif no es valido',
                 ],
             );
+
+            // Validate mandatory documents for Business
+            $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+            foreach ($businessDocs as $doc) {
+                // Check if already uploaded (in $this->files)
+                $alreadyUploaded = false;
+                if ($this->files) {
+                    foreach ($this->files as $file) {
+                        if ($file->config_id == $doc->id) {
+                            $alreadyUploaded = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Check if being uploaded now (in $this->inputs)
+                $beingUploaded = false;
+                if ($this->inputs) {
+                    $input = $this->inputs->firstWhere('name', $doc->name);
+                    if ($input && !empty($input['file'])) {
+                        $beingUploaded = true;
+                    }
+                }
+
+                if (!$alreadyUploaded && !$beingUploaded) {
+                    $this->addError('inputs', 'El documento ' . $doc->name . ' es obligatorio.');
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'inputs' => ['Falta el documento: ' . $doc->name],
+                    ]);
+                }
+            }
         }
 
         $inputServiceid = intval($this->form->serviceIds[0]);

@@ -1,8 +1,5 @@
 <div>
 
-    <small class="">
-        
-    </small>
     <!-- Modal -->
     <div>
         <div wire:ignore.self class="modal fade" id="editClientModal" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -92,7 +89,7 @@
                                         <label for="inputZip">Segundo apellido: </label>
                                         <input wire:model="form.secondLastName" type="text" class="form-control"
                                                name="secondLastName"
-                                               id="second-LastName" {{$isBusinessPerson ? '' : 'required'}}
+                                               id="second-LastName"
                                             {{$isBusinessPerson ? 'disabled' : ''}}>
                                         @error('form.secondLastName')
                                         <span class="invalid-feedback" role="alert">
@@ -172,7 +169,7 @@
                                         <input wire:model="form.email" type="text"
                                                class="form-control @error('form.email') is-invalid @enderror"
                                                id="inputZip"
-                                               name="email" required>
+                                               name="email">
                                         @error('form.email')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -182,6 +179,13 @@
                                 </div>
 
                                 <div class=" form-group">
+                                    <div class="form-check" style="margin-bottom: 10px;">
+                                        <input wire:model.live="form.is_foreign_account" class="form-check-input" type="checkbox"
+                                            id="is_foreign_account">
+                                        <label class="form-check-label" for="is_foreign_account">
+                                            Cuenta extranjera
+                                        </label>
+                                    </div>
                                     <label for="inputAddress2">Cuenta Bancaria: </label>
                                     <input wire:model="form.IBAN" type="text"
                                            class="form-control @error('form.IBAN') is-invalid @enderror" id="IBAN"
@@ -638,7 +642,7 @@
         });
         $wire.on('end-update', (e) => {
             Swal.fire({
-                position: "top-end",
+                position: "center",
                 icon: "success",
                 title: "Datos actualizados correctamente",
                 showConfirmButton: false,

@@ -1,0 +1,18 @@
+[
+    {
+        "name": "herramientas de trabajo",
+        "programs": [
+            {
+                "name": "fichas clientes",
+                "image": "client_records_view.png",
+                "route": "admin.client.records.view",
+                "description": null,
+                "placed_in": "10",
+                "roles": [
+                    "superadmin"
+                ],
+                "permission": "client.records.view.access"
+            }
+        ]
+    }
+]

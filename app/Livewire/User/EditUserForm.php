@@ -33,6 +33,8 @@ class EditUserForm extends Component
     public $target_regionId;
     public $business_target;
 
+    public $target_officeId;
+
     public $userId;
 
     public $isActive;
@@ -115,6 +117,13 @@ class EditUserForm extends Component
         return $locations;
     }
 
+    #[Computed()]
+    public function offices()
+    {
+        $offices = Office::where('business_group_id', $this->business_target)->get();
+        return $offices;
+    }
+
     public function save()
     {
         $this->resetErrorBag();
@@ -125,7 +134,7 @@ class EditUserForm extends Component
                 'name' => 'required|string',
                 'email' => 'required|email',
                 'firstLastName' => 'required|string',
-                'secondLastName' => 'required|string',
+                'secondLastName' => 'nullable|string',
                 'documentTypeId' => 'sometimes|nullable|integer|exists:component_option,id',
                 'documentNumber' => 'sometimes|nullable|string',
                 //'phone' => 'required|string|spanish_phone',
@@ -144,13 +153,19 @@ class EditUserForm extends Component
                 'phone.max' => 'El campo debe ser un telefono valido.',
                 'phone.required' => 'El campo es requerido.',
                 'phone.phone' => 'El campo debe ser un telefono valido.',
+                'email.required' => 'El correo electronico es requerido',
                 'email.unique' => 'El correo electronico ya se encuentra registrado',
                 'email.email' => 'El correo electronico no es valido',
                 'name.required' => 'El nombre es requerido',
+                'firstLastName.required' => 'El primer apellido es obligatorio',
+                'firstLastName.string' => 'El primer apellido debe ser una cadena de texto',
+                'secondLastName.string' => 'El segundo apellido debe ser una cadena de texto',
                 'documentTypeId.required' => 'El tipo de documento es requerido',
                 'password.min' => 'La contraseña debe ser al menos de 8 caracteres',
                 'password.string' => 'La contraseña debe ser una cadena de caracteres',
-                'email.required' => 'El correo electronico es requerido',
+                'roleId.required' => 'El campo Permisos es obligatorio',
+                'roleId.integer' => 'El campo Permisos no es válido',
+                'roleId.exists' => 'El permiso seleccionado no es válido',
                 'documentNumber.required' => 'El numero de documento es requerido',
                 'locationId.required' => 'La ubicacion es requerida',
                 'zipCode.spanish_postal_code' => 'El Código Postal no es valido',
@@ -164,11 +179,11 @@ class EditUserForm extends Component
 
             $rule = '';
             if ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::PASSPORT->value) {
-                $rule = 'required|string|min:9|max:9';
+                $rule = 'nullable|string|min:9|max:9';
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::DNI->value) {
-                $rule = DocumentRule::$DNI;
+                $rule = 'nullable|' . DocumentRule::$DNI;
             } elseif ($selectedDocumentType && $selectedDocumentType->name === DocumentTypeEnum::NIE->value) {
-                $rule = DocumentRule::$NIE;
+                $rule = 'nullable|' . DocumentRule::$NIE;
             }
 
             $this->form->validate([
@@ -189,8 +204,13 @@ class EditUserForm extends Component
                 //'responsibleId.required' => 'El campo Responsable es obligatorio',
                 //'officeName.required' => 'El campo Oficina es obligatorio',
                 'responsibleName.required' => 'El campo Responsable es obligatorio',
+                'responsibleName.string' => 'El campo Responsable debe ser una cadena de texto',
                 'adviserAssignedId.required' => 'El campo Asesor Asignado es obligatorio',
+                'adviserAssignedId.exists' => 'El asesor asignado seleccionado no es válido',
+                'adviserAssignedId.integer' => 'El asesor asignado no es válido',
                 'incentiveTypeTd.required' => 'El campo Tipo de incentivo es obligatorio',
+                'incentiveTypeTd.exists' => 'El tipo de incentivo seleccionado no es válido',
+                'incentiveTypeTd.integer' => 'El tipo de incentivo no es válido',
             ]);
 
         }
@@ -267,6 +287,8 @@ class EditUserForm extends Component
 
             DB::commit();
 
+            \Illuminate\Support\Facades\Artisan::call('permission:cache-reset');
+
             if ($this->form->isWorker == true) {
                 return redirect()->route('admin.users');
             } else {
@@ -286,11 +308,13 @@ class EditUserForm extends Component
         $businessGroup = BusinessGroup::all();
         return $businessGroup;
     }
-    #[On('change-businessGroup')]
+    //#[On('change-businessGroup')]
+    /*
     public function changeBusinessGroup()
     {
         $this->office_list = Office::where('business_group_id', $this->business_target)->get();
     }
+        */
 
     public function render()
     {

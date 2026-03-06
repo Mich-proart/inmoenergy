@@ -79,13 +79,15 @@ class EditPendingformalityModal extends Component
     public function save()
     {
         $this->form->validate();
+        $this->executeSave();
         
+        /*
         if ($this->form->commission == null || $this->form->commission == '' || $this->form->commission == 0) {
             $this->dispatch('checks', error: "Por favor, rellene la comision correctamente", title: "Valor no valido");
         } else {
             $this->executeSave();
         }
-
+        */
 
     }
 
@@ -120,6 +122,7 @@ class EditPendingformalityModal extends Component
                 $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::EN_VIGOR->value);
                 $renewal_date = null;
                                 
+                logger('Guardando trámite...', ['id' => $formality->id]);
                 $savedFile = $formality->files[0];
 
                 $file_inputs = $this->inputs->where('serviceId', null);

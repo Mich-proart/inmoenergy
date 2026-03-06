@@ -1,6 +1,12 @@
 @extends('adminlte::page')
 
 
+@section('classes_body', 'layout-fixed layout-navbar-fixed sidebar-mini sidebar-closed sidebar-collapse')
+
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -23,10 +29,7 @@
                 <div class="col-12">
                     <div>
                         <h3 class="card-title">{{Auth::user()->name}}</h3>
-                        @role('superadmin')
                         <livewire:config.create-company />
-                        @endrole
-
                     </div>
                 </div>
             </div>
@@ -52,6 +55,7 @@
 @section('css')
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
@@ -70,10 +74,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+<script src="/vendor/custom/functions.code.js"></script>
+
 
 <script>
     const table = new DataTable('#company-content', {
-        dom: 'Bfrtip',
+        dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
         buttons: [
             {
                 extend: 'excelHtml5',
@@ -92,13 +98,18 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
-            { data: 'created_at' },
+            {
+                data: 'created_at',
+                render: function (data, type, row, meta) {
+                    return formatDate(data);
+                }
+            },
             { data: 'name' },
 
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1] },
-            { className: "text-capitalize", targets: [0, 1] }
+            { className: "text-left", targets: "_all" },
+            // { className: "text-capitalize", targets: "_all" }
         ],
         "order": [
             [0, "desc"]

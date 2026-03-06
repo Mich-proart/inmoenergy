@@ -303,7 +303,7 @@
                                 <select wire:model="officeId" class="form-control @error('officeId') is-invalid @enderror"
                                     name="officeId" id="officeId">
                                     <option value="">-- selecione --</option>
-                                    @foreach ($office_list as $option)
+                                    @foreach ($this->offices as $option)
                                         <option value="{{ $option->id }}">{{ $option->name }}</option>
                                     @endforeach
                                 </select>
@@ -391,14 +391,12 @@
                 </div>
             </form>
         </div>
-        @foreach ($errors->all() as $error)
-            <div>{{$error}}</div>
-        @endforeach
     </div>
     <script src="http://127.0.0.1:8000/vendor/jquery/jquery.min.js"></script>
     @script
     <script>
         document.addEventListener('livewire:initialized', () => {
+            /*
             function LoadDropdown() {
 
                 $('#businessGroup').on('change', function (event) {
@@ -420,6 +418,7 @@
                 LoadDropdown()
                 console.log('morph.updating')
             })
+                */
         })
         $(document).ready(function () {
             const target_region = ["#target_province_id", "#tartet_location_id"];
@@ -442,6 +441,12 @@
                     }, 200);
                 })
 
+            });
+
+            $("#businessGroup").on("change", function () {
+                setTimeout(function () {
+                    $("#officeId").val("").trigger("change");
+                }, 200);
             });
 
             $('#phone').keypress(function (event) {

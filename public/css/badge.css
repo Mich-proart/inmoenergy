@@ -71,3 +71,11 @@
     color: rgb(68, 68, 68);
     font-weight: 700;
 }
+
+/* Custom table row highlighting - green theme */
+.table-success-light {
+    background-color: #d4edda !important;
+    --bs-table-bg: #d4edda;
+    --bs-table-striped-bg: #c9e7cf;
+    --bs-table-hover-bg: #bfe0c7;
+}

@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -34,8 +38,7 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
-                                {{$formality->assigned->name}} {{ " " . $formality->assigned->last_name}}
-                                {{ " " . $formality->assigned->second_last_name}}
+                                {{$formality->assigned->name}} {{ " " . $formality->assigned->first_last_name}}
                             @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
@@ -339,6 +342,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')
