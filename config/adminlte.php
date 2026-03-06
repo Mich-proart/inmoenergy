@@ -307,7 +307,7 @@ return [
 
         // Sidebar items:
         [
-            'text' => 'Trámites clientes',
+            'text' => 'TRÁMITES CLIENTES',
             'icon' => 'fas fa-fw fa-file-invoice',
             'submenu' => [
                 [
@@ -344,7 +344,7 @@ return [
         ],
 
         [
-            'text' => 'Trámites y tickets',
+            'text' => 'TRÁMITES Y TICKETS',
             'icon' => 'fas fa-copy',
             'submenu' => [
                 [
@@ -376,7 +376,7 @@ return [
             ]
         ],
         [
-            'text' => 'Documentación',
+            'text' => 'DOCUMENTACIÓN',
             'icon' => 'fas fa-fw fa-file',
             'submenu' => [
                 [
@@ -394,7 +394,7 @@ return [
             ]
         ],
         [
-            'text' => 'Herramientas de trabajo',
+            'text' => 'HERRAMIENTAS DE TRABAJO',
             'icon' => 'nav-icon fas fa-th',
             'submenu' => [
                 [
@@ -416,6 +416,11 @@ return [
                     'text' => 'Análisis clientes',
                     'route' => 'admin.tool.statistics.client',
                     'can' => 'tool.statistics.client.access',
+                ],
+                [
+                    'text' => 'Análisis trámites',
+                    'route' => 'admin.tool.statistics.formality',
+                    'can' => 'tool.statistics.formality.access',
                 ],
                 [
                     'text' => 'Trámites cerrados totales',
@@ -447,11 +452,21 @@ return [
                     'route' => 'admin.ticket.total.pending',
                     'can' => 'ticket.total.pending.access',
                 ],
+                [
+                    'text' => 'Gestión de comisiones',
+                    'route' => 'admin.formality.commission.manager',
+                    'can' => 'formality.commission.manager.access',
+                ],
+                [
+                    'text' => 'Ver o editar fichas clientes',
+                    'route' => 'admin.client.record',
+                    'can' => 'client.record.access',
+                ],
             ]
 
         ],
         [
-            'text' => 'Configuración',
+            'text' => 'CONFIGURACIÓN',
             'icon' => 'fas fa-fw fa-cog',
             'submenu' => [
                 [

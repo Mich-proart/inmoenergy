@@ -1,0 +1,66 @@
+/* Custom focus styles - Green theme */
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #368D68 !important;
+    box-shadow: 0 0 0 0.2rem rgba(186, 205, 197, 0.25) !important;
+}
+
+/* Remove default outline */
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 0;
+}
+
+/* Remove gray border from sidebar brand/logo area */
+.main-sidebar .brand-link,
+.main-sidebar .sidebar-brand,
+.sidebar .brand-link,
+.brand-link {
+    border-bottom: none !important;
+    border-bottom-color: transparent !important;
+}
+
+/* Ensure sidebar brand background matches sidebar */
+.main-sidebar .brand-link {
+    background-color: inherit !important;
+}
+
+/* Fix for Point 24: Reduce table font size for 1800px resolution */
+.table {
+    font-size: 14px !important;
+}
+
+.table thead th {
+    font-size: 14px !important;
+}
+
+.table tbody td {
+    font-size: 14px !important;
+}
+
+/* Also reduce DataTables control elements */
+.dataTables_wrapper {
+    font-size: 14px !important;
+}
+
+.dataTables_info,
+.dataTables_paginate {
+    font-size: 14px !important;
+}
+
+/* Ensure buttons also use smaller font */
+.dt-buttons .btn {
+    font-size: 14px !important;
+}
+
+
+/* Capitalize only first letter of table cell content */
+.table tbody td::first-letter {
+    text-transform: uppercase;
+}

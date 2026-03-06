@@ -46,6 +46,11 @@
                     <th scope="col text-center">
                         <p class="text-center fs-6">Nombre de opciones</p>
                     </th>
+                    @if ($component->alias == 'street_type')
+                        <th scope="col text-center">
+                            <p class="text-center fs-6">Abreviatura</p>
+                        </th>
+                    @endif
                     <th scope="col text-center">
                         <p class="text-center fs-6">Estado</p>
                     </th>
@@ -57,8 +62,11 @@
             <tbody>
                 @isset ($options)
                     @foreach ($options as $option)
-                        <tr class="table-light">
+                        <tr class="table-success-light">
                             <td class="text-center">{{ ucfirst($option->name) }}</td>
+                            @if ($component->alias == 'street_type')
+                                <td class="text-center">{{ $option->abbreviation }}</td>
+                            @endif
                             <td class="text-center">
                                 @if ($option->is_available)
                                     <span class="custom-badge operative">activo</span>
@@ -120,6 +128,19 @@
                                         </span>
                                     @enderror
                                 </div>
+                                @if ($component->alias == 'street_type')
+                                    <div class="form-group col-md-6">
+                                        <label for="inputAbbreviation">Abreviatura: </label>
+                                        <input wire:model="abbreviation" type="text"
+                                            class="form-control @error('abbreviation') is-invalid @enderror" id="inputAbbreviation"
+                                            placeholder="" name="abbreviation">
+                                        @error('abbreviation')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="modal-footer">

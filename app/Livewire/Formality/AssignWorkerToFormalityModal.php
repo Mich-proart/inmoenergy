@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Formality;
 
+use App\Models\Company;
+use App\Models\Product;
 use Livewire\Component;
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Exceptions\CustomException;
@@ -24,6 +26,9 @@ class AssignWorkerToFormalityModal extends Component
 
     public $files;
 
+    public $companyId;
+    public $productId;
+
 
     public function __construct()
     {
@@ -43,10 +48,24 @@ class AssignWorkerToFormalityModal extends Component
         return User::where('isWorker', true)->where('isActive', 1)->get();
     }
 
+    #[Computed()]
+
+    public function companies()
+    {
+        return Company::all();
+    }
+    #[Computed()]
+    public function products()
+    {
+        return Product::where('company_id', $this->companyId)->get();
+    }
+
     protected $rules = [
         'formalityId' => 'required|exists:formality,id',
         'user_assigned_id' => 'required|exists:users,id',
         'isCritical' => 'nullable|boolean',
+        'companyId' => 'required|exists:company,id',
+        'productId' => 'required|exists:product,id',
     ];
 
     protected $messages = [
@@ -55,6 +74,10 @@ class AssignWorkerToFormalityModal extends Component
         'user_assigned_id.required' => 'Debes seleccionar un usuario',
         'user_assigned_id.exists' => 'Debes seleccionar un usuario existente',
         'isCritical.boolean' => 'Debe ser un valor booleano',
+        'companyId.required' => 'Debes seleccionar una comercializadora',
+        'companyId.exists' => 'Debes seleccionar una comercializadora existente',
+        'productId.required' => 'Debes seleccionar un producto',
+        'productId.exists' => 'Debes seleccionar un producto existente',
     ];
 
     public function save()
@@ -65,14 +88,18 @@ class AssignWorkerToFormalityModal extends Component
 
         try {
             $status = $this->formalityService->getFormalityStatus(FormalityStatusEnum::ASIGNADO->value);
-
+            $formality = Formality::firstWhere('id', $this->formalityId);
 
             $updates = [
                 'status_id' => $status->id,
                 'user_assigned_id' => $this->user_assigned_id,
                 'isCritical' => $this->isCritical,
-                'assignment_date' => now()
+                'assignment_date' => now(),
+                'company_id' => $this->companyId,
+                'product_id' => $this->productId,
             ];
+
+            $updates['previous_company_id'] = $formality->company_id ?? null;
 
             Formality::firstWhere('id', $this->formalityId)->update($updates);
             DB::commit();

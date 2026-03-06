@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -9,7 +13,7 @@
         <img src="{{ asset('/vendor/adminlte/dist/img/icons/' . 'dashboard.png') }}" alt=""
             class="img-thumbnail align-self-center resize">
 -->
-        <h3 style="color: #368D68" >Panel de control</h3>
+        <h3 style="color: #368D68">Panel de control</h3>
     </div>
 </div>
 @stop
@@ -43,13 +47,14 @@
 
                                                     @endif
                                                     <img src="{{'/vendor/adminlte/dist/img/icons/' . $program->image}}" alt=""
-                                                        class="img-fluid">
+                                                        class="img-fluid" style="width: 48px; height: 48px;">
                                                 </a>
                                             </div>
 
                                         </div>
                                         <a class="text-decoration-none" href="{{route($program->route)}}">
-                                            <p class="fw-bolder text-center mt-3" style="margin-top: 20px;">{{ucfirst($program->name)}}</p>
+                                            <p class="fw-bolder text-center mt-3" style="margin-top: 20px;">{{ucfirst($program->name)}}
+                                            </p>
                                         </a>
 
                                     </div>
@@ -77,6 +82,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')

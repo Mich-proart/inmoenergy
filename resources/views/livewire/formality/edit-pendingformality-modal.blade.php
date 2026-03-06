@@ -71,19 +71,19 @@
                 <table id="formality-content" class="table table-hover text-nowrap" style="cursor:pointer">
                     <thead>
                         <tr>
-                            <th>Fecha de entrada</th>
-                            <th>Usuario asignado</th>
+                            <th>Entrada</th>
+                            <th>Asignado</th>
                             <th>Suministro</th>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha finalización trámite</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
+                            <th>Finalizado</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
+                            <th>Producto</th>
                             <th>Consumo anual</th>
                             <th>CUPS</th>
                             <th>Opciones</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -216,10 +216,11 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="/vendor/custom/badge.code.js"></script>
+    <script src="/vendor/custom/functions.code.js"></script>
 
     <script>
         const table = new DataTable('#formality-content', {
-            dom: 'Bfrtip',
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
@@ -236,12 +237,21 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
             },
             "columns": [
-                { data: 'created_at' },
+                { 
+                    data: 'created_at',
+                    render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 { data: 'assigned' },
                 { data: 'service' },
                 { data: 'fullName' },
                 { data: 'fullAddress' },
-                { data: 'completion_date' },
+                { 
+                    data: 'completion_date', render: function (data, type, row, meta) {
+                        return formatDate(data);
+                    }
+                },
                 {
                     data: 'status', render: function (data, type, row, meta) {
                         return statusColor(data);
@@ -254,7 +264,7 @@
                 {
                     data: "formality_id", render: function (data, type, row, meta) {
                         return `
-                            <button type="button" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-pencil-alt"></i> Volver a tramitar</button>
+                            <button type="button" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#resetFormalityModal"><i class="fas fa-pencil-alt"></i> Tramitar</button>
                             <button type="button" wire:click="editFormality(${data})" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#koModal"><i class="fas fa-times"></i> K.O.</button>
                             <button type="button" id="editFormality${data}" wire:click="editFormality(${data})" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editRenovationModal" data-bs-toggle="modal"
                             data-bs-target="#editRenovationModal" hidden><i class="fas fa-times"></i> </button>
@@ -268,10 +278,10 @@
                     }
                 },
             ],
-            "columnDefs": [
+                        "columnDefs": [
 
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8, 9] },
+                { className: "text-left", targets: "_all" },
+                // { className: "text-capitalize", targets: "_all" },
                 { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10] },
             ], "order": [
                 [0, "desc"]

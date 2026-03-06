@@ -270,7 +270,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="inputState">Grupo empresarial: </label>
-                                <select class="form-control @error('business_target') is-invalid @enderror"
+                                <select wire:model.live="business_target" class="form-control @error('business_target') is-invalid @enderror"
                                     name="businessGroup" id="businessGroup">
                                     <option value="">-- selecione --</option>
                                     @if (isset($this->business))
@@ -385,6 +385,7 @@
 @script
 <script type="text/javascript">
     document.addEventListener('livewire:initialized', () => {
+        /*
         function LoadDropdown() {
 
             $('#businessGroup').on('change', function (event) {
@@ -406,6 +407,7 @@
             LoadDropdown()
             console.log('morph.updating')
         })
+        */
     })
     $(document).ready(function () {
 

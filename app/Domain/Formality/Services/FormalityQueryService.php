@@ -60,6 +60,7 @@ class FormalityQueryService
                 'client.document_number as documentNumber',
                 'address.*',
                 'street_type.name as street_type',
+                'street_type.abbreviation as street_type_abbreviation',
                 'housing_type.name as housing_type',
                 'location.name as location',
                 'province.name as province',
@@ -149,20 +150,28 @@ class FormalityQueryService
         return $queryBuilder->get();
     }
 
-    public function getTotalInProgress()
+    public function getTotalInProgressQuery()
     {
         $queryBuilder = $this->formalityQuery();
         $queryBuilder->WhereNotIn('status.name', $this->mainStatusFilter);
-        return $queryBuilder->get();
+        return $queryBuilder;
+    }
+
+    public function getTotalInProgress()
+    {
+        return $this->getTotalInProgressQuery()->get();
+    }
+
+    public function getTotalClosedQuery()
+    {
+        $queryBuilder = $this->formalityQuery();
+        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
+        return $queryBuilder;
     }
 
     public function getTotalClosed()
     {
-
-        $queryBuilder = $this->formalityQuery();
-        $queryBuilder->WhereIn('status.name', $this->mainStatusFilter);
-
-        return $queryBuilder->get();
+        return $this->getTotalClosedQuery()->get();
     }
 
     public function getRenewable()

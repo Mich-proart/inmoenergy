@@ -33,7 +33,7 @@ class FormalityModify extends Form
         $this->assigned_observation = $formality->assigned_observation ?? '';
         $this->CUPS = $formality->CUPS ?? '';
         $this->access_rate_id = $formality->access_rate_id ?? null;
-        $this->annual_consumption = $formality->annual_consumption ?? null;
+        $this->annual_consumption = $formality->annual_consumption ? $this->number_format_spanish($formality->annual_consumption) : null;
         $this->canClientEdit = $formality->canClientEdit ?? false;
         $this->internal_observation = $formality->internal_observation ?? '';
         $this->product_id = $formality->product_id ?? null;
@@ -89,7 +89,7 @@ class FormalityModify extends Form
         }
 
         if ($this->annual_consumption != 0 && $this->annual_consumption != null && $this->annual_consumption != '') {
-            $annual_consumption = intval($this->annual_consumption);
+            $annual_consumption = $this->number_format_english($this->annual_consumption);
         }
 
         if ($this->product_id != 0 && $this->product_id != null && $this->product_id != '') {

@@ -31,13 +31,13 @@
                         <tr>
                             <th>Cliente final</th>
                             <th>Dirección</th>
-                            <th>Fecha de activación</th>
-                            <th>Estado trámite</th>
-                            <th>Compañía Suministro</th>
-                            <th>Producto Compañía</th>
+                            <th>Activación</th>
+                            <th>Estado</th>
+                            <th>Comercializadora</th>
+                            <th>Producto</th>
                             <th>CUPS</th>
                             <th>Comisión Bruta</th>
-                            <th>Documentos</th>
+                            <th>Doc</th>
                         </tr>
                     </thead>
 
@@ -129,7 +129,7 @@
 
     <script>
         const table = new DataTable('#formality-content', {
-            dom: 'Bfrtip',
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
@@ -192,9 +192,9 @@
             ],
             "columnDefs": [
 
-                { className: "dt-head-center", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
-                { className: "text-capitalize", targets: [1, 2, 3, 4, 5, 7, 8] },
-                { className: "target", targets: [0, 1, 2, 3, 4, 5, 7, 8] },
+                { className: "text-left", targets: "_all" },
+                // { className: "text-capitalize", targets: "_all" },
+                { className: "target", targets: [0, 1, 2, 3, 4, 5, 6, 7] },
             ], "order": [
                 [0, "desc"]
             ],

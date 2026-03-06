@@ -29,13 +29,13 @@ class CreateBusinessGroupModal extends Component
         try {
 
             if ($this->businessGroup !== null) {
-                $this->businessGroup->update(['name' => strtolower($this->name)]);
+                $this->businessGroup->update(['name' => $this->name]);
                 DB::commit();
                 return redirect()->route('admin.config.businessGroup');
             }
 
             BusinessGroup::create([
-                'name' => strtolower($this->name),
+                'name' => $this->name,
             ]);
 
             DB::commit();

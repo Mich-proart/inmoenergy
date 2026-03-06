@@ -13,6 +13,8 @@ use App\Http\Controllers\Configuration\ComponentController;
 use App\Http\Controllers\User\UserConntroller;
 use App\Http\Controllers\Admin\User\UserAdminController;
 use App\Http\Controllers\Admin\Formality\FormalityAdminController;
+use App\Http\Controllers\Admin\Client\ClientRecordController;
+use App\Http\Controllers\Admin\Client\ClientRecordApiController;
 
 
 
@@ -54,6 +56,8 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::get('/role', [RoleApiController::class, 'getRoles'])->name('api.role.query');
 
+    Route::put('/client/{id}', [ClientRecordApiController::class, 'updateClient'])->name('api.client.update');
+    Route::put('/address/{id}', [ClientRecordApiController::class, 'updateAddress'])->name('api.address.update');
 });
 Route::prefix('formality')->group(function () {
     Route::get('/create', [FormalityAdminController::class, 'create'])->name('admin.formality.create');
@@ -88,6 +92,12 @@ Route::prefix('users')->group(function () {
     Route::get('/create', [UserAdminController::class, 'create'])->name('admin.users.create');
     Route::get('/{id}/edit/', [UserAdminController::class, 'edit'])->name('admin.users.edit');
 });
+
+Route::prefix('client')->group(function () {
+    Route::get('/record', [ClientRecordController::class, 'index'])->name('admin.client.record');
+    Route::get('/records/view', [ClientRecordController::class, 'viewRecords'])->name('admin.client.records.view');
+});
+
 Route::prefix('company')->group(function () {
     Route::get('/', [CompanyAdminController::class, 'index'])->name('admin.company.manager');
     Route::get('/{id}/details', [CompanyAdminController::class, 'details'])->name('admin.company.manager.details');
@@ -135,4 +145,5 @@ Route::prefix('tickets')->group(function () {
 Route::prefix('tool')->group(function () {
     Route::get('/statistics/client', [ToolAdminController::class, 'getStatisticsClient'])->name('admin.tool.statistics.client');
     Route::get('/statistics/worker', [ToolAdminController::class, 'getStatisticsWorker'])->name('admin.tool.statistics.worker');
+    Route::get('/statistics/formality', [ToolAdminController::class, 'getStatisticsFormality'])->name('admin.tool.statistics.formality');
 });

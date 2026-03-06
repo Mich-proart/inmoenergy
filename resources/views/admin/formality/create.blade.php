@@ -2,6 +2,10 @@
 
 @section('title', 'Nuevo trámite')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -30,6 +34,7 @@
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'spinner.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 <style>
     .dropdown-menu {
         max-height: 200px;

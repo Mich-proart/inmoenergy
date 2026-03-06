@@ -1,6 +1,12 @@
 @extends('adminlte::page')
 
 
+@section('classes_body', 'layout-fixed layout-navbar-fixed sidebar-mini sidebar-closed sidebar-collapse')
+
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <div class="row">
     <div class="col-md-6 image-text-container">
@@ -65,6 +71,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 @stop
 
 @section('js')
@@ -73,6 +80,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
 <script src="/vendor/custom/user.status.js"></script>
+<script src="/vendor/custom/functions.code.js"></script>
 
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
@@ -84,7 +92,7 @@
 
 <script>
     const table = new DataTable('#user-content', {
-        dom: 'Bfrtip',
+        dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>rtip',
         buttons: [
             {
                 extend: 'excelHtml5',
@@ -104,7 +112,12 @@
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
         "columns": [
-            { data: 'created_at' },
+            { 
+                data: 'created_at', 
+                render: function (data, type, row, meta) {
+                    return formatDate(data);
+                } 
+            },
             { data: 'fullName' },
             { data: 'fullAddress' },
             {
@@ -114,8 +127,8 @@
             },
         ],
         "columnDefs": [
-            { className: "dt-head-center", targets: [0, 1, 2, 3] },
-            { className: "text-capitalize", targets: [1, 2, 3] }
+            { className: "text-left", targets: "_all" },
+            // { className: "text-capitalize", targets: "_all" }
         ],
         "order": [
             [0, "desc"]

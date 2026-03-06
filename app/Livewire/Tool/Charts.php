@@ -15,6 +15,9 @@ class Charts extends Component
 
     public int $totalCount;
     public $timeAvg;
+    
+    public bool $hideTimeAvg = false;
+    public bool $groupByService = false;
 
     protected StatisticService $statisticService;
 
@@ -24,8 +27,10 @@ class Charts extends Component
     }
 
 
-    public function mount()
+    public function mount($hideTimeAvg = false, $groupByService = false)
     {
+        $this->hideTimeAvg = $hideTimeAvg;
+        $this->groupByService = $groupByService;
         $this->dataset = [
             [
                 'label' => 'Logged In',
@@ -40,7 +45,7 @@ class Charts extends Component
     public function searchData(string $searchBasedOn, array $selectedUsers, array $selectedServices, string $from, string $to, string|null $selectedFrequency)
     {
         $this->statisticService->setSearchBasedOn($searchBasedOn);
-        $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency);
+        $data = $this->statisticService->search($selectedUsers, $selectedServices, $from, $to, $selectedFrequency, $this->groupByService);
         $this->totalCount = $data['totalCount'];
         $this->timeAvg = $data['timeAvg'] . ' ' . 'horas';
 

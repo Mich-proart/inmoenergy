@@ -46,7 +46,7 @@ class EditProductModal extends Component
                 throw CustomException::badRequestException('Product already exists');
 
             Product::create([
-                'name' => strtolower($this->name),
+                'name' => $this->name,
                 'company_id' => $this->companyId
             ]);
             DB::commit();

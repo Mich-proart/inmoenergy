@@ -201,6 +201,13 @@ class CreateFormalityForm extends Component
                 $this->form->setDocumentTypeId($documentType->id);
                 $this->form->reset(['firstLastName', 'secondLastName', 'userTitleId']);
 
+                // Add required documents for Business
+                $businessDocs = FileConfig::whereIn('name', ['CIF', 'escritura empresa'])->get();
+                foreach ($businessDocs as $doc) {
+                    if (!$this->inputs->contains('name', $doc->name)) {
+                        $this->inputs->push(['configId' => $doc->id, 'serviceId' => null, 'name' => $doc->name, 'file' => '']);
+                    }
+                }
 
             }
 
@@ -208,6 +215,12 @@ class CreateFormalityForm extends Component
                 $this->field_name = 'Nombre';
                 $documentTypes = $this->userService->getDocumentTypes();
                 $this->documentTypes = $documentTypes->where('name', '!=', DocumentTypeEnum::CIF->value);
+
+                // Remove Business documents if present
+                $businessDocsNames = ['CIF', 'escritura empresa'];
+                $this->inputs = $this->inputs->reject(function ($value) use ($businessDocsNames) {
+                    return in_array($value['name'], $businessDocsNames);
+                });
             }
 
         }
@@ -245,12 +258,12 @@ class CreateFormalityForm extends Component
 
             $this->form->validate([
                 'firstLastName' => 'required|string',
-                'secondLastName' => 'required|string',
+                'secondLastName' => 'nullable|string',
                 'userTitleId' => 'required|integer|exists:component_option,id',
                 'documentNumber' => $documentRule
             ], [
                 'firstLastName.required' => 'El campo Primer Apellido es obligatorio',
-                'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
+                //'secondLastName.required' => 'El campo Segundo Apellido es obligatorio',
                 'userTitleId.required' => 'El campo Titulo es obligatorio',
                 'userTitleId.exists' => 'El Titulo no es valido',
             ]);

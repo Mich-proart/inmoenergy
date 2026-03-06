@@ -2,6 +2,10 @@
 
 @section('title', 'Trámite')
 
+@section('meta_tags')
+<meta name="version" content="{{ config('app.version') }}">
+@stop
+
 @section('content_header')
 <h1>Trámite</h1>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -34,7 +38,7 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             <label for=""> Usuario asignado: </label> @if (isset($formality->assigned))
-                                {{$formality->assigned->name . ' ' . $formality->assigned->first_last_name . ' ' . $formality->assigned->second_last_name}}
+                                {{$formality->assigned->name . ' ' . $formality->assigned->first_last_name}}
                             @endif
                         </div>
                         <div class="col-sm-4 invoice-col">
@@ -402,6 +406,7 @@
 <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <link href="{{ asset('css/' . 'badge.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/' . 'icons.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/custom-focus.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 @stop
 

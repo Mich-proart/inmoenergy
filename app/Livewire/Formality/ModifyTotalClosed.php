@@ -10,9 +10,11 @@ use App\Domain\Program\Services\FileUploadigService;
 use App\Livewire\Forms\Formality\FormalityCancel;
 use App\Livewire\Forms\Formality\FormalityModifyTotalClosed;
 use App\Models\Address;
+use App\Models\Company;
 use App\Models\ComponentOption;
 use App\Models\FileConfig;
 use App\Models\Formality;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -43,6 +45,23 @@ class ModifyTotalClosed extends Component
 
     private FileUploadigService $fileUploadService;
 
+    public $prevStatus;
+
+    public $companyId;
+
+    public $accessRate;
+
+
+    protected $rules = [
+        'companyId' => 'required|integer|exists:company,id',
+    ];
+
+    protected $messages = [
+        'companyId.required' => 'Debes seleccionar una empresa',
+        'companyId.integer' => 'Debes seleccionar una empresa',
+        'companyId.exists' => 'Debes seleccionar una empresa existente',
+    ];
+
 
     public function __construct()
     {
@@ -53,26 +72,41 @@ class ModifyTotalClosed extends Component
     public function mount($formality)
     {
         $this->formality = $formality;
+        $this->accessRate = $this->formalityService->getAccessRates($this->formality->service->name);
+        $this->companyId = $formality->company->id ?? null;
         $this->form->setData($this->formality);
         $this->cancellation->setData($this->formality);
+
 
         $this->fileConfig = FileConfig::where('name', FileConfigEnum::CONTRATOSUMINISTRO->value)->first();
 
         $this->files = $formality->files->where('config_id', $this->fileConfig->id);
 
-        if($this->files){
+        if ($this->files) {
             $this->initFileInput();
         }
 
     }
 
-    private  function initFileInput()
+    private function initFileInput()
     {
         $fileConfig = FileConfig::where('name', 'contrato del suministro')->first();
 
         $this->fill([
             'inputs' => collect([['configId' => $fileConfig->id, 'serviceId' => null, 'name' => $fileConfig->name, 'file' => '']])
         ]);
+    }
+
+    #[Computed()]
+
+    public function companies()
+    {
+        return Company::all();
+    }
+    #[Computed()]
+    public function products()
+    {
+        return Product::where('company_id', $this->companyId)->get();
     }
 
     #[Computed()]
@@ -114,15 +148,35 @@ class ModifyTotalClosed extends Component
         $this->form->validate();
 
         if ($this->formality->service->name !== ServiceEnum::AGUA->value) {
-            $this->form->validate([
+
+            $rules = [
                 'annual_consumption' => 'required|integer|gt:0',
-            ], [
+                'access_rate_id' => 'required|integer|exists:component_option,id',
+            ];
+            if ($this->formality->service->name !== ServiceEnum::GAS->value) {
+                $rules['potency'] = 'required|string';
+            }
+
+            $this->form->validate($rules, [
                 'annual_consumption.required' => 'Consumo anual requerido',
                 'annual_consumption.numeric' => 'Debes rellenar el consumo anual valido',
                 'annual_consumption.gt' => 'Consumo anual debe ser mayor que 0',
+                'access_rate_id.required' => 'Debes seleccionar una tarifa de acceso',
+                'access_rate_id.integer' => 'Debes seleccionar una tarifa de acceso',
+                'access_rate_id.exists' => 'Debes seleccionar una tarifa de acceso existente',
+                'potency.required' => 'Debes rellenar la potencia',
             ]);
         }
-        $this->executeUpdate();
+        if ($this->formality->service->name !== ServiceEnum::AGUA->value && $this->formality->service->name !== ServiceEnum::GAS->value) {
+            if ($this->form->potency == null || $this->form->potency == '' || $this->form->potency == 0) {
+                $this->dispatch('checks', error: "Por favor, rellene la potencia correctamente", title: "Valor no valido");
+            } else {
+                $this->executeUpdate();
+            }
+
+        } else {
+            $this->executeUpdate();
+        }
 
     }
 
@@ -149,13 +203,15 @@ class ModifyTotalClosed extends Component
                     //'inputs.*.file.required' => 'Selecione un archivo.',
                     'inputs.*.file.mimes' => 'El archivo debe ser un pdf.',
                     'inputs.*.file.max' => 'El archivo debe ser menor a 5MB.',
+                    'inputs.*.file.uploaded' => 'El archivo debe ser menor a 5MB.',
                 ]);
 
                 $file = $object['file'];
                 $stored_file = $this->formality->files->where('config_id', $this->fileConfig->id)->first();
 
-                if($stored_file) {
+                if ($stored_file) {
                     $this->fileUploadService
+                        ->setModel($this->formality)
                         ->addFile($file)
                         ->setConfigId($object['configId'])
                         ->force_replace($stored_file);
@@ -183,6 +239,10 @@ class ModifyTotalClosed extends Component
 
             DB::commit();
             return redirect()->route('admin.formality.total.closed');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire can handle them properly
+            DB::rollBack();
+            throw $e;
         } catch (\Throwable $th) {
 
             DB::rollBack();

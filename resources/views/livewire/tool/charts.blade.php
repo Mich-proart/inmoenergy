@@ -34,12 +34,14 @@
                                 </div>
                                 <div class="col-4"><p>{{$totalCount}}</p></div>
                             </div>
+                            @if(!$hideTimeAvg)
                             <div class="row align-items-center">
                                 <div class="col">
                                     <div>Tiempo promedio trámite:</div>
                                 </div>
                                 <div class="col-5"><p>{{$timeAvg}}</p></div>
                             </div>
+                            @endif
                         </div>
 
                     </div>

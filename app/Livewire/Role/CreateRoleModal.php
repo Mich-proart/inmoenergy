@@ -35,6 +35,7 @@ class CreateRoleModal extends Component
                 'name' => strtolower($this->roleName),
             ]);
             DB::commit();
+            \Illuminate\Support\Facades\Artisan::call('permission:cache-reset');
             return redirect()->route('admin.roles.index');
         } catch (\Throwable $th) {
 
