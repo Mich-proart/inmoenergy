@@ -135,6 +135,11 @@ class FileUploadigService
     {
         // Normalize config name for comparison
         $normalizedConfig = strtolower(trim($configName));
+        $extension = strtolower($extension);
+
+        // Get formality ID if applicable
+        $formalityId = ($this->model instanceof Formality) ? $this->model->id : '';
+        $idSuffix = $formalityId ? "_{$formalityId}" : "";
 
         // Map document types to display names
         if (str_contains($normalizedConfig, 'dni')) {
@@ -158,29 +163,35 @@ class FileUploadigService
         }
 
         if (str_contains($normalizedConfig, 'contrato_del_suministro') || str_contains($normalizedConfig, 'suministro')) {
-            // Try to get service type from config
+            // Try to get service type from config or model
             $serviceType = $this->getServiceType();
             if ($serviceType) {
-                return "Contrato_suministro_{$serviceType}_{$clientName}.{$extension}";
+                return "Contrato_suministro_{$serviceType}{$idSuffix}_{$clientName}.{$extension}";
             }
-            return "Contrato_suministro_{$clientName}.{$extension}";
+            return "Contrato_suministro{$idSuffix}_{$clientName}.{$extension}";
         }
 
         // For application manuals or unknown types, use the original config name
         if (!empty($configName)) {
             $sanitizedConfig = $this->sanitizeFilename($configName);
-            return "{$sanitizedConfig}_{$clientName}.{$extension}";
+            // Include formality ID for unknown types if attached to a formality (e.g. facturas)
+            return "{$sanitizedConfig}{$idSuffix}_{$clientName}.{$extension}";
         }
 
         // Fallback
-        return "documento_{$clientName}.{$extension}";
+        return "documento{$idSuffix}_{$clientName}.{$extension}";
     }
 
     /**
-     * Get service type from FileConfig
+     * Get service type from FileConfig or the model itself
      */
     private function getServiceType(): ?string
     {
+        // If attached to a formality, get service name from there
+        if ($this->model instanceof Formality && $this->model->service) {
+            return $this->sanitizeFilename($this->model->service->name);
+        }
+
         if (!$this->configId) {
             return null;
         }
