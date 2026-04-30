@@ -355,7 +355,7 @@ class ModifyTotalClosed extends Component
             'correspondence_address_id' => $formality->correspondence_address_id,
             'canClientEdit' => true,
             'status_id' => $status->id,
-            'isCritical' => $this->cancellation->isCritical,
+            'isCritical' => (bool) $this->cancellation->isCritical,
             'access_rate_id' => $formality->access_rate_id,
             'CUPS' => $formality->CUPS,
             'internal_observation' => $formality->internal_observation,
