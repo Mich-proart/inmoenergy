@@ -112,7 +112,7 @@ Route::prefix('config')->group(function () {
         Route::get('/business', [ComponentAdminController::class, 'getBusinnesGroup'])->name('admin.config.businessGroup');
         Route::get('/{id}/offices', [ComponentAdminController::class, 'buinessDetails'])->name('admin.config.offices');
         Route::get('/documents', [ComponentAdminController::class, 'docsManager'])->name('admin.config.documents');
-        Route::get('/documents/{id}/download', [ComponentAdminController::class, 'donwload'])->name('admin.documents.download');
+        Route::get('/documents/{id}/download', [ComponentAdminController::class, 'download'])->name('admin.documents.download');
     });
 });
 

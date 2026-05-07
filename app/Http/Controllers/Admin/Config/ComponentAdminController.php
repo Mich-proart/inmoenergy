@@ -42,11 +42,24 @@ class ComponentAdminController extends Controller
             return view('admin.config.office', ['business' => $business]);
     }
 
-    public function donwload(int $id)
+    public function download(int $id)
     {
         $file = File::find($id);
+        if (!$file) {
+            abort(404, 'Archivo no encontrado');
+        }
+
         $path = storage_path('app/public/' . $file->folder . '/' . $file->filename);
-        return response()->download($path);
+        
+        if (!file_exists($path)) {
+            abort(404, 'El archivo físico no existe');
+        }
+
+        return response()->download($path, $file->filename, [
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Pragma' => 'no-cache',
+            'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT',
+        ]);
     }
     public function docsManager()
     {

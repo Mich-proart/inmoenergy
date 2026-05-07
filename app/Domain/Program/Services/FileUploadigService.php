@@ -140,46 +140,49 @@ class FileUploadigService
         // Get formality ID if applicable
         $formalityId = ($this->model instanceof Formality) ? $this->model->id : '';
         $idSuffix = $formalityId ? "_{$formalityId}" : "";
+        
+        // Add a timestamp to ensure uniqueness and avoid caching issues
+        $timestamp = "_" . time();
 
         // Map document types to display names
         if (str_contains($normalizedConfig, 'dni')) {
-            return "DNI_{$clientName}.{$extension}";
+            return "DNI_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'cif')) {
-            return "CIF_{$clientName}.{$extension}";
+            return "CIF_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'escritura')) {
-            return "Escritura_empresa_{$clientName}.{$extension}";
+            return "Escritura_empresa_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'alquiler') || str_contains($normalizedConfig, 'compraventa')) {
-            return "Contrato_alquiler_o_compraventa_{$clientName}.{$extension}";
+            return "Contrato_alquiler_o_compraventa_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'autorización') || str_contains($normalizedConfig, 'autorizacion')) {
-            return "Autorizacion_firmada_{$clientName}.{$extension}";
+            return "Autorizacion_firmada_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'contrato_del_suministro') || str_contains($normalizedConfig, 'suministro')) {
             // Try to get service type from config or model
             $serviceType = $this->getServiceType();
             if ($serviceType) {
-                return "Contrato_suministro_{$serviceType}{$idSuffix}_{$clientName}.{$extension}";
+                return "Contrato_suministro_{$serviceType}{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
             }
-            return "Contrato_suministro{$idSuffix}_{$clientName}.{$extension}";
+            return "Contrato_suministro{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
         }
 
         // For application manuals or unknown types, use the original config name
         if (!empty($configName)) {
             $sanitizedConfig = $this->sanitizeFilename($configName);
             // Include formality ID for unknown types if attached to a formality (e.g. facturas)
-            return "{$sanitizedConfig}{$idSuffix}_{$clientName}.{$extension}";
+            return "{$sanitizedConfig}{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
         }
 
         // Fallback
-        return "documento{$idSuffix}_{$clientName}.{$extension}";
+        return "documento{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
     }
 
     /**
