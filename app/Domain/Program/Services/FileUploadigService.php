@@ -165,13 +165,15 @@ class FileUploadigService
             return "Autorizacion_firmada_{$clientName}{$timestamp}.{$extension}";
         }
 
-        if (str_contains($normalizedConfig, 'contrato_del_suministro') || str_contains($normalizedConfig, 'suministro')) {
+        if (str_contains($normalizedConfig, 'contrato del suministro') || 
+            str_contains($normalizedConfig, 'contrato_del_suministro') || 
+            str_contains($normalizedConfig, 'suministro')) {
             // Try to get service type from config or model
             $serviceType = $this->getServiceType();
             if ($serviceType) {
-                return "Contrato_suministro_{$serviceType}{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
+                return "Contrato_suministro_{$serviceType}_{$clientName}{$idSuffix}{$timestamp}.{$extension}";
             }
-            return "Contrato_suministro{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
+            return "Contrato_suministro_{$clientName}{$idSuffix}{$timestamp}.{$extension}";
         }
 
         // For application manuals or unknown types, use the original config name
