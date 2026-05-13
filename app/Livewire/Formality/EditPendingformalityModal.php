@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\FileConfigEnum;
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Services\FormalityService;
 use App\Domain\Program\Services\FileUploadigService;
@@ -62,7 +63,9 @@ class EditPendingformalityModal extends Component
         )->first();
 
         if ($formality) {
-            $this->files = $formality->files;
+            $this->files = $formality->files->filter(
+                fn($file) => $file->config->name === FileConfigEnum::CONTRATOSUMINISTRO->value
+            );
 
         }
     }
@@ -190,7 +193,9 @@ class EditPendingformalityModal extends Component
         $this->form->setId($formalityId);
         $formality = $this->formalityService->getById($formalityId);
         if ($formality) {
-            $this->files = $formality->files;
+            $this->files = $formality->files->filter(
+                fn($file) => $file->config->name === FileConfigEnum::CONTRATOSUMINISTRO->value
+            );
             $this->form->activation_date = $formality->activation_date;
             $this->form->contract_completion_date = $formality->contract_completion_date;
             $this->form->isRenewable = (bool) $formality->isRenewable;
