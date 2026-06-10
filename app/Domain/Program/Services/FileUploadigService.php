@@ -54,7 +54,7 @@ class FileUploadigService
             $client = $this->model instanceof Client ? $this->model : ($this->model->client ?? null);
             if ($client) {
                 $existingFolder = $client->files()->value('folder');
-                if ($existingFolder) {
+                if ($existingFolder && preg_match('/^client_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
                     return $existingFolder;
                 }
                 $date = $client->created_at ? $client->created_at->format('Y-m-d') : date('Y-m-d');
@@ -64,7 +64,7 @@ class FileUploadigService
             $formality = $this->model instanceof Formality ? $this->model : null;
             if ($formality) {
                 $existingFolder = $formality->files()->where('folder', 'like', 'formality_%')->value('folder');
-                if ($existingFolder) {
+                if ($existingFolder && preg_match('/^formality_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
                     return $existingFolder;
                 }
                 $date = $formality->created_at ? $formality->created_at->format('Y-m-d') : date('Y-m-d');
@@ -75,7 +75,7 @@ class FileUploadigService
         // Fallback matching model structures
         if ($this->model instanceof Client) {
             $existingFolder = $this->model->files()->value('folder');
-            if ($existingFolder) {
+            if ($existingFolder && preg_match('/^client_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
                 return $existingFolder;
             }
             $date = $this->model->created_at ? $this->model->created_at->format('Y-m-d') : date('Y-m-d');
@@ -84,7 +84,7 @@ class FileUploadigService
 
         if ($this->model instanceof Formality) {
             $existingFolder = $this->model->files()->value('folder');
-            if ($existingFolder) {
+            if ($existingFolder && preg_match('/^formality_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
                 return $existingFolder;
             }
             $date = $this->model->created_at ? $this->model->created_at->format('Y-m-d') : date('Y-m-d');
@@ -96,8 +96,10 @@ class FileUploadigService
 
     public function saveFile(?string $folder = null)
     {
-        if (empty($folder)) {
+        if ($this->model && (empty($folder) || !preg_match('/^(client|formality)_\d+_\d{4}-\d{2}-\d{2}$/', $folder))) {
             $folder = $this->getTargetFolder();
+        } elseif (empty($folder)) {
+            $folder = 'general';
         }
 
         $name = uniqid() . uniqid();
@@ -293,6 +295,7 @@ class FileUploadigService
     public function force_replace(File $file_reference)
     {
         if ($this->file) {
+            $newFolder = $this->getTargetFolder();
 
             if ($this->deleteFile($file_reference->folder, $file_reference->filename)) {
                 // $temp = explode('.', $this->file->getClientOriginalName())[0];
@@ -310,11 +313,12 @@ class FileUploadigService
                     'name' => $nameWithNoExtension,
                     'filename' => $fileName,
                     'mime_type' => $this->file->getMimeType(),
+                    'folder' => $newFolder,
                     'config_id' => $this->configId ?? null
                 ]);
 
-                $this->file->storeAs('public/' . $file_reference->folder, $fileName);
-                return $file_reference->folder . '/' . $fileName;
+                $this->file->storeAs('public/' . $newFolder, $fileName);
+                return $newFolder . '/' . $fileName;
             }
         }
 
@@ -323,11 +327,11 @@ class FileUploadigService
 
     private function deleteFile($folder, $filename): bool
     {
-        if (is_dir(storage_path('app/public/' . $folder))) {
-            return unlink(storage_path('app/public/' . $folder . '/' . $filename));
-        } else {
-            return false;
+        $filePath = storage_path('app/public/' . $folder . '/' . $filename);
+        if (file_exists($filePath)) {
+            return @unlink($filePath);
         }
+        return true;
     }
 
 
