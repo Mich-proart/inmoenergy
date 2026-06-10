@@ -296,9 +296,7 @@ class CreateByClient extends Component
                         ->setModel($formality)
                         ->addFile($file)
                         ->setConfigId($object['configId'])
-                        ->saveFile($this->folder);
-
-                    $this->fileUploadigService->addExistingFile($this->client->files);
+                        ->saveFile();
                 }
 
             }
@@ -340,9 +338,7 @@ class CreateByClient extends Component
                         ->setModel($formality)
                         ->addFile($file)
                         ->setConfigId($object['configId'])
-                        ->saveFile($this->folder);
-
-                    $this->fileUploadigService->addExistingFile($this->client->files);
+                        ->saveFile();
                 }
 
             }

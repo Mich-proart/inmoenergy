@@ -41,11 +41,66 @@ class FileUploadigService
         return $this;
     }
 
-    public function saveFile(string $folder)
+    public function getTargetFolder(): string
     {
-        //$temp = explode('.', $this->file->getClientOriginalName())[0];
+        if (!$this->model) {
+            return 'general';
+        }
 
-        $name = uniqid() . uniqid(); //$temp . '_' . uniqid() . uniqid();
+        $fileConfig = $this->configId ? FileConfig::find($this->configId) : null;
+        $folderType = $fileConfig ? $fileConfig->tipo_carpeta : null;
+
+        if ($folderType === 'DocumentacionCliente') {
+            $client = $this->model instanceof Client ? $this->model : ($this->model->client ?? null);
+            if ($client) {
+                $existingFolder = $client->files()->value('folder');
+                if ($existingFolder) {
+                    return $existingFolder;
+                }
+                $date = $client->created_at ? $client->created_at->format('Y-m-d') : date('Y-m-d');
+                return "client_{$client->id}_{$date}";
+            }
+        } elseif ($folderType === 'DocumentacionTramite') {
+            $formality = $this->model instanceof Formality ? $this->model : null;
+            if ($formality) {
+                $existingFolder = $formality->files()->where('folder', 'like', 'formality_%')->value('folder');
+                if ($existingFolder) {
+                    return $existingFolder;
+                }
+                $date = $formality->created_at ? $formality->created_at->format('Y-m-d') : date('Y-m-d');
+                return "formality_{$formality->id}_{$date}";
+            }
+        }
+
+        // Fallback matching model structures
+        if ($this->model instanceof Client) {
+            $existingFolder = $this->model->files()->value('folder');
+            if ($existingFolder) {
+                return $existingFolder;
+            }
+            $date = $this->model->created_at ? $this->model->created_at->format('Y-m-d') : date('Y-m-d');
+            return "client_{$this->model->id}_{$date}";
+        }
+
+        if ($this->model instanceof Formality) {
+            $existingFolder = $this->model->files()->value('folder');
+            if ($existingFolder) {
+                return $existingFolder;
+            }
+            $date = $this->model->created_at ? $this->model->created_at->format('Y-m-d') : date('Y-m-d');
+            return "formality_{$this->model->id}_{$date}";
+        }
+
+        return 'general';
+    }
+
+    public function saveFile(?string $folder = null)
+    {
+        if (empty($folder)) {
+            $folder = $this->getTargetFolder();
+        }
+
+        $name = uniqid() . uniqid();
         $tempName = $name . '.' . $this->file->getClientOriginalExtension();
 
         // Generate display name

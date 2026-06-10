@@ -123,6 +123,16 @@ class Formality extends Model
         return $this->morphToMany(File::class, 'fileable');
     }
 
+    /**
+     * Get all files associated with this formality (merges formality-specific files and client-specific files).
+     */
+    public function getAllFilesAttribute()
+    {
+        $formalityFiles = $this->files;
+        $clientFiles = $this->client ? $this->client->files : collect();
+        return $formalityFiles->merge($clientFiles)->unique('id');
+    }
+
     public function potency_Spanish()
     {
         if ($this->potency) {

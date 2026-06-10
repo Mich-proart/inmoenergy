@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class ViewEditClientRecord extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     // Search properties
     public $search_full_name = '';
@@ -69,6 +71,7 @@ class ViewEditClientRecord extends Component
     // Province selection for address
 
     public $target_provinceId;
+    public $uploadedFiles = [];
 
     protected $userService;
     protected $addressService;
@@ -105,7 +108,8 @@ class ViewEditClientRecord extends Component
             'country',
             'addresses.location.province',
             'addresses.streetType',
-            'addresses.housingType'
+            'addresses.housingType',
+            'files.config'
         ])->find($id);
 
         if ($this->selectedClient) {
@@ -430,5 +434,45 @@ class ViewEditClientRecord extends Component
             'streetTypes' => $streetTypes,
             'housingTypes' => $housingTypes,
         ]);
+    }
+
+    #[Computed()]
+    public function clientFileConfigs()
+    {
+        return \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente')->get();
+    }
+
+    public function uploadClientFile($configId, \App\Domain\Program\Services\FileUploadigService $uploader)
+    {
+        $this->validate([
+            'uploadedFiles.' . $configId => 'required|file|mimes:pdf,jpg|max:5240',
+        ], [
+            'uploadedFiles.' . $configId . '.required' => 'Seleccione un archivo.',
+            'uploadedFiles.' . $configId . '.mimes' => 'El archivo debe ser PDF o JPG.',
+            'uploadedFiles.' . $configId . '.max' => 'El archivo debe ser menor a 5MB.',
+        ]);
+
+        $tempFile = $this->uploadedFiles[$configId] ?? null;
+        if ($tempFile) {
+            $stored_file = $this->selectedClient->files->where('config_id', $configId)->first();
+
+            $uploader->setModel($this->selectedClient)
+                ->addFile($tempFile)
+                ->setConfigId($configId);
+
+            if ($stored_file) {
+                $uploader->force_replace($stored_file);
+            } else {
+                $uploader->saveFile();
+            }
+
+            // Clear file input
+            unset($this->uploadedFiles[$configId]);
+
+            // Reload client data
+            $this->selectClient($this->selectedClient->id);
+
+            $this->dispatch('client-updated', title: 'Éxito', message: 'Documento subido correctamente');
+        }
     }
 }

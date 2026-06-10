@@ -65,7 +65,8 @@ class ViewClientRecords extends Component
             'country',
             'addresses.location.province',
             'addresses.streetType',
-            'addresses.housingType'
+            'addresses.housingType',
+            'files.config'
         ])->find($id);
 
         if ($this->selectedClient) {
