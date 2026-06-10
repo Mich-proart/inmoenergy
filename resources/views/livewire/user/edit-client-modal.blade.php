@@ -14,13 +14,13 @@
                         <!-- Reassignment Mode Selector -->
                         <div class="d-flex justify-content-center mb-4">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn @if($reassignmentMode === 'edit') btn-primary @else btn-outline-primary @endif" wire:click="setMode('edit')">
+                                <button type="button" class="btn @if($reassignmentMode === 'edit') btn-success @else btn-outline-success @endif" wire:click="setMode('edit')">
                                     <i class="fas fa-edit mr-1"></i> Editar datos actuales
                                 </button>
-                                <button type="button" class="btn @if($reassignmentMode === 'select') btn-primary @else btn-outline-primary @endif" wire:click="setMode('select')">
+                                <button type="button" class="btn @if($reassignmentMode === 'select') btn-success @else btn-outline-success @endif" wire:click="setMode('select')">
                                     <i class="fas fa-search mr-1"></i> Seleccionar otro cliente
                                 </button>
-                                <button type="button" class="btn @if($reassignmentMode === 'new') btn-primary @else btn-outline-primary @endif" wire:click="setMode('new')">
+                                <button type="button" class="btn @if($reassignmentMode === 'new') btn-success @else btn-outline-success @endif" wire:click="setMode('new')">
                                     <i class="fas fa-user-plus mr-1"></i> Alta nuevo cliente
                                 </button>
                             </div>
@@ -29,8 +29,8 @@
                         <form wire:submit="update">
                             @if($reassignmentMode === 'select')
                                 <!-- Search client area -->
-                                <div class="card card-outline card-info mb-4">
-                                    <div class="card-header bg-info text-white">
+                                <div class="card card-outline card-success mb-4">
+                                    <div class="card-header">
                                         <h3 class="card-title"><i class="fas fa-search mr-1"></i> Buscar cliente existente</h3>
                                     </div>
                                     <div class="card-body">
