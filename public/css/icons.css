@@ -57,6 +57,30 @@ New CSS
     border-color: var(--btn-success-bg-hover) !important;
 }
 
+.btn-outline-success {
+    color: var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
+}
+.btn-outline-success:hover, .btn-outline-success:focus, .btn-outline-success:active, .btn-outline-success.active,
+.btn-outline-success:not(:disabled):not(.disabled):active, .btn-outline-success:not(:disabled):not(.disabled).active {
+    background-color: var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
+    color: #fff !important;
+}
+.btn-success:focus, .btn-success.focus, .btn-outline-success:focus, .btn-outline-success.focus {
+    
+}
+
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus,
+.list-group-item-action.active:hover,
+.list-group-item-action.active:focus {
+    background-color: var(--btn-success-bg) !important;
+    border-color: var(--btn-success-bg) !important;
+    color: #fff !important;
+}
+
 
 .card.card-success.card-outline {
     border-top: 3px solid var(--btn-success-bg);
