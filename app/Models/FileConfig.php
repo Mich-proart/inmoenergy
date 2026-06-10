@@ -14,7 +14,7 @@ class FileConfig extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['name', 'is_available', 'is_required', 'component_option_id'];
+    protected $fillable = ['name', 'is_available', 'is_required', 'component_option_id', 'tipo_carpeta'];
 
 
     public function componentOption(): BelongsTo

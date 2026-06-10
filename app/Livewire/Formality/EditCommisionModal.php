@@ -67,11 +67,13 @@ class EditCommisionModal extends Component
 
         $formality = Formality::where('id', $formality_id)->with(
             'files',
-            'files.config'
+            'files.config',
+            'client.files',
+            'client.files.config'
         )->first();
 
         if ($formality) {
-            $this->files = $formality->files;
+            $this->files = $formality->all_files;
 
         }
     }

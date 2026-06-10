@@ -33,6 +33,12 @@ class EditClientModal extends Component
 
     public $formality;
 
+    // Reassignment fields
+    public $reassignmentMode = 'edit';
+    public $searchClientQuery = '';
+    public $selectedNewClientId = null;
+    public $searchResults = [];
+
     public $target_provinceId;
     public $target_clientProvinceId;
 
@@ -100,17 +106,42 @@ class EditClientModal extends Component
         DB::beginTransaction();
 
         try {
-
-            $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
-
             $data = Formality::firstWhere('id', $this->formality->id);
-            
-            $data->client()->update($updates);
+
+            if ($this->reassignmentMode === 'edit') {
+                $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
+                $data->client()->update($updates);
+            } elseif ($this->reassignmentMode === 'select') {
+                if (!$this->selectedNewClientId) {
+                    throw new \Exception('Debe seleccionar un cliente de la lista.');
+                }
+                
+                // Detach client documents from this formality (relation only)
+                $clientFileIds = $data->files()
+                    ->whereHas('config', function($query) {
+                        $query->where('tipo_carpeta', 'DocumentacionCliente');
+                    })
+                    ->pluck('files.id');
+                $data->files()->detach($clientFileIds);
+
+                $data->client_id = $this->selectedNewClientId;
+            } elseif ($this->reassignmentMode === 'new') {
+                $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
+                $newClient = \App\Models\Client::create($updates);
+                
+                // Detach client documents from this formality (relation only)
+                $clientFileIds = $data->files()
+                    ->whereHas('config', function($query) {
+                        $query->where('tipo_carpeta', 'DocumentacionCliente');
+                    })
+                    ->pluck('files.id');
+                $data->files()->detach($clientFileIds);
+
+                $data->client_id = $newClient->id;
+            }
 
             $address = Address::firstWhere('id', $data->address->id);
-
             $address->update($this->form->getaddressUpdate());
-
 
             $data->save();
 
@@ -119,11 +150,9 @@ class EditClientModal extends Component
                 $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
             }
 
-
             DB::commit();
             $this->dispatch('end-update');
         } catch (\Throwable $th) {
-
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
@@ -162,6 +191,77 @@ class EditClientModal extends Component
         }
     }
 
+    public function updatedSearchClientQuery($value)
+    {
+        if (strlen($value) >= 3) {
+            $this->searchResults = \App\Models\Client::where('name', 'like', '%' . $value . '%')
+                ->orWhere('first_last_name', 'like', '%' . $value . '%')
+                ->orWhere('second_last_name', 'like', '%' . $value . '%')
+                ->orWhere('document_number', 'like', '%' . $value . '%')
+                ->take(5)
+                ->get();
+        } else {
+            $this->searchResults = [];
+        }
+    }
+
+    public function selectExistingClient($clientId)
+    {
+        $this->selectedNewClientId = $clientId;
+        $client = \App\Models\Client::find($clientId);
+        if ($client) {
+            $this->form->name = $client->name;
+            $this->form->firstLastName = $client->first_last_name;
+            $this->form->secondLastName = $client->second_last_name;
+            $this->form->documentNumber = $client->document_number;
+            $this->form->phone = $client->phone;
+            $this->form->email = $client->email;
+            $this->form->IBAN = $client->IBAN;
+            $this->form->clientTypeId = $client->client_type_id;
+            $this->form->userTitleId = $client->user_title_id;
+            $this->clientTypeId = $client->client_type_id;
+            
+            $this->changeCountry($client->country_id);
+            $this->formstate();
+        }
+    }
+
+    public function updatedReassignmentMode($value)
+    {
+        if ($value === 'edit') {
+            $this->form->setformality($this->formality);
+            $this->selectedNewClientId = null;
+        } elseif ($value === 'new') {
+            $this->form->name = '';
+            $this->form->firstLastName = '';
+            $this->form->secondLastName = '';
+            $this->form->documentNumber = '';
+            $this->form->phone = '';
+            $this->form->email = '';
+            $this->form->IBAN = '';
+            $this->form->clientTypeId = null;
+            $this->form->userTitleId = null;
+            $this->selectedNewClientId = null;
+        } else { // select
+            $this->searchClientQuery = '';
+            $this->searchResults = [];
+            $this->selectedNewClientId = null;
+            $this->form->name = '';
+            $this->form->firstLastName = '';
+            $this->form->secondLastName = '';
+            $this->form->documentNumber = '';
+            $this->form->phone = '';
+            $this->form->email = '';
+            $this->form->IBAN = '';
+        }
+    }
+
+    public function setMode($mode)
+    {
+        $this->reassignmentMode = $mode;
+        $this->updatedReassignmentMode($mode);
+    }
+
     #[Computed()]
     public function provinces()
     {
@@ -192,6 +292,15 @@ class EditClientModal extends Component
 
     private function formValidation()
     {
+        if ($this->reassignmentMode === 'select') {
+            $this->validate([
+                'selectedNewClientId' => 'required|exists:client,id'
+            ], [
+                'selectedNewClientId.required' => 'Debe buscar y seleccionar un cliente de la lista.'
+            ]);
+            return;
+        }
+
         $this->form->validate();
         $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(
