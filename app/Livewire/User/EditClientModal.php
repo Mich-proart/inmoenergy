@@ -20,9 +20,13 @@ use DB;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class EditClientModal extends Component
 {
+    use WithFileUploads;
+
+    public $clientFiles = [];
     protected AddressService $addressService;
     protected UserService $userService;
 
@@ -129,6 +133,20 @@ class EditClientModal extends Component
                 $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
                 $newClient = \App\Models\Client::create($updates);
                 
+                // Upload and save client files
+                if (!empty($this->clientFiles)) {
+                    $uploaderService = \Illuminate\Support\Facades\App::make(\App\Domain\Program\Services\FileUploadigService::class);
+                    foreach ($this->clientFiles as $configId => $fileObj) {
+                        if ($fileObj) {
+                            $uploaderService
+                                ->setModel($newClient)
+                                ->addFile($fileObj)
+                                ->setConfigId($configId)
+                                ->saveFile();
+                        }
+                    }
+                }
+
                 // Detach client documents from this formality (relation only)
                 $clientFileIds = $data->files()
                     ->whereHas('config', function($query) {
@@ -160,6 +178,7 @@ class EditClientModal extends Component
 
     public function formstate()
     {
+        $this->clientFiles = [];
         $current_client_type = null;
 
 
@@ -189,6 +208,21 @@ class EditClientModal extends Component
             }
 
         }
+    }
+
+    public function getClientDocConfigs()
+    {
+        $current_client_type = ComponentOption::find($this->form->clientTypeId);
+        $query = \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente');
+
+        if ($current_client_type) {
+            if ($current_client_type->name === ClientTypeEnum::PERSON->value) {
+                $query->whereNotIn('name', ['CIF', 'escritura empresa']);
+            } elseif ($current_client_type->name === ClientTypeEnum::BUSINESS->value) {
+                $query->whereNotIn('name', ['DNI (Ambas caras)', 'autorización hacia InmoEnergy']);
+            }
+        }
+        return $query->get();
     }
 
     public function updatedSearchClientQuery($value)
@@ -228,6 +262,7 @@ class EditClientModal extends Component
 
     public function updatedReassignmentMode($value)
     {
+        $this->clientFiles = [];
         if ($value === 'edit') {
             $this->form->setformality($this->formality);
             $this->selectedNewClientId = null;
@@ -292,6 +327,15 @@ class EditClientModal extends Component
 
     private function formValidation()
     {
+        if ($this->reassignmentMode === 'new') {
+            $this->validate([
+                'clientFiles.*' => 'nullable|file|mimes:pdf,jpg|max:5240',
+            ], [
+                'clientFiles.*.mimes' => 'El archivo debe ser un PDF o JPG.',
+                'clientFiles.*.max' => 'El archivo debe ser menor a 5MB.',
+            ]);
+        }
+
         if ($this->reassignmentMode === 'select') {
             $this->validate([
                 'selectedNewClientId' => 'required|exists:client,id'
