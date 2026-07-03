@@ -11,6 +11,69 @@
                 </div>
                 <div class="modal-body">
                     <x-view.files-items :files="$files" />
+
+                    <!-- Edit/upload files section -->
+                    <div class="mt-3">
+                        <div class="form-check form-switch mb-3">
+                            <input type="checkbox" class="form-check-input" id="editFilesToggle" wire:model.live="showEditFiles">
+                            <label class="form-check-label" for="editFilesToggle">Editar archivos existentes</label>
+                        </div>
+
+                        @if($showEditFiles)
+                            <div class="border p-3 rounded bg-light">
+                                @if(session()->has('file_upload_success'))
+                                    <div class="alert alert-success alert-dismissible fade show small" role="alert">
+                                        {{ session('file_upload_success') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                <!-- Factura Section -->
+                                @if($invoiceConfig)
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-bold">
+                                            {{ ucfirst($invoiceConfig->name) }}:
+                                            @if($hasFactura)
+                                                <span class="text-success small"><i class="fas fa-check-circle mr-1"></i>(Ya existe un archivo subido)</span>
+                                            @else
+                                                <span class="text-muted small"><i class="fas fa-exclamation-circle mr-1"></i>(No subido)</span>
+                                            @endif
+                                        </label>
+                                        <input type="file" wire:model="facturaFile" class="form-control">
+                                        @error('facturaFile') <span class="text-danger small">{{ $message }}</span> @enderror
+                                        <div wire:loading wire:target="facturaFile" class="text-muted small mt-1">
+                                            <i class="fas fa-spinner fa-spin mr-1"></i>Subiendo archivo...
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <!-- Contrato Section -->
+                                @if($contractConfig)
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-bold">
+                                            {{ ucfirst($contractConfig->name) }}:
+                                            @if($hasContrato)
+                                                <span class="text-success small"><i class="fas fa-check-circle mr-1"></i>(Ya existe un archivo subido)</span>
+                                            @else
+                                                <span class="text-muted small"><i class="fas fa-exclamation-circle mr-1"></i>(No subido)</span>
+                                            @endif
+                                        </label>
+                                        <input type="file" wire:model="contratoFile" class="form-control">
+                                        @error('contratoFile') <span class="text-danger small">{{ $message }}</span> @enderror
+                                        <div wire:loading wire:target="contratoFile" class="text-muted small mt-1">
+                                            <i class="fas fa-spinner fa-spin mr-1"></i>Subiendo archivo...
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="d-flex justify-content-end mt-2">
+                                    <button type="button" wire:click="uploadFormalityFiles" class="btn btn-success btn-sm">
+                                        <i class="fas fa-save mr-1"></i> Guardar Archivos
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
