@@ -189,4 +189,34 @@ class FormalityService
         );
 
     }
+
+    public function replicateFormalityFiles(Formality $oldFormality, Formality $newFormality): void
+    {
+        $date = $newFormality->created_at ? $newFormality->created_at->format('Y-m-d') : date('Y-m-d');
+        $newFolder = "formality_{$newFormality->id}_{$date}";
+        $newFolderPath = storage_path('app/public/' . $newFolder);
+
+        if (!file_exists($newFolderPath)) {
+            mkdir($newFolderPath, 0755, true);
+        }
+
+        foreach ($oldFormality->files as $file) {
+            $oldFilePath = storage_path('app/public/' . $file->folder . '/' . $file->filename);
+            $newFilePath = $newFolderPath . '/' . $file->filename;
+
+            if (file_exists($oldFilePath)) {
+                copy($oldFilePath, $newFilePath);
+
+                $newFile = \App\Models\File::create([
+                    'name' => $file->name,
+                    'filename' => $file->filename,
+                    'mime_type' => $file->mime_type,
+                    'folder' => $newFolder,
+                    'config_id' => $file->config_id,
+                ]);
+
+                $newFormality->files()->attach($newFile);
+            }
+        }
+    }
 }

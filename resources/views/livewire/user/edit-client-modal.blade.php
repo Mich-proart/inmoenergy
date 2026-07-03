@@ -624,6 +624,37 @@
                                     </div>
                                 </section>
                             </section>
+
+                            @if($reassignmentMode === 'new')
+                                <!-- Documentación del nuevo cliente -->
+                                <section class="mt-4">
+                                    <div class="form-row mb-2">
+                                        <span style="font-size: 23px;">
+                                            <i class="fas fa-folder-open mr-1"></i> Documentación del nuevo cliente
+                                        </span>
+                                    </div>
+                                    <div class="card card-outline card-success mt-2">
+                                        <div class="card-body">
+                                            @foreach($this->getClientDocConfigs() as $config)
+                                                <div class="row mb-3 align-items-center">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label font-weight-bold mb-0">{{ ucfirst($config->name) }}:</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <input type="file" wire:model="clientFiles.{{ $config->id }}" class="form-control">
+                                                        @error('clientFiles.' . $config->id)
+                                                            <span class="text-danger small"><strong>{{ $message }}</strong></span>
+                                                        @enderror
+                                                        <div wire:loading wire:target="clientFiles.{{ $config->id }}" class="text-muted small mt-1">
+                                                            <i class="fas fa-spinner fa-spin mr-1"></i>Subiendo archivo...
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </section>
+                            @endif
                             <div class="row no-print">
                                 <div class="col-12">
                                     <div style="margin-top: 50px; margin-bottom: 25px">

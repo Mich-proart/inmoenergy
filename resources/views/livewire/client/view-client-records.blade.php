@@ -277,7 +277,11 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $clientConfigs = \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente')->get();
+                                            $clientConfigsQuery = \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente');
+                                            if ($selectedClient && $selectedClient->clientType && $selectedClient->clientType->name === \App\Domain\Enums\ClientTypeEnum::PERSON->value) {
+                                                $clientConfigsQuery->whereNotIn('name', ['CIF', 'escritura empresa']);
+                                            }
+                                            $clientConfigs = $clientConfigsQuery->get();
                                         @endphp
                                         @foreach($clientConfigs as $config)
                                             @php

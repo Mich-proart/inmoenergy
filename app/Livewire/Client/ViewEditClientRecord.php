@@ -439,7 +439,25 @@ class ViewEditClientRecord extends Component
     #[Computed()]
     public function clientFileConfigs()
     {
-        return \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente')->get();
+        $query = \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente');
+
+        if ($this->selectedClient) {
+            $clientTypeName = null;
+            if ($this->editingClient && isset($this->clientForm['client_type_id'])) {
+                $clientTypeOption = \App\Models\ComponentOption::find($this->clientForm['client_type_id']);
+                if ($clientTypeOption) {
+                    $clientTypeName = $clientTypeOption->name;
+                }
+            } else {
+                $clientTypeName = $this->selectedClient->clientType?->name;
+            }
+
+            if ($clientTypeName === ClientTypeEnum::PERSON->value) {
+                $query->whereNotIn('name', ['CIF', 'escritura empresa']);
+            }
+        }
+
+        return $query->get();
     }
 
     public function uploadClientFile($configId, \App\Domain\Program\Services\FileUploadigService $uploader)
