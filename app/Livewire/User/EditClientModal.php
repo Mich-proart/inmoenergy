@@ -218,8 +218,6 @@ class EditClientModal extends Component
         if ($current_client_type) {
             if ($current_client_type->name === ClientTypeEnum::PERSON->value) {
                 $query->whereNotIn('name', ['CIF', 'escritura empresa']);
-            } elseif ($current_client_type->name === ClientTypeEnum::BUSINESS->value) {
-                $query->whereNotIn('name', ['DNI (Ambas caras)', 'autorización hacia InmoEnergy']);
             }
         }
         return $query->get();
@@ -328,12 +326,20 @@ class EditClientModal extends Component
     private function formValidation()
     {
         if ($this->reassignmentMode === 'new') {
-            $this->validate([
-                'clientFiles.*' => 'nullable|file|mimes:pdf,jpg|max:5240',
-            ], [
-                'clientFiles.*.mimes' => 'El archivo debe ser un PDF o JPG.',
-                'clientFiles.*.max' => 'El archivo debe ser menor a 5MB.',
-            ]);
+            $rules = [];
+            $messages = [];
+            $docConfigs = $this->getClientDocConfigs();
+            foreach ($docConfigs as $config) {
+                $requirementRule = $config->is_required ? 'required' : 'nullable';
+                $rules["clientFiles.{$config->id}"] = "{$requirementRule}|file|mimes:pdf,jpg|max:5240";
+                if ($config->is_required) {
+                    $messages["clientFiles.{$config->id}.required"] = "El documento '" . ucfirst($config->name) . "' es obligatorio.";
+                }
+                $messages["clientFiles.{$config->id}.file"] = "El documento '" . ucfirst($config->name) . "' debe ser un archivo.";
+                $messages["clientFiles.{$config->id}.mimes"] = "El documento '" . ucfirst($config->name) . "' debe ser un PDF o JPG.";
+                $messages["clientFiles.{$config->id}.max"] = "El documento '" . ucfirst($config->name) . "' debe ser menor a 5MB.";
+            }
+            $this->validate($rules, $messages);
         }
 
         if ($this->reassignmentMode === 'select') {
