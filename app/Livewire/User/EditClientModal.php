@@ -218,8 +218,6 @@ class EditClientModal extends Component
         if ($current_client_type) {
             if ($current_client_type->name === ClientTypeEnum::PERSON->value) {
                 $query->whereNotIn('name', ['CIF', 'escritura empresa']);
-            } elseif ($current_client_type->name === ClientTypeEnum::BUSINESS->value) {
-                $query->whereNotIn('name', ['DNI (Ambas caras)', 'autorización hacia InmoEnergy']);
             }
         }
         return $query->get();
