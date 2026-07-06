@@ -121,7 +121,6 @@ class AssignmentRevonationLayout extends Component
             $formality->update($updates);
 
             $newOne = $this->createFormalityOnRenovation($formality, $trigger_date);
-            $this->formalityService->replicateFormalityFiles($formality, $newOne);
 
             DB::commit();
             return redirect()->route('admin.formality.assignment.renovation');

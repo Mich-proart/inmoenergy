@@ -313,7 +313,6 @@ class ModifyTotalClosed extends Component
 
             if ($this->cancellation->create_new_one) {
                 $newOne = $this->createFormalityOnCancel($this->formality, $trigger_date);
-                $this->formalityService->replicateFormalityFiles($this->formality, $newOne);
             }
 
             DB::commit();
