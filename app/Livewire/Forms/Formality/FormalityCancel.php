@@ -10,7 +10,7 @@ class FormalityCancel extends Form
     public $reason_cancellation_id;
     public $contract_completion_date;
     public $cancellation_observation;
-    public $isCritical;
+    public $isCritical = false;
     public $assignedId;
     public $create_new_one = 0;
 

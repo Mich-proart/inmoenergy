@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Formality;
 
+use App\Domain\Enums\FileConfigEnum;
 use App\Domain\Enums\FormalityStatusEnum;
 use App\Domain\Formality\Services\FormalityService;
 use App\Domain\Program\Services\FileUploadigService;
@@ -62,7 +63,9 @@ class EditPendingformalityModal extends Component
         )->first();
 
         if ($formality) {
-            $this->files = $formality->files;
+            $this->files = $formality->files->filter(
+                fn($file) => $file->config->name === FileConfigEnum::CONTRATOSUMINISTRO->value
+            );
 
         }
     }
@@ -123,16 +126,28 @@ class EditPendingformalityModal extends Component
                 $renewal_date = null;
                                 
                 logger('Guardando trámite...', ['id' => $formality->id]);
-                $savedFile = $formality->files[0];
+                
+                // Get existing file to determine the folder if it exists, fallback to a default if not
+                $savedFileFolder = $formality->files->first()->folder ?? 'formality/' . $formality->id;
 
                 $file_inputs = $this->inputs->where('serviceId', null);
                 foreach ($file_inputs as $file_input) {
                     if ($file_input['file']) {
-                        $this->fileUploadService
-                        ->setModel($formality)
-                        ->addFile($file_input['file'])
-                        ->setConfigId($file_input['configId'])
-                        ->saveFile($savedFile->folder);
+                        $stored_file = $formality->files->where('config_id', $file_input['configId'])->first();
+                        
+                        if ($stored_file) {
+                            $this->fileUploadService
+                                ->setModel($formality)
+                                ->addFile($file_input['file'])
+                                ->setConfigId($file_input['configId'])
+                                ->force_replace($stored_file);
+                        } else {
+                            $this->fileUploadService
+                                ->setModel($formality)
+                                ->addFile($file_input['file'])
+                                ->setConfigId($file_input['configId'])
+                                ->saveFile($savedFileFolder);
+                        }
                     }
                 }
                 
@@ -176,6 +191,15 @@ class EditPendingformalityModal extends Component
     public function editFormality($formalityId)
     {
         $this->form->setId($formalityId);
+        $formality = $this->formalityService->getById($formalityId);
+        if ($formality) {
+            $this->files = $formality->files->filter(
+                fn($file) => $file->config->name === FileConfigEnum::CONTRATOSUMINISTRO->value
+            );
+            $this->form->activation_date = $formality->activation_date;
+            $this->form->contract_completion_date = $formality->contract_completion_date;
+            $this->form->isRenewable = (bool) $formality->isRenewable;
+        }
     }
 
     public function saveKo()

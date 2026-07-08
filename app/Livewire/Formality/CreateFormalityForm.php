@@ -334,7 +334,7 @@ class CreateFormalityForm extends Component
                         ->setModel($client)
                         ->addFile($file_input['file'])
                         ->setConfigId($file_input['configId'])
-                        ->saveFile($this->folder);
+                        ->saveFile();
                 }
 
                 foreach ($this->form->serviceIds as $serviceId) {
@@ -350,9 +350,7 @@ class CreateFormalityForm extends Component
                             ->setModel($formality)
                             ->addFile($file)
                             ->setConfigId($object['configId'])
-                            ->saveFile($this->folder);
-
-                        $this->fileUploadigService->addExistingFile($client->files);
+                            ->saveFile();
                     }
 
                 }

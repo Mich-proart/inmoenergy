@@ -152,18 +152,19 @@ class EditFormalityForm extends Component
 
     public function addInput($serviceId)
     {
+        $this->service_file = collect();
 
-        foreach ($this->service_file as $key => $value) {
-            $this->service_file->pull($key);
-
-        }
-        
+        // Add factura (service-specific config)
         $config = FileConfig::where('component_option_id', $serviceId)->first();
         if ($config) {
             $this->service_file->push(['serviceId' => $serviceId, 'configId' => $config->id, 'name' => $config->name, 'file' => '']);
         }
 
-
+        // Add 'contrato del suministro' (generic config, one per supply)
+        $contractConfig = FileConfig::where('name', 'contrato del suministro')->first();
+        if ($contractConfig) {
+            $this->service_file->push(['serviceId' => $serviceId, 'configId' => $contractConfig->id, 'name' => $contractConfig->name, 'file' => '']);
+        }
     }
 
     protected $rules = [
@@ -214,26 +215,29 @@ class EditFormalityForm extends Component
                 $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
             }
 
-            $object = $this->service_file->where('serviceId', $this->form->serviceIds[0])->first();
-            if ($object != null && $object['file'] != null) {
+            $serviceFiles = $this->service_file->where('serviceId', $this->form->serviceIds[0]);
+            foreach ($serviceFiles as $object) {
+                if ($object != null && $object['file'] != null) {
 
-                $file = $object['file'];
-                // Refresh data to get files or use the relationship
-                $stored_file = $data->files->where('config_id', $object['configId'])->first();
-                
-                if ($file) {
-                    $uploader = $this->fileUploadigService
-                        ->setModel($data)
-                        ->addFile($file)
-                        ->setConfigId($object['configId']);
-                        
-                    if ($stored_file) {
-                         $uploader->force_replace($stored_file);
-                    } else {
-                         // If no file exists, just save the new one (though force_replace might handle null, safe to allow new upload too)
-                         $uploader->save();
+                    $file = $object['file'];
+                    // Refresh data to get files or use the relationship
+                    $stored_file = $data->files->where('config_id', $object['configId'])->first();
+
+                    if ($file) {
+                        $uploader = $this->fileUploadigService
+                            ->setModel($data)
+                            ->addFile($file)
+                            ->setConfigId($object['configId']);
+
+                        if ($stored_file) {
+                            $uploader->force_replace($stored_file);
+                        } else {
+                            // Determine folder: from existing files or client
+                            $folder = $data->files->first()->folder ?? ($data->client->files->first()->folder ?? 'suministros');
+                            $uploader->saveFile($folder);
+                        }
+
                     }
-
                 }
             }
 

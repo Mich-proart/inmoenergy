@@ -313,7 +313,7 @@ class ModifyTotalClosed extends Component
 
             if ($this->cancellation->create_new_one) {
                 $newOne = $this->createFormalityOnCancel($this->formality, $trigger_date);
-                $newOne->files()->attach($this->formality->files);
+                $this->formalityService->createFormalityFolder($newOne);
             }
 
             DB::commit();
@@ -355,7 +355,7 @@ class ModifyTotalClosed extends Component
             'correspondence_address_id' => $formality->correspondence_address_id,
             'canClientEdit' => true,
             'status_id' => $status->id,
-            'isCritical' => $this->cancellation->isCritical,
+            'isCritical' => (bool) $this->cancellation->isCritical,
             'access_rate_id' => $formality->access_rate_id,
             'CUPS' => $formality->CUPS,
             'internal_observation' => $formality->internal_observation,

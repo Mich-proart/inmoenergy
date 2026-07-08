@@ -11,7 +11,54 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Reassignment Mode Selector -->
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn @if($reassignmentMode === 'edit') btn-success @else btn-outline-success @endif" wire:click="setMode('edit')">
+                                    <i class="fas fa-edit mr-1"></i> Editar datos actuales
+                                </button>
+                                <button type="button" class="btn @if($reassignmentMode === 'select') btn-success @else btn-outline-success @endif" wire:click="setMode('select')">
+                                    <i class="fas fa-search mr-1"></i> Seleccionar otro cliente
+                                </button>
+                                <button type="button" class="btn @if($reassignmentMode === 'new') btn-success @else btn-outline-success @endif" wire:click="setMode('new')">
+                                    <i class="fas fa-user-plus mr-1"></i> Alta nuevo cliente
+                                </button>
+                            </div>
+                        </div>
+
                         <form wire:submit="update">
+                            @if($reassignmentMode === 'select')
+                                <!-- Search client area -->
+                                <div class="card card-outline card-success mb-4">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><i class="fas fa-search mr-1"></i> Buscar cliente existente</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group mb-3">
+                                            <input type="text" wire:model.live="searchClientQuery" class="form-control" placeholder="Escriba nombre, apellido o DNI/CIF (mín. 3 caracteres)...">
+                                        </div>
+                                        @if(count($searchResults) > 0)
+                                            <div class="list-group mb-3">
+                                                @foreach($searchResults as $resultClient)
+                                                    <button type="button" wire:click="selectExistingClient({{ $resultClient->id }})" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @if($selectedNewClientId === $resultClient->id) active @endif">
+                                                        <span>
+                                                            <strong>{{ $resultClient->name }} {{ $resultClient->first_last_name }} {{ $resultClient->second_last_name }}</strong> 
+                                                            <span class="small text-muted">({{ $resultClient->document_number }})</span>
+                                                        </span>
+                                                        <span class="badge bg-secondary rounded-pill">{{ ucfirst($resultClient->clientType->name) }}</span>
+                                                    </button>
+                                                @endforeach
+                                            </div>
+                                        @elseif(strlen($searchClientQuery) >= 3)
+                                            <p class="text-muted">No se encontraron clientes.</p>
+                                        @endif
+                                        @error('selectedNewClientId')
+                                            <span class="text-danger small"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            @endif
+
                             <section>
                                 <div class="form-row">
 
@@ -24,7 +71,7 @@
                                         <label for="inputState">Tipo Cliente: </label>
                                         <select wire:model="form.clientTypeId" wire:change="formstate"
                                                 class="form-control @error('form.clientTypeId') is-invalid @enderror"
-                                                name="clientTypeId" id="clientTypeId" required>
+                                                name="clientTypeId" id="clientTypeId" required @if($reassignmentMode === 'select') disabled @endif>
                                             <option value="">-- selecione --</option>
                                             @if (isset($clientTypes))
                                                 @foreach ($clientTypes as $clientType)
@@ -45,7 +92,7 @@
                                                 class="form-control @error('form.userTitleId') is-invalid @enderror"
                                                 name="userTitleId"
                                                 id="userTitleId" {{$isBusinessPerson ? '' : 'required'}}
-                                            {{$isBusinessPerson ? 'disabled' : ''}}>
+                                            {{$isBusinessPerson ? 'disabled' : ''}} @if($reassignmentMode === 'select') disabled @endif>
                                             <option value="">-- selecione --</option>
                                             @if (isset($userTitles))
                                                 @foreach ($userTitles as $userTitle)
@@ -65,7 +112,7 @@
                                                class="form-control @error('form.name') is-invalid @enderror"
                                                id="first-LastName"
                                                name="name"
-                                               required>
+                                               required @if($reassignmentMode === 'select') disabled @endif>
                                         @error('form.name')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -78,7 +125,7 @@
                                                class="form-control @error('form.firstLastName') is-invalid @enderror"
                                                name="firstLastName"
                                                id="first-LastName" {{$isBusinessPerson ? '' : 'required'}}
-                                            {{$isBusinessPerson ? 'disabled' : ''}}>
+                                            {{$isBusinessPerson ? 'disabled' : ''}} @if($reassignmentMode === 'select') disabled @endif>
                                         @error('form.firstLastName')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -90,7 +137,7 @@
                                         <input wire:model="form.secondLastName" type="text" class="form-control"
                                                name="secondLastName"
                                                id="second-LastName"
-                                            {{$isBusinessPerson ? 'disabled' : ''}}>
+                                            {{$isBusinessPerson ? 'disabled' : ''}} @if($reassignmentMode === 'select') disabled @endif>
                                         @error('form.secondLastName')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -104,7 +151,7 @@
                                         <select wire:model="form.documentTypeId"
                                                 class="form-control @error('form.documentTypeId') is-invalid @enderror"
                                                 name="documentTypeId"
-                                                id="documentTypeId" {{$isBusinessPerson ? 'disabled' : ''}}>
+                                                id="documentTypeId" {{$isBusinessPerson ? 'disabled' : ''}} @if($reassignmentMode === 'select') disabled @endif>
                                             <option value="0">-- selecione --</option>
                                             @if (isset($documentTypes))
                                                 @foreach ($documentTypes as $option)
@@ -124,7 +171,7 @@
                                         <input wire:model="form.documentNumber" type="text"
                                                class="form-control @error('form.documentNumber') is-invalid @enderror"
                                                id="inputZip"
-                                               name="documentNumber" required>
+                                               name="documentNumber" required @if($reassignmentMode === 'select') disabled @endif>
                                         @error('form.documentNumber')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -135,7 +182,7 @@
                                         <label for="inputAddress">Teléfono: </label>
                                         <div class="input-group mb-3">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    data-bs-toggle="dropdown" aria-expanded="false" @if($reassignmentMode === 'select') disabled @endif>
                                                 <img
                                                     src="https://flagsapi.com/{{$selected_country->iso2}}/flat/16.png">+{{$selected_country->phone_code}}
                                             </button>
@@ -155,7 +202,7 @@
                                             <input wire:model="form.phone" type="text"
                                                    class="form-control @error('form.phone') is-invalid @enderror"
                                                    id="phone"
-                                                   placeholder="" name="phone">
+                                                   placeholder="" name="phone" @if($reassignmentMode === 'select') disabled @endif>
                                             @error('form.phone')
                                             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -169,7 +216,7 @@
                                         <input wire:model="form.email" type="text"
                                                class="form-control @error('form.email') is-invalid @enderror"
                                                id="inputZip"
-                                               name="email">
+                                               name="email" @if($reassignmentMode === 'select') disabled @endif>
                                         @error('form.email')
                                         <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -181,7 +228,7 @@
                                 <div class=" form-group">
                                     <div class="form-check" style="margin-bottom: 10px;">
                                         <input wire:model.live="form.is_foreign_account" class="form-check-input" type="checkbox"
-                                            id="is_foreign_account">
+                                            id="is_foreign_account" @if($reassignmentMode === 'select') disabled @endif>
                                         <label class="form-check-label" for="is_foreign_account">
                                             Cuenta extranjera
                                         </label>
@@ -190,7 +237,7 @@
                                     <input wire:model="form.IBAN" type="text"
                                            class="form-control @error('form.IBAN') is-invalid @enderror" id="IBAN"
                                            placeholder=""
-                                           name="IBAN" required>
+                                           name="IBAN" required @if($reassignmentMode === 'select') disabled @endif>
                                     @error('form.IBAN')
                                     <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -577,6 +624,37 @@
                                     </div>
                                 </section>
                             </section>
+
+                            @if($reassignmentMode === 'new')
+                                <!-- Documentación del nuevo cliente -->
+                                <section class="mt-4">
+                                    <div class="form-row mb-2">
+                                        <span style="font-size: 23px;">
+                                            <i class="fas fa-folder-open mr-1"></i> Documentación del nuevo cliente
+                                        </span>
+                                    </div>
+                                    <div class="card card-outline card-success mt-2">
+                                        <div class="card-body">
+                                            @foreach($this->getClientDocConfigs() as $config)
+                                                <div class="row mb-3 align-items-center">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label font-weight-bold mb-0">{{ ucfirst($config->name) }}:</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <input type="file" wire:model="clientFiles.{{ $config->id }}" class="form-control">
+                                                        @error('clientFiles.' . $config->id)
+                                                            <span class="text-danger small"><strong>{{ $message }}</strong></span>
+                                                        @enderror
+                                                        <div wire:loading wire:target="clientFiles.{{ $config->id }}" class="text-muted small mt-1">
+                                                            <i class="fas fa-spinner fa-spin mr-1"></i>Subiendo archivo...
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </section>
+                            @endif
                             <div class="row no-print">
                                 <div class="col-12">
                                     <div style="margin-top: 50px; margin-bottom: 25px">

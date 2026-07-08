@@ -29,3 +29,5 @@ export_data.txt
 
 
 .agent
+.agents/
+skills-lock.json
