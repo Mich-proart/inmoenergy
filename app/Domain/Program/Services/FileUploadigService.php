@@ -41,11 +41,68 @@ class FileUploadigService
         return $this;
     }
 
-    public function saveFile(string $folder)
+    public function getTargetFolder(): string
     {
-        //$temp = explode('.', $this->file->getClientOriginalName())[0];
+        if (!$this->model) {
+            return 'general';
+        }
 
-        $name = uniqid() . uniqid(); //$temp . '_' . uniqid() . uniqid();
+        $fileConfig = $this->configId ? FileConfig::find($this->configId) : null;
+        $folderType = $fileConfig ? $fileConfig->tipo_carpeta : null;
+
+        if ($folderType === 'DocumentacionCliente') {
+            $client = $this->model instanceof Client ? $this->model : ($this->model->client ?? null);
+            if ($client) {
+                $existingFolder = $client->files()->value('folder');
+                if ($existingFolder && preg_match('/^client_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
+                    return $existingFolder;
+                }
+                $date = $client->created_at ? $client->created_at->format('Y-m-d') : date('Y-m-d');
+                return "client_{$client->id}_{$date}";
+            }
+        } elseif ($folderType === 'DocumentacionTramite') {
+            $formality = $this->model instanceof Formality ? $this->model : null;
+            if ($formality) {
+                $existingFolder = $formality->files()->where('folder', 'like', 'formality_%')->value('folder');
+                if ($existingFolder && preg_match('/^formality_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
+                    return $existingFolder;
+                }
+                $date = $formality->created_at ? $formality->created_at->format('Y-m-d') : date('Y-m-d');
+                return "formality_{$formality->id}_{$date}";
+            }
+        }
+
+        // Fallback matching model structures
+        if ($this->model instanceof Client) {
+            $existingFolder = $this->model->files()->value('folder');
+            if ($existingFolder && preg_match('/^client_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
+                return $existingFolder;
+            }
+            $date = $this->model->created_at ? $this->model->created_at->format('Y-m-d') : date('Y-m-d');
+            return "client_{$this->model->id}_{$date}";
+        }
+
+        if ($this->model instanceof Formality) {
+            $existingFolder = $this->model->files()->value('folder');
+            if ($existingFolder && preg_match('/^formality_\d+_\d{4}-\d{2}-\d{2}$/', $existingFolder)) {
+                return $existingFolder;
+            }
+            $date = $this->model->created_at ? $this->model->created_at->format('Y-m-d') : date('Y-m-d');
+            return "formality_{$this->model->id}_{$date}";
+        }
+
+        return 'general';
+    }
+
+    public function saveFile(?string $folder = null)
+    {
+        if ($this->model && (empty($folder) || !preg_match('/^(client|formality)_\d+_\d{4}-\d{2}-\d{2}$/', $folder))) {
+            $folder = $this->getTargetFolder();
+        } elseif (empty($folder)) {
+            $folder = 'general';
+        }
+
+        $name = uniqid() . uniqid();
         $tempName = $name . '.' . $this->file->getClientOriginalExtension();
 
         // Generate display name
@@ -135,52 +192,68 @@ class FileUploadigService
     {
         // Normalize config name for comparison
         $normalizedConfig = strtolower(trim($configName));
+        $extension = strtolower($extension);
+
+        // Get formality ID if applicable
+        $formalityId = ($this->model instanceof Formality) ? $this->model->id : '';
+        $idSuffix = $formalityId ? "_{$formalityId}" : "";
+        
+        // Add a timestamp to ensure uniqueness and avoid caching issues
+        $timestamp = "_" . time();
 
         // Map document types to display names
         if (str_contains($normalizedConfig, 'dni')) {
-            return "DNI_{$clientName}.{$extension}";
+            return "DNI_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'cif')) {
-            return "CIF_{$clientName}.{$extension}";
+            return "CIF_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'escritura')) {
-            return "Escritura_empresa_{$clientName}.{$extension}";
+            return "Escritura_empresa_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'alquiler') || str_contains($normalizedConfig, 'compraventa')) {
-            return "Contrato_alquiler_o_compraventa_{$clientName}.{$extension}";
+            return "Contrato_alquiler_o_compraventa_{$clientName}{$timestamp}.{$extension}";
         }
 
         if (str_contains($normalizedConfig, 'autorización') || str_contains($normalizedConfig, 'autorizacion')) {
-            return "Autorizacion_firmada_{$clientName}.{$extension}";
+            return "Autorizacion_firmada_{$clientName}{$timestamp}.{$extension}";
         }
 
-        if (str_contains($normalizedConfig, 'contrato_del_suministro') || str_contains($normalizedConfig, 'suministro')) {
-            // Try to get service type from config
+        if (str_contains($normalizedConfig, 'contrato del suministro') || 
+            str_contains($normalizedConfig, 'contrato_del_suministro') || 
+            str_contains($normalizedConfig, 'suministro')) {
+            // Try to get service type from config or model
             $serviceType = $this->getServiceType();
             if ($serviceType) {
-                return "Contrato_suministro_{$serviceType}_{$clientName}.{$extension}";
+                return "Contrato_suministro_{$serviceType}_{$clientName}{$idSuffix}{$timestamp}.{$extension}";
             }
-            return "Contrato_suministro_{$clientName}.{$extension}";
+            return "Contrato_suministro_{$clientName}{$idSuffix}{$timestamp}.{$extension}";
         }
 
         // For application manuals or unknown types, use the original config name
         if (!empty($configName)) {
             $sanitizedConfig = $this->sanitizeFilename($configName);
-            return "{$sanitizedConfig}_{$clientName}.{$extension}";
+            // Include formality ID for unknown types if attached to a formality (e.g. facturas)
+            return "{$sanitizedConfig}{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
         }
 
         // Fallback
-        return "documento_{$clientName}.{$extension}";
+        return "documento{$idSuffix}_{$clientName}{$timestamp}.{$extension}";
     }
 
     /**
-     * Get service type from FileConfig
+     * Get service type from FileConfig or the model itself
      */
     private function getServiceType(): ?string
     {
+        // If attached to a formality, get service name from there
+        if ($this->model instanceof Formality && $this->model->service) {
+            return $this->sanitizeFilename($this->model->service->name);
+        }
+
         if (!$this->configId) {
             return null;
         }
@@ -222,6 +295,7 @@ class FileUploadigService
     public function force_replace(File $file_reference)
     {
         if ($this->file) {
+            $newFolder = $this->getTargetFolder();
 
             if ($this->deleteFile($file_reference->folder, $file_reference->filename)) {
                 // $temp = explode('.', $this->file->getClientOriginalName())[0];
@@ -239,11 +313,12 @@ class FileUploadigService
                     'name' => $nameWithNoExtension,
                     'filename' => $fileName,
                     'mime_type' => $this->file->getMimeType(),
+                    'folder' => $newFolder,
                     'config_id' => $this->configId ?? null
                 ]);
 
-                $this->file->storeAs('public/' . $file_reference->folder, $fileName);
-                return $file_reference->folder . '/' . $fileName;
+                $this->file->storeAs('public/' . $newFolder, $fileName);
+                return $newFolder . '/' . $fileName;
             }
         }
 
@@ -252,11 +327,11 @@ class FileUploadigService
 
     private function deleteFile($folder, $filename): bool
     {
-        if (is_dir(storage_path('app/public/' . $folder))) {
-            return unlink(storage_path('app/public/' . $folder . '/' . $filename));
-        } else {
-            return false;
+        $filePath = storage_path('app/public/' . $folder . '/' . $filename);
+        if (file_exists($filePath)) {
+            return @unlink($filePath);
         }
+        return true;
     }
 
 

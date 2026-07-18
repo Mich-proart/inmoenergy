@@ -28,7 +28,7 @@ class AssignmentRevonationLayout extends Component
 
     public $formalityId;
 
-    public bool $isCritical;
+    public bool $isCritical = false;
     public $user_assigned_id;
     public $companyId;
     public $productId;
@@ -63,7 +63,7 @@ class AssignmentRevonationLayout extends Component
     {
         $this->formality = $this->formalityService->getById($formalityId);
         $this->formalityId = $formalityId;
-        $this->isCritical = $this->formality->isCritical;
+        $this->isCritical = (bool) $this->formality->isCritical;
     }
 
     public function getFiles($formality_id)
@@ -71,11 +71,13 @@ class AssignmentRevonationLayout extends Component
 
         $formality = Formality::where('id', $formality_id)->with(
             'files',
-            'files.config'
+            'files.config',
+            'client.files',
+            'client.files.config'
         )->first();
 
         if ($formality) {
-            $this->files = $formality->files;
+            $this->files = $formality->all_files;
 
         }
     }
@@ -119,7 +121,7 @@ class AssignmentRevonationLayout extends Component
             $formality->update($updates);
 
             $newOne = $this->createFormalityOnRenovation($formality, $trigger_date);
-            $newOne->files()->attach($formality->files);
+            $this->formalityService->createFormalityFolder($newOne);
 
             DB::commit();
             return redirect()->route('admin.formality.assignment.renovation');
@@ -148,7 +150,7 @@ class AssignmentRevonationLayout extends Component
             'correspondence_address_id' => $formality->correspondence_address_id,
             'canClientEdit' => true,
             'status_id' => $status->id,
-            'isCritical' => $this->isCritical,
+            'isCritical' => (bool) $this->isCritical,
             'access_rate_id' => $formality->access_rate_id,
             'CUPS' => $formality->CUPS,
             'internal_observation' => $formality->internal_observation,

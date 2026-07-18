@@ -20,9 +20,13 @@ use DB;
 use Illuminate\Support\Facades\App;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class EditClientModal extends Component
 {
+    use WithFileUploads;
+
+    public $clientFiles = [];
     protected AddressService $addressService;
     protected UserService $userService;
 
@@ -32,6 +36,12 @@ class EditClientModal extends Component
     public FormalityUpdate $form;
 
     public $formality;
+
+    // Reassignment fields
+    public $reassignmentMode = 'edit';
+    public $searchClientQuery = '';
+    public $selectedNewClientId = null;
+    public $searchResults = [];
 
     public $target_provinceId;
     public $target_clientProvinceId;
@@ -100,17 +110,56 @@ class EditClientModal extends Component
         DB::beginTransaction();
 
         try {
-
-            $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
-
             $data = Formality::firstWhere('id', $this->formality->id);
-            
-            $data->client()->update($updates);
+
+            if ($this->reassignmentMode === 'edit') {
+                $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
+                $data->client()->update($updates);
+            } elseif ($this->reassignmentMode === 'select') {
+                if (!$this->selectedNewClientId) {
+                    throw new \Exception('Debe seleccionar un cliente de la lista.');
+                }
+                
+                // Detach client documents from this formality (relation only)
+                $clientFileIds = $data->files()
+                    ->whereHas('config', function($query) {
+                        $query->where('tipo_carpeta', 'DocumentacionCliente');
+                    })
+                    ->pluck('files.id');
+                $data->files()->detach($clientFileIds);
+
+                $data->client_id = $this->selectedNewClientId;
+            } elseif ($this->reassignmentMode === 'new') {
+                $updates = array_merge(['country_id' => $this->selected_country->id], $this->form->getclientUpdate());
+                $newClient = \App\Models\Client::create($updates);
+                
+                // Upload and save client files
+                if (!empty($this->clientFiles)) {
+                    $uploaderService = \Illuminate\Support\Facades\App::make(\App\Domain\Program\Services\FileUploadigService::class);
+                    foreach ($this->clientFiles as $configId => $fileObj) {
+                        if ($fileObj) {
+                            $uploaderService
+                                ->setModel($newClient)
+                                ->addFile($fileObj)
+                                ->setConfigId($configId)
+                                ->saveFile();
+                        }
+                    }
+                }
+
+                // Detach client documents from this formality (relation only)
+                $clientFileIds = $data->files()
+                    ->whereHas('config', function($query) {
+                        $query->where('tipo_carpeta', 'DocumentacionCliente');
+                    })
+                    ->pluck('files.id');
+                $data->files()->detach($clientFileIds);
+
+                $data->client_id = $newClient->id;
+            }
 
             $address = Address::firstWhere('id', $data->address->id);
-
             $address->update($this->form->getaddressUpdate());
-
 
             $data->save();
 
@@ -119,11 +168,9 @@ class EditClientModal extends Component
                 $corresponceAddress->update($this->form->getCorresponceAddressUpdate());
             }
 
-
             DB::commit();
             $this->dispatch('end-update');
         } catch (\Throwable $th) {
-
             DB::rollBack();
             throw CustomException::badRequestException($th->getMessage());
         }
@@ -131,6 +178,7 @@ class EditClientModal extends Component
 
     public function formstate()
     {
+        $this->clientFiles = [];
         $current_client_type = null;
 
 
@@ -160,6 +208,91 @@ class EditClientModal extends Component
             }
 
         }
+    }
+
+    public function getClientDocConfigs()
+    {
+        $current_client_type = ComponentOption::find($this->form->clientTypeId);
+        $query = \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente');
+
+        if ($current_client_type) {
+            if ($current_client_type->name === ClientTypeEnum::PERSON->value) {
+                $query->whereNotIn('name', ['CIF', 'escritura empresa']);
+            }
+        }
+        return $query->get();
+    }
+
+    public function updatedSearchClientQuery($value)
+    {
+        if (strlen($value) >= 3) {
+            $this->searchResults = \App\Models\Client::where('name', 'like', '%' . $value . '%')
+                ->orWhere('first_last_name', 'like', '%' . $value . '%')
+                ->orWhere('second_last_name', 'like', '%' . $value . '%')
+                ->orWhere('document_number', 'like', '%' . $value . '%')
+                ->take(5)
+                ->get();
+        } else {
+            $this->searchResults = [];
+        }
+    }
+
+    public function selectExistingClient($clientId)
+    {
+        $this->selectedNewClientId = $clientId;
+        $client = \App\Models\Client::find($clientId);
+        if ($client) {
+            $this->form->name = $client->name;
+            $this->form->firstLastName = $client->first_last_name;
+            $this->form->secondLastName = $client->second_last_name;
+            $this->form->documentNumber = $client->document_number;
+            $this->form->phone = $client->phone;
+            $this->form->email = $client->email;
+            $this->form->IBAN = $client->IBAN;
+            $this->form->clientTypeId = $client->client_type_id;
+            $this->form->userTitleId = $client->user_title_id;
+            $this->clientTypeId = $client->client_type_id;
+            
+            $this->changeCountry($client->country_id);
+            $this->formstate();
+        }
+    }
+
+    public function updatedReassignmentMode($value)
+    {
+        $this->clientFiles = [];
+        if ($value === 'edit') {
+            $this->form->setformality($this->formality);
+            $this->selectedNewClientId = null;
+        } elseif ($value === 'new') {
+            $this->form->name = '';
+            $this->form->firstLastName = '';
+            $this->form->secondLastName = '';
+            $this->form->documentNumber = '';
+            $this->form->phone = '';
+            $this->form->email = '';
+            $this->form->IBAN = '';
+            $this->form->clientTypeId = null;
+            $this->form->userTitleId = null;
+            $this->selectedNewClientId = null;
+        } else { // select
+            $this->searchClientQuery = '';
+            $this->searchResults = [];
+            $this->selectedNewClientId = null;
+            $this->form->name = '';
+            $this->form->firstLastName = '';
+            $this->form->secondLastName = '';
+            $this->form->documentNumber = '';
+            $this->form->phone = '';
+            $this->form->email = '';
+            $this->form->IBAN = '';
+        }
+    }
+
+    public function setMode($mode)
+    {
+        $this->reassignmentMode = $mode;
+        $this->updatedReassignmentMode($mode);
     }
 
     #[Computed()]
@@ -192,6 +325,32 @@ class EditClientModal extends Component
 
     private function formValidation()
     {
+        if ($this->reassignmentMode === 'new') {
+            $rules = [];
+            $messages = [];
+            $docConfigs = $this->getClientDocConfigs();
+            foreach ($docConfigs as $config) {
+                $requirementRule = $config->is_required ? 'required' : 'nullable';
+                $rules["clientFiles.{$config->id}"] = "{$requirementRule}|file|mimes:pdf,jpg|max:5240";
+                if ($config->is_required) {
+                    $messages["clientFiles.{$config->id}.required"] = "El documento '" . ucfirst($config->name) . "' es obligatorio.";
+                }
+                $messages["clientFiles.{$config->id}.file"] = "El documento '" . ucfirst($config->name) . "' debe ser un archivo.";
+                $messages["clientFiles.{$config->id}.mimes"] = "El documento '" . ucfirst($config->name) . "' debe ser un PDF o JPG.";
+                $messages["clientFiles.{$config->id}.max"] = "El documento '" . ucfirst($config->name) . "' debe ser menor a 5MB.";
+            }
+            $this->validate($rules, $messages);
+        }
+
+        if ($this->reassignmentMode === 'select') {
+            $this->validate([
+                'selectedNewClientId' => 'required|exists:client,id'
+            ], [
+                'selectedNewClientId.required' => 'Debe buscar y seleccionar un cliente de la lista.'
+            ]);
+            return;
+        }
+
         $this->form->validate();
         $phoneRule = 'required|string|phone:' . $this->selected_country->iso2;
         $this->form->validate(

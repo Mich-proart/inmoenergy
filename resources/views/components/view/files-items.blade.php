@@ -1,5 +1,5 @@
 <div>
-    <table class="table table-sm">
+    <table class="table table-sm" style="table-layout: fixed; width: 100%;">
         <thead>
             <tr>
                 <th scope="col">Concepto</th>
@@ -11,8 +11,8 @@
             @isset ($files)
                 @foreach ($files as $file)
                     <tr class="table-light">
-                        <td>{{ ucfirst($file->config->name) }}</td>
-                        <td>{{ $file->filename }}</td>
+                        <td style="word-break: break-word; overflow-wrap: break-word;">{{ ucfirst($file->config->name) }}</td>
+                        <td style="word-break: break-word; overflow-wrap: break-word;">{{ $file->filename }}</td>
                         <td class="text-center">
                             @php
                                 $path = storage_path('app/public/' . $file->folder . '/' . $file->filename);

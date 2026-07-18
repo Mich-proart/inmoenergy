@@ -189,4 +189,15 @@ class FormalityService
         );
 
     }
+
+    public function createFormalityFolder(Formality $newFormality): void
+    {
+        $date = $newFormality->created_at ? $newFormality->created_at->format('Y-m-d') : date('Y-m-d');
+        $newFolder = "formality_{$newFormality->id}_{$date}";
+        $newFolderPath = storage_path('app/public/' . $newFolder);
+
+        if (!file_exists($newFolderPath)) {
+            mkdir($newFolderPath, 0755, true);
+        }
+    }
 }

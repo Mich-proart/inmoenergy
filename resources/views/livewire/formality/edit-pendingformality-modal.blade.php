@@ -164,6 +164,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Documentos existentes:</label>
+                                    <x-view.files-items :files="$files" />
+                                </div>
+                            </div>
                             <div class="row">
                                 @foreach($inputs as $key => $input)
                                     <div class="row">

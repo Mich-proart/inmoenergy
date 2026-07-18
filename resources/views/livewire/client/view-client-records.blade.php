@@ -254,6 +254,81 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Apartado Documentos Cliente (Solo Visualización) -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card card-success card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-folder-open mr-1"></i>
+                                Documentación del cliente
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipología del documento</th>
+                                            <th>Archivo actual</th>
+                                            <th class="text-center" style="width: 150px;">Descargar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $clientConfigsQuery = \App\Models\FileConfig::where('tipo_carpeta', 'DocumentacionCliente');
+                                            if ($selectedClient && $selectedClient->clientType && $selectedClient->clientType->name === \App\Domain\Enums\ClientTypeEnum::PERSON->value) {
+                                                $clientConfigsQuery->whereNotIn('name', ['CIF', 'escritura empresa']);
+                                            }
+                                            $clientConfigs = $clientConfigsQuery->get();
+                                        @endphp
+                                        @foreach($clientConfigs as $config)
+                                            @php
+                                                $clientFile = $selectedClient ? $selectedClient->files->firstWhere('config_id', $config->id) : null;
+                                            @endphp
+                                            <tr>
+                                                <td class="align-middle"><strong>{{ ucfirst($config->name) }}</strong></td>
+                                                <td class="align-middle">
+                                                    @if($clientFile)
+                                                        <span class="text-success"><i class="fas fa-check-circle mr-1"></i> {{ $clientFile->filename }}</span>
+                                                    @else
+                                                        <span class="text-muted"><i class="fas fa-exclamation-circle mr-1"></i> No subido</span>
+                                                    @endif
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    @if($clientFile)
+                                                        @php
+                                                            $filePath = storage_path('app/public/' . $clientFile->folder . '/' . $clientFile->filename);
+                                                        @endphp
+                                                        @if(file_exists($filePath))
+                                                            <a href="{{ route('admin.documents.download', $clientFile->id) }}">
+                                                                <button class="btn btn-success btn-sm">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                        fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                                                                            <path
+                                                                                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+                                                                        </svg>
+                                                                    Descargar</button>
+                                                            </a>
+                                                        @else
+                                                            <span class="badge badge-danger">No disponible</span>
+                                                        @endif
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endif
     @endif
 </div>
